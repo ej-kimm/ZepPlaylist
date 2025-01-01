@@ -317,6 +317,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tanstack/query-core@npm:5.62.9":
+  version: 5.62.9
+  resolution: "@tanstack/query-core@npm:5.62.9"
+  checksum: 3dc3ca1654a3e3a3f92e569d2bf9e8c09b6bb670562090af357db7e95175ad0397a01dfd2c2eda34bdfe0666e7d6fb841d0c435223119681b1ba1f28d4fcd6b1
+  languageName: node
+  linkType: hard
+
+"@tanstack/react-query@npm:^5.62.11":
+  version: 5.62.11
+  resolution: "@tanstack/react-query@npm:5.62.11"
+  dependencies:
+    "@tanstack/query-core": 5.62.9
+  peerDependencies:
+    react: ^18 || ^19
+  checksum: dcd0fc21eead400f385299f3afd230a98884a8eda5fe55e1803bf0b2657ddf109509afcb12f3c23ef143ec8debcbece908c99c59729c3ab911068619015c0eb7
+  languageName: node
+  linkType: hard
+
 "@types/json5@npm:^0.0.29":
   version: 0.0.29
   resolution: "@types/json5@npm:0.0.29"
@@ -4185,6 +4203,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "zep-playlist@workspace:."
   dependencies:
+    "@tanstack/react-query": ^5.62.11
     "@types/node": ^20
     "@types/react": ^18
     "@types/react-dom": ^18
