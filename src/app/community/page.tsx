@@ -1,5 +1,5 @@
 const CommunityPage = () => {
-  return <>CommunityPage</>
+  return <>CommunityPage 2</>
 }
 
 export default CommunityPage
