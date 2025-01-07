@@ -9,6 +9,9 @@ const config: Config = {
   theme: {
     extend: {
       colors: {},
+      fontFamily: {
+        pretendard: ['var(--font-pretendard)'],
+      },
     },
   },
   plugins: [],
