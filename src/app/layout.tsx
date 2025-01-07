@@ -1,12 +1,13 @@
+import QueryProvider from '@/components/providers/QueryProvider'
 import type { Metadata } from 'next'
 import localFont from 'next/font/local'
-import QueryProvider from '@/components/providers/QueryProvider'
 import '../styles/globals.css'
 
-const geistSans = localFont({
-  src: '../assets/fonts/GeistVF.woff',
-  variable: '--font-geist-sans',
+const pretendard = localFont({
+  src: '../assets/fonts/PretendardVariable.woff2',
+  display: 'swap',
   weight: '100 900',
+  variable: '--font-pretendard',
 })
 
 export const metadata: Metadata = {
@@ -21,7 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body className={`${geistSans.variable}`}>
+      <body className={`${pretendard.className}`}>
         <QueryProvider>{children}</QueryProvider>
       </body>
     </html>
