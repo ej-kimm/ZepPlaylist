@@ -1,5 +1,7 @@
 'use client'
 
+import { supabase } from '@/utils/supabase/client'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
 // 실시간 검사때매 client usestate 써야함
@@ -12,15 +14,27 @@ const LoginForm = () => {
     email: '',
     password: '',
   })
+  const router = useRouter()
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
     // 가능하고 조건문 이메일일때만 적절히 잘써야함
   }
-  const onSubmit = (e: React.FormEvent) => {
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     console.log(formData)
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: formData.email,
+      password: formData.password,
+    })
+    if (error) {
+      console.error(error.message)
+      alert('아이디 혹은 비밀번호를 확인해주세요')
+    }
+    router.push('/')
+    return data
   }
+
   return (
     <form onSubmit={onSubmit}>
       <p>이메일</p>

@@ -1,10 +1,13 @@
 'use client'
 
+import { supabase } from '@/utils/supabase/client'
+import { useRouter } from 'next/navigation'
 // 나중에 도전기능으로 서버 액션으로 분리 * 동작하게끔 슈파베이스 사인인,사인업 따로 분리 *<<
 // 보안쪽 생각해서 서버에서 처리하는게 통상적임
 import { useState } from 'react'
 
 const SignupForm = () => {
+  const router = useRouter()
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -16,9 +19,19 @@ const SignupForm = () => {
     setFormData((prev) => ({ ...prev, [name]: value }))
   }
 
-  const onSubmit = (e: React.FormEvent) => {
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     console.log(formData)
+    const { error } = await supabase.auth.signUp({
+      email: formData.email,
+      password: formData.password,
+      options: { data: { name: formData.nickname } },
+    })
+    if (error) {
+      console.error(error.message)
+    }
+    alert('성공')
+    router.push('/login')
   }
   return (
     <form onSubmit={onSubmit}>
