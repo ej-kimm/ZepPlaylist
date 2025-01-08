@@ -2,14 +2,11 @@
 
 import { TablesInsert } from '@/types/supabase'
 import { supabase } from '@/utils/supabase/client'
-import Swal from 'sweetalert2'
 
-// Supabase 'playlists' 테이블의 Insert 타입 정의
+// 플리리 테이블 insert 정의
 type PlaylistInsert = TablesInsert<'playlists'>
 
-/**
- * 서버 액션: 플레이리스트 데이터 가져오기
- */
+//플리 데이터 가져오기
 export async function fetchPlaylists() {
   try {
     const { data, error } = await supabase.from('playlists').select('*')
@@ -19,21 +16,15 @@ export async function fetchPlaylists() {
     return data || []
   } catch (error) {
     console.error('플레이리스트 가져오기 오류:', error)
-    Swal.fire(
-      '오류',
-      '플레이리스트 데이터를 가져오는 중 문제가 발생했습니다.',
-      'error',
-    )
-    return []
+    throw new Error('플레이리스트 데이터를 가져오는 중 문제가 발생했습니다.')
   }
 }
 
-/**
- * 서버 액션: 새로운 플레이리스트 추가
- */
+//플리 추가
 export async function addPlaylist(playlist: Omit<PlaylistInsert, 'id'>) {
   try {
-    console.log('addPlaylist 호출됨', playlist)
+    console.log('addPlaylist 호출됨:', playlist)
+
     const { error } = await supabase.from('playlists').insert<PlaylistInsert>({
       ...playlist,
     })
@@ -42,9 +33,33 @@ export async function addPlaylist(playlist: Omit<PlaylistInsert, 'id'>) {
       throw error
     }
 
-    Swal.fire('완료', '플레이리스트가 추가되었습니다!', 'success')
+    return { success: true }
   } catch (error) {
     console.error('플레이리스트 추가 오류:', error)
-    Swal.fire('오류', '플레이리스트 추가 중 문제가 발생했습니다.', 'error')
+    throw new Error('플레이리스트 추가 중 문제가 발생했습니다.')
+  }
+}
+
+//플리 업데이트
+export async function updatePlaylist(
+  playlistId: string,
+  updatedData: Partial<Omit<PlaylistInsert, 'id'>>,
+) {
+  try {
+    console.log('updatePlaylist 호출됨:', playlistId, updatedData)
+
+    const { error } = await supabase
+      .from('playlists')
+      .update(updatedData)
+      .eq('id', playlistId)
+
+    if (error) {
+      throw error
+    }
+
+    return { success: true }
+  } catch (error) {
+    console.error('플레이리스트 수정 오류:', error)
+    throw new Error('플레이리스트 수정 중 문제가 발생했습니다.')
   }
 }
