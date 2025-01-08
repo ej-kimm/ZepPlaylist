@@ -27,8 +27,20 @@ const KaKaoButton = () => {
       redirect(data.url) // use the redirect API for your server framework
     } else if (error) console.error('====스포티파이이 오류', error.message)
   }
+  const signInWithGoogle = async () => {
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: 'http://localhost:3000/api/google',
+      },
+    })
+
+    if (data.url) {
+      redirect(data.url) // use the redirect API for your server framework
+    } else if (error) console.error('====구글 오류', error.message)
+  }
   return (
-    <form>
+    <form className="flex space-x-4">
       <button
         className="flex items-center space-x-2 rounded bg-yellow-500 px-4 py-2 text-white transition-all hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-500"
         type="button"
@@ -42,6 +54,13 @@ const KaKaoButton = () => {
         onClick={signInWithSpotify}
       >
         <span>스포티파이</span>
+      </button>
+      <button
+        className="flex items-center space-x-2 rounded bg-red-500 px-4 py-2 text-white transition-all hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
+        type="button"
+        onClick={signInWithGoogle}
+      >
+        <span>구글</span>
       </button>
     </form>
   )
