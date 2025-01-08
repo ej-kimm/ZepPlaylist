@@ -37,6 +37,14 @@ const LoginForm = () => {
     setUser({ email: formData.email })
     router.push('/')
   }
+  const logout = async () => {
+    const { error } = await supabase.auth.signOut()
+    if (error) {
+      alert('로그아웃 실패')
+      return
+    }
+    alert('로그아웃성공')
+  }
   return (
     <form
       onSubmit={onSubmit}
@@ -73,6 +81,9 @@ const LoginForm = () => {
         className="mt-6 w-full rounded-lg bg-blue-500 py-3 text-white transition-all hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
       >
         로그인
+      </button>
+      <button type="button" onClick={logout}>
+        로그아웃
       </button>
     </form>
   )
