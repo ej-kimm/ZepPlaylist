@@ -34,8 +34,13 @@ const SignupForm = () => {
     router.push('/login')
   }
   return (
-    <form onSubmit={onSubmit}>
-      <p>아이디</p>
+    <form
+      onSubmit={onSubmit}
+      className="mx-auto max-w-lg rounded-lg bg-white p-6 shadow-md"
+    >
+      <h2 className="mb-6 text-center text-2xl font-bold">회원가입</h2>
+
+      <label className="mb-2 block font-medium text-gray-700">아이디</label>
       <input
         type="email"
         name="email"
@@ -43,8 +48,12 @@ const SignupForm = () => {
         placeholder="아이디를 입력해주세요"
         required
         onChange={handleChange}
+        className="w-full rounded-lg border p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
-      <p>비밀번호</p>
+
+      <label className="mb-2 mt-4 block font-medium text-gray-700">
+        비밀번호
+      </label>
       <input
         type="password"
         name="password"
@@ -52,8 +61,12 @@ const SignupForm = () => {
         placeholder="비번을 입력해주세요"
         required
         onChange={handleChange}
+        className="w-full rounded-lg border p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
-      <p>비밀번호 확인</p>
+
+      <label className="mb-2 mt-4 block font-medium text-gray-700">
+        비밀번호 확인
+      </label>
       <input
         type="password"
         name="passwordCheck"
@@ -61,8 +74,12 @@ const SignupForm = () => {
         placeholder="비번을 확인하세요"
         required
         onChange={handleChange}
+        className="w-full rounded-lg border p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
-      <p>닉네임</p>
+
+      <label className="mb-2 mt-4 block font-medium text-gray-700">
+        닉네임
+      </label>
       <input
         type="text"
         name="nickname"
@@ -70,14 +87,24 @@ const SignupForm = () => {
         placeholder="닉네임을 입력해주세요"
         required
         onChange={handleChange}
+        className="w-full rounded-lg border p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
-      <p>
-        <input type="checkbox" />
-        서비스 정책 이용약관
-      </p>
-      <button type="submit">회원가입</button>
+
+      <div className="mt-6 flex items-center">
+        <input
+          type="checkbox"
+          className="mr-2 h-5 w-5 rounded border-gray-300 text-blue-500 focus:ring-2 focus:ring-blue-500"
+        />
+        <span className="text-sm text-gray-600">서비스 정책 이용약관</span>
+      </div>
+
+      <button
+        type="submit"
+        className="mt-6 w-full rounded-lg bg-blue-500 py-3 text-white transition-all hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      >
+        회원가입
+      </button>
     </form>
   )
 }
-
 export default SignupForm

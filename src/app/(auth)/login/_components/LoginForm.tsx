@@ -1,5 +1,6 @@
 'use client'
 
+import { userStore } from '@/store/userSlice'
 import { supabase } from '@/utils/supabase/client'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
@@ -15,6 +16,7 @@ const LoginForm = () => {
     password: '',
   })
   const router = useRouter()
+  const setUser = userStore((state) => state.setUser)
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
@@ -30,32 +32,48 @@ const LoginForm = () => {
     if (error) {
       console.error(error.message)
       alert('아이디 혹은 비밀번호를 확인해주세요')
+      return
     }
+    setUser({ email: formData.email })
     router.push('/')
-    return data
   }
-
   return (
-    <form onSubmit={onSubmit}>
-      <p>이메일</p>
+    <form
+      onSubmit={onSubmit}
+      className="mx-auto max-w-md rounded-lg bg-white p-6 shadow-md"
+    >
+      <h2 className="mb-6 text-center text-2xl font-bold">로그인</h2>
+
+      <label className="mb-2 block font-medium text-gray-700">이메일</label>
       <input
         type="email"
         name="email"
         value={formData.email}
         onChange={handleChange}
         required
-        placeholder="이메일칸"
+        placeholder="이메일을 입력하세요"
+        className="w-full rounded-lg border p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
-      <p>비밀번호</p>
+
+      <label className="mb-2 mt-4 block font-medium text-gray-700">
+        비밀번호
+      </label>
       <input
         type="password"
         name="password"
         value={formData.password}
         onChange={handleChange}
         required
-        placeholder="비밀번호칸"
+        placeholder="비밀번호를 입력하세요"
+        className="w-full rounded-lg border p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
-      <button type="submit">로그인</button>
+
+      <button
+        type="submit"
+        className="mt-6 w-full rounded-lg bg-blue-500 py-3 text-white transition-all hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      >
+        로그인
+      </button>
     </form>
   )
 }
