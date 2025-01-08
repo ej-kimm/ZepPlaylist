@@ -4,6 +4,7 @@ import { supabase } from '@/utils/supabase/client'
 import { redirect } from 'next/navigation'
 
 const KaKaoButton = () => {
+  // 카카오
   const signInWithKakao = async () => {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'kakao',
@@ -15,6 +16,7 @@ const KaKaoButton = () => {
       redirect(data.url)
     } else if (error) console.error('====카카오 오류', error.message)
   }
+  // 스포티파이이
   const signInWithSpotify = async () => {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'spotify',
@@ -24,9 +26,10 @@ const KaKaoButton = () => {
     })
 
     if (data.url) {
-      redirect(data.url) // use the redirect API for your server framework
+      redirect(data.url)
     } else if (error) console.error('====스포티파이이 오류', error.message)
   }
+  // 구글
   const signInWithGoogle = async () => {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
@@ -36,7 +39,7 @@ const KaKaoButton = () => {
     })
 
     if (data.url) {
-      redirect(data.url) // use the redirect API for your server framework
+      redirect(data.url)
     } else if (error) console.error('====구글 오류', error.message)
   }
   return (
