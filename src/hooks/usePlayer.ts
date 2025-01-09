@@ -12,7 +12,6 @@ type usePlayerProps =
 const usePlayer = (trackId: usePlayerProps) => {
   const trackIds = Array.isArray(trackId) ? trackId : [trackId]
   const [currentTrackIndex, setCurrentTrackIndex] = useState<number>(0)
-  const [isPlaying, setIsPlaying] = useState<boolean>(false)
 
   const playerQueries = useQueries({
     queries: trackIds.map((trackId) => ({
@@ -25,8 +24,6 @@ const usePlayer = (trackId: usePlayerProps) => {
     })),
   })
   const currentTrackData = playerQueries[currentTrackIndex]?.data
-
-  const togglePlay = () => setIsPlaying((prev) => !prev)
 
   const playNextTrack = () => {
     const nextIndex = (currentTrackIndex + 1) % trackIds.length
@@ -42,8 +39,6 @@ const usePlayer = (trackId: usePlayerProps) => {
   return {
     musicDetail: currentTrackData?.musicDetail,
     url: currentTrackData?.trackUrl,
-    isPlaying,
-    togglePlay,
     playNextTrack,
     playPreviousTrack,
   }
