@@ -15,9 +15,7 @@ const usePlayer = (trackId: usePlayerProps) => {
   const [isPlaying, setIsPlaying] = useState<boolean>(false)
   const [musicDetail, setMusicDetail] = useState<Tables<'music'>>()
 
-  const togglePlay = () => {
-    setIsPlaying((prev) => !prev)
-  }
+  const togglePlay = () => setIsPlaying((prev) => !prev)
 
   const playNextTrack = () => {
     const nextIndex = (currentTrackIndex + 1) % trackIds.length
@@ -32,12 +30,11 @@ const usePlayer = (trackId: usePlayerProps) => {
 
   useEffect(() => {
     const fetchTrackUrl = async () => {
-      const trackUrl = await fetchPreviewUrl(trackIds[currentTrackIndex])
+      const [trackUrl, musicDetail] = await Promise.all([
+        fetchPreviewUrl(trackIds[currentTrackIndex]),
+        fetchMusicDetailByMusicId(trackIds[currentTrackIndex]),
+      ])
       setUrl(trackUrl)
-
-      const musicDetail = await fetchMusicDetailByMusicId(
-        trackIds[currentTrackIndex],
-      )
       setMusicDetail(musicDetail)
     }
 
