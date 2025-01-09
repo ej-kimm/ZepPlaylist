@@ -1,8 +1,9 @@
 'use client'
 import usePlayer from '@/hooks/usePlayer'
 import type { Tables } from '@/types/supabase'
-import Image from 'next/image'
 import ReactPlayer from 'react-player'
+import MusicDetails from './MusicDetails'
+import PlayerControls from './PlayerControls'
 
 // 플레이 리스트 전체 재생(배열) 또는 한 곡만 재생
 type MusicPlayerProps = {
@@ -33,28 +34,13 @@ const MusicPlayer = ({ trackId }: MusicPlayerProps) => {
         height="0"
       />
       <div className="flex justify-between">
-        <div className="flex">
-          <Image
-            // TODO : src default 커버 설정하기
-            src={musicDetail?.album_cover || '/No cover'}
-            alt={musicDetail?.title || 'No Title'}
-            width={30}
-            height={30}
-          />
-          <h3 className="text-white">{musicDetail?.title}</h3>
-          <p className="text-white">{musicDetail?.artist}</p>
-        </div>
-        <div>
-          <button className="text-white" onClick={playPreviousTrack}>
-            &lt;&lt;
-          </button>
-          <button className="text-white" onClick={togglePlay}>
-            {isPlaying ? 'PLAY' : 'PAUSE'}
-          </button>
-          <button className="text-white" onClick={playNextTrack}>
-            &gt;&gt;
-          </button>
-        </div>
+        <MusicDetails musicDetail={musicDetail} />
+        <PlayerControls
+          isPlaying={isPlaying}
+          togglePlay={togglePlay}
+          playPreviousTrack={playPreviousTrack}
+          playNextTrack={playNextTrack}
+        />
       </div>
     </div>
   )
