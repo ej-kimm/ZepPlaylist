@@ -2,6 +2,7 @@
 
 import { fetchPlaylistDetails } from '@/api/playlist-detail/actions'
 import { PlaylistDetails } from '@/types/song'
+import { formatPlayTime } from '@/utils/fromatPlayTime'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 
@@ -21,14 +22,6 @@ export default function PlaylistDetailsComponent({
 
     loadPlaylistDetails()
   }, [params.id])
-
-  // 밀리초를 분:초 형식으로 변환
-  const formatPlayTime = (milliseconds: number) => {
-    const totalSeconds = Math.floor(milliseconds / 1000)
-    const minutes = Math.floor(totalSeconds / 60)
-    const seconds = totalSeconds % 60
-    return `${minutes}:${seconds.toString().padStart(2, '0')}`
-  }
 
   if (!playlistDetails) {
     return <div>로딩 중...</div>

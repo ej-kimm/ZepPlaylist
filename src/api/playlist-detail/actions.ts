@@ -61,7 +61,7 @@ export async function fetchPlaylistDetails(
     )
     const totalPlayTime = formatPlayTime(totalPlayTimeMilliseconds)
 
-    // 마지막 업데이트 일자자
+    // 마지막 업데이트 일자
     const { data: lastUpdatedData } = await supabase
       .from('playlist_music')
       .select('created_at')

@@ -7,6 +7,7 @@ import {
 } from '@/api/playlist/actions'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { FaLock, FaLockOpen } from 'react-icons/fa'
 import Swal from 'sweetalert2'
 
 type Playlist = {
@@ -34,7 +35,6 @@ export default function PlaylistComponent({
   const [description, setDescription] = useState('')
   const [isPublic, setIsPublic] = useState(false)
 
-  // 데이터 불러오기
   useEffect(() => {
     const loadPlaylists = async () => {
       try {
@@ -45,7 +45,7 @@ export default function PlaylistComponent({
       }
     }
 
-    loadPlaylists() // 컴포넌트 마운트 시 데이터를 로드
+    loadPlaylists()
   }, [])
 
   const openModal = (type: 'add' | 'edit', playlist?: Playlist) => {
@@ -72,7 +72,6 @@ export default function PlaylistComponent({
     setIsPublic(false)
   }
 
-  // 플리 추가
   const handleAddPlaylist = async () => {
     try {
       await addPlaylist({
@@ -85,7 +84,6 @@ export default function PlaylistComponent({
 
       Swal.fire('완료', '플레이리스트가 추가되었습니다!', 'success')
 
-      // 데이터 동기화
       const updatedPlaylists = await fetchPlaylists()
       setPlaylists(updatedPlaylists)
       closeModal()
@@ -95,7 +93,6 @@ export default function PlaylistComponent({
     }
   }
 
-  // 플리 수정
   const handleEditPlaylist = async () => {
     if (!selectedPlaylist) return
 
@@ -108,7 +105,6 @@ export default function PlaylistComponent({
 
       Swal.fire('완료', '플레이리스트가 수정되었습니다!', 'success')
 
-      // 데이터 동기화
       const updatedPlaylists = await fetchPlaylists()
       setPlaylists(updatedPlaylists)
       closeModal()
@@ -123,29 +119,43 @@ export default function PlaylistComponent({
   }
 
   return (
-    <div>
+    <div className="p-4">
       <button
         onClick={() => openModal('add')}
-        className="flex items-center rounded bg-black px-4 py-2 text-white"
+        className="flex h-[48px] w-[245px] items-center justify-center rounded-lg border-2 border-purple-500 text-lg text-purple-500"
       >
-        <span className="mr-2 text-2xl font-bold">+</span>플레이리스트 추가
+        새 플레이리스트 만들기
       </button>
-      <ul className="mt-4">
+
+      <ul className="mt-4 space-y-2">
         {playlists.map((playlist) => (
           <li
             key={playlist.id}
-            className="flex items-center justify-between border-b py-2"
+            className="flex h-[58px] w-[378px] items-center justify-between rounded-lg border bg-white px-4 py-2 shadow-sm"
           >
             <div
               onClick={() => handlePlaylistClick(playlist.id)}
-              className="cursor-pointer"
+              className="flex cursor-pointer items-center"
             >
-              <p className="font-semibold">{playlist.name}</p>
-              <p className="text-sm text-gray-500">{playlist.description}</p>
+              <div className="relative h-12 w-12 rounded bg-gray-200">
+                {playlist.is_public ? (
+                  <FaLockOpen className="absolute right-1 top-1 text-gray-600" />
+                ) : (
+                  <FaLock className="absolute right-1 top-1 text-gray-600" />
+                )}
+              </div>
+
+              <div className="ml-4">
+                <p className="text-lg font-semibold">{playlist.name}</p>
+                <p className="text-sm text-gray-500">
+                  {playlist.description || '곡 NN개'}
+                </p>
+              </div>
             </div>
+
             <button
               onClick={() => openModal('edit', playlist)}
-              className="text-gray-500"
+              className="text-xl text-gray-500"
             >
               ⋮
             </button>
@@ -155,7 +165,7 @@ export default function PlaylistComponent({
 
       {modalType && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="w-96 rounded-lg bg-white p-6 shadow-lg">
+          <div className="w-[378px] rounded-lg bg-white p-6 shadow-lg">
             <h2 className="mb-4 text-lg font-bold">
               {modalType === 'add' ? '플레이리스트 추가' : '플레이리스트 수정'}
             </h2>
