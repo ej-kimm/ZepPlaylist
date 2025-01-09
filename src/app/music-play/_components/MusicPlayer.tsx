@@ -1,9 +1,10 @@
 'use client'
 import usePlayer from '@/hooks/usePlayer'
+import type { Tables } from '@/types/supabase'
 import ReactPlayer from 'react-player'
 
 type MusicPlayerProps = {
-  trackIds: string[]
+  trackIds: Tables<'music'>['spotify_id'][]
 }
 
 const MusicPlayer = ({ trackIds }: MusicPlayerProps) => {

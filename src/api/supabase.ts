@@ -1,9 +1,12 @@
+import type { Tables } from '@/types/supabase'
 import { createClient } from '@/utils/supabase/server'
 
 const supabase = createClient()
 
 // music 테이블
-export const fetchMusicId = async (): Promise<string[]> => {
+export const fetchMusicId = async (): Promise<
+  Tables<'music'>['spotify_id'][]
+> => {
   try {
     const { data: musicId, error } = await supabase
       .from('music')

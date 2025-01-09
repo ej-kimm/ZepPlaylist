@@ -1,8 +1,9 @@
 'use client'
 import { fetchPreviewUrl } from '@/api/spotifyToken'
+import type { Tables } from '@/types/supabase'
 import { useEffect, useState } from 'react'
 
-const usePlayer = (trackIds: string[]) => {
+const usePlayer = (trackIds: Tables<'music'>['spotify_id'][]) => {
   const [currentTrackIndex, setCurrentTrackIndex] = useState<number>(0)
   const [url, setUrl] = useState<string>('')
   const [isPlaying, setIsPlaying] = useState<boolean>(false)
