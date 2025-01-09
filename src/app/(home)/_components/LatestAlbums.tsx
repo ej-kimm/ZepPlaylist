@@ -3,6 +3,9 @@
 import { fetchNewReleases } from '@/api/home/fetchNewReleases'
 import Image from 'next/image'
 
+// 1시간 간격의 ISR
+export const revalidate = 3600
+
 const LatestAlbums = async () => {
   const data = await fetchNewReleases()
 
@@ -10,6 +13,7 @@ const LatestAlbums = async () => {
 
   return (
     <div className="w-full overflow-x-auto">
+      <h2>최신 음반</h2>
       <ul className="flex space-x-4 p-4">
         {latestAlbumList.map((album) => (
           <li key={album.id} className="flex-none">
@@ -19,6 +23,7 @@ const LatestAlbums = async () => {
                 width={100}
                 height={100}
                 alt={album.name}
+                priority
                 className="h-auto w-full rounded-lg shadow-md"
               />
               <h3 className="mt-2 truncate text-sm font-semibold">
