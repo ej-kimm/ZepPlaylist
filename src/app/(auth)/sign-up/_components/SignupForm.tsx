@@ -14,9 +14,42 @@ const SignupForm = () => {
     passwordCheck: '',
     nickname: '',
   })
+  const [error, setError] = useState({
+    email: '',
+    password: '',
+    passwordCheck: '',
+    nickname: '',
+  })
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    setError((prev) => {
+      const newerror = { ...prev }
+      if (name === 'email') {
+        if (!value) {
+          newerror.email = ''
+        } else if (!emailRegex.test(value)) {
+          newerror.email = '올바른 이메일 형식을 입력해주세요.'
+        } else {
+          newerror.email = ''
+        }
+      }
+      if (name === 'password') {
+        if (!value) {
+          newerror.password = ''
+        } else if (value.length < 5) {
+          newerror.password = '비밀번호는 최소 5글자 이상이여야합니다'
+        } else {
+          newerror.password = ''
+        }
+      }
+      if (name === 'passwordCheck') {
+        if (value !== formData.passwordCheck) {
+          newerror.passwordCheck = '비밀번호가 일치하지않습니다'
+        }
+      }
+    })
   }
 
   const onSubmit = async (e: React.FormEvent) => {

@@ -6,7 +6,6 @@ import { supabase } from '@/utils/supabase/client'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
-// 실시간 검사때매 client usestate 써야함
 // 주스탠드 빨리넘거야 팀원들편함 슈파베이스 로그인/회원가입 처리부터
 // 바이더 감싸서 사람들한테 유저 뽑아오는거 한번 설명
 // 서버에서 zod로 한번 리팩토링할 생각해야함
@@ -16,12 +15,22 @@ const LoginForm = () => {
     email: '',
     password: '',
   })
+  const [emailError, setEmailError] = useState<string>('')
   const router = useRouter()
   const setUser = userStore((state) => state.setUser)
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
-    // 가능하고 조건문 이메일일때만 적절히 잘써야함
+    if (name === 'email') {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+      if (value === '') {
+        setEmailError('')
+      } else if (!emailRegex.test(value)) {
+        setEmailError('올바른 이메일 주소를 입력해주세요.')
+      } else {
+        setEmailError('')
+      }
+    }
   }
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -71,6 +80,7 @@ const LoginForm = () => {
         placeholder="이메일을 입력하세요"
         className="w-full rounded-lg border p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
+      {emailError && <p className="text-sm text-red-500">{emailError}</p>}
 
       <label className="mb-2 mt-4 block font-medium text-gray-700">
         비밀번호
