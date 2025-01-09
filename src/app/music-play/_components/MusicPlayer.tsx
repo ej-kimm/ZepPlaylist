@@ -4,11 +4,12 @@ import type { Tables } from '@/types/supabase'
 import Image from 'next/image'
 import ReactPlayer from 'react-player'
 
+// 플레이 리스트 전체 재생(배열) 또는 한 곡만 재생
 type MusicPlayerProps = {
-  trackIds: Tables<'music'>['spotify_id'][]
+  trackId: Tables<'music'>['spotify_id'] | Tables<'music'>['spotify_id'][]
 }
 
-const MusicPlayer = ({ trackIds }: MusicPlayerProps) => {
+const MusicPlayer = ({ trackId }: MusicPlayerProps) => {
   const {
     musicDetail,
     url,
@@ -16,7 +17,7 @@ const MusicPlayer = ({ trackIds }: MusicPlayerProps) => {
     togglePlay,
     playNextTrack,
     playPreviousTrack,
-  } = usePlayer(trackIds)
+  } = usePlayer(trackId)
 
   if (!url) {
     return null

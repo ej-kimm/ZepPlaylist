@@ -4,7 +4,12 @@ import { fetchMusicDetailByMusicId } from '@/api/supabase'
 import type { Tables } from '@/types/supabase'
 import { useEffect, useState } from 'react'
 
-const usePlayer = (trackIds: Tables<'music'>['spotify_id'][]) => {
+type usePlayerProps =
+  | Tables<'music'>['spotify_id']
+  | Tables<'music'>['spotify_id'][]
+
+const usePlayer = (trackId: usePlayerProps) => {
+  const trackIds = Array.isArray(trackId) ? trackId : [trackId]
   const [currentTrackIndex, setCurrentTrackIndex] = useState<number>(0)
   const [url, setUrl] = useState<string>('')
   const [isPlaying, setIsPlaying] = useState<boolean>(false)
