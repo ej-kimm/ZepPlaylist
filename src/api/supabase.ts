@@ -3,7 +3,7 @@ import { createClient } from '@/utils/supabase/server'
 const supabase = createClient()
 
 // music 테이블
-export const fetchMusicId = async () => {
+export const fetchMusicId = async (): Promise<string[]> => {
   try {
     const { data: musicId, error } = await supabase
       .from('music')
