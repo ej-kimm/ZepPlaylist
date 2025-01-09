@@ -40,6 +40,7 @@ const LoginForm = () => {
           id: data.user.id,
           email: data.user.email!,
           nickname: data?.user.user_metadata?.name,
+          profile_image: data.user.user_metadata?.profile_image || null,
         }
       : null
     setUser(user)
