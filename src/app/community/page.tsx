@@ -1,24 +1,22 @@
-import ClientSwiper from '@/components/common/ClientSwiper'
-import type { Database } from '@/types/supabase'
+import { ClientSwiper } from '@/components/common';
+import type { Tables } from '@/types/supabase';
 
-type Playlist = Database['public']['Tables']['playlists']['Row']
-
-const getPlaylists = async (): Promise<Playlist[]> => {
+const getPlaylists = async (): Promise<Tables<'playlists'>[]> => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/community`, {
     cache: 'no-store',
-  })
+  });
 
   if (!res.ok) {
-    console.error('Failed to fetch playlists')
-    return []
+    console.error('Failed to fetch playlists');
+    return [];
   }
 
-  const { playlists } = await res.json()
-  return playlists.filter((playlist: Playlist) => playlist.is_public)
-}
+  const { playlist } = await res.json();
+  return playlist.filter((playlist: Tables<'playlists'>) => playlist.is_public);
+};
 
 const CommunityPage = async (): Promise<JSX.Element> => {
-  const playlists = await getPlaylists()
+  const playlists = await getPlaylists();
 
   if (playlists.length === 0) {
     return (
@@ -26,13 +24,13 @@ const CommunityPage = async (): Promise<JSX.Element> => {
         <h1 className="mb-2 text-2xl font-bold">커뮤니티 페이지</h1>
         <p>플레이 리스트가 없습니다.</p>
       </div>
-    )
+    );
   }
 
   return (
     <div className="p-4">
       <h1 className="mb-4 text-2xl font-bold">커뮤니티 페이지</h1>
-      <ClientSwiper // ClientSwiper에 items를 props로 전달, ClientSwiper컴포넌트는 슬라이드 렌더링 하는 역할만 담당하게 됨(UI적 부분)
+      <ClientSwiper // 서버 컴포넌트에서 사용할때는 ClientSwiper에 props로 전달해서 사용해야함, ClientSwiper는 UI를 그려주는 역할만 하게 됨
         items={playlists.map((playlist) => ({
           id: playlist.id,
           content: (
@@ -47,7 +45,7 @@ const CommunityPage = async (): Promise<JSX.Element> => {
         }))}
       />
     </div>
-  )
-}
+  );
+};
 
-export default CommunityPage
+export default CommunityPage;
