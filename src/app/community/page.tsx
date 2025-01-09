@@ -1,39 +1,53 @@
-'use client';
+import ClientSwiper from '@/components/common/ClientSwiper'
+import type { Database } from '@/types/supabase'
 
-import { useEffect, useState } from 'react';
-import { getTrackData } from './server';
+type Playlist = Database['public']['Tables']['playlists']['Row']
 
-export default function CommunityPage() {
-  const [trackData, setTrackData] = useState<any>(null);
-  const [error, setError] = useState<string | null>(null);
+const getPlaylists = async (): Promise<Playlist[]> => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/community`, {
+    cache: 'no-store',
+  })
 
-  useEffect(() => {
-    const trackId = '7qiZfU4dY1lWllzX7mPBI3';
-
-    getTrackData(trackId)
-      .then(data => setTrackData(data))
-      .catch(err => setError(err.message));
-  }, []);
-
-  if (error) {
-    return <div>Error: {error}</div>;
+  if (!res.ok) {
+    console.error('Failed to fetch playlists')
+    return []
   }
 
-  if (!trackData) {
-    return <div>Loading...</div>;
+  const { playlists } = await res.json()
+  return playlists.filter((playlist: Playlist) => playlist.is_public)
+}
+
+const CommunityPage = async (): Promise<JSX.Element> => {
+  const playlists = await getPlaylists()
+
+  if (playlists.length === 0) {
+    return (
+      <div className="p-4">
+        <h1 className="mb-2 text-2xl font-bold">커뮤니티 페이지</h1>
+        <p>플레이 리스트가 없습니다.</p>
+      </div>
+    )
   }
 
   return (
     <div className="p-4">
-      <h1 className="text-2xl font-bold">Track Details</h1>
-      <p>Name: {trackData.name}</p>
-      <p>Artist: {trackData.artists.map((artist: any) => artist.name).join(', ')}</p>
-      <p>Album: {trackData.album.name}</p>
-      <img
-        src={trackData.album.images[0]?.url}
-        alt={trackData.name}
-        className="w-64 h-64 mt-4"
+      <h1 className="mb-4 text-2xl font-bold">커뮤니티 페이지</h1>
+      <ClientSwiper // ClientSwiper에 items를 props로 전달, ClientSwiper컴포넌트는 슬라이드 렌더링 하는 역할만 담당하게 됨(UI적 부분)
+        items={playlists.map((playlist) => ({
+          id: playlist.id,
+          content: (
+            <>
+              <h2 className="text-xl font-semibold">{playlist.name}</h2>
+              <p>{playlist.description}</p>
+              <p className="text-sm text-gray-500">
+                Public: {playlist.is_public ? 'Yes' : 'No'}
+              </p>
+            </>
+          ),
+        }))}
       />
     </div>
-  );
+  )
 }
+
+export default CommunityPage
