@@ -1,3 +1,4 @@
+'use client'
 type PlayerControlsProps = {
   isPlaying: boolean
   togglePlay: () => void

@@ -2,7 +2,8 @@
 import { fetchPreviewUrl } from '@/api/spotifyToken'
 import { fetchMusicDetailByMusicId } from '@/api/supabase'
 import type { Tables } from '@/types/supabase'
-import { useEffect, useState } from 'react'
+import { useQueries } from '@tanstack/react-query'
+import { useState } from 'react'
 
 type usePlayerProps =
   | Tables<'music'>['spotify_id']
@@ -11,9 +12,19 @@ type usePlayerProps =
 const usePlayer = (trackId: usePlayerProps) => {
   const trackIds = Array.isArray(trackId) ? trackId : [trackId]
   const [currentTrackIndex, setCurrentTrackIndex] = useState<number>(0)
-  const [url, setUrl] = useState<string>('')
   const [isPlaying, setIsPlaying] = useState<boolean>(false)
-  const [musicDetail, setMusicDetail] = useState<Tables<'music'>>()
+
+  const playerQueries = useQueries({
+    queries: trackIds.map((trackId) => ({
+      queryKey: ['music', trackId],
+      queryFn: async () => {
+        const trackUrl = await fetchPreviewUrl(trackId)
+        const musicDetail = await fetchMusicDetailByMusicId(trackId)
+        return { trackUrl, musicDetail }
+      },
+    })),
+  })
+  const currentTrackData = playerQueries[currentTrackIndex]?.data
 
   const togglePlay = () => setIsPlaying((prev) => !prev)
 
@@ -28,22 +39,9 @@ const usePlayer = (trackId: usePlayerProps) => {
     setCurrentTrackIndex(prevIndex)
   }
 
-  useEffect(() => {
-    const fetchTrackUrl = async () => {
-      const [trackUrl, musicDetail] = await Promise.all([
-        fetchPreviewUrl(trackIds[currentTrackIndex]),
-        fetchMusicDetailByMusicId(trackIds[currentTrackIndex]),
-      ])
-      setUrl(trackUrl)
-      setMusicDetail(musicDetail)
-    }
-
-    fetchTrackUrl()
-  }, [currentTrackIndex])
-
   return {
-    musicDetail,
-    url,
+    musicDetail: currentTrackData?.musicDetail,
+    url: currentTrackData?.trackUrl,
     isPlaying,
     togglePlay,
     playNextTrack,
