@@ -3,7 +3,7 @@
 import { TablesInsert } from '@/types/supabase'
 import { supabase } from '@/utils/supabase/client'
 
-// 플리리 테이블 insert 정의
+// 플리 테이블 insert 정의
 type PlaylistInsert = TablesInsert<'playlists'>
 
 //플리 데이터 가져오기

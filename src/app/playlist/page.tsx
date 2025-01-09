@@ -95,11 +95,11 @@ export default function PlaylistPage() {
     setIsEditModalOpen(true)
   }
 
+  //업데이트 핸들
   const handleSaveEdit = async () => {
     if (!selectedPlaylist) return
 
     try {
-      //업데이트 핸들들
       await updatePlaylist(selectedPlaylist.id, {
         name: playlistName,
         description: playlistDescription,
@@ -114,7 +114,7 @@ export default function PlaylistPage() {
       setPlaylistDescription('')
       setIsPublic(false)
 
-      //수정 오류 핸들
+      //오류 수정 핸들
       const updatedPlaylists = await fetchPlaylists()
       setPlaylists(updatedPlaylists)
     } catch (error) {
