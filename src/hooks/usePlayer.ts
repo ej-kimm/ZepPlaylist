@@ -1,5 +1,6 @@
 'use client'
 import { fetchPreviewUrl } from '@/api/spotifyToken'
+import { fetchMusicDetailByMusicId } from '@/api/supabase'
 import type { Tables } from '@/types/supabase'
 import { useEffect, useState } from 'react'
 
@@ -7,6 +8,7 @@ const usePlayer = (trackIds: Tables<'music'>['spotify_id'][]) => {
   const [currentTrackIndex, setCurrentTrackIndex] = useState<number>(0)
   const [url, setUrl] = useState<string>('')
   const [isPlaying, setIsPlaying] = useState<boolean>(false)
+  const [musicDetail, setMusicDetail] = useState<Tables<'music'>>()
 
   const togglePlay = () => {
     setIsPlaying((prev) => !prev)
@@ -27,12 +29,24 @@ const usePlayer = (trackIds: Tables<'music'>['spotify_id'][]) => {
     const fetchTrackUrl = async () => {
       const trackUrl = await fetchPreviewUrl(trackIds[currentTrackIndex])
       setUrl(trackUrl)
+
+      const musicDetail = await fetchMusicDetailByMusicId(
+        trackIds[currentTrackIndex],
+      )
+      setMusicDetail(musicDetail)
     }
 
     fetchTrackUrl()
   }, [currentTrackIndex])
 
-  return { url, isPlaying, togglePlay, playNextTrack, playPreviousTrack }
+  return {
+    musicDetail,
+    url,
+    isPlaying,
+    togglePlay,
+    playNextTrack,
+    playPreviousTrack,
+  }
 }
 
 export default usePlayer
