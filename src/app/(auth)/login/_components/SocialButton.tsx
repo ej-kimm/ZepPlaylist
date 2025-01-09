@@ -1,10 +1,12 @@
 'use client'
 
+import { userStore } from '@/store/userSlice'
 import { supabase } from '@/utils/supabase/client'
 import { redirect } from 'next/navigation'
 
-const KaKaoButton = () => {
+const SocialButton = () => {
   // 카카오
+  const { setIsLogin } = userStore()
   const signInWithKakao = async () => {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'kakao',
@@ -15,8 +17,9 @@ const KaKaoButton = () => {
     if (data?.url) {
       redirect(data.url)
     } else if (error) console.error('====카카오 오류', error.message)
+    setIsLogin(true)
   }
-  // 스포티파이이
+  // 스포티파이
   const signInWithSpotify = async () => {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'spotify',
@@ -24,10 +27,10 @@ const KaKaoButton = () => {
         redirectTo: 'http://localhost:3000/api/spotify',
       },
     })
-
     if (data.url) {
       redirect(data.url)
     } else if (error) console.error('====스포티파이이 오류', error.message)
+    setIsLogin(true)
   }
   // 구글
   const signInWithGoogle = async () => {
@@ -41,6 +44,7 @@ const KaKaoButton = () => {
     if (data.url) {
       redirect(data.url)
     } else if (error) console.error('====구글 오류', error.message)
+    setIsLogin(true)
   }
   return (
     <form className="flex space-x-4">
@@ -69,4 +73,4 @@ const KaKaoButton = () => {
   )
 }
 
-export default KaKaoButton
+export default SocialButton

@@ -1,6 +1,7 @@
 'use client'
 
 import { userStore } from '@/store/userSlice'
+import type { Users } from '@/types/auth'
 import { supabase } from '@/utils/supabase/client'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
@@ -34,7 +35,14 @@ const LoginForm = () => {
       alert('아이디 혹은 비밀번호를 확인해주세요')
       return
     }
-    setUser({ email: formData.email })
+    const user: Users | null = data?.user
+      ? {
+          id: data.user.id,
+          email: data.user.email!,
+          nickname: data?.user.user_metadata?.name,
+        }
+      : null
+    setUser(user)
     router.push('/')
   }
   const logout = async () => {

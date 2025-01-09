@@ -21,7 +21,6 @@ const SignupForm = () => {
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log(formData)
     const { error } = await supabase.auth.signUp({
       email: formData.email,
       password: formData.password,
@@ -29,8 +28,8 @@ const SignupForm = () => {
     })
     if (error) {
       console.error(error.message)
+      alert('실패')
     }
-    alert('성공')
     router.push('/login')
   }
   return (
@@ -100,7 +99,7 @@ const SignupForm = () => {
 
       <button
         type="submit"
-        className="mt-6 w-full rounded-lg bg-blue-500 py-3 text-white transition-all hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="mt-6 w-full rounded-lg bg-[#B15EFF] py-3 text-white transition-all hover:bg-[#9F54E5] focus:outline-none focus:ring-2 focus:ring-[#B15EFF]"
       >
         회원가입
       </button>
