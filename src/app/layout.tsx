@@ -1,3 +1,5 @@
+import Footer from '@/components/layout/Footer'
+import Header from '@/components/layout/Header'
 import QueryProvider from '@/components/providers/QueryProvider'
 import type { Metadata } from 'next'
 import localFont from 'next/font/local'
@@ -23,7 +25,11 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body className={`${pretendard.className}`}>
-        <QueryProvider>{children}</QueryProvider>
+        <QueryProvider>
+          <Header />
+          {children}
+          <Footer />
+        </QueryProvider>
       </body>
     </html>
   )

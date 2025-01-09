@@ -7,3 +7,4 @@
 // ★항상 새로운 공용컴포넌트 만들때 index.ts에도 정의 해줍시다!!!★
 
 export { default as Button } from './Button'
+export { default as ClientSwiper} from './ClientSwiper'
