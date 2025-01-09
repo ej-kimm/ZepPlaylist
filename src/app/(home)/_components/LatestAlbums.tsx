@@ -5,7 +5,6 @@ import { fetchNewReleases } from '../../../api/home/fetchNewReleases'
 
 const LatestAlbums = async () => {
   const data = await fetchNewReleases()
-  console.log(data.albums)
 
   const latestAlbumList = data.albums.items
 

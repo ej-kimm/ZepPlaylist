@@ -14,13 +14,13 @@ export const fetchNewReleases = async () => {
     })
     if (!res.ok) {
       console.error(`API error: ${res.status} ${res.statusText}`)
-      return { error: 'Failed to fetch data', status: res.status }
+      throw new Error(`Failed to fetch data: ${res.status} ${res.statusText}`)
     }
-    const data = await res.json()
+    const data: SpotifyApi.ListOfNewReleasesResponse = await res.json()
 
     return data
   } catch (error) {
     console.error('Fetch error:', error)
-    return { error: 'An unexpected error occurred' }
+    throw new Error('An unexpected error occurred')
   }
 }
