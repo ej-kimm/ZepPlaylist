@@ -1,7 +1,7 @@
 // 최신발매곡 10곡을 슬라이드 형식으로 보여준다 - 1초 랑 넘어가기 버튼 (ISR)
 
+import { fetchNewReleases } from '@/api/home/fetchNewReleases'
 import Image from 'next/image'
-import { fetchNewReleases } from '../../../api/home/fetchNewReleases'
 
 const LatestAlbums = async () => {
   const data = await fetchNewReleases()
