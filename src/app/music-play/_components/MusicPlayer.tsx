@@ -3,6 +3,7 @@ import usePlayer from '@/hooks/usePlayer'
 import type { Tables } from '@/types/supabase'
 import { useRef, useState } from 'react'
 import ReactPlayer from 'react-player'
+import MusicDetailModal from './MusicDetailModal'
 import MusicDetails from './MusicDetails'
 import PlayerControls from './PlayerControls'
 import ProgressBar from './ProgressBar'
@@ -15,15 +16,26 @@ type MusicPlayerProps = {
 const MusicPlayer = ({ trackId }: MusicPlayerProps) => {
   const { musicDetail, url, playNextTrack, playPreviousTrack } =
     usePlayer(trackId)
+  const [playerState, setPlayerState] = useState({
+    isPlaying: false,
+    ready: false, // onReady에서 영상이 로드된 상태값을 받아 사용
+    played: 0, // 현재 재생 중인 시간 (0~0.9999)
+    duration: 0, // 총 재생 시간
+  })
+  const [isModalOpen, setIsModalOpen] = useState(false)
   const playerRef = useRef<ReactPlayer>(null)
-  const [isPlaying, setIsPlaying] = useState<boolean>(false)
-  const [ready, setReady] = useState(false) // onReady에서 영상이 로드된 상태값을 받아 사용
-  const [played, setPlayed] = useState(0) // 현재 재생 시간 (0~0.9999)
-  const [duration, setDuration] = useState(0) // 총 재생 시간
 
-  const togglePlay = () => setIsPlaying((prev) => !prev)
+  const togglePlay = () =>
+    setPlayerState((prev) => ({ ...prev, isPlaying: !prev.isPlaying }))
+  const toggleModal = () => setIsModalOpen((prev) => !prev)
+
+  const handleReady = () => setPlayerState({ ...playerState, ready: true })
+  const handleDuration = (duration: number) =>
+    setPlayerState({ ...playerState, duration })
+  const handleProgress = ({ played }: { played: number }) =>
+    setPlayerState({ ...playerState, played })
   const handleSeek = (value: number) => {
-    setPlayed(value) // 클릭한 재생 위치로 업데이트
+    setPlayerState({ ...playerState, played: value }) // 클릭한 재생 위치로 업데이트
     playerRef.current?.seekTo(value) // 재생 위치 변경
   }
 
@@ -36,30 +48,39 @@ const MusicPlayer = ({ trackId }: MusicPlayerProps) => {
       <ReactPlayer
         url={url}
         ref={playerRef}
-        playing={isPlaying}
+        playing={playerState.isPlaying}
         controls={false}
         width="0"
         height="0"
-        onReady={() => setReady(true)} // 영상 준비 완료 상태
-        onDuration={setDuration} // 총 재생 시간
-        onProgress={({ played }) => setPlayed(played)} // 현재 재생 시간
+        onReady={handleReady} // 영상 준비 완료 상태
+        onDuration={handleDuration} // 총 재생 시간
+        onProgress={handleProgress} // 현재 재생 시간
         onEnded={togglePlay}
       />
       <div className="flex items-center justify-between">
         <MusicDetails musicDetail={musicDetail} />
-        <ProgressBar
-          ready={ready}
-          played={played}
-          duration={duration}
-          onSeek={handleSeek}
-        />
+        <ProgressBar playerState={playerState} onSeek={handleSeek} />
         <PlayerControls
-          isPlaying={isPlaying}
+          isPlaying={playerState.isPlaying}
           togglePlay={togglePlay}
           playPreviousTrack={playPreviousTrack}
           playNextTrack={playNextTrack}
         />
+        <button className="text-white" onClick={toggleModal}>
+          열기
+        </button>
       </div>
+      {isModalOpen && (
+        <MusicDetailModal
+          toggleModal={toggleModal}
+          musicDetail={musicDetail}
+          playerState={playerState}
+          onSeek={handleSeek}
+          togglePlay={togglePlay}
+          playPreviousTrack={playPreviousTrack}
+          playNextTrack={playNextTrack}
+        />
+      )}
     </div>
   )
 }
