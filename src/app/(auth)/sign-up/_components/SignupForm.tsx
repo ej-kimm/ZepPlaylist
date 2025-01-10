@@ -20,7 +20,7 @@ const SignupForm = () => {
     passwordCheck: '',
     nickname: '',
   })
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -38,22 +38,40 @@ const SignupForm = () => {
       if (name === 'password') {
         if (!value) {
           newerror.password = ''
-        } else if (value.length < 5) {
-          newerror.password = '비밀번호는 최소 5글자 이상이여야합니다'
+        } else if (value.length < 8) {
+          newerror.password = '비밀번호는 최소 8글자 이상이여야합니다'
         } else {
           newerror.password = ''
         }
       }
       if (name === 'passwordCheck') {
-        if (value !== formData.passwordCheck) {
+        if (value !== formData.password) {
           newerror.passwordCheck = '비밀번호가 일치하지않습니다'
+        } else {
+          newerror.passwordCheck = ''
         }
       }
+      return newerror
     })
   }
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    const { data: nickname, error: nicknameError } = await supabase
+      .from('users')
+      .select('nickname')
+      .eq('nickname', formData.nickname)
+
+    console.log('닉네임 조회결과과', nickname)
+    if (nicknameError) {
+      console.error(nicknameError.message)
+      return
+    }
+    if (nickname && nickname.length > 0) {
+      console.log('nickname', nickname)
+      alert('이미 사용중인 닉네임입니다.')
+      return
+    }
     const { error } = await supabase.auth.signUp({
       email: formData.email,
       password: formData.password,
@@ -61,7 +79,7 @@ const SignupForm = () => {
     })
     if (error) {
       console.error(error.message)
-      alert('실패')
+      alert(error.message)
     }
     router.push('/login')
   }
@@ -82,7 +100,7 @@ const SignupForm = () => {
         onChange={handleChange}
         className="w-full rounded-lg border p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
-
+      {error.email && <p className="text-red-500">{error.email}</p>}
       <label className="mb-2 mt-4 block font-medium text-gray-700">
         비밀번호
       </label>
@@ -95,7 +113,7 @@ const SignupForm = () => {
         onChange={handleChange}
         className="w-full rounded-lg border p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
-
+      {error.password && <p className="text-red-500">{error.password}</p>}
       <label className="mb-2 mt-4 block font-medium text-gray-700">
         비밀번호 확인
       </label>
@@ -108,7 +126,9 @@ const SignupForm = () => {
         onChange={handleChange}
         className="w-full rounded-lg border p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
-
+      {error.passwordCheck && (
+        <p className="text-red-500">{error.passwordCheck}</p>
+      )}
       <label className="mb-2 mt-4 block font-medium text-gray-700">
         닉네임
       </label>
@@ -121,7 +141,6 @@ const SignupForm = () => {
         onChange={handleChange}
         className="w-full rounded-lg border p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
-
       <div className="mt-6 flex items-center">
         <input
           type="checkbox"

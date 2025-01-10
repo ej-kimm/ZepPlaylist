@@ -15,7 +15,7 @@ const SocialButton = () => {
       },
     })
     if (data?.url) {
-      redirect(data.url)
+      redirect(data?.url)
     } else if (error) console.error('====카카오 오류', error.message)
     setIsLogin(true)
   }
@@ -27,8 +27,8 @@ const SocialButton = () => {
         redirectTo: 'http://localhost:3000/api/spotify',
       },
     })
-    if (data.url) {
-      redirect(data.url)
+    if (data?.url) {
+      redirect(data?.url)
     } else if (error) console.error('====스포티파이이 오류', error.message)
     setIsLogin(true)
   }
@@ -41,8 +41,8 @@ const SocialButton = () => {
       },
     })
 
-    if (data.url) {
-      redirect(data.url)
+    if (data?.url) {
+      redirect(data?.url)
     } else if (error) console.error('====구글 오류', error.message)
     setIsLogin(true)
   }
