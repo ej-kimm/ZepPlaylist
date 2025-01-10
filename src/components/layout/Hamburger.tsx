@@ -30,7 +30,7 @@ const Hamburger = () => {
     [router],
   )
 
-  console.log(isHamburgerOpen)
+  // console.log(isHamburgerOpen)
   return (
     <>
       {!isHamburgerOpen ? (
