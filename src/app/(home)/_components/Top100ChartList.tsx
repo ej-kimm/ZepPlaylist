@@ -1,4 +1,4 @@
-import { fetchMelonChart } from '@/api/home/fetchMelonChart'
+import { fetchMelonChart } from '@/api/home/actions'
 import Image from 'next/image'
 
 // 1시간 간격의 ISR

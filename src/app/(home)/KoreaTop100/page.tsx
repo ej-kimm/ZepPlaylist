@@ -1,4 +1,4 @@
-import Top100ChartList from './_components/Top100ChartList'
+import Top100ChartList from '../_components/Top100ChartList'
 
 const KoreaTop100 = () => {
   return (

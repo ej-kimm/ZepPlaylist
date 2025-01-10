@@ -1,6 +1,6 @@
 // 최신발매곡 10곡을 슬라이드 형식으로 보여준다 - 1초 랑 넘어가기 버튼 (ISR)
 
-import { fetchNewReleases } from '@/api/home/fetchNewReleases'
+import { fetchNewReleases } from '@/api/home/actions'
 import Image from 'next/image'
 
 // 1시간 간격의 ISR
