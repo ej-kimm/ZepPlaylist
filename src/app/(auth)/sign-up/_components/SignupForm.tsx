@@ -75,7 +75,13 @@ const SignupForm = () => {
     const { error } = await supabase.auth.signUp({
       email: formData.email,
       password: formData.password,
-      options: { data: { name: formData.nickname } },
+      options: {
+        data: {
+          name: formData.nickname,
+          profile_image:
+            'https://i.namu.wiki/i/6AijZLjqdKDGjVzMK1CHNGiEyvrEyUVnl1_6Es4s5k5kfbep022bOHvG-sEn4_8opqy0uzzu9M7WUtU_sxb5UYmhY-fw_19wiRVJxTZDLHdaBKLbL1vEJPqQotCe18kx4bWvXMg-mbKtt-d5YjuCdG86CYBRDBmnAxBrnk9drLQ.webp',
+        },
+      },
     })
     if (error) {
       console.error(error.message)

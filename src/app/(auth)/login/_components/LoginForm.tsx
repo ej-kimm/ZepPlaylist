@@ -49,7 +49,8 @@ const LoginForm = () => {
           id: data.user.id,
           email: data.user.email!,
           nickname: data?.user.user_metadata?.name,
-          profile_image: data.user.user_metadata?.profile_image || null,
+          profile_image:
+            'https://i.namu.wiki/i/6AijZLjqdKDGjVzMK1CHNGiEyvrEyUVnl1_6Es4s5k5kfbep022bOHvG-sEn4_8opqy0uzzu9M7WUtU_sxb5UYmhY-fw_19wiRVJxTZDLHdaBKLbL1vEJPqQotCe18kx4bWvXMg-mbKtt-d5YjuCdG86CYBRDBmnAxBrnk9drLQ.webp',
         }
       : null
     setUser(user)

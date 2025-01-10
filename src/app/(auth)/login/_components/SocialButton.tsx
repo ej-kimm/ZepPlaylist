@@ -3,8 +3,16 @@
 import { userStore } from '@/store/userSlice'
 import { supabase } from '@/utils/supabase/client'
 import { redirect } from 'next/navigation'
+import { useEffect } from 'react'
 
 const SocialButton = () => {
+  useEffect(() => {
+    const fetchUser = async () => {
+      const { data, error } = await supabase.auth.getSession()
+      console.log('data', data)
+    }
+    fetchUser()
+  }, [])
   // 카카오
   const { setIsLogin } = userStore()
   const signInWithKakao = async () => {
