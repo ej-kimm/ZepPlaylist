@@ -18,7 +18,6 @@ export const fetchSpotifyToken = async () => {
   const { access_token: token } = await res.json()
   return token
 }
-
 export const fetchPreviewUrl = async (trackId: string) => {
   try {
     const res = await fetch(`https://open.spotify.com/embed/track/${trackId}`, {
