@@ -2,7 +2,7 @@
 
 import { fetchPlaylistDetails } from '@/api/playlist-detail/actions'
 import { PlaylistDetails } from '@/types/song'
-import { formatPlayTime } from '@/utils/fromatPlayTime'
+import { formatPlayTime } from '@/utils/formatPlayTime'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 
