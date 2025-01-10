@@ -14,7 +14,7 @@ type MusicPlayerProps = {
 }
 
 const MusicPlayer = ({ trackId }: MusicPlayerProps) => {
-  const { musicDetail, url, playNextTrack, playPreviousTrack } =
+  const { musicDetail, url, isPending, playNextTrack, playPreviousTrack } =
     usePlayer(trackId)
   const [playerState, setPlayerState] = useState({
     isPlaying: false,
@@ -39,9 +39,8 @@ const MusicPlayer = ({ trackId }: MusicPlayerProps) => {
     playerRef.current?.seekTo(value) // 재생 위치 변경
   }
 
-  if (!url) {
-    return null
-  }
+  if (!url) return null
+  if (isPending) return <>Loading...</>
 
   return (
     <div className="fixed bottom-0 left-0 h-14 w-full rounded-md bg-black">
