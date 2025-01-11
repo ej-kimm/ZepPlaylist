@@ -22,11 +22,11 @@ const MyPage = async () => {
     console.error(error?.message)
   }
   console.log('playlists', playlists)
-  console.log(
-    'playlists_music================',
-    playlists![0].playlist_music[0],
-  )
-  const albumImage = playlists![0].playlist_music
+  // console.log(
+  //   'playlists_music================',
+  //   playlists![0].playlist_music[0],
+  // )
+  // const albumImage = playlists![0].playlist_music
 
   return (
     <div className="p-6">

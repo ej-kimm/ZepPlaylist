@@ -1,8 +1,7 @@
 'use client'
-
 import InputBox from '@/components/common/InputBox'
 import { userStore } from '@/store/userSlice'
-import type { Users } from '@/types/auth'
+import type { User, Users } from '@/types/auth'
 import { supabase } from '@/utils/supabase/client'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
@@ -22,7 +21,9 @@ const LoginForm = () => {
   })
   const [emailError, setEmailError] = useState<string>('')
   const router = useRouter()
-  const setUser = userStore((state) => state.setUser)
+  const { setUser } = userStore()
+  // 중괄호 썻을때는 저장되는데
+  // state 쓸때는 저장이안됨;;
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
@@ -60,7 +61,8 @@ const LoginForm = () => {
             'https://i.namu.wiki/i/6AijZLjqdKDGjVzMK1CHNGiEyvrEyUVnl1_6Es4s5k5kfbep022bOHvG-sEn4_8opqy0uzzu9M7WUtU_sxb5UYmhY-fw_19wiRVJxTZDLHdaBKLbL1vEJPqQotCe18kx4bWvXMg-mbKtt-d5YjuCdG86CYBRDBmnAxBrnk9drLQ.webp',
         }
       : null
-    setUser(user)
+    setUser(user as User | null)
+    console.log('first=======================', user)
     router.push('/')
   }
   const logout = async () => {
@@ -70,6 +72,10 @@ const LoginForm = () => {
       return
     }
     alert('로그아웃성공')
+    userStore.getState().setUser(null)
+    userStore.getState().setIsLogin(false)
+    localStorage.removeItem('user')
+    sessionStorage.removeItem('user')
   }
   return (
     <form
