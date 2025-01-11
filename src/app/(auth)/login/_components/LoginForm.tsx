@@ -1,17 +1,20 @@
 'use client'
 
+import InputBox from '@/components/common/InputBox'
 import { userStore } from '@/store/userSlice'
 import type { Users } from '@/types/auth'
 import { supabase } from '@/utils/supabase/client'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import Button from '../../sign-up/_components/Button'
 
 // 주스탠드 빨리넘거야 팀원들편함 슈파베이스 로그인/회원가입 처리부터
 // 바이더 감싸서 사람들한테 유저 뽑아오는거 한번 설명
 // 서버에서 zod로 한번 리팩토링할 생각해야함
 
-
-// 텍스트라 어쩌고 비도익 제어 컴포넌트로 같이 처리
+// 텍스트 필드 라 어쩌고 비도익 제어 컴포넌트로 같이 처리 제어컴포넌트 / 비제어컴포넌트
+// constants 정규식 뺴주기
+// zod sschema 찾아보기
 const LoginForm = () => {
   const [formData, setFormData] = useState({
     email: '',
@@ -20,7 +23,9 @@ const LoginForm = () => {
   const [emailError, setEmailError] = useState<string>('')
   const router = useRouter()
   const setUser = userStore((state) => state.setUser)
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
     if (name === 'email') {
@@ -72,45 +77,30 @@ const LoginForm = () => {
       className="mx-auto max-w-md rounded-lg bg-white p-6 shadow-md"
     >
       <h2 className="mb-6 text-center text-2xl font-bold">로그인</h2>
-
-      <label className="mb-2 block font-medium text-gray-700">이메일</label>
-      <input
-        type="email"
+      <InputBox
+        label="이메일"
         name="email"
+        type="email"
         value={formData.email}
-        onChange={handleChange}
-        required
         placeholder="이메일을 입력하세요"
-        className="w-full rounded-lg border p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-      />
-      {emailError && <p className="text-sm text-red-500">{emailError}</p>}
-
-      <label className="mb-2 mt-4 block font-medium text-gray-700">
-        비밀번호
-      </label>
-      <input
-        type="password"
-        name="password"
-        value={formData.password}
+        required={true}
         onChange={handleChange}
-        required
+        errorMessage={emailError}
+      />
+      <InputBox
+        label="비밀번호"
+        name="password"
+        type="password"
+        value={formData.password}
         placeholder="비밀번호를 입력하세요"
-        className="w-full rounded-lg border p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        required={true}
+        onChange={handleChange}
       />
 
-      <button
-        type="submit"
-        className="mt-6 w-full rounded-lg bg-[#B15EFF] py-3 text-white transition-all hover:bg-[#9F54E5] focus:outline-none focus:ring-2 focus:ring-[#B15EFF]"
-      >
-        로그인
-      </button>
-      <button
-        type="button"
-        className="mt-6 w-full rounded-lg bg-[#B15EFF] py-3 text-white transition-all hover:bg-[#9F54E5] focus:outline-none focus:ring-2 focus:ring-[#B15EFF]"
-        onClick={logout}
-      >
+      <Button type="submit">로그인</Button>
+      <Button type="button" onClick={logout}>
         로그아웃
-      </button>
+      </Button>
     </form>
   )
 }

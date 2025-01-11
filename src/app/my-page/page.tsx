@@ -7,7 +7,10 @@ const MyPage = async () => {
   const supabase = createClient()
   const { data, error } = await supabase.auth.getSession()
   const user = data.session?.user.user_metadata
-  console.log('user', user)
+  console.log(
+    'user=======================================================',
+    user,
+  )
   const userId = data.session?.user.id
   console.log('userId======================', userId)
   console.log('user', user)
