@@ -1,10 +1,10 @@
 'use client'
 
+import { useChartStore } from '@/store/useChartSlice'
 import type { BillboradSong } from '@/types/billboradCharts'
 import type { MelonChartSong } from '@/types/melonCharts'
-import Image from 'next/image'
 import Link from 'next/link'
-import { useState } from 'react'
+import Top10Item from './Top10Item'
 
 type Top10ListProps = {
   koreaTop10ChartList: MelonChartSong[]
@@ -15,9 +15,11 @@ const Top10List: React.FC<Top10ListProps> = ({
   koreaTop10ChartList,
   billboardTop10ChartList,
 }) => {
-  // const { isKoreaChart, setIsKoreaChart } = useChartStore()
-  const [isKoreaChart, setIsKoreaChart] = useState(true)
-  console.log('isKoreaChart', isKoreaChart)
+  const { isKoreaChart, setIsKoreaChart } = useChartStore()
+
+  const chartList: Array<MelonChartSong | BillboradSong> = isKoreaChart
+    ? koreaTop10ChartList
+    : billboardTop10ChartList
 
   return (
     <div className="overflow-x-auto">
@@ -33,75 +35,25 @@ const Top10List: React.FC<Top10ListProps> = ({
           빌보드 TOP 100
         </h1>
       </div>
-      {isKoreaChart ? (
-        <div>
-          <Link href={'/KoreaTop100'} className="mb-6 inline-block">
-            더보기
-          </Link>
-          <ul className="grid auto-cols-auto grid-flow-col grid-rows-4 gap-4">
-            {koreaTop10ChartList.map((chart, index) => (
-              <li
-                key={chart.SONGID}
-                className="flex h-16 w-64 flex-shrink-0 items-center space-x-3 rounded-lg p-2 shadow-xl transition-colors"
-              >
-                <div className="relative flex-shrink-0">
-                  <Image
-                    src={chart.ALBUMIMG}
-                    alt={chart.ALBUMNAME}
-                    width={40}
-                    height={40}
-                    className="rounded-md object-cover"
-                    priority
-                  />
-                </div>
-                <p className="truncate text-lg">{index + 1}</p>
-                <div className="min-w-0 flex-1 overflow-hidden">
-                  <h3 className="truncate text-sm font-medium text-gray-900">
-                    {chart.SONGNAME}
-                  </h3>
-                  <p className="truncate text-xs text-gray-500">
-                    {chart.ARTISTLIST[0].ARTISTNAME}
-                  </p>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
-      ) : (
-        <div>
-          <Link href={'/BillboardTop100'} className="mb-6 inline-block">
-            더보기
-          </Link>
-          <ul className="grid auto-cols-auto grid-flow-col grid-rows-4 gap-4">
-            {billboardTop10ChartList.map((chart, index) => (
-              <li
-                key={chart.rank}
-                className="flex h-16 w-64 flex-shrink-0 items-center space-x-3 rounded-lg p-2 shadow-xl transition-colors"
-              >
-                <div className="relative flex-shrink-0">
-                  <Image
-                    src={chart.cover}
-                    alt={chart.title}
-                    width={40}
-                    height={40}
-                    className="rounded-md object-cover"
-                    priority
-                  />
-                </div>
-                <p className="truncate text-lg">{index + 1}</p>
-                <div className="min-w-0 flex-1 overflow-hidden">
-                  <h3 className="truncate text-sm font-medium text-gray-900">
-                    {chart.title}
-                  </h3>
-                  <p className="truncate text-xs text-gray-500">
-                    {chart.artist}
-                  </p>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+      <Link
+        href={isKoreaChart ? '/KoreaTop100' : '/BillboardTop100'}
+        className="mb-6 inline-block"
+      >
+        더보기
+      </Link>
+      <ul className="grid auto-cols-auto grid-flow-col grid-rows-4 gap-4">
+        {chartList.map((chart, index) => (
+          <Top10Item
+            key={
+              isKoreaChart
+                ? (chart as MelonChartSong).SONGID
+                : (chart as BillboradSong).rank
+            }
+            chart={chart}
+            index={index}
+          />
+        ))}
+      </ul>
     </div>
   )
 }

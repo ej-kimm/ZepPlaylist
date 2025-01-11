@@ -2,7 +2,7 @@ import { create } from 'zustand'
 
 type Chart = {
   isKoreaChart: boolean
-  setIsKoreaChart: () => void
+  setIsKoreaChart: (value: boolean) => void
 }
 
 export const useChartStore = create<Chart>()((set) => ({
@@ -10,5 +10,6 @@ export const useChartStore = create<Chart>()((set) => ({
   //   setIsKoreaChart: () =>
   //     set((state) => ({ isKoreaChart: !state.isKoreaChart })),
 
-  setIsKoreaChart: () => set(() => ({ isKoreaChart: false })),
+  setIsKoreaChart: (value) => set(() => ({ isKoreaChart: value })),
+  setKoreaTop100: '/KoreaTop100',
 }))

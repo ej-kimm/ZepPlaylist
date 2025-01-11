@@ -18,7 +18,6 @@ const Charts = async () => {
     20,
   )
 
-  console.log(billboardTop100ChaertList)
   return (
     <>
       <Top10List
