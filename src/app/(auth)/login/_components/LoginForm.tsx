@@ -12,7 +12,7 @@ import Button from '../../sign-up/_components/Button'
 // 바이더 감싸서 사람들한테 유저 뽑아오는거 한번 설명
 // 서버에서 zod로 한번 리팩토링할 생각해야함
 
-// 텍스트 필드 라 어쩌고 비도익 제어 컴포넌트로 같이 처리 제어컴포넌트 / 비제어컴포넌트
+// 텍스트 필드 라 어쩌고 제어 컴포넌트로 같이 처리 제어컴포넌트 / 비제어컴포넌트
 // constants 정규식 뺴주기
 // zod sschema 찾아보기
 const LoginForm = () => {

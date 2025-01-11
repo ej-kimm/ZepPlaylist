@@ -43,7 +43,7 @@ const SignupForm = () => {
         if (!value) {
           newerror.password = ''
         } else if (value.length < 8) {
-          newerror.password = '비밀번호는 최소 8글자 이상이여야합니다'
+          newerror.password = '비밀번호는 최소 8글자 이상이여야 합니다.'
         } else {
           newerror.password = ''
         }
@@ -55,44 +55,20 @@ const SignupForm = () => {
           newerror.passwordCheck = ''
         }
       }
+      if (name === 'nickname') {
+        if (!value) {
+          newerror.nickname = ''
+        } else if (value.length < 3) {
+          newerror.nickname = '닉네임은 최소 3글자 이상이여야 합니다.'
+        } else {
+          newerror.nickname = ''
+        }
+      }
       return newerror
     })
   }
-  const signUp = async (formData: {
-    email: string
-    password: string
-    nickname: string
-  }) => {
-    const { error } = await supabase.auth.signUp({
-      email: formData.email,
-      password: formData.password,
-      options: {
-        data: {
-          name: formData.nickname,
-          profile_image:
-            'https://i.namu.wiki/i/6AijZLjqdKDGjVzMK1CHNGiEyvrEyUVnl1_6Es4s5k5kfbep022bOHvG-sEn4_8opqy0uzzu9M7WUtU_sxb5UYmhY-fw_19wiRVJxTZDLHdaBKLbL1vEJPqQotCe18kx4bWvXMg-mbKtt-d5YjuCdG86CYBRDBmnAxBrnk9drLQ.webp',
-        },
-      },
-    })
-    if (error) throw new Error(error.message)
-  }
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    const { data: nickname, error: nicknameError } = await supabase
-      .from('users')
-      .select('nickname')
-      .eq('nickname', formData.nickname)
-
-    console.log('닉네임 조회결과과', nickname)
-    if (nicknameError) {
-      console.error(nicknameError.message)
-      return
-    }
-    if (nickname && nickname.length > 0) {
-      console.log('nickname', nickname)
-      alert('이미 사용중인 닉네임입니다.')
-      return
-    }
     const { error } = await supabase.auth.signUp({
       email: formData.email,
       password: formData.password,
@@ -154,6 +130,7 @@ const SignupForm = () => {
         placeholder="비밀번호를 입력해주세요"
         required={true}
         onChange={handleChange}
+        errorMessage={error.nickname}
       />
       <div className="mt-6 flex items-center">
         <input
