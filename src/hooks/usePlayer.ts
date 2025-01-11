@@ -1,6 +1,6 @@
 'use client'
+import { fetchMusicDetailByMusicId } from '@/api/music-play/actions'
 import { fetchPreviewUrl } from '@/api/spotifyToken'
-import { fetchMusicDetailByMusicId } from '@/api/supabase'
 import type { Tables } from '@/types/supabase'
 import { useQueries } from '@tanstack/react-query'
 import { useState } from 'react'
