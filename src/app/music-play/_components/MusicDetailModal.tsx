@@ -1,5 +1,6 @@
 import { Tables } from '@/types/supabase'
 import Image from 'next/image'
+import Lyrics from './Lyrics'
 import PlayerControls from './PlayerControls'
 import ProgressBar from './ProgressBar'
 
@@ -29,26 +30,29 @@ export default function MusicDetailModal({
   playNextTrack,
   onSeek,
 }: MusicDetailModalProps) {
+  const { title = '', artist = '', album_cover } = musicDetail || {}
+
   return (
     <div className="absolute bottom-0 left-0 h-screen w-full bg-slate-200">
       <div>
-        <h3>{musicDetail?.title}</h3>
-        <p>{musicDetail?.artist}</p>
+        <h3>{title}</h3>
+        <p>{artist}</p>
         <Image
-          src={musicDetail?.album_cover || '/No cover'}
-          alt={musicDetail?.title || 'No Title'}
+          src={album_cover || '/No cover'}
+          alt={title || 'No Title'}
           width={200}
           height={200}
+        />
+        <Lyrics />
+        <ProgressBar
+          playerState={{ ready, played, duration }}
+          onSeek={onSeek}
         />
         <PlayerControls
           isPlaying={isPlaying}
           togglePlay={togglePlay}
           playPreviousTrack={playPreviousTrack}
           playNextTrack={playNextTrack}
-        />
-        <ProgressBar
-          playerState={{ ready, played, duration }}
-          onSeek={onSeek}
         />
         <button onClick={toggleModal}>모달닫기임시버튼^^..</button>
       </div>

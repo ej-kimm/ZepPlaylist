@@ -16,6 +16,7 @@ type MusicPlayerProps = {
 const MusicPlayer = ({ trackId }: MusicPlayerProps) => {
   const { musicDetail, url, isPending, playNextTrack, playPreviousTrack } =
     usePlayer(trackId)
+
   const [playerState, setPlayerState] = useState({
     isPlaying: false,
     ready: false, // onReady에서 영상이 로드된 상태값을 받아 사용
