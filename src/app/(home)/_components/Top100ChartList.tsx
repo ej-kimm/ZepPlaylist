@@ -5,8 +5,6 @@ import type { BillboradSong } from '@/types/billboradCharts'
 import type { MelonChartSong } from '@/types/melonCharts'
 import Image from 'next/image'
 
-// 1시간 간격의 ISR
-
 type Top100ListProps = {
   koreaTop100ChartList?: MelonChartSong[]
   billboardTop100ChartList?: BillboradSong[]
@@ -16,7 +14,7 @@ const Top100ChartList: React.FC<Top100ListProps> = ({
   koreaTop100ChartList,
   billboardTop100ChartList,
 }) => {
-  const { isKoreaChart, setIsKoreaChart } = useChartStore()
+  const { isKoreaChart } = useChartStore()
 
   const chartList: Array<MelonChartSong | BillboradSong> =
     (isKoreaChart ? koreaTop100ChartList : billboardTop100ChartList) ?? []
