@@ -1,14 +1,19 @@
 'use client'
 
+import type { BillboradSong } from '@/types/billboradCharts'
 import type { MelonChartSong } from '@/types/melonCharts'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
 
-const Top10List = ({
-  koreaTop10ChartList,
-}: {
+type Top10ListProps = {
   koreaTop10ChartList: MelonChartSong[]
+  billboardTop10ChartList: BillboradSong[]
+}
+
+const Top10List: React.FC<Top10ListProps> = ({
+  koreaTop10ChartList,
+  billboardTop10ChartList,
 }) => {
   // const { isKoreaChart, setIsKoreaChart } = useChartStore()
   const [isKoreaChart, setIsKoreaChart] = useState(true)
@@ -68,15 +73,15 @@ const Top10List = ({
             더보기
           </Link>
           <ul className="grid auto-cols-auto grid-flow-col grid-rows-4 gap-4">
-            {/* {koreaTop10ChartList.map((chart, index) => (
+            {billboardTop10ChartList.map((chart, index) => (
               <li
-                key={chart.SONGID}
+                key={chart.rank}
                 className="flex h-16 w-64 flex-shrink-0 items-center space-x-3 rounded-lg p-2 shadow-xl transition-colors"
               >
                 <div className="relative flex-shrink-0">
                   <Image
-                    src={chart.ALBUMIMG}
-                    alt={chart.ALBUMNAME}
+                    src={chart.cover}
+                    alt={chart.title}
                     width={40}
                     height={40}
                     className="rounded-md object-cover"
@@ -86,14 +91,14 @@ const Top10List = ({
                 <p className="truncate text-lg">{index + 1}</p>
                 <div className="min-w-0 flex-1 overflow-hidden">
                   <h3 className="truncate text-sm font-medium text-gray-900">
-                    {chart.SONGNAME}
+                    {chart.title}
                   </h3>
                   <p className="truncate text-xs text-gray-500">
-                    {chart.ARTISTLIST[0].ARTISTNAME}
+                    {chart.artist}
                   </p>
                 </div>
               </li>
-            ))} */}
+            ))}
           </ul>
         </div>
       )}

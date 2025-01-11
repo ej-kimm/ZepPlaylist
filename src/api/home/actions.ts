@@ -1,5 +1,6 @@
 'use sever'
 
+import type { BillboradCharts } from '@/types/billboradCharts'
 import type { melonCharts } from '@/types/melonCharts'
 import { fetchSpotifyToken } from '../spotifyToken'
 
@@ -45,7 +46,22 @@ export const fetchMelonChart = async () => {
   }
 }
 
-export const fetchGlobalChart = async () => {
-  const { getChart } = await require('billboard-top-100')
-  return getChart
+export const fetchGlobalChart = async (): Promise<BillboradCharts> => {
+  try {
+    const { getChart } = await require('billboard-top-100')
+
+    return new Promise((resolve, reject) => {
+      getChart((err: Error, chart: BillboradCharts) => {
+        if (err) {
+          console.error(err)
+          reject(err)
+        } else {
+          resolve(chart)
+        }
+      })
+    })
+  } catch (error) {
+    console.error('Error billboard-top-100:', error)
+    throw error
+  }
 }
