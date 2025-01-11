@@ -3,12 +3,12 @@ import type { BillboradSong } from '@/types/billboradCharts'
 import type { MelonChartSong } from '@/types/melonCharts'
 import Image from 'next/image'
 
-type Top10ItemProps = {
+type Top20ItemProps = {
   chart: MelonChartSong | BillboradSong
   index: number
 }
 
-const Top10Item: React.FC<Top10ItemProps> = ({ chart, index }) => {
+const Top20Item: React.FC<Top20ItemProps> = ({ chart, index }) => {
   const { isKoreaChart } = useChartStore()
 
   return (
@@ -57,4 +57,4 @@ const Top10Item: React.FC<Top10ItemProps> = ({ chart, index }) => {
   )
 }
 
-export default Top10Item
+export default Top20Item

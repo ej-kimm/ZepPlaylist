@@ -4,22 +4,22 @@ import { useChartStore } from '@/store/useChartSlice'
 import type { BillboradSong } from '@/types/billboradCharts'
 import type { MelonChartSong } from '@/types/melonCharts'
 import Link from 'next/link'
-import Top10Item from './Top10Item'
+import Top20Item from './Top20Item'
 
-type Top10ListProps = {
-  koreaTop10ChartList: MelonChartSong[]
-  billboardTop10ChartList: BillboradSong[]
+type Top20ListProps = {
+  koreaTop20ChartList: MelonChartSong[]
+  billboardTop20ChartList: BillboradSong[]
 }
 
-const Top10List: React.FC<Top10ListProps> = ({
-  koreaTop10ChartList,
-  billboardTop10ChartList,
+const Top20List: React.FC<Top20ListProps> = ({
+  koreaTop20ChartList,
+  billboardTop20ChartList,
 }) => {
   const { isKoreaChart, setIsKoreaChart } = useChartStore()
 
   const chartList: Array<MelonChartSong | BillboradSong> = isKoreaChart
-    ? koreaTop10ChartList
-    : billboardTop10ChartList
+    ? koreaTop20ChartList
+    : billboardTop20ChartList
 
   return (
     <div className="overflow-x-auto">
@@ -43,7 +43,7 @@ const Top10List: React.FC<Top10ListProps> = ({
       </Link>
       <ul className="grid auto-cols-auto grid-flow-col grid-rows-4 gap-4">
         {chartList.map((chart, index) => (
-          <Top10Item
+          <Top20Item
             key={
               isKoreaChart
                 ? (chart as MelonChartSong).SONGID
@@ -58,4 +58,4 @@ const Top10List: React.FC<Top10ListProps> = ({
   )
 }
 
-export default Top10List
+export default Top20List
