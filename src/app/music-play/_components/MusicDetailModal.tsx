@@ -13,6 +13,7 @@ type PlayerState = {
 
 type MusicDetailModalProps = {
   musicDetail: Tables<'music'> | undefined
+  lyrics: string
   playerState: PlayerState
   toggleModal: () => void
   togglePlay: () => void
@@ -24,6 +25,7 @@ type MusicDetailModalProps = {
 export default function MusicDetailModal({
   toggleModal,
   musicDetail,
+  lyrics,
   playerState: { isPlaying, played, duration, ready },
   togglePlay,
   playPreviousTrack,
@@ -33,7 +35,7 @@ export default function MusicDetailModal({
   const { title = '', artist = '', album_cover } = musicDetail || {}
 
   return (
-    <div className="absolute bottom-0 left-0 h-screen w-full bg-slate-200">
+    <div className="absolute bottom-0 left-0 h-screen w-full overflow-y-scroll bg-slate-200">
       <div>
         <h3>{title}</h3>
         <p>{artist}</p>
@@ -43,7 +45,7 @@ export default function MusicDetailModal({
           width={200}
           height={200}
         />
-        <Lyrics />
+        <Lyrics lyrics={lyrics} />
         <ProgressBar
           playerState={{ ready, played, duration }}
           onSeek={onSeek}

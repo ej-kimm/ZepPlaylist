@@ -14,8 +14,14 @@ type MusicPlayerProps = {
 }
 
 const MusicPlayer = ({ trackId }: MusicPlayerProps) => {
-  const { musicDetail, url, isPending, playNextTrack, playPreviousTrack } =
-    usePlayer(trackId)
+  const {
+    musicDetail,
+    url,
+    lyrics,
+    isPending,
+    playNextTrack,
+    playPreviousTrack,
+  } = usePlayer(trackId)
 
   const [playerState, setPlayerState] = useState({
     isPlaying: false,
@@ -74,6 +80,7 @@ const MusicPlayer = ({ trackId }: MusicPlayerProps) => {
         <MusicDetailModal
           toggleModal={toggleModal}
           musicDetail={musicDetail}
+          lyrics={lyrics}
           playerState={playerState}
           onSeek={handleSeek}
           togglePlay={togglePlay}

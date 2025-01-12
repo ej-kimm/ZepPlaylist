@@ -1,5 +1,6 @@
 'use client'
 import { fetchMusicDetailByMusicId } from '@/api/music-play/actions'
+import { getSongLyrics } from '@/api/music-play/genius-api'
 import { fetchPreviewUrl } from '@/api/spotifyToken'
 import type { Tables } from '@/types/supabase'
 import { useQueries } from '@tanstack/react-query'
@@ -21,7 +22,17 @@ const usePlayer = (trackId: usePlayerProps) => {
           fetchPreviewUrl(trackId),
           fetchMusicDetailByMusicId(trackId),
         ])
-        return { trackUrl, musicDetail }
+
+        // 노래 가사 가져오기
+        let lyrics = null
+        if (musicDetail) {
+          lyrics = await getSongLyrics({
+            title: musicDetail.title,
+            artist: musicDetail.artist,
+          })
+        }
+
+        return { trackUrl, musicDetail, lyrics }
       },
     })),
   })
@@ -44,6 +55,7 @@ const usePlayer = (trackId: usePlayerProps) => {
   return {
     musicDetail: currentTrackData?.musicDetail,
     url: currentTrackData?.trackUrl,
+    lyrics: currentTrackData?.lyrics ?? '',
     isPending,
     playNextTrack,
     playPreviousTrack,
