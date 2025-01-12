@@ -10,6 +10,9 @@ const ProfileEdit = () => {
   const openModal = () => setModal(true)
   const closeModal = () => setModal(false)
   const editProfile = () => {}
+  // const { data, error } = await supabase.auth.admin.deleteUser(
+  //   'userid ',
+  // ) 회원 탈퇴기능 << 쉬움 디자이너님한테 물어보고 해보기
   return (
     <div>
       <button

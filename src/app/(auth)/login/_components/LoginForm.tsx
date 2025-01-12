@@ -1,48 +1,24 @@
 'use client'
 import InputBox from '@/components/common/InputBox'
+import { useAuth } from '@/hooks/useAuth'
 import { userStore } from '@/store/userSlice'
 import type { User, Users } from '@/types/auth'
 import { supabase } from '@/utils/supabase/client'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import Button from '../../sign-up/_components/Button'
-
-// 주스탠드 빨리넘거야 팀원들편함 슈파베이스 로그인/회원가입 처리부터
-// 바이더 감싸서 사람들한테 유저 뽑아오는거 한번 설명
-// 서버에서 zod로 한번 리팩토링할 생각해야함
-
 // 텍스트 필드 라 어쩌고 제어 컴포넌트로 같이 처리 제어컴포넌트 / 비제어컴포넌트
 // constants 정규식 뺴주기
 // zod sschema 찾아보기
 const LoginForm = () => {
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-  })
+  const { formData, handleChange } = useAuth({ email: '', password: '' })
   const [emailError, setEmailError] = useState<string>('')
   const router = useRouter()
   const { setUser } = userStore()
   // 중괄호 썻을때는 저장되는데
   // state 쓸때는 저장이안됨;;
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
-    const { name, value } = e.target
-    setFormData((prev) => ({ ...prev, [name]: value }))
-    if (name === 'email') {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-      if (value === '') {
-        setEmailError('')
-      } else if (!emailRegex.test(value)) {
-        setEmailError('올바른 이메일 주소를 입력해주세요.')
-      } else {
-        setEmailError('')
-      }
-    }
-  }
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log(formData)
     const { data, error } = await supabase.auth.signInWithPassword({
       email: formData.email,
       password: formData.password,
@@ -62,7 +38,6 @@ const LoginForm = () => {
         }
       : null
     setUser(user as User | null)
-    console.log('first=======================', user)
     router.push('/')
   }
   const logout = async () => {

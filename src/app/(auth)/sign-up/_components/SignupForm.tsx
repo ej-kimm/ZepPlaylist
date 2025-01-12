@@ -5,71 +5,36 @@ import { supabase } from '@/utils/supabase/client'
 import { useRouter } from 'next/navigation'
 // 나중에 도전기능으로 서버 액션으로 분리 * 동작하게끔 슈파베이스 사인인,사인업 따로 분리 *<<
 // 보안쪽 생각해서 서버에서 처리하는게 통상적임
-import { useState } from 'react'
+// 리액트 훅폼 hook-form
+import { useAuth } from '@/hooks/useAuth'
+import { useValidation } from '@/hooks/useValidation'
 import Button from './Button'
 
 const SignupForm = () => {
   const router = useRouter()
-  const [formData, setFormData] = useState({
+  const { formData, handleChange, error, handleError, resetError } = useAuth({
     email: '',
     password: '',
     passwordCheck: '',
     nickname: '',
   })
-  const [error, setError] = useState({
-    email: '',
-    password: '',
-    passwordCheck: '',
-    nickname: '',
-  })
-  const handleChange = async (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
-    const { name, value } = e.target
-    setFormData((prev) => ({ ...prev, [name]: value }))
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    setError((prev) => {
-      const newerror = { ...prev }
-      if (name === 'email') {
-        if (!value) {
-          newerror.email = ''
-        } else if (!emailRegex.test(value)) {
-          newerror.email = '올바른 이메일 형식을 입력해주세요.'
-        } else {
-          newerror.email = ''
-        }
-      }
-      if (name === 'password') {
-        if (!value) {
-          newerror.password = ''
-        } else if (value.length < 8) {
-          newerror.password = '비밀번호는 최소 8글자 이상이여야 합니다.'
-        } else {
-          newerror.password = ''
-        }
-      }
-      if (name === 'passwordCheck') {
-        if (value !== formData.password) {
-          newerror.passwordCheck = '비밀번호가 일치하지않습니다'
-        } else {
-          newerror.passwordCheck = ''
-        }
-      }
-      if (name === 'nickname') {
-        if (!value) {
-          newerror.nickname = ''
-        } else if (value.length < 3) {
-          newerror.nickname = '닉네임은 최소 3글자 이상이여야 합니다.'
-        } else {
-          newerror.nickname = ''
-        }
-      }
-      return newerror
-    })
-  }
+  const {
+    validateEmail,
+    validateNickname,
+    validatePassword,
+    validatePasswordCheck,
+  } = useValidation()
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    const { error } = await supabase.auth.signUp({
+    handleError('email', validateEmail(formData.email))
+    handleError('password', validatePassword(formData.password)!)
+    handleError(
+      'passwordCheck',
+      validatePasswordCheck(formData.password, formData.passwordCheck),
+    )
+    handleError('nickname', validateNickname(formData.nickname)!)
+    //걍 이딴거 집어치고 리액트훅폼 쓰기 ㅡㅡㅡ
+    const { error: signUpError } = await supabase.auth.signUp({
       email: formData.email,
       password: formData.password,
       options: {
@@ -80,7 +45,7 @@ const SignupForm = () => {
         },
       },
     })
-    if (error) {
+    if (signUpError) {
       console.error(error.message)
       alert(error.message)
     }
