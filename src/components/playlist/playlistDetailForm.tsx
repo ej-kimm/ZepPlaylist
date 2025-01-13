@@ -17,7 +17,7 @@ export default function PlaylistDetailsComponent({
     useState<PlaylistDetails | null>(null)
   const [isPlaying, setIsPlaying] = useState(false)
 
-  // 플레이리스트 데이터 가져오기 (useEffect활용용)
+  // 플레이리스트 데이터 가져오기 (useEffect활용)
   useEffect(() => {
     const loadPlaylistDetails = async () => {
       try {
