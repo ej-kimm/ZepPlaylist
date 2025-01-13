@@ -48,6 +48,7 @@ export const fetchMelonChart = async () => {
 
 export const fetchGlobalChart = async (): Promise<BillboradCharts> => {
   try {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     const { getChart } = await require('billboard-top-100')
 
     return new Promise((resolve, reject) => {
