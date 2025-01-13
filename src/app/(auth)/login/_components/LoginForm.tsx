@@ -3,7 +3,7 @@ import { Button } from '@/components/common'
 import InputBox from '@/components/common/InputBox'
 import { useAuth } from '@/hooks/useAuth'
 import { userStore } from '@/store/userSlice'
-import type { User, Users } from '@/types/auth'
+import type { Users } from '@/types/auth'
 import { supabase } from '@/utils/supabase/client'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
@@ -14,7 +14,7 @@ const LoginForm = () => {
   const { formData, handleChange } = useAuth({ email: '', password: '' })
   const [emailError, setEmailError] = useState<string>('')
   const router = useRouter()
-  const setUser = userStore((state) => state.setUser)
+  const { setUser } = userStore()
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     const { data, error } = await supabase.auth.signInWithPassword({
@@ -35,7 +35,7 @@ const LoginForm = () => {
             'https://i.namu.wiki/i/6AijZLjqdKDGjVzMK1CHNGiEyvrEyUVnl1_6Es4s5k5kfbep022bOHvG-sEn4_8opqy0uzzu9M7WUtU_sxb5UYmhY-fw_19wiRVJxTZDLHdaBKLbL1vEJPqQotCe18kx4bWvXMg-mbKtt-d5YjuCdG86CYBRDBmnAxBrnk9drLQ.webp',
         }
       : null
-    setUser(user as User | null)
+    setUser(user)
     router.push('/')
   }
   const logout = async () => {

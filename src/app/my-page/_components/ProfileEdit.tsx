@@ -7,16 +7,16 @@ import Image from 'next/image'
 import { useRef, useState } from 'react'
 
 const ProfileEdit = () => {
-  const { user } = userStore((state) => state)
+  const { user } = userStore()
   const [modal, setModal] = useState(false)
-  const [editNickname, setEitNickname] = useState(user?.user?.nickname)
-  const [profileImage, setProfileImage] = useState(user?.user?.profile_image)
+  const [editNickname, setEitNickname] = useState(user?.nickname)
+  const [profileImage, setProfileImage] = useState(user?.profile_image)
 
   const queryClient = useQueryClient()
   const fileInputRef = useRef<HTMLInputElement>(null)
   const openModal = () => setModal(true)
   const closeModal = () => setModal(false)
-  console.log('user.', user)
+  console.log('user.======주스탠드', user)
   const { mutate: mutateNickname } = useMutation({
     mutationFn: async () => {
       const { data, error } = await supabase
@@ -37,7 +37,7 @@ const ProfileEdit = () => {
       alert('프로필 업데이트 중 에러 발생')
     },
   })
-  const { mutate } = useMutation({
+  const { mutate: mutateImg } = useMutation({
     mutationFn: async (img: string) => {
       const { error } = await supabase
         .from('users')
@@ -65,11 +65,13 @@ const ProfileEdit = () => {
     const file = e.target.files?.[0]
     if (file) {
       const reader = new FileReader()
-      reader.onloadend = () => { 
-        if (reader.result) { 
-          const 
+      reader.onloadend = () => {
+        if (reader.result) {
+          const img = reader.result.toString()
+          mutateImg(img)
         }
       }
+      reader.readAsDataURL(file)
     }
   }
   const editProfile = () => {
@@ -79,7 +81,6 @@ const ProfileEdit = () => {
   const handleNickname = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEitNickname(e.target.value)
   }
-
   return (
     <div>
       <button
@@ -98,14 +99,22 @@ const ProfileEdit = () => {
               <Image
                 width={100}
                 height={100}
-                src={user?.user?.profile_image!}
+                src={user?.profile_image!}
                 alt="프로필 이미지"
                 className="h-24 w-24 rounded-full object-cover"
+                onClick={handleImgClick}
+              />
+              <input
+                type="file"
+                ref={fileInputRef}
+                className="hidden"
+                accept="image/*"
+                onChange={handleProfileImgChange}
               />
             </div>
             <div className="mb-4">
               <label htmlFor="nickname" className="mb-1 block font-medium">
-                {user?.user?.nickname}
+                {user?.nickname}
               </label>
               <input
                 type="text"

@@ -4,9 +4,10 @@ import { userStore } from '@/store/userSlice'
 import { supabase } from '@/utils/supabase/client'
 import { useMutation } from '@tanstack/react-query'
 import SocialButtonItem from './SocialButtonItem'
+import { useEffect } from 'react'
 
 const SocialButton = () => {
-  const setUser = userStore((state) => state.setUser)
+  const { setUser } = userStore()
   const signInMutation = useMutation({
     mutationFn: async ({
       provider,

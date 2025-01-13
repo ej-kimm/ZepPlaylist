@@ -1,22 +1,22 @@
-import type { User } from '@/types/auth'
+import type { Users } from '@/types/auth'
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
 
 type UserState = {
-  user: User | null
+  user: Users | null
   isLogin: boolean
   isModal: boolean
-  setUser: (user: User | null) => void
+  setUser: (user: Users | null) => void
   setIsLogin: (isLogin: boolean) => void
 }
 
 export const userStore = create<UserState>()(
   persist(
     (set, get) => ({
-      user: null as User | null,
+      user: null,
       isLogin: false,
       isModal: false,
-      setUser: (user: User | null) => set({ user, isLogin: !!user }),
+      setUser: (user: Users | null) => set({ user, isLogin: !!user }),
       setIsLogin: (isLogin: boolean) => set({ isLogin }),
     }),
     {

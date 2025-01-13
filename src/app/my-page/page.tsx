@@ -5,27 +5,23 @@ import ProfileEdit from './_components/ProfileEdit'
 
 const MyPage = async () => {
   const supabase = createClient()
-  const { data: user, error } = await supabase.from('users').select('*')
-  console.log('data', user)
+  const { data: users, error } = await supabase.from('users').select('*')
+  const user = users![0]
+  console.log('user', user)
   const { data: playlists, error: listerror } = await supabase
     .from('playlists')
     .select(`*, playlist_music(* , music(*)) `)
-    .eq('user_id', user![0].id!)
+    .eq('user_id', user.id!)
   if (listerror) {
     console.error(error?.message)
   }
-  // console.log(
-  //   'playlists_music================',
-  //   playlists![0].playlist_music[0],
-  // )
-  // const albumImage = playlists![0].playlist_music
 
   return (
     <div className="p-6">
       <h1 className="mb-6 text-2xl">마이페이지</h1>
       <div className="mb-6 flex items-center">
         <Image
-          src={user![0].profile_image!}
+          src={user.profile_image!}
           width={100}
           height={100}
           alt="프로필 이미지"
@@ -33,7 +29,7 @@ const MyPage = async () => {
         />
         <ProfileEdit />
       </div>
-      <p className="text-lg">{user![0].nickname}</p>
+      <p className="text-lg">{user!.nickname}</p>
       <h2 className="mb-4 text-xl">내가 커뮤니티에 쓴 글</h2>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
         {playlists && playlists.length > 0 ? (
