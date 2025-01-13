@@ -6,9 +6,9 @@ import { useRouter } from 'next/navigation'
 // 나중에 도전기능으로 서버 액션으로 분리 * 동작하게끔 슈파베이스 사인인,사인업 따로 분리 *<<
 // 보안쪽 생각해서 서버에서 처리하는게 통상적임
 // 리액트 훅폼 hook-form
+import { Button } from '@/components/common'
 import { useAuth } from '@/hooks/useAuth'
 import { useValidation } from '@/hooks/useValidation'
-import Button from '../../../../components/common/Button'
 
 const SignupForm = () => {
   const router = useRouter()
