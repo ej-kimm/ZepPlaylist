@@ -42,6 +42,7 @@ const PlaylistSection = ({
         'postgres_changes',
         { event: '*', schema: 'public', table: 'playlist_like' },
         (payload) => {
+          console.log('Realtime payload:', payload); // 디버깅용
           if (payload.eventType === 'INSERT') {
             setLikes((prev) => ({
               ...prev,
