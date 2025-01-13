@@ -5,6 +5,7 @@ import { createJSONStorage, persist } from 'zustand/middleware'
 type UserState = {
   user: User | null
   isLogin: boolean
+  isModal: boolean
   setUser: (user: User | null) => void
   setIsLogin: (isLogin: boolean) => void
 }
@@ -14,6 +15,7 @@ export const userStore = create<UserState>()(
     (set, get) => ({
       user: null as User | null,
       isLogin: false,
+      isModal: false,
       setUser: (user: User | null) => set({ user, isLogin: !!user }),
       setIsLogin: (isLogin: boolean) => set({ isLogin }),
     }),

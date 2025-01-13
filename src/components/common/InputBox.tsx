@@ -1,5 +1,3 @@
-'use client'
-
 type InputBoxProps = {
   label: string
   name: string

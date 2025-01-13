@@ -14,9 +14,7 @@ const LoginForm = () => {
   const { formData, handleChange } = useAuth({ email: '', password: '' })
   const [emailError, setEmailError] = useState<string>('')
   const router = useRouter()
-  const { setUser } = userStore()
-  // 중괄호 썻을때는 저장되는데
-  // state 쓸때는 저장이안됨;;
+  const setUser = userStore((state) => state.setUser)
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     const { data, error } = await supabase.auth.signInWithPassword({

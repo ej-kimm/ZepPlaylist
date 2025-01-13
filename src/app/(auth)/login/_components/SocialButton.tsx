@@ -1,10 +1,12 @@
 'use client'
 
+import { userStore } from '@/store/userSlice'
 import { supabase } from '@/utils/supabase/client'
 import { useMutation } from '@tanstack/react-query'
 import SocialButtonItem from './SocialButtonItem'
 
 const SocialButton = () => {
+  const setUser = userStore((state) => state.setUser)
   const signInMutation = useMutation({
     mutationFn: async ({
       provider,
@@ -17,12 +19,15 @@ const SocialButton = () => {
         provider,
         options: { redirectTo },
       })
-
+      // data 유저데이타 있는 지 확인
+      // 데이타가 없으면
+      console.log('data======================', data)
       if (error) throw new Error(error.message)
       return data ? { ...data } : data
     },
-    onSuccess: (data: any) => {
+    onSuccess: async (data: any) => {
       if (data?.url) {
+        // 여기부분에서 유저정보 다시가져오기 셋유저 여기부분에서 다시 가공해서 넣어주면 끝
         window.location.href = data.url
       }
     },
