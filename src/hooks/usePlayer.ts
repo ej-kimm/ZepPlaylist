@@ -14,6 +14,7 @@ const usePlayer = (trackId: usePlayerProps) => {
   const trackIds = Array.isArray(trackId) ? trackId : [trackId]
   const [currentTrackIndex, setCurrentTrackIndex] = useState<number>(0)
 
+  // 하루에 한번 캐싱되게..staleTime - 몇시간, gcTime조절하기 - 하루에 한번
   const { data: musicDetail, isPending } = useQuery({
     queryKey: ['music', trackIds[currentTrackIndex]],
     queryFn: async () => {
@@ -81,7 +82,7 @@ const usePlayer = (trackId: usePlayerProps) => {
     // isPending,
     musicDetail: musicDetail?.musicDetail,
     url: musicDetail?.trackUrl,
-    lyrics: musicDetail?.lyrics ?? '',
+    lyrics: musicDetail?.lyrics ?? '😥 제공되는 가사가 없습니다',
     isPending,
     playNextTrack,
     playPreviousTrack,
