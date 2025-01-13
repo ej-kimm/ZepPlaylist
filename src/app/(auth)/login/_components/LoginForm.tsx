@@ -6,7 +6,7 @@ import type { User, Users } from '@/types/auth'
 import { supabase } from '@/utils/supabase/client'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-import Button from '../../sign-up/_components/Button'
+import Button from '../../../../components/common/Button'
 // 텍스트 필드 라 어쩌고 제어 컴포넌트로 같이 처리 제어컴포넌트 / 비제어컴포넌트
 // constants 정규식 뺴주기
 // zod sschema 찾아보기

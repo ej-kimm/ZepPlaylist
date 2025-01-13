@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation'
 // 리액트 훅폼 hook-form
 import { useAuth } from '@/hooks/useAuth'
 import { useValidation } from '@/hooks/useValidation'
-import Button from './Button'
+import Button from '../../../../components/common/Button'
 
 const SignupForm = () => {
   const router = useRouter()
