@@ -22,10 +22,7 @@
     "react-icons": "^5.4.0",
     "react-player": "^2.16.0",
     "sweetalert2": "^11.15.10",
-<<<<<<< HEAD
-=======
     "swiper": "^11.2.1",
->>>>>>> 179f8adec1378587620b475cb58e546922f7cffc
     "zustand": "^5.0.2"
   },
   "devDependencies": {
