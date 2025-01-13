@@ -10,6 +10,15 @@ const nextConfig = {
         protocol: 'https',
         hostname: '**',
       },
+      {
+        protocol: 'https',
+        hostname: 'cdnimg.melon.co.kr',
+      },
+
+      {
+        protocol: 'https',
+        hostname: 'charts-static.billboard.com',
+      },
     ],
   },
 }

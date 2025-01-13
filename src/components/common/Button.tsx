@@ -1,10 +1,27 @@
-// ex) 재사용할 공용 버튼 컴포넌트 폴더
+import React from 'react'
 
 type ButtonProps = {
-  type: 'submit' | 'button' | 'reset'
-  label: string
+  type?: 'button' | 'submit'
+  onClick?: () => void
+  children: React.ReactNode
+  className?: string
 }
 
-export default function Button({ type, label }: ButtonProps) {
-  return <button type={type}>{label}</button>
+const Button: React.FC<ButtonProps> = ({
+  type = 'button',
+  onClick,
+  children,
+  className,
+}) => {
+  return (
+    <button
+      type={type}
+      onClick={onClick}
+      className={`mt-6 w-full rounded-lg bg-[#B15EFF] py-3 text-white transition-all hover:bg-[#9F54E5] focus:outline-none focus:ring-2 focus:ring-[#B15EFF] ${className}`}
+    >
+      {children}
+    </button>
+  )
 }
+
+export default Button
