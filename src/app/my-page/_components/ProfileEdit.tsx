@@ -1,15 +1,35 @@
 'use client'
 
 import { userStore } from '@/store/userSlice'
+import { supabase } from '@/utils/supabase/client'
 import Image from 'next/image'
 import { useState } from 'react'
 
 const ProfileEdit = () => {
   const { user } = userStore((state) => state)
+  console.log('user', user)
   const [modal, setModal] = useState(false)
+  const [editNickname, setEitNickname] = useState('')
+  // console.log('user?.nickname', user?.nickname)
   const openModal = () => setModal(true)
   const closeModal = () => setModal(false)
-  const editProfile = () => {}
+
+  const handleNickname = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEitNickname(e.target.value)
+  }
+
+  const editProfile = async () => {
+    const { data, error } = await supabase
+      .from('users')
+      .update({ nickname: editNickname })
+      // .eq('id', user?.id!)
+      .select()
+    console.log('data', data)
+  }
+  // console.log('user?.id', user?.id)
+  console.log('user', user)
+  // console.log('user?.nickname', user?.nickname)
+
   // const { data, error } = await supabase.auth.admin.deleteUser(
   //   'userid ',
   // ) 회원 탈퇴기능 << 쉬움 디자이너님한테 물어보고 해보기
@@ -44,12 +64,15 @@ const ProfileEdit = () => {
                 type="text"
                 id="nickname"
                 className="w-full rounded border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                value={editNickname}
+                onChange={handleNickname}
               />
             </div>
             <div className="flex justify-end space-x-4">
               <button
                 type="button"
                 className="rounded bg-[#B15EFF] px-4 py-2 text-white transition-all hover:bg-[#9F54E5] focus:outline-none focus:ring-2 focus:ring-[#B15EFF]"
+                onClick={editProfile}
               >
                 확인
               </button>
