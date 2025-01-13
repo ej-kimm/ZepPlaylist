@@ -8,31 +8,17 @@ import { useRouter } from 'next/navigation'
 // 리액트 훅폼 hook-form
 import { Button } from '@/components/common'
 import { useAuth } from '@/hooks/useAuth'
-import { useValidation } from '@/hooks/useValidation'
 
 const SignupForm = () => {
   const router = useRouter()
-  const { formData, handleChange, error, handleError, resetError } = useAuth({
+  const { formData, handleChange } = useAuth({
     email: '',
     password: '',
     passwordCheck: '',
     nickname: '',
   })
-  const {
-    validateEmail,
-    validateNickname,
-    validatePassword,
-    validatePasswordCheck,
-  } = useValidation()
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    handleError('email', validateEmail(formData.email))
-    handleError('password', validatePassword(formData.password)!)
-    handleError(
-      'passwordCheck',
-      validatePasswordCheck(formData.password, formData.passwordCheck),
-    )
-    handleError('nickname', validateNickname(formData.nickname)!)
     //걍 이딴거 집어치고 리액트훅폼 쓰기 ㅡㅡㅡ
     const { error: signUpError } = await supabase.auth.signUp({
       email: formData.email,
@@ -46,8 +32,8 @@ const SignupForm = () => {
       },
     })
     if (signUpError) {
-      console.error(error.message)
-      alert(error.message)
+      console.error(signUpError.message)
+      alert(signUpError.message)
     }
     router.push('/login')
   }
@@ -65,7 +51,6 @@ const SignupForm = () => {
         placeholder="아이디를 입력해주세요"
         required={true}
         onChange={handleChange}
-        errorMessage={error.email}
       />
       <InputBox
         label="비밀번호"
@@ -75,7 +60,6 @@ const SignupForm = () => {
         placeholder="비밀번호를 입력해주세요"
         required={true}
         onChange={handleChange}
-        errorMessage={error.password}
       />
       <InputBox
         label="비밀번호 확인"
@@ -85,7 +69,6 @@ const SignupForm = () => {
         placeholder="비밀번호를 입력해주세요"
         required={true}
         onChange={handleChange}
-        errorMessage={error.passwordCheck}
       />
       <InputBox
         label="닉네임"
@@ -95,7 +78,6 @@ const SignupForm = () => {
         placeholder="비밀번호를 입력해주세요"
         required={true}
         onChange={handleChange}
-        errorMessage={error.nickname}
       />
       <div className="mt-6 flex items-center">
         <input

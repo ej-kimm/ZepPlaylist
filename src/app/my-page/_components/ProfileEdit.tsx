@@ -11,7 +11,6 @@ const ProfileEdit = () => {
   const [modal, setModal] = useState(false)
   const [editNickname, setEitNickname] = useState(user?.nickname)
   const [profileImage, setProfileImage] = useState(user?.profile_image)
-
   const queryClient = useQueryClient()
   const fileInputRef = useRef<HTMLInputElement>(null)
   const openModal = () => setModal(true)
@@ -81,6 +80,7 @@ const ProfileEdit = () => {
   const handleNickname = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEitNickname(e.target.value)
   }
+
   return (
     <div>
       <button
