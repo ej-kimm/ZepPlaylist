@@ -1,32 +1,60 @@
 'use client'
 
-import { useChartStore } from '@/store/useChartSlice'
+import { userStore } from '@/store/userSlice'
 import type { BillboradSong } from '@/types/billboradCharts'
 import type { MelonChartSong } from '@/types/melonCharts'
 import Image from 'next/image'
 
-type Top100ListProps = {
-  koreaTop100ChartList?: MelonChartSong[]
-  billboardTop100ChartList?: BillboradSong[]
+// {isKorean: true, data:[{}, {}]}
+// {isKorean: false, data:[{}, {}]}
+
+// discriminated union
+
+type KoreanChart = {
+  isKoreaChart: true
+  list: MelonChartSong[]
 }
 
-const Top100ChartList: React.FC<Top100ListProps> = ({
-  koreaTop100ChartList,
-  billboardTop100ChartList,
-}) => {
-  const { isKoreaChart } = useChartStore()
+type BillboardChart = {
+  isKoreaChart: false
+  list: BillboradSong[]
+}
 
-  const chartList: Array<MelonChartSong | BillboradSong> =
-    (isKoreaChart ? koreaTop100ChartList : billboardTop100ChartList) ?? []
+type Chart = KoreanChart | BillboardChart
+
+// const ChartList = ({ data }: { data: Chart }) => {
+//   return (
+//     <div>
+//       {/*  */}
+//       {data.isKorean &&
+//         data.list.map((item) => <div>{item.ARTISTLIST[0].ARTISTNAME}</div>)}
+
+//       {!data.isKorean &&
+//         data.list.map((item) => (
+//           <div>
+//             <>{item.artist}</>
+//           </div>
+//         ))}
+//     </div>
+//   )
+// }
+
+// export default ChartList
+// // ====================================
+
+const Top100ChartList = ({ data }: { data: Chart }) => {
+  // 유저정보 가져오기
+  const { user } = userStore((state) => state)
+  console.log('user', user)
 
   return (
     <div className="mx-auto max-w-3xl p-4">
       <h1 className="mb-3 text-2xl font-bold">TOP 100</h1>
       <ul>
-        {chartList.map((chart, index) => (
+        {data.list.map((chart, index) => (
           <li
             key={
-              isKoreaChart
+              data.isKoreaChart
                 ? (chart as MelonChartSong).SONGID
                 : (chart as BillboradSong).rank
             }
@@ -35,12 +63,12 @@ const Top100ChartList: React.FC<Top100ListProps> = ({
             <div className="relative flex-shrink-0">
               <Image
                 src={
-                  isKoreaChart
+                  data.isKoreaChart
                     ? (chart as MelonChartSong).ALBUMIMG
                     : (chart as BillboradSong).cover
                 }
                 alt={
-                  isKoreaChart
+                  data.isKoreaChart
                     ? (chart as MelonChartSong).ALBUMNAME
                     : (chart as BillboradSong).title
                 }
@@ -53,12 +81,12 @@ const Top100ChartList: React.FC<Top100ListProps> = ({
             <p className="truncate text-lg">{index + 1}</p>
             <div className="min-w-0 flex-1">
               <h3 className="truncate text-base font-medium text-gray-900">
-                {isKoreaChart
+                {data.isKoreaChart
                   ? (chart as MelonChartSong).SONGNAME
                   : (chart as BillboradSong).title}
               </h3>
               <p className="truncate text-sm text-gray-500">
-                {isKoreaChart
+                {data.isKoreaChart
                   ? (chart as MelonChartSong).ARTISTLIST[0].ARTISTNAME
                   : (chart as BillboradSong).artist}
               </p>

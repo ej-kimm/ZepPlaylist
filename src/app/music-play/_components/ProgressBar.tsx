@@ -1,18 +1,31 @@
 'use client'
 
-type ProgressBarProps = {
+type PlayerState = {
   ready: boolean
   played: number
   duration: number
-  onSeek: (value: number) => void
 }
 
-const ProgressBar = ({ ready, played, duration, onSeek }: ProgressBarProps) => {
+type ProgressBarProps = {
+  playerState: PlayerState
+  onSeek: (value: number) => void
+  url: string[]
+}
+
+const ProgressBar = ({
+  playerState: { ready, played, duration },
+  onSeek,
+  url,
+}: ProgressBarProps) => {
   // 시간 포맷 함수 (초 → mm:ss)
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60)
     const secs = Math.floor(seconds % 60)
     return `${minutes}:${secs < 10 ? `0${secs}` : secs}`
+  }
+
+  if (url.length === 0) {
+    return null
   }
 
   return (

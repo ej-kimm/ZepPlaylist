@@ -1,8 +1,9 @@
 'use client'
+import { fetchMusicDetailByMusicId } from '@/api/music-play/actions'
+import { getSongLyrics } from '@/api/music-play/genius-api'
 import { fetchPreviewUrl } from '@/api/spotifyToken'
-import { fetchMusicDetailByMusicId } from '@/api/supabase'
 import type { Tables } from '@/types/supabase'
-import { useQueries } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
 
 type usePlayerProps =
@@ -13,17 +14,55 @@ const usePlayer = (trackId: usePlayerProps) => {
   const trackIds = Array.isArray(trackId) ? trackId : [trackId]
   const [currentTrackIndex, setCurrentTrackIndex] = useState<number>(0)
 
-  const playerQueries = useQueries({
-    queries: trackIds.map((trackId) => ({
-      queryKey: ['music', trackId],
-      queryFn: async () => {
-        const trackUrl = await fetchPreviewUrl(trackId)
-        const musicDetail = await fetchMusicDetailByMusicId(trackId)
-        return { trackUrl, musicDetail }
-      },
-    })),
+  // 하루에 한번 캐싱되게..staleTime - 몇시간, gcTime조절하기 - 하루에 한번
+  const { data: musicDetail, isPending } = useQuery({
+    queryKey: ['music', trackIds[currentTrackIndex]],
+    queryFn: async () => {
+      const trackId = trackIds[currentTrackIndex]
+      const [trackUrl, musicDetail] = await Promise.all([
+        fetchPreviewUrl(trackId),
+        fetchMusicDetailByMusicId(trackId),
+      ])
+
+      // 노래 가사 가져오기
+      let lyrics = null
+      if (musicDetail) {
+        lyrics = await getSongLyrics({
+          title: musicDetail.title,
+          artist: musicDetail.artist,
+        })
+      }
+
+      return { trackUrl, musicDetail, lyrics }
+    },
   })
-  const currentTrackData = playerQueries[currentTrackIndex]?.data
+
+  // const playerQueries = useQueries({
+  //   queries: trackIds.map((trackId) => ({
+  //     queryKey: ['music', trackId],
+  //     queryFn: async () => {
+  //       const [trackUrl, musicDetail] = await Promise.all([
+  //         fetchPreviewUrl(trackId),
+  //         fetchMusicDetailByMusicId(trackId),
+  //       ])
+
+  //       // 노래 가사 가져오기
+  //       let lyrics = null
+  //       if (musicDetail) {
+  //         lyrics = await getSongLyrics({
+  //           title: musicDetail.title,
+  //           artist: musicDetail.artist,
+  //         })
+  //       }
+
+  //       return { trackUrl, musicDetail, lyrics }
+  //     },
+  //   })),
+  // })
+  // const isPending = playerQueries.some(
+  //   (playerQuery) => playerQuery.isLoading || playerQuery.isFetching,
+  // )
+  // const currentTrackData = playerQueries[currentTrackIndex]?.data
 
   const playNextTrack = () => {
     const nextIndex = (currentTrackIndex + 1) % trackIds.length
@@ -37,8 +76,14 @@ const usePlayer = (trackId: usePlayerProps) => {
   }
 
   return {
-    musicDetail: currentTrackData?.musicDetail,
-    url: currentTrackData?.trackUrl,
+    // musicDetail: currentTrackData?.musicDetail,
+    // url: currentTrackData?.trackUrl,
+    // lyrics: currentTrackData?.lyrics ?? '',
+    // isPending,
+    musicDetail: musicDetail?.musicDetail,
+    url: musicDetail?.trackUrl,
+    lyrics: musicDetail?.lyrics ?? '😥 제공되는 가사가 없습니다',
+    isPending,
     playNextTrack,
     playPreviousTrack,
   }
