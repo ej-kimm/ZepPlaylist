@@ -14,6 +14,7 @@ type PlayerState = {
 type MusicDetailModalProps = {
   musicDetail: Tables<'music'> | undefined
   lyrics: string
+  url: string[]
   playerState: PlayerState
   toggleModal: () => void
   togglePlay: () => void
@@ -25,6 +26,7 @@ type MusicDetailModalProps = {
 export default function MusicDetailModal({
   toggleModal,
   musicDetail,
+  url,
   lyrics,
   playerState: { isPlaying, played, duration, ready },
   togglePlay,
@@ -47,6 +49,7 @@ export default function MusicDetailModal({
         />
         <Lyrics lyrics={lyrics} />
         <ProgressBar
+          url={url}
           playerState={{ ready, played, duration }}
           onSeek={onSeek}
         />

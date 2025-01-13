@@ -46,7 +46,7 @@ const MusicPlayer = ({ trackId }: MusicPlayerProps) => {
     playerRef.current?.seekTo(value) // 재생 위치 변경
   }
 
-  if (!url) return null
+  if (!url) return <>URL loading</>
   if (isPending) return <>Loading...</>
 
   return (
@@ -65,7 +65,7 @@ const MusicPlayer = ({ trackId }: MusicPlayerProps) => {
       />
       <div className="flex items-center justify-between">
         <MusicDetails musicDetail={musicDetail} />
-        <ProgressBar playerState={playerState} onSeek={handleSeek} />
+        <ProgressBar playerState={playerState} onSeek={handleSeek} url={url} />
         <PlayerControls
           isPlaying={playerState.isPlaying}
           togglePlay={togglePlay}
@@ -78,6 +78,7 @@ const MusicPlayer = ({ trackId }: MusicPlayerProps) => {
       </div>
       {isModalOpen && (
         <MusicDetailModal
+          url={url}
           toggleModal={toggleModal}
           musicDetail={musicDetail}
           lyrics={lyrics}
