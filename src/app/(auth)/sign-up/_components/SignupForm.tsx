@@ -1,25 +1,43 @@
 'use client'
 
+import { Button } from '@/components/common'
 import InputBox from '@/components/common/InputBox'
 import { supabase } from '@/utils/supabase/client'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
-// 나중에 도전기능으로 서버 액션으로 분리 * 동작하게끔 슈파베이스 사인인,사인업 따로 분리 *<<
-// 보안쪽 생각해서 서버에서 처리하는게 통상적임
-// 리액트 훅폼 hook-form
-import { Button } from '@/components/common'
-import { useAuth } from '@/hooks/useAuth'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
 
 const SignupForm = () => {
   const router = useRouter()
-  const { formData, handleChange } = useAuth({
-    email: '',
-    password: '',
-    passwordCheck: '',
-    nickname: '',
+
+  const validator = z
+    .object({
+      email: z.string().email('잘못된 이메일 형식입니다.'),
+      password: z
+        .string()
+        .min(4, '비밀번호는 최소 4글자 이상이어야 합니다.')
+        .max(12, '비밀번호는 12글자를 초과할 수 없습니다.'),
+      passwordCheck: z.string(),
+      nickname: z.string().min(3, '닉네임은 최소 3글자 이상이어야 합니다.'),
+    })
+    .refine((data) => data.password === data.passwordCheck, {
+      message: '비밀번호가 일치하지 않습니다.',
+      path: ['passwordCheck'],
+    })
+
+  type Validator = z.infer<typeof validator>
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<Validator>({
+    resolver: zodResolver(validator),
+    mode: 'onChange',
   })
-  const onSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    //걍 이딴거 집어치고 리액트훅폼 쓰기 ㅡㅡㅡ
+
+  const onSubmit = async (formData: Validator) => {
     const { error: signUpError } = await supabase.auth.signUp({
       email: formData.email,
       password: formData.password,
@@ -34,12 +52,14 @@ const SignupForm = () => {
     if (signUpError) {
       console.error(signUpError.message)
       alert(signUpError.message)
+      return
     }
     router.push('/login')
   }
+
   return (
     <form
-      onSubmit={onSubmit}
+      onSubmit={handleSubmit(onSubmit)}
       className="mx-auto max-w-lg rounded-lg bg-white p-6 shadow-md"
     >
       <h2 className="mb-6 text-center text-2xl font-bold">회원가입</h2>
@@ -47,37 +67,37 @@ const SignupForm = () => {
         label="아이디"
         name="email"
         type="email"
-        value={formData.email}
         placeholder="아이디를 입력해주세요"
         required={true}
-        onChange={handleChange}
+        errorMessage={errors.email?.message}
+        register={register}
       />
       <InputBox
         label="비밀번호"
         name="password"
         type="password"
-        value={formData.password}
         placeholder="비밀번호를 입력해주세요"
         required={true}
-        onChange={handleChange}
+        register={register}
+        errorMessage={errors.password?.message}
       />
       <InputBox
         label="비밀번호 확인"
         name="passwordCheck"
         type="password"
-        value={formData.passwordCheck}
-        placeholder="비밀번호를 입력해주세요"
+        placeholder="다시 비밀번호를 입력해주세요"
         required={true}
-        onChange={handleChange}
+        register={register}
+        errorMessage={errors.passwordCheck?.message}
       />
       <InputBox
         label="닉네임"
         name="nickname"
         type="text"
-        value={formData.nickname}
-        placeholder="비밀번호를 입력해주세요"
+        placeholder="닉네임을 입력해주세요"
         required={true}
-        onChange={handleChange}
+        register={register}
+        errorMessage={errors.nickname?.message}
       />
       <div className="mt-6 flex items-center">
         <input
@@ -90,4 +110,5 @@ const SignupForm = () => {
     </form>
   )
 }
+
 export default SignupForm

@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import React, { useEffect } from 'react'
 
-interface BottomSheetProps {
+type BottomSheetProps = {
   isOpen: boolean
   onClose: () => void
   children: React.ReactNode
