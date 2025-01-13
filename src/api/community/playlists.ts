@@ -1,97 +1,80 @@
+// src/api/community/playlists.ts
+
 'use server';
 
-import type { Database } from '@/types/supabase';
 import { createClient } from '@supabase/supabase-js';
+import type { Database } from '@/types/supabase';
 
 const supabase = createClient<Database>(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
-// 플레이리스트 가져오기
-export async function getPlaylists() {
+// 플레이리스트 데이터 가져오기
+export async function getPlaylists(userId: string) {
   try {
-    const { data, error } = await supabase
+    // 플레이리스트 가져오기
+    const { data: playlists, error } = await supabase
       .from('playlists')
       .select('*')
-      .order('created_at', { ascending: false }); // 최신순으로 정렬
+      .order('created_at', { ascending: false });
 
     if (error) {
       console.error('Error fetching playlists:', error);
       throw new Error(error.message);
     }
 
-    return data;
+    // 좋아요 수 및 사용자가 좋아요를 눌렀는지 확인
+    const playlistsWithLikes = await Promise.all(
+      playlists.map(async (playlist) => {
+        const { count: likeCount, error: likeError } = await supabase
+          .from('playlist_like')
+          .select('*', { count: 'exact', head: true })
+          .eq('playlist_id', playlist.id);
+
+        if (likeError) {
+          console.error(`Error fetching likes for playlist ${playlist.id}:`, likeError);
+          throw new Error(likeError.message);
+        }
+
+        const { data: liked, error: likedError } = await supabase
+          .from('playlist_like')
+          .select('*')
+          .eq('playlist_id', playlist.id)
+          .eq('user_id', userId)
+          .single();
+
+        if (likedError && likedError.code !== 'PGRST116') {
+          console.error(`Error checking if user liked playlist ${playlist.id}:`, likedError);
+          throw new Error(likedError.message);
+        }
+
+        return {
+          ...playlist,
+          likeCount: likeCount || 0,
+          likedByUser: !!liked,
+        };
+      })
+    );
+
+    return playlistsWithLikes;
   } catch (error) {
-    console.error('Unexpected error:', error);
-    throw new Error('Unexpected error occurred');
+    console.error('Unexpected error fetching playlists:', error);
+    throw new Error('Unexpected error occurred while fetching playlists.');
   }
 }
 
 // 인기 있는 플레이리스트 가져오기
-export async function getPopularPlaylists(limit: number = 5) {
+export async function getPopularPlaylists(userId: string, limit: number = 5) {
   try {
-    const { data, error } = await supabase
-      .from('playlists')
-      .select('*, playlist_like(count)');
+    const playlists = await getPlaylists(userId);
 
-    if (error) {
-      console.error('Error fetching popular playlists:', error);
-      throw new Error(error.message);
-    }
-
-    if (!data) {
-      return [];
-    }
-
-    // 좋아요 수 정렬 및 상위 limit 반환
-    const sortedData = data.sort((a, b) => (b.playlist_like.count || 0) - (a.playlist_like.count || 0));
-    return sortedData.slice(0, limit);
+    // 좋아요 수 기준으로 정렬 후 상위 limit 개수 반환
+    return playlists
+      .sort((a, b) => b.likeCount - a.likeCount)
+      .slice(0, limit);
   } catch (error) {
-    console.error('Unexpected error:', error);
-    throw new Error('Unexpected error occurred');
-  }
-}
-
-// 좋아요 토글
-export async function toggleLikeServerAction(playlistId: string, userId: string) {
-  const { data, error } = await supabase
-    .from('playlist_like')
-    .select('*')
-    .eq('playlist_id', playlistId)
-    .eq('user_id', userId)
-    .single();
-
-  if (error && error.code !== 'PGRST116') {
-    console.error('Error toggling like:', error);
-    throw new Error(error.message);
-  }
-
-  if (data) {
-    // 이미 좋아요 눌렀다면 삭제
-    const { error: deleteError } = await supabase
-      .from('playlist_like')
-      .delete()
-      .eq('playlist_id', playlistId)
-      .eq('user_id', userId);
-
-    if (deleteError) {
-      console.error('Error removing like:', deleteError);
-      throw new Error(deleteError.message);
-    }
-
-    return { liked: false };
-  } else {
-    // 좋아요 추가
-    const { error: insertError } = await supabase
-      .from('playlist_like')
-      .insert({ playlist_id: playlistId, user_id: userId });
-
-    if (insertError) {
-      console.error('Error adding like:', insertError);
-      throw new Error(insertError.message);
-    }
-
-    return { liked: true };
+    console.error('Unexpected error fetching popular playlists:', error);
+    throw new Error('Unexpected error occurred while fetching popular playlists.');
   }
 }

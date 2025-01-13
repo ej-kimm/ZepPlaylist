@@ -1,51 +1,35 @@
-'use client'
-
-import { toggleLikeServerAction } from '@/api/community/playlists'
-import { useState, useTransition } from 'react'
+'use client';
 
 type PlaylistCardProps = {
   playlist: {
-    id: string
-    name: string
-    description: string
-    playlist_like?: { count: number }
-  }
-  userId: string // 로그인된 사용자 ID를 상위 컴포넌트에서 전달받음
-}
+    id: string;
+    description: string;
+  };
+  likeCount: number; // 좋아요 수를 별도로 전달
+  liked: boolean; // 좋아요 상태 제거
+  onLikeToggle: () => void; // 클릭 이벤트 제거
+};
 
-const PlaylistCard: React.FC<PlaylistCardProps> = ({ playlist, userId }) => {
-  const [likeCount, setLikeCount] = useState(playlist.playlist_like?.count || 0)
-  const [liked, setLiked] = useState(false) // 초기 상태
-  const [isPending, startTransition] = useTransition()
-
-  const handleLike = () => {
-    startTransition(async () => {
-      try {
-        const response = await toggleLikeServerAction(playlist.id, userId)
-        setLiked(response.liked)
-        setLikeCount((prev) => (response.liked ? prev + 1 : prev - 1))
-      } catch (error) {
-        console.error('Error toggling like:', error)
-      }
-    })
-  }
-
+const PlaylistCard = ({
+  playlist,
+  likeCount,
+  liked,
+  onLikeToggle,
+}: PlaylistCardProps) => {
   return (
     <div className="rounded border p-4 shadow">
-      <h2 className="text-xl font-semibold">{playlist.name}</h2>
-      <p>{playlist.description}</p>
-      <p className="text-sm text-gray-500">Likes: {likeCount}</p>
+      <h3 className="text-lg font-bold">{playlist.description}</h3>
+      <p className="text-gray-600">좋아요: {likeCount}</p>
       <button
-        className={`mt-2 rounded px-4 py-2 ${
-          liked ? 'bg-red-500 text-white' : 'bg-gray-200 text-black'
+        className={`mt-2 px-4 py-2 text-white ${
+          liked ? 'bg-red-500' : 'bg-gray-500'
         }`}
-        onClick={handleLike}
-        disabled={isPending}
+        onClick={onLikeToggle}
       >
         {liked ? 'Unlike' : 'Like'}
       </button>
     </div>
-  )
-}
+  );
+};
 
-export default PlaylistCard
+export default PlaylistCard;

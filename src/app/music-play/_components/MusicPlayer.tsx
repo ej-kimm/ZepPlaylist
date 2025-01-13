@@ -29,7 +29,7 @@ const MusicPlayer = ({ trackId }: MusicPlayerProps) => {
 
   if (!url) {
     return null
-  }
+  } 
 
   return (
     <div className="fixed bottom-0 left-0 h-14 w-full rounded-md bg-black">
