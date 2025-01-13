@@ -1,7 +1,7 @@
 import Hamburger from './Hamburger'
 import Navbar from './Navdar'
 
-const Header = () => {
+const Header = async () => {
   return (
     <>
       <Navbar />
