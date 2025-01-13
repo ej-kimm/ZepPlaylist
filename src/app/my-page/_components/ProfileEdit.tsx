@@ -6,11 +6,9 @@ import Image from 'next/image'
 import { useState } from 'react'
 
 const ProfileEdit = () => {
-  const { user } = userStore((state) => state)
-  console.log('user', user)
+  const { user } = userStore((state) => state) 
   const [modal, setModal] = useState(false)
   const [editNickname, setEitNickname] = useState('')
-  // console.log('user?.nickname', user?.nickname)
   const openModal = () => setModal(true)
   const closeModal = () => setModal(false)
 

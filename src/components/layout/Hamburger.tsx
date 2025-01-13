@@ -21,7 +21,7 @@ const Hamburger = () => {
   }, [])
 
   const linkMenu = useCallback(
-    (to) => {
+    (to: string) => {
       return () => {
         setIsHamburgerOpen(false)
         router.push(to)
