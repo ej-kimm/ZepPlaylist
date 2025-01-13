@@ -19,10 +19,10 @@
     "react-bottom-sheet": "^1.1.1",
     "react-dom": "^18",
     "react-icons": "^5.4.0",
-    "zustand": "^5.0.2",
     "react-player": "^2.16.0",
     "sweetalert2": "^11.15.10",
-    "swiper": "^11.2.0"
+    "swiper": "^11.2.0",
+    "zustand": "^5.0.2"
   },
   "devDependencies": {
     "@types/node": "^20",
