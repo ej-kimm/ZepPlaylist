@@ -1,4 +1,4 @@
-import { fetchMusicId } from '@/api/supabase'
+import { fetchMusicId } from '@/api/music-play/actions'
 import MusicPlayer from './_components/MusicPlayer'
 
 // TODO : 페이지 삭제 할 예정
