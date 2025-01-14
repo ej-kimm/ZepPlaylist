@@ -2,7 +2,7 @@
 import { fetchMusicDetailByMusicId } from '@/api/music-play/actions'
 import { getSongLyrics } from '@/api/music-play/genius-api'
 import { fetchPreviewUrl } from '@/api/spotifyToken'
-import { useMusicPlayerStore } from '@/store/musicPlayerStore'
+import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import type { Tables } from '@/types/supabase'
 import { useQuery } from '@tanstack/react-query'
 import { useEffect } from 'react'

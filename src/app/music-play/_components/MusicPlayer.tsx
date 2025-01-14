@@ -1,6 +1,6 @@
 'use client'
 import usePlayer from '@/hooks/usePlayer'
-import { useMusicPlayerStore } from '@/store/musicPlayerStore'
+import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import type { Tables } from '@/types/supabase'
 import { useRef, useState } from 'react'
 import ReactPlayer from 'react-player'
