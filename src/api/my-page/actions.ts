@@ -3,12 +3,11 @@
 import type { TablesInsert } from '@/types/supabase'
 import { createClient } from '@/utils/supabase/server'
 type UserInsert = TablesInsert<'users'>
-
+const supabase = createClient()
 export const updateProfile = async (
   updateData: Partial<Omit<UserInsert, 'id'>>,
   userId: string,
 ) => {
-  const supabase = createClient()
   const { data, error } = await supabase
     .from('users')
     .update({
@@ -23,4 +22,21 @@ export const updateProfile = async (
   }
 
   return data
+}
+
+export const getPlaylists = async () => {
+  const { data: user, error: userError } = await supabase.auth.getUser()
+  if (userError) {
+    console.error(userError.message)
+    return
+  }
+  const { data: playlists, error } = await supabase
+    .from('playlists')
+    .select(`*, playlist_music(* , music(*)) `)
+    .eq('user_id', user.user!.id)
+  if (error) {
+    console.error('error', error)
+    throw error.message
+  }
+  return playlists
 }
