@@ -1,6 +1,6 @@
-
 import { getPlaylists, getPopularPlaylists } from '@/api/community/actions'
 import PlaylistSection from '@/app/community/_components/PlaylistSection'
+import ClientSwiper from '@/components/common/ClientSwiper'
 import type { Database } from '@/types/supabase'
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
@@ -49,9 +49,21 @@ const CommunityPage = async (): Promise<JSX.Element> => {
 
   return (
     <div className="p-4">
+      {/* 인기 있는 플레이리스트 섹션 */}
       <h1 className="mb-4 text-2xl font-bold">인기 있는 플레이리스트</h1>
-      <PlaylistSection playlists={popularPlaylists} isSwiper userId={userId} />
+      <ClientSwiper
+        items={popularPlaylists.map((playlist) => ({
+          id: playlist.id,
+          content: (
+            <PlaylistSection
+              playlists={[playlist]} // 각 플레이리스트를 개별로 렌더링
+              userId={userId}
+            />
+          ),
+        }))}
+      />
 
+      {/* 전체 플레이리스트 섹션 */}
       <h1 className="mb-4 mt-8 text-2xl font-bold">전체 플레이리스트</h1>
       <PlaylistSection playlists={playlists} userId={userId} />
     </div>
