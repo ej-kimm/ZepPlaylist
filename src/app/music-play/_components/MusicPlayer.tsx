@@ -38,7 +38,7 @@ const MusicPlayer = ({ trackId }: MusicPlayerProps) => {
 
   const handleReady = () => setPlayerState({ ...playerState, ready: true })
   const handleDuration = (duration: number) =>
-    setPlayerState({ ...playerState, duration })
+    setPlayerState((prev) => ({ ...prev, duration }))
   const handleProgress = ({ played }: { played: number }) =>
     setPlayerState({ ...playerState, played })
   const handleSeek = (value: number) => {
