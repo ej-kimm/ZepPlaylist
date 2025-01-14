@@ -5,9 +5,9 @@ type PlaylistCardProps = {
     id: string
     description: string
   }
-  likeCount: number 
-  liked: boolean 
-  onLikeToggle: () => void 
+  likeCount: number
+  liked: boolean
+  onLikeToggle: () => void
 }
 
 const PlaylistCard = ({
