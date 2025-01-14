@@ -1,4 +1,5 @@
-import { getPlaylists, getPopularPlaylists } from '@/api/community/playlists'
+
+import { getPlaylists, getPopularPlaylists } from '@/api/community/actions'
 import PlaylistSection from '@/app/community/_components/PlaylistSection'
 import type { Database } from '@/types/supabase'
 import { createServerClient } from '@supabase/ssr'
