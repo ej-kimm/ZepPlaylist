@@ -7,7 +7,6 @@ import PlayerControls from './PlayerControls'
 import ProgressBar from './ProgressBar'
 
 type PlayerState = {
-  isPlaying: boolean
   played: number
   duration: number
   ready: boolean
@@ -19,7 +18,6 @@ type MusicDetailModalProps = {
   url: string[]
   playerState: PlayerState
   toggleModal: () => void
-  togglePlay: () => void
   onSeek: (value: number) => void
 }
 
@@ -28,8 +26,7 @@ export default function MusicDetailModal({
   musicDetail,
   url,
   lyrics,
-  playerState: { isPlaying, played, duration, ready },
-  togglePlay,
+  playerState: { played, duration, ready },
   onSeek,
 }: MusicDetailModalProps) {
   const { spotify_id = '', title, artist } = musicDetail || {}
@@ -74,7 +71,7 @@ export default function MusicDetailModal({
           playerState={{ ready, played, duration }}
           onSeek={onSeek}
         />
-        <PlayerControls isPlaying={isPlaying} togglePlay={togglePlay} />
+        <PlayerControls />
         <button onClick={toggleModal}>모달닫기임시버튼^^..</button>
       </div>
     </div>

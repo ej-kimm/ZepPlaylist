@@ -1,5 +1,6 @@
 'use client'
 import usePlayer from '@/hooks/usePlayer'
+import { useMusicPlayerStore } from '@/store/musicPlayerStore'
 import type { Tables } from '@/types/supabase'
 import { useRef, useState } from 'react'
 import ReactPlayer from 'react-player'
@@ -15,9 +16,8 @@ type MusicPlayerProps = {
 
 const MusicPlayer = ({ trackId }: MusicPlayerProps) => {
   const { musicDetail, url, lyrics, isPending } = usePlayer(trackId)
-
+  const { isPlaying, togglePlay } = useMusicPlayerStore()
   const [playerState, setPlayerState] = useState({
-    isPlaying: false,
     ready: false, // onReady에서 영상이 로드된 상태값을 받아 사용
     played: 0, // 현재 재생 중인 시간 (0~0.9999)
     duration: 0, // 총 재생 시간
@@ -25,8 +25,6 @@ const MusicPlayer = ({ trackId }: MusicPlayerProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const playerRef = useRef<ReactPlayer>(null)
 
-  const togglePlay = () =>
-    setPlayerState((prev) => ({ ...prev, isPlaying: !prev.isPlaying }))
   const toggleModal = () => setIsModalOpen((prev) => !prev)
 
   const handleReady = () => setPlayerState({ ...playerState, ready: true })
@@ -47,7 +45,7 @@ const MusicPlayer = ({ trackId }: MusicPlayerProps) => {
       <ReactPlayer
         url={url}
         ref={playerRef}
-        playing={playerState.isPlaying}
+        playing={isPlaying}
         controls={false}
         width="0"
         height="0"
@@ -59,10 +57,7 @@ const MusicPlayer = ({ trackId }: MusicPlayerProps) => {
       <div className="flex items-center justify-between">
         <MusicDetails musicDetail={musicDetail} />
         <ProgressBar playerState={playerState} onSeek={handleSeek} url={url} />
-        <PlayerControls
-          isPlaying={playerState.isPlaying}
-          togglePlay={togglePlay}
-        />
+        <PlayerControls />
         <button className="text-white" onClick={toggleModal}>
           열기
         </button>
@@ -75,7 +70,6 @@ const MusicPlayer = ({ trackId }: MusicPlayerProps) => {
           lyrics={lyrics}
           playerState={playerState}
           onSeek={handleSeek}
-          togglePlay={togglePlay}
         />
       )}
     </div>
