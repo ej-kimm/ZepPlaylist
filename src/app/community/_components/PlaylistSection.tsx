@@ -37,26 +37,31 @@ const PlaylistSection = ({
 
     // Supabase Realtime 구독
     const channel = supabase
-      .channel('realtime:playlist_like')
-      .on(
-        'postgres_changes',
-        { event: '*', schema: 'public', table: 'playlist_like' },
-        (payload) => {
-          console.log('Realtime payload:', payload); // 디버깅용
-          if (payload.eventType === 'INSERT') {
-            setLikes((prev) => ({
-              ...prev,
-              [payload.new.playlist_id]: true,
-            }))
-          } else if (payload.eventType === 'DELETE') {
-            setLikes((prev) => ({
-              ...prev,
-              [payload.old.playlist_id]: false,
-            }))
-          }
-        },
-      )
-      .subscribe()
+    .channel('realtime:playlist_like')
+    .on(
+      'postgres_changes',
+      { event: '*', schema: 'public', table: 'playlist_like' },
+      (payload) => {
+        console.log('Realtime payload:', payload); // 디버깅용 로그 출력
+        if (payload.eventType === 'INSERT') {
+          setLikes((prev) => ({
+            ...prev,
+            [payload.new.playlist_id]: true,
+          }));
+        } else if (payload.eventType === 'DELETE') {
+          setLikes((prev) => ({
+            ...prev,
+            [payload.old.playlist_id]: false,
+          }));
+        }
+      }
+    )
+    .subscribe();
+  
+
+      channel.on('status', (status) => {
+        console.log('Realtime status:', status); // 연결 상태 디버깅
+      });
 
     return () => {
       supabase.removeChannel(channel)
@@ -70,6 +75,7 @@ const PlaylistSection = ({
       console.error('Error fetching user data:', userError?.message);
       return;
     }
+    
   
     const currentLiked = likes[playlistId];
     setLikes((prev) => ({ ...prev, [playlistId]: !currentLiked })); // Optimistic UI
