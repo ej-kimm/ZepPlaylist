@@ -15,7 +15,7 @@ const usePlayer = (trackId: usePlayerProps) => {
   const { trackIds, currentTrackIndex } = useMusicPlayerStore()
 
   useEffect(() => {
-    const updatedTrackIds = Array.isArray(trackId) ? trackId : [trackId]
+    const updatedTrackIds = Array.isArray(trackId) ? trackId : [trackId] // 여러곡 또는 한곡 재생할 경우 => 배열
     useMusicPlayerStore.setState({ trackIds: updatedTrackIds })
   }, [])
 
@@ -39,6 +39,7 @@ const usePlayer = (trackId: usePlayerProps) => {
 
       return { trackUrl, musicDetail, lyrics }
     },
+    enabled: trackIds.length > 0,
   })
 
   // const playerQueries = useQueries({
