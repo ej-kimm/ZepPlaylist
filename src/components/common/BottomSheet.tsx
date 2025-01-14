@@ -73,7 +73,7 @@ export default BottomSheet
 // <div>
 //   <button onClick={() => setIsOpen(true)}>바텀시트 열기</button>
 //   <BottomSheet isOpen={isOpen} onClose={() => setIsOpen(false)}>
-//     <h2 className="text-xl font-bold mb-4">플레이리스트 추가</h2>
+//     <h2 className="text-xl mb-4">플레이리스트 추가</h2>
 //     <form className="space-y-4">
 //       <input
 //         type="text"
