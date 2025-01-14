@@ -1,7 +1,7 @@
 import useSongLike from '@/hooks/useSongLike'
 import { Tables } from '@/types/supabase'
-import Image from 'next/image'
 import { useEffect, useState } from 'react'
+import AlbumCover from './AlbumCover'
 import Lyrics from './Lyrics'
 import PlayerControls from './PlayerControls'
 import ProgressBar from './ProgressBar'
@@ -36,7 +36,7 @@ export default function MusicDetailModal({
   playNextTrack,
   onSeek,
 }: MusicDetailModalProps) {
-  const { spotify_id = '', title, artist, album_cover } = musicDetail || {}
+  const { spotify_id = '', title, artist } = musicDetail || {}
   const [isLiked, setIsLiked] = useState<boolean>(false)
   const user_id = '01aa6bb6-670f-4776-a4d9-b25126a4b085' // TODO : user_id 변경
   const { songLike, isPending, updateLike } = useSongLike({
@@ -71,12 +71,7 @@ export default function MusicDetailModal({
           </button>
           |<button onClick={handleSave}>☑ 담기</button>
         </div>
-        <Image
-          src={album_cover || '/No cover'}
-          alt={title || 'No Title'}
-          width={200}
-          height={200}
-        />
+        <AlbumCover musicDetail={musicDetail} />
         <Lyrics lyrics={lyrics} />
         <ProgressBar
           url={url}
