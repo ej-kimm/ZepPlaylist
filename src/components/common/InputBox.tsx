@@ -1,14 +1,10 @@
-'use client'
-
+// extends 타입확장 리액트훅폼에서 주는 타입스크립트 단일타입말고 상위에있는거 한번 보고
 type InputBoxProps = {
   label: string
   name: string
   type: string
-  value: string
   placeholder: string
-  onChange: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => void
+  register: any
   errorMessage?: string
   required: boolean
   isTextArea?: boolean
@@ -18,9 +14,8 @@ const InputBox: React.FC<InputBoxProps> = ({
   label,
   name,
   type = 'text',
-  value,
   placeholder,
-  onChange,
+  register,
   errorMessage,
   required = false,
   isTextArea = false,
@@ -31,24 +26,30 @@ const InputBox: React.FC<InputBoxProps> = ({
       {!isTextArea ? (
         <input
           type={type}
-          name={name}
-          value={value}
           placeholder={placeholder}
           required={required}
-          onChange={onChange}
-          className="w-full rounded-lg border p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          {...register(name)}
+          className={`w-full rounded-lg border p-3 focus:outline-none focus:ring-2 ${
+            errorMessage
+              ? 'border-red-500 focus:ring-red-500'
+              : 'border-gray-300 focus:ring-blue-500'
+          }`}
         />
       ) : (
         <textarea
-          name={name}
-          value={value}
           placeholder={placeholder}
           required={required}
-          onChange={onChange}
-          className="w-full rounded-lg border p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          {...register(name)}
+          className={`w-full rounded-lg border p-3 focus:outline-none focus:ring-2 ${
+            errorMessage
+              ? 'border-red-500 focus:ring-red-500'
+              : 'border-gray-300 focus:ring-blue-500'
+          }`}
         />
       )}
-      {errorMessage && <p className="text-red-500">{errorMessage}</p>}
+      {errorMessage && (
+        <p className="mt-1 text-sm text-red-500">{errorMessage}</p>
+      )}
     </div>
   )
 }
