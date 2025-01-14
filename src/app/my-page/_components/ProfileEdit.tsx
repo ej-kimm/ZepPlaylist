@@ -2,35 +2,85 @@
 
 import { userStore } from '@/store/userSlice'
 import { supabase } from '@/utils/supabase/client'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import Image from 'next/image'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 
 const ProfileEdit = () => {
-  const { user } = userStore((state) => state) 
+  const { user } = userStore()
   const [modal, setModal] = useState(false)
-  const [editNickname, setEitNickname] = useState('')
+  const [editNickname, setEitNickname] = useState(user?.nickname)
+  const [profileImage, setProfileImage] = useState(user?.profile_image)
+  const queryClient = useQueryClient()
+  const fileInputRef = useRef<HTMLInputElement>(null)
   const openModal = () => setModal(true)
   const closeModal = () => setModal(false)
+  console.log('user.======주스탠드', user)
+  const { mutate: mutateNickname } = useMutation({
+    mutationFn: async () => {
+      const { data, error } = await supabase
+        .from('users')
+        .update({ nickname: editNickname })
+        .eq('id', user?.id!)
+        .select()
+      if (error) throw new Error(error.message)
+      return data
+    },
+    onSuccess: (data) => {
+      console.log('data', data)
+      queryClient.invalidateQueries({ queryKey: ['user'] })
+      setModal(false)
+    },
+    onError: (error) => {
+      console.error(error.message)
+      alert('프로필 업데이트 중 에러 발생')
+    },
+  })
+  const { mutate: mutateImg } = useMutation({
+    mutationFn: async (img: string) => {
+      const { error } = await supabase
+        .from('users')
+        .update({ profile_image: img })
+        .eq('id', user?.id!)
+      if (error) throw new Error(error.message)
+      return img
+    },
+    onSuccess: (newProfileImg: string) => {
+      setProfileImage(newProfileImg)
+      queryClient.invalidateQueries({ queryKey: ['user'] })
+    },
+    onError: (error) => {
+      console.error(error.message)
+    },
+  })
+  const handleImgClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click()
+    }
+  }
+  const handleProfileImgChange = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        if (reader.result) {
+          const img = reader.result.toString()
+          mutateImg(img)
+        }
+      }
+      reader.readAsDataURL(file)
+    }
+  }
+  const editProfile = () => {
+    mutateNickname()
+  }
 
   const handleNickname = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEitNickname(e.target.value)
   }
 
-  const editProfile = async () => {
-    const { data, error } = await supabase
-      .from('users')
-      .update({ nickname: editNickname })
-      // .eq('id', user?.id!)
-      .select()
-    console.log('data', data)
-  }
-  // console.log('user?.id', user?.id)
-  console.log('user', user)
-  // console.log('user?.nickname', user?.nickname)
-
-  // const { data, error } = await supabase.auth.admin.deleteUser(
-  //   'userid ',
-  // ) 회원 탈퇴기능 << 쉬움 디자이너님한테 물어보고 해보기
   return (
     <div>
       <button
@@ -49,14 +99,22 @@ const ProfileEdit = () => {
               <Image
                 width={100}
                 height={100}
-                src={user?.user?.profile_image!}
+                src={user?.profile_image!}
                 alt="프로필 이미지"
                 className="h-24 w-24 rounded-full object-cover"
+                onClick={handleImgClick}
+              />
+              <input
+                type="file"
+                ref={fileInputRef}
+                className="hidden"
+                accept="image/*"
+                onChange={handleProfileImgChange}
               />
             </div>
             <div className="mb-4">
               <label htmlFor="nickname" className="mb-1 block font-medium">
-                {user?.user?.nickname}
+                {user?.nickname}
               </label>
               <input
                 type="text"
