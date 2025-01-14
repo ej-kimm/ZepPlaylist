@@ -9,7 +9,7 @@ export type Song = {
 export type PlaylistDetails = {
   id: string
   name: string
-  description: string
+  description: string | null
   song_count: number
   total_play_time: string
   last_updated: string

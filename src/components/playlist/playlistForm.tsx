@@ -20,7 +20,7 @@ type Playlist = {
   keyword: string
   user_id: string
   created_at: string
-  latest_song_cover?: string // 최근 등록된 노래의 앨범 커버
+  latest_song_cover?: string | null
 }
 
 export default function PlaylistComponent({
