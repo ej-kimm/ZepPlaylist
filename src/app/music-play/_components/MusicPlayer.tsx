@@ -2,7 +2,7 @@
 import usePlayer from '@/hooks/usePlayer'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import type { Tables } from '@/types/supabase'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import ReactPlayer from 'react-player'
 import MusicDetailModal from './MusicDetailModal'
 import MusicDetails from './MusicDetails'
@@ -15,7 +15,7 @@ type MusicPlayerProps = {
 }
 
 const MusicPlayer = ({ trackId }: MusicPlayerProps) => {
-  const { musicDetail, url, lyrics, isPending } = usePlayer(trackId)
+  const { musicDetail, url, lyrics, isPending } = usePlayer()
   const { isPlaying, togglePlay } = useMusicPlayerStore()
   const [playerState, setPlayerState] = useState({
     ready: false, // onReady에서 영상이 로드된 상태값을 받아 사용
@@ -36,6 +36,11 @@ const MusicPlayer = ({ trackId }: MusicPlayerProps) => {
     setPlayerState({ ...playerState, played: value }) // 클릭한 재생 위치로 업데이트
     playerRef.current?.seekTo(value) // 재생 위치 변경
   }
+
+  useEffect(() => {
+    const updatedTrackIds = Array.isArray(trackId) ? trackId : [trackId] // 여러곡 또는 한곡 재생할 경우 => 배열
+    useMusicPlayerStore.setState({ trackIds: updatedTrackIds })
+  }, [])
 
   if (!url) return <>URL loading</>
   if (isPending) return <>Loading...</>
