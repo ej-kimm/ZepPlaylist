@@ -1,20 +1,11 @@
-import { createClient } from '@/utils/supabase/server'
+import { getPlaylists } from '@/api/my-page/actions'
 import Image from 'next/image'
 import Link from 'next/link'
 import Profile from './_components/Profile'
 
 const MyPage = async () => {
-  const supabase = createClient()
-  const { data: users, error } = await supabase.from('users').select('*')
-  const user = users![0]
-  const { data: playlists, error: listerror } = await supabase
-    .from('playlists')
-    .select(`*, playlist_music(* , music(*)) `)
-    .eq('user_id', user.id!)
-  if (listerror) {
-    console.error(error?.message)
-  }
-
+  const playlists = await getPlaylists()
+  console.log('playlists', playlists)
   return (
     <div className="p-6">
       <h1 className="mb-6 text-2xl">마이페이지</h1>
