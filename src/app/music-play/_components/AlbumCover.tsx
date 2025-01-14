@@ -24,7 +24,11 @@ export default function AlbumCover({ musicDetail }: AlbumCoverProps) {
       className="group h-[500px] w-[500px] [perspective:1000px]"
       onClick={handleFlip}
     >
-      <div className="group-hover:rotate-y-180 relative h-full w-full duration-500 [transform-style:preserve-3d]">
+      <div
+        className={`relative h-full w-full cursor-pointer duration-500 [transform-style:preserve-3d] ${
+          isFlipped ? 'rotate-y-180' : ''
+        }`}
+      >
         <div className="absolute left-0 top-0 z-10 h-full w-full bg-white [backface-visibility:hidden]">
           <Image
             src={album_cover || '/No cover'}
