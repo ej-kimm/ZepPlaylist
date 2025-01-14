@@ -20,8 +20,6 @@ type MusicDetailModalProps = {
   playerState: PlayerState
   toggleModal: () => void
   togglePlay: () => void
-  playPreviousTrack: () => void
-  playNextTrack: () => void
   onSeek: (value: number) => void
 }
 
@@ -32,8 +30,6 @@ export default function MusicDetailModal({
   lyrics,
   playerState: { isPlaying, played, duration, ready },
   togglePlay,
-  playPreviousTrack,
-  playNextTrack,
   onSeek,
 }: MusicDetailModalProps) {
   const { spotify_id = '', title, artist } = musicDetail || {}
@@ -78,12 +74,7 @@ export default function MusicDetailModal({
           playerState={{ ready, played, duration }}
           onSeek={onSeek}
         />
-        <PlayerControls
-          isPlaying={isPlaying}
-          togglePlay={togglePlay}
-          playPreviousTrack={playPreviousTrack}
-          playNextTrack={playNextTrack}
-        />
+        <PlayerControls isPlaying={isPlaying} togglePlay={togglePlay} />
         <button onClick={toggleModal}>모달닫기임시버튼^^..</button>
       </div>
     </div>

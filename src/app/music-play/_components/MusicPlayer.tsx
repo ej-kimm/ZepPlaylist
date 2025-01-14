@@ -14,14 +14,7 @@ type MusicPlayerProps = {
 }
 
 const MusicPlayer = ({ trackId }: MusicPlayerProps) => {
-  const {
-    musicDetail,
-    url,
-    lyrics,
-    isPending,
-    playNextTrack,
-    playPreviousTrack,
-  } = usePlayer(trackId)
+  const { musicDetail, url, lyrics, isPending } = usePlayer(trackId)
 
   const [playerState, setPlayerState] = useState({
     isPlaying: false,
@@ -69,8 +62,6 @@ const MusicPlayer = ({ trackId }: MusicPlayerProps) => {
         <PlayerControls
           isPlaying={playerState.isPlaying}
           togglePlay={togglePlay}
-          playPreviousTrack={playPreviousTrack}
-          playNextTrack={playNextTrack}
         />
         <button className="text-white" onClick={toggleModal}>
           열기
@@ -85,8 +76,6 @@ const MusicPlayer = ({ trackId }: MusicPlayerProps) => {
           playerState={playerState}
           onSeek={handleSeek}
           togglePlay={togglePlay}
-          playPreviousTrack={playPreviousTrack}
-          playNextTrack={playNextTrack}
         />
       )}
     </div>
