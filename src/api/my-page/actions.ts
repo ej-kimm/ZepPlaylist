@@ -1,20 +1,26 @@
 'use server'
 
 import type { TablesInsert } from '@/types/supabase'
-import { supabase } from '@/utils/supabase/client'
+import { createClient } from '@/utils/supabase/server'
 type UserInsert = TablesInsert<'users'>
 
 export const updateProfile = async (
-  updateUser: Partial<Omit<UserInsert, 'id'>>,
+  updateData: Partial<Omit<UserInsert, 'id'>>,
   userId: string,
 ) => {
-  const { error } = await supabase
+  const supabase = createClient()
+  const { data, error } = await supabase
     .from('users')
-    .update(updateUser)
+    .update({
+      nickname: updateData.nickname,
+      profile_image: updateData.profile_image,
+    })
     .eq('id', userId)
     .select()
   if (error) {
-    throw error
+    console.log('error', error)
+    throw error.message
   }
-  return true
+
+  return data
 }

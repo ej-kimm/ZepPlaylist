@@ -1,24 +1,15 @@
 'use client'
 
 import { updateProfile } from '@/api/my-page/actions'
-import { userStore } from '@/store/userSlice'
-import { fetchUser } from '@/utils/supabase/fetchUser'
+import type { User } from '@/types/auth'
 import Image from 'next/image'
-import { useEffect, useRef, useState } from 'react'
-
-// state 스트링 혹은 언디파인 타입지정
-// 유저데이터를 보여주고싶을땐 무조건 스트링이였으면 좋겠는데 user?.
-// 유저에 데이터가 널이 아니면 체크 하고 그뒤에 타입 지정
-const ProfileEdit = () => {
-  const { user, setUser } = userStore()
+import { useRef, useState } from 'react'
+// 유저에 데이터가 널이 아니면 체크
+const ProfileEdit = ({ user, setUser }: User) => {
   const [modal, setModal] = useState(false)
   const [editNickname, setEitNickname] = useState(user?.nickname || '')
   const [profileImage, setProfileImage] = useState(user?.profile_image)
   const fileInputRef = useRef<HTMLInputElement>(null)
-  useEffect(() => {
-    fetchUser()
-  }, [])
-
   const openModal = () => setModal(true)
   const closeModal = () => setModal(false)
   const handleImgClick = () => {
@@ -31,12 +22,12 @@ const ProfileEdit = () => {
       return
     }
     try {
-      await updateProfile({ profile_image: img }, user.id)
-      setUser({ ...user, profile_image: img })
-      setProfileImage(img)
+      const updatedData = await updateProfile({ profile_image: img }, user.id)
+      setUser({ ...user, profile_image: updatedData[0].profile_image })
+      setProfileImage(updatedData[0].profile_image)
     } catch (error) {
-      console.error('프로필 업데이트 오류', error)
-      alert('프로필 업뎃 오류류')
+      console.error('프로필 업데이트 오류:', error)
+      alert('프로필 업데이트 중 오류가 발생했습니다.')
     }
   }
   const handleProfileImgChange = async (
@@ -59,12 +50,14 @@ const ProfileEdit = () => {
       return
     }
     try {
-      updateProfile({ nickname: editNickname }, user.id)
-
-      setUser({ ...user, nickname: editNickname })
+      const updatedData = await updateProfile(
+        { nickname: editNickname },
+        user.id,
+      )
+      setUser({ ...user, nickname: updatedData[0].nickname })
       setModal(false)
     } catch (error) {
-      console.error('닉네임 업뎃 오류', error)
+      console.error('닉네임 업데이트 오류:', error)
       alert('닉네임 업데이트 중 오류가 발생했습니다.')
     }
   }
@@ -104,6 +97,12 @@ const ProfileEdit = () => {
                 onChange={handleProfileImgChange}
               />
             </div>
+            <button
+              onClick={handleImgClick}
+              className="rounded bg-[#B15EFF] px-4 py-2 text-white transition-all hover:bg-[#9F54E5] focus:outline-none focus:ring-2 focus:ring-[#B15EFF]"
+            >
+              프로필 사진 변경
+            </button>
             <div className="mb-4">
               <label htmlFor="nickname" className="mb-1 block font-medium">
                 {user?.nickname}
