@@ -1,0 +1,56 @@
+'use client'
+
+import { Autoplay } from 'swiper/modules'
+import { Swiper, SwiperSlide } from 'swiper/react'
+
+import 'swiper/css'
+import 'swiper/css/pagination'
+
+import { availableKeywords } from '@/constants/keywords'
+
+type KeywordCarouselProps = {
+  selectedKeywords: string[]
+  onToggleKeyword: (keyword: string) => void
+}
+
+export default function KeywordCarousel({
+  selectedKeywords,
+  onToggleKeyword,
+}: KeywordCarouselProps) {
+  return (
+    <div className="mt-4 w-full">
+      <Swiper
+        spaceBetween={8}
+        slidesPerView="auto"
+        autoplay={{ delay: 5000 }}
+        loop={true}
+        modules={[Autoplay]}
+        className="flex items-center"
+      >
+        {availableKeywords.map(({ emoji, label }) => (
+          <SwiperSlide key={label} style={{ width: 'auto' }}>
+            <button
+              onClick={() => onToggleKeyword(label)}
+              className={`flex h-10 items-center justify-center rounded-full border px-3 ${
+                selectedKeywords.includes(label)
+                  ? 'border-[#9032E8] bg-[#9032E8] text-white'
+                  : 'border-[#9032E8] bg-white text-[#9032E8]'
+              }`}
+              style={{
+                boxShadow: selectedKeywords.includes(label)
+                  ? '0px 4px 6px rgba(144, 50, 232, 0.4)'
+                  : '0px 4px 6px rgba(0, 0, 0, 0.1)',
+                fontSize: '12px',
+                padding: '6px 12px',
+                transition: 'all 0.3s ease',
+              }}
+            >
+              <span className="mr-2 text-base">{emoji}</span>{' '}
+              <span className="font-semibold">{label}</span>
+            </button>
+          </SwiperSlide>
+        ))}
+      </Swiper>
+    </div>
+  )
+}
