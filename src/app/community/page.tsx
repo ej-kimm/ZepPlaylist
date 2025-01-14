@@ -1,51 +1,60 @@
-import { ClientSwiper } from '@/components/common';
-import type { Tables } from '@/types/supabase';
-
-const getPlaylists = async (): Promise<Tables<'playlists'>[]> => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/community`, {
-    cache: 'no-store',
-  });
-
-  if (!res.ok) {
-    console.error('Failed to fetch playlists');
-    return [];
-  }
-
-  const { playlist } = await res.json();
-  return playlist.filter((playlist: Tables<'playlists'>) => playlist.is_public);
-};
+import { getPlaylists, getPopularPlaylists } from '@/api/community/playlists'
+import PlaylistSection from '@/app/community/_components/PlaylistSection'
+import type { Database } from '@/types/supabase'
+import { createServerClient } from '@supabase/ssr'
+import { cookies } from 'next/headers'
 
 const CommunityPage = async (): Promise<JSX.Element> => {
-  const playlists = await getPlaylists();
+  const supabase = createServerClient<Database>(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll: () => cookies().getAll(),
+        setAll: (cookiesToSet) => {
+          cookiesToSet.forEach(({ name, value, options }) => {
+            cookies().set(name, value, options)
+          })
+        },
+      },
+    },
+  )
 
-  if (playlists.length === 0) {
+  const { data: session } = await supabase.auth.getSession()
+
+  if (!session || !session.session?.user) {
+    console.error('유저 정보를 가져오는 데 실패했습니다.')
     return (
       <div className="p-4">
-        <h1 className="mb-2 text-2xl font-bold">커뮤니티 페이지</h1>
-        <p>플레이 리스트가 없습니다.</p>
+        <h1 className="text-2xl font-bold text-red-500">
+          로그인된 사용자가 없습니다. 다시 로그인해주세요.
+        </h1>
       </div>
-    );
+    )
   }
+
+  const userId = session.session.user.id
+
+  const playlists = (await getPlaylists(userId)).map((playlist) => ({
+    ...playlist,
+    description: playlist.description || '',
+  }))
+  const popularPlaylists = (await getPopularPlaylists(userId)).map(
+    (playlist) => ({
+      ...playlist,
+      description: playlist.description || '',
+    }),
+  )
 
   return (
     <div className="p-4">
-      <h1 className="mb-4 text-2xl font-bold">커뮤니티 페이지</h1>
-      <ClientSwiper // 서버 컴포넌트에서 사용할때는 ClientSwiper에 props로 전달해서 사용해야함, ClientSwiper는 UI를 그려주는 역할만 하게 됨
-        items={playlists.map((playlist) => ({
-          id: playlist.id,
-          content: (
-            <>
-              <h2 className="text-xl font-semibold">{playlist.name}</h2>
-              <p>{playlist.description}</p>
-              <p className="text-sm text-gray-500">
-                Public: {playlist.is_public ? 'Yes' : 'No'}
-              </p>
-            </>
-          ),
-        }))}
-      />
-    </div>
-  );
-};
+      <h1 className="mb-4 text-2xl font-bold">인기 있는 플레이리스트</h1>
+      <PlaylistSection playlists={popularPlaylists} isSwiper userId={userId} />
 
-export default CommunityPage;
+      <h1 className="mb-4 mt-8 text-2xl font-bold">전체 플레이리스트</h1>
+      <PlaylistSection playlists={playlists} userId={userId} />
+    </div>
+  )
+}
+
+export default CommunityPage
