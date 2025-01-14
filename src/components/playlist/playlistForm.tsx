@@ -163,7 +163,7 @@ export default function PlaylistComponent({
                 <li
                   key={playlist.id}
                   className="flex h-[80px] w-[378px] cursor-pointer items-center justify-between rounded-lg border bg-white px-4 py-2 shadow-sm"
-                  onClick={() => handlePlaylistClick(playlist.id)} // 리스트 박스 전체를 클릭 가능하도록 onClick 추가
+                  onClick={() => handlePlaylistClick(playlist.id)}
                 >
                   <div className="relative flex items-center space-x-4">
                     <div className="relative h-16 w-16 overflow-hidden rounded">
@@ -197,7 +197,7 @@ export default function PlaylistComponent({
                   <div className="relative">
                     <button
                       onClick={(e) => {
-                        e.stopPropagation() // Dropdown 클릭 시 상위 onClick 이벤트 중단
+                        e.stopPropagation()
                         setShowDropdown((prev) =>
                           prev === playlist.id ? null : playlist.id,
                         )
@@ -210,7 +210,7 @@ export default function PlaylistComponent({
                       <div className="absolute right-0 mt-2 w-24 rounded-lg bg-white shadow-lg">
                         <button
                           onClick={(e) => {
-                            e.stopPropagation() // 수정 버튼 클릭 시 상위 onClick 이벤트 중단
+                            e.stopPropagation()
                             openModal('edit', playlist)
                           }}
                           className="block w-full px-4 py-2 text-left text-sm hover:bg-gray-100"

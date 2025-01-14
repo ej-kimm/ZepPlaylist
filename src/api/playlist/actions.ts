@@ -20,9 +20,8 @@ export async function getUser() {
   return user
 }
 
-// 사용자 ID를 기준으로 플레이리스트 가져오기
 export async function fetchPlaylists(): Promise<PlaylistRow[]> {
-  const user = await getUser() // 로그인된 사용자 정보 가져오기
+  const user = await getUser()
 
   if (!user?.id) {
     throw new Error('로그인된 사용자 ID를 확인할 수 없습니다.')
@@ -31,12 +30,11 @@ export async function fetchPlaylists(): Promise<PlaylistRow[]> {
   const supabase = createClient()
 
   try {
-    // 사용자 ID 기준으로 플레이리스트 가져오기
     const { data, error } = await supabase
       .from('playlists')
       .select('*')
-      .eq('user_id', user.id) // 사용자 ID로 필터링
-      .order('created_at', { ascending: false }) // 최신 순 정렬
+      .eq('user_id', user.id)
+      .order('created_at', { ascending: false })
 
     if (error) throw error
 
@@ -47,7 +45,7 @@ export async function fetchPlaylists(): Promise<PlaylistRow[]> {
   }
 }
 
-// 최신 음악 커버 가져오기
+// 가장 최근에 등록된 음악의의 커버 가져오기
 export async function fetchLatestAlbumCover(
   playlistId: string,
 ): Promise<string | null> {
@@ -64,7 +62,7 @@ export async function fetchLatestAlbumCover(
       `,
       )
       .eq('playlist_id', playlistId)
-      .order('created_at', { ascending: false }) // 최신 순 정렬
+      .order('created_at', { ascending: false })
       .limit(1)
 
     if (error) throw error
@@ -76,11 +74,10 @@ export async function fetchLatestAlbumCover(
   }
 }
 
-// 사용자 ID를 기준으로 플레이리스트와 최신 음악 커버 통합 가져오기
+// 플레이리스트와 최신 음악 커버 통합
 export async function fetchPlaylistsWithCovers(): Promise<PlaylistRow[]> {
-  const playlists = await fetchPlaylists() // 사용자 ID로 필터링된 플레이리스트 가져오기
+  const playlists = await fetchPlaylists()
 
-  // 각 플레이리스트에 최신 음악 커버 추가
   const playlistsWithCovers = await Promise.all(
     playlists.map(async (playlist) => {
       const latestSongCover = await fetchLatestAlbumCover(playlist.id)
@@ -94,11 +91,11 @@ export async function fetchPlaylistsWithCovers(): Promise<PlaylistRow[]> {
   return playlistsWithCovers
 }
 
-// 새 플레이리스트 추가
+// 플리 추가
 export async function addPlaylist(
   playlistData: PlaylistInsert,
 ): Promise<{ success: boolean }> {
-  const user = await getUser() // 로그인된 사용자 정보 가져오기
+  const user = await getUser()
 
   if (!user?.id) {
     throw new Error('로그인된 사용자 ID가 필요합니다.')
@@ -109,7 +106,7 @@ export async function addPlaylist(
   try {
     const { error } = await supabase.from('playlists').insert({
       ...playlistData,
-      user_id: user.id, // 사용자 ID 추가
+      user_id: user.id,
     })
 
     if (error) throw error
@@ -121,13 +118,12 @@ export async function addPlaylist(
   }
 }
 
-// 플레이리스트 업데이트
+// 플리 업데이트
 export async function updatePlaylist(
   playlistId: string,
   updatedData: PlaylistUpdate,
 ): Promise<{ success: boolean }> {
-  const user = await getUser() // 로그인된 사용자 정보 가져오기
-
+  const user = await getUser()
   if (!user?.id) {
     throw new Error('로그인된 사용자 ID가 필요합니다.')
   }
@@ -139,7 +135,7 @@ export async function updatePlaylist(
       .from('playlists')
       .update(updatedData)
       .eq('id', playlistId)
-      .eq('user_id', user.id) // 사용자 ID 필터 추가
+      .eq('user_id', user.id)
 
     if (error) throw error
 
