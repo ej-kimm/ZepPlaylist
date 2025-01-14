@@ -1,14 +1,18 @@
 import { SearchBar } from '../_components/SearchBar'
+import SearchResult from '../_components/SearchResult'
 
-export default async function Search() {
+type SearchParamProps = {
+  searchParams: {
+    q: string
+  }
+}
+
+export default async function Search({ searchParams }: SearchParamProps) {
+  const { q } = searchParams
   return (
     <div>
       <SearchBar />
-      <ul>
-        {/* {items.map((item) => (
-          <li key={item.id}>{item.name}</li>
-        ))} */}
-      </ul>
+      <SearchResult searchParams={q} />
     </div>
   )
 }
