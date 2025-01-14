@@ -1,14 +1,14 @@
-'use client';
+'use client'
 
 type PlaylistCardProps = {
   playlist: {
-    id: string;
-    description: string;
-  };
-  likeCount: number; // 좋아요 수를 별도로 전달
-  liked: boolean; // 좋아요 상태 제거
-  onLikeToggle: () => void; // 클릭 이벤트 제거
-};
+    id: string
+    description: string
+  }
+  likeCount: number 
+  liked: boolean 
+  onLikeToggle: () => void 
+}
 
 const PlaylistCard = ({
   playlist,
@@ -29,7 +29,7 @@ const PlaylistCard = ({
         {liked ? 'Unlike' : 'Like'}
       </button>
     </div>
-  );
-};
+  )
+}
 
-export default PlaylistCard;
+export default PlaylistCard

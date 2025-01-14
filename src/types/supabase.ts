@@ -50,30 +50,30 @@ export type Database = {
       }
       music: {
         Row: {
-          album_cover: string | null
-          artist: string | null
+          album_cover: string
+          artist: string
           created_at: string
-          play_time: number | null
+          play_time: number
           spotify_id: string
-          title: string | null
+          title: string
           user_id: string
         }
         Insert: {
-          album_cover?: string | null
-          artist?: string | null
+          album_cover: string
+          artist: string
           created_at?: string
-          play_time?: number | null
+          play_time: number
           spotify_id: string
-          title?: string | null
+          title: string
           user_id?: string
         }
         Update: {
-          album_cover?: string | null
-          artist?: string | null
+          album_cover?: string
+          artist?: string
           created_at?: string
-          play_time?: number | null
+          play_time?: number
           spotify_id?: string
-          title?: string | null
+          title?: string
           user_id?: string
         }
         Relationships: [
@@ -161,7 +161,7 @@ export type Database = {
       playlists: {
         Row: {
           created_at: string
-          description: string
+          description: string | null
           id: string
           is_public: boolean
           keyword: string
@@ -170,7 +170,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string
-          description: string
+          description?: string | null
           id?: string
           is_public: boolean
           keyword: string
@@ -179,7 +179,7 @@ export type Database = {
         }
         Update: {
           created_at?: string
-          description?: string
+          description?: string | null
           id?: string
           is_public?: boolean
           keyword?: string
@@ -219,7 +219,7 @@ export type Database = {
           {
             foreignKeyName: "song_like_music_id_fkey"
             columns: ["music_id"]
-            isOneToOne: false
+            isOneToOne: true
             referencedRelation: "music"
             referencedColumns: ["spotify_id"]
           },
