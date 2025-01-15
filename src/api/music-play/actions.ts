@@ -2,6 +2,8 @@ import type { Tables } from '@/types/supabase'
 import { supabase } from '@/utils/supabase/client'
 
 // music 테이블
+
+// TODO : 삭제 할 함수
 export const fetchMusicId = async (): Promise<
   Tables<'music'>['spotify_id'][]
 > => {
@@ -35,7 +37,7 @@ export const fetchMusicDetailByMusicId = async (
 }
 
 // song_like 테이블
-export const fetchSongLike = async ({
+export const isSongLiked = async ({
   music_id,
   user_id,
 }: {
@@ -59,7 +61,7 @@ export const updateSongLike = async ({
   music_id: Tables<'song_like'>['music_id']
   user_id: Tables<'song_like'>['user_id']
 }): Promise<void> => {
-  const isLiked = await fetchSongLike({ music_id, user_id })
+  const isLiked = await isSongLiked({ music_id, user_id })
 
   // 좋아요가 이미 있으면 삭제
   if (isLiked) {
@@ -78,4 +80,24 @@ export const updateSongLike = async ({
 
     if (insertError) throw new Error(insertError.message)
   }
+}
+
+// playlist_music, playlist 테이블
+// TODO : 담기 기능 추가 작업 필요
+export const isSongSaved = async ({
+  music_id,
+  user_id,
+}: {
+  music_id: Tables<'song_like'>['music_id']
+  user_id: Tables<'song_like'>['user_id']
+}) => {
+  const { data: playlist_music, error } = await supabase
+    .from('playlist_music')
+    .select('playlists(id)')
+    .eq('music_id', music_id)
+    .eq('playlists.user_id', user_id)
+
+  if (error) throw new Error(error.message)
+  console.log(playlist_music)
+  return playlist_music[0].playlists.id
 }

@@ -9,8 +9,8 @@ type AlbumCoverProps = {
 }
 
 export default function AlbumCover({ musicDetail }: AlbumCoverProps) {
-  const { spotify_id = '', title, artist, album_cover } = musicDetail || {}
-  const { album, genre, isPending } = useAlbumCover(spotify_id)
+  const { title, artist, album_cover } = musicDetail || {}
+  const { album, genre, isPending } = useAlbumCover()
   const [isFlipped, setIsFlipped] = useState<boolean>(false)
 
   const handleFlip = async () => {
