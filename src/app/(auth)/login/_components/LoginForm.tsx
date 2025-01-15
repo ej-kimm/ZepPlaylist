@@ -7,6 +7,7 @@ import { supabase } from '@/utils/supabase/client'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import Swal from 'sweetalert2'
 import { z } from 'zod'
 
 const validator = z.object({
@@ -43,7 +44,10 @@ const LoginForm = () => {
 
     if (error) {
       console.error(error)
-      alert(error.message || '아이디 혹은 비밀번호를 확인해주세요')
+      Swal.fire({
+        icon: 'error',
+        text: '아이디 혹은 비밀번호를 확인해주세요!',
+      })
       return
     }
     let loginUser = null
