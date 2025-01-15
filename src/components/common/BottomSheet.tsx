@@ -5,12 +5,16 @@ type BottomSheetProps = {
   isOpen: boolean
   onClose: () => void
   children: React.ReactNode
+  height: string
+  maxWidth: string
 }
 
 const BottomSheet: React.FC<BottomSheetProps> = ({
   isOpen,
   onClose,
   children,
+  height = '50%',
+  maxWidth = '500px',
 }) => {
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -39,6 +43,13 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
           />
           <motion.div
             className="fixed bottom-0 left-0 right-0 z-50 h-[70%] rounded-t-3xl bg-white p-6 shadow-lg"
+            style={{
+              height,
+              maxWidth,
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+            }}
             initial={{ y: '100%' }}
             animate={{ y: '0%' }}
             exit={{ y: '100%' }}
@@ -73,7 +84,7 @@ export default BottomSheet
 // <div>
 //   <button onClick={() => setIsOpen(true)}>바텀시트 열기</button>
 //   <BottomSheet isOpen={isOpen} onClose={() => setIsOpen(false)}>
-//     <h2 className="text-xl font-bold mb-4">플레이리스트 추가</h2>
+//     <h2 className="text-xl mb-4">플레이리스트 추가</h2>
 //     <form className="space-y-4">
 //       <input
 //         type="text"

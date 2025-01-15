@@ -1,37 +1,16 @@
-import { createClient } from '@/utils/supabase/server'
+import { getPlaylists } from '@/api/my-page/actions'
 import Image from 'next/image'
 import Link from 'next/link'
-import ProfileEdit from './_components/ProfileEdit'
+import Profile from './_components/Profile'
 
 const MyPage = async () => {
-  const supabase = createClient()
-  const { data: users, error } = await supabase.from('users').select('*')
-  const user = users![0]
-  console.log('user', user)
-  const { data: playlists, error: listerror } = await supabase
-    .from('playlists')
-    .select(`*, playlist_music(* , music(*)) `)
-    .eq('user_id', user.id!)
-  if (listerror) {
-    console.error(error?.message)
-  }
-
+  const playlists = await getPlaylists()
+  console.log('playlists', playlists)
   return (
     <div className="p-6">
       <h1 className="mb-6 text-2xl">마이페이지</h1>
       <div className="mb-6 flex items-center">
-        <Image
-          src={user.profile_image!}
-          width={100}
-          height={100}
-          alt="프로필 이미지"
-          className="mr-4 rounded-full"
-        />
-        <ProfileEdit />
-      </div>
-      <p className="text-lg">{user!.nickname}</p>
-      <h2 className="mb-4 text-xl">내가 커뮤니티에 쓴 글</h2>
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
+        <Profile />
         {playlists && playlists.length > 0 ? (
           playlists.map((p) => (
             <Link key={p.id} href={`/community/${p.id}`}>
