@@ -1,17 +1,10 @@
 'use client'
-type PlayerControlsProps = {
-  isPlaying: boolean
-  togglePlay: () => void
-  playPreviousTrack: () => void
-  playNextTrack: () => void
-}
+import { useMusicPlayerStore } from '@/store/musicPlayerStore'
 
-const PlayerControls = ({
-  isPlaying,
-  togglePlay,
-  playPreviousTrack,
-  playNextTrack,
-}: PlayerControlsProps) => {
+const PlayerControls = () => {
+  const { isPlaying, togglePlay, playNextTrack, playPreviousTrack } =
+    useMusicPlayerStore()
+
   return (
     <div>
       <button className="text-white" onClick={playPreviousTrack}>

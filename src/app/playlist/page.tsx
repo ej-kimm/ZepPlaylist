@@ -5,7 +5,6 @@ export const metadata = {
   title: '플레이리스트 - Music Streaming App',
 }
 
-// Supabase에서 SSR로 초기 데이터 로드
 export default async function PlaylistPage() {
   const playlists = await fetchPlaylists()
 

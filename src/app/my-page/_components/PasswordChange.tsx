@@ -1,0 +1,77 @@
+import InputBox from '@/components/common/InputBox'
+import { supabase } from '@/utils/supabase/client'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
+const passwordChangeSchema = z
+  .object({
+    newPassword: z
+      .string()
+      .min(6, { message: '비밀번호는 최소 6자리 이상이어야 합니다.' }),
+    passwordCheck: z
+      .string()
+      .min(6, { message: '비밀번호 확인을 입력해주세요.' }),
+  })
+  .refine(
+    ({ newPassword, passwordCheck }) => newPassword === passwordCheck,
+    { message: '비밀번호가 일치하지 않습니다.', path: ['passwordCheck'] },
+  )
+
+type PasswordChangeForm = z.infer<typeof passwordChangeSchema>
+type PasswordChangeProps = {
+  setIsOpenPassword: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+export const PasswordChange = ({ setIsOpenPassword }: PasswordChangeProps) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<PasswordChangeForm>()
+  const onSubmit = async (data: PasswordChangeForm) => {
+    const { newPassword } = data
+    const { error: passwordChangeError } = await supabase.auth.updateUser({
+      password: newPassword,
+    })
+
+    if (passwordChangeError) {
+      console.error(passwordChangeError.message)
+      alert('비밀번호 변경 에러')
+    } else {
+      alert('비밀번호가 성공적으로 변경되었습니다.')
+    }
+  }
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <InputBox
+        label="새로운 비밀번호"
+        name="newPassword"
+        type="password"
+        placeholder="새로운 비밀번호를 입력해주세요."
+        register={register}
+        errorMessage={errors.newPassword?.message}
+        required={true}
+      />
+      <InputBox
+        label="비밀번호 확인"
+        name="passwordCheck"
+        type="password"
+        placeholder="비밀번호를 다시 입력해주세요."
+        register={register}
+        errorMessage={errors.passwordCheck?.message}
+        required={true}
+      />
+      <button
+        type="submit"
+        className="w-full rounded-lg bg-[#B15EFF] py-3 text-white transition-all hover:bg-[#9F54E5] focus:outline-none focus:ring-2 focus:ring-[#B15EFF]"
+        onClick={() => {
+          setIsOpenPassword(false)
+        }}
+      >
+        확인
+      </button>
+    </form>
+  )
+}
+
+export default PasswordChange
