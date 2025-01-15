@@ -9,7 +9,8 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        primary: '006BFF', // 임시 작성
+        primary: 'B15EFF',
+        secondary: '9032E8',
       },
       fontFamily: {
         pretendard: ['var(--font-pretendard)'],

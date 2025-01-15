@@ -1,21 +1,16 @@
 'use client'
 import usePlayer from '@/hooks/usePlayer'
-import { useMusicPlayerStore } from '@/store/musicPlayerStore'
-import type { Tables } from '@/types/supabase'
+import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import { useRef, useState } from 'react'
 import ReactPlayer from 'react-player'
-import MusicDetailModal from './MusicDetailModal'
-import MusicDetails from './MusicDetails'
-import PlayerControls from './PlayerControls'
-import ProgressBar from './ProgressBar'
+import MusicDetailModal from './_components/MusicDetailModal'
+import MusicDetails from './_components/MusicDetails'
+import PlayerControls from './_components/PlayerControls'
+import ProgressBar from './_components/ProgressBar'
 
-// 플레이 리스트 전체 재생(배열) 또는 한 곡만 재생
-type MusicPlayerProps = {
-  trackId: Tables<'music'>['spotify_id'] | Tables<'music'>['spotify_id'][]
-}
-
-const MusicPlayer = ({ trackId }: MusicPlayerProps) => {
-  const { musicDetail, url, lyrics, isPending } = usePlayer(trackId)
+const MusicPlayer = () => {
+  const { isPlayerOpen } = useMusicPlayerStore()
+  const { musicDetail, url, lyrics, isPending } = usePlayer()
   const { isPlaying, togglePlay } = useMusicPlayerStore()
   const [playerState, setPlayerState] = useState({
     ready: false, // onReady에서 영상이 로드된 상태값을 받아 사용
@@ -37,6 +32,7 @@ const MusicPlayer = ({ trackId }: MusicPlayerProps) => {
     playerRef.current?.seekTo(value) // 재생 위치 변경
   }
 
+  if (!isPlayerOpen) return null // 초기에 노래를 재생하지 않으면 플레이어바 숨김
   if (!url) return <>URL loading</>
   if (isPending) return <>Loading...</>
 

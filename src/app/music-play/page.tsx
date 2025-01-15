@@ -1,14 +1,10 @@
-import { fetchMusicId } from '@/api/music-play/actions'
-import MusicPlayer from './_components/MusicPlayer'
+import Test from './_components/Test'
 
 // TODO : 페이지 삭제 할 예정
 const MusicPlayPage = async () => {
-  const trackId = await fetchMusicId() // music테이블에서 spotify_id를 모두 갖고옴
-  const test = '5alUYFVxEur17iUbc3sNsX'
-
   return (
     <>
-      <MusicPlayer trackId={trackId} />
+      <Test />
     </>
   )
 }
