@@ -1,4 +1,5 @@
 'use server'
+
 import { PlaylistDetails, Song } from '@/types/song'
 import { createClient } from '@/utils/supabase/server'
 
@@ -51,7 +52,7 @@ export async function fetchPlaylistDetails(
       title: item.music.title || '',
       artist: item.music.artist || '',
       play_time: item.music.play_time || 0,
-      album_cover: item.music.album_cover || null,
+      album_cover: item.music.album_cover || null, // null 허용
     }))
 
     // 총 재생 시간 계산 및 변환
@@ -85,5 +86,30 @@ export async function fetchPlaylistDetails(
   } catch (error) {
     console.error('서버 액션 오류:', error)
     return null
+  }
+}
+
+// 곡 삭제
+export async function deleteSongFromPlaylist(
+  playlistId: string,
+  spotifyId: string,
+): Promise<boolean> {
+  try {
+    const supabase = createClient()
+
+    const { error } = await supabase
+      .from('playlist_music')
+      .delete()
+      .eq('playlist_id', playlistId)
+      .eq('music_id', spotifyId)
+    if (error) {
+      console.error('곡 삭제 중 오류 발생:', error.message)
+      return false
+    }
+
+    return true
+  } catch (error) {
+    console.error('서버 삭제 액션 오류:', error)
+    return false
   }
 }
