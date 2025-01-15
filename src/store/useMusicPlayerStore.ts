@@ -3,7 +3,9 @@ import { create } from 'zustand'
 type PlayerState = {
   trackIds: string[]
   currentTrackIndex: number
+  isPlayerOpen: boolean
   isPlaying: boolean
+  setPlayerOpen: () => void
   playNextTrack: () => void
   playPreviousTrack: () => void
   togglePlay: () => void
@@ -12,7 +14,9 @@ type PlayerState = {
 export const useMusicPlayerStore = create<PlayerState>()((set) => ({
   trackIds: [],
   currentTrackIndex: 0,
+  isPlayerOpen: true, // TODO : false로 바꿔야함
   isPlaying: false,
+  setPlayerOpen: () => set(() => ({ isPlayerOpen: true })),
   playNextTrack: () =>
     set((state) => {
       const nextIndex = (state.currentTrackIndex + 1) % state.trackIds.length
@@ -31,3 +35,9 @@ export const useMusicPlayerStore = create<PlayerState>()((set) => ({
     }),
   togglePlay: () => set((state) => ({ isPlaying: !state.isPlaying })),
 }))
+
+// 첫 플레이어 시작일 때는 플레이어 안보임 => isPlayerOpne: false
+
+// 플레이어바 감췄다가 노래 첫 재생할 때 플레이어 바 보이도록함
+// 1. isPlayerOpen이 false이면 첫곡이기 때문에 setPlyerOpen실행!
+// 2. setPlayerOpen, togglePlay모두 시작

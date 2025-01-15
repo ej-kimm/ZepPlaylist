@@ -15,6 +15,7 @@ type MusicPlayerProps = {
 }
 
 const MusicPlayer = ({ trackId }: MusicPlayerProps) => {
+  const { isPlayerOpen } = useMusicPlayerStore()
   const { musicDetail, url, lyrics, isPending } = usePlayer()
   const { isPlaying, togglePlay } = useMusicPlayerStore()
   const [playerState, setPlayerState] = useState({
@@ -42,6 +43,7 @@ const MusicPlayer = ({ trackId }: MusicPlayerProps) => {
     useMusicPlayerStore.setState({ trackIds: updatedTrackIds })
   }, [])
 
+  if (!isPlayerOpen) return null // 초기에 노래를 재생하지 않으면 플레이어바 숨김
   if (!url) return <>URL loading</>
   if (isPending) return <>Loading...</>
 
