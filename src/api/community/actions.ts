@@ -8,18 +8,26 @@ const supabase = createClient<Database>(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
 )
 
-export async function getPlaylists(userId: string) {
+export async function getPlaylists(userId: string, keywords: string[] = []) {
   try {
-    const { data: playlists, error } = await supabase
+    // 키워드 필터링 추가
+    let query = supabase
       .from('playlists')
       .select('*')
       .order('created_at', { ascending: false })
+
+    if (keywords.length > 0) {
+      query = query.in('keyword', keywords) // 키워드 조건 추가
+    }
+
+    const { data: playlists, error } = await query
 
     if (error) {
       console.error('Error fetching playlists:', error)
       throw new Error(error.message)
     }
 
+    // 좋아요 수 및 사용자가 좋아요를 눌렀는지 확인
     const playlistsWithLikes = await Promise.all(
       playlists.map(async (playlist) => {
         const { count: likeCount, error: likeError } = await supabase

@@ -17,7 +17,7 @@ const PlaylistCard = ({
   onLikeToggle,
 }: PlaylistCardProps) => {
   return (
-    <div className="rounded border p-4 shadow">
+    <div className="rounded border p-4 shadow mt-8">
       <h3 className="text-lg font-bold">{playlist.description}</h3>
       <p className="text-gray-600">좋아요: {likeCount}</p>
       <button

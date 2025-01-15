@@ -1,9 +1,10 @@
-import { getPlaylists, getPopularPlaylists } from '@/api/community/actions'
-import PlaylistSection from '@/app/community/_components/PlaylistSection'
-import ClientSwiper from '@/components/common/ClientSwiper'
-import type { Database } from '@/types/supabase'
-import { createServerClient } from '@supabase/ssr'
-import { cookies } from 'next/headers'
+import { getPlaylists, getPopularPlaylists } from '@/api/community/actions';
+import PlaylistSection from '@/app/community/_components/PlaylistSection';
+import ClientSwiper from '@/components/common/ClientSwiper';
+import KeywordCarouselWrapper from './_components/KeywordCarouselWrapper';
+import type { Database } from '@/types/supabase';
+import { createServerClient } from '@supabase/ssr';
+import { cookies } from 'next/headers';
 
 const CommunityPage = async (): Promise<JSX.Element> => {
   const supabase = createServerClient<Database>(
@@ -12,40 +13,36 @@ const CommunityPage = async (): Promise<JSX.Element> => {
     {
       cookies: {
         getAll: () => cookies().getAll(),
-        setAll: (cookiesToSet) => {
-          cookiesToSet.forEach(({ name, value, options }) => {
-            cookies().set(name, value, options)
-          })
-        },
       },
-    },
-  )
+    }
+  );
 
-  const { data: session } = await supabase.auth.getSession()
+  const { data: session } = await supabase.auth.getSession();
 
   if (!session || !session.session?.user) {
-    console.error('유저 정보를 가져오는 데 실패했습니다.')
+    console.error('유저 정보를 가져오는 데 실패했습니다.');
     return (
       <div className="p-4">
         <h1 className="text-2xl font-bold text-red-500">
           로그인된 사용자가 없습니다. 다시 로그인해주세요.
         </h1>
       </div>
-    )
+    );
   }
 
-  const userId = session.session.user.id
+  const userId = session.session.user.id;
 
-  const playlists = (await getPlaylists(userId)).map((playlist) => ({
+  const allPlaylists = (await getPlaylists(userId)).map((playlist) => ({
     ...playlist,
     description: playlist.description || '',
-  }))
+  }));
+
   const popularPlaylists = (await getPopularPlaylists(userId)).map(
     (playlist) => ({
       ...playlist,
       description: playlist.description || '',
-    }),
-  )
+    })
+  );
 
   return (
     <div className="p-4">
@@ -55,19 +52,15 @@ const CommunityPage = async (): Promise<JSX.Element> => {
         items={popularPlaylists.map((playlist) => ({
           id: playlist.id,
           content: (
-            <PlaylistSection
-              playlists={[playlist]} // 각 플레이리스트를 개별로 렌더링
-              userId={userId}
-            />
+            <PlaylistSection playlists={[playlist]} userId={userId} />
           ),
         }))}
       />
 
-      {/* 전체 플레이리스트 섹션 */}
-      <h1 className="mb-4 mt-8 text-2xl font-bold">전체 플레이리스트</h1>
-      <PlaylistSection playlists={playlists} userId={userId} />
+      {/* 키워드 캐러셀 섹션 */}
+      <KeywordCarouselWrapper allPlaylists={allPlaylists} userId={userId} />
     </div>
-  )
-}
+  );
+};
 
-export default CommunityPage
+export default CommunityPage;
