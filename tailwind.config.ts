@@ -12,6 +12,9 @@ const config: Config = {
         primary: 'B15EFF',
         secondary: '9032E8',
       },
+      zIndex: {
+        header: '10',
+      },
       fontFamily: {
         pretendard: ['var(--font-pretendard)'],
       },
