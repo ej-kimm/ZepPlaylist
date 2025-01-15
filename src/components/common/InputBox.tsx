@@ -1,13 +1,18 @@
+import type { UseFormRegister } from "react-hook-form"
+
 // extends 타입확장 리액트훅폼에서 주는 타입스크립트 단일타입말고 상위에있는거 한번 보고
 type InputBoxProps = {
   label: string
   name: string
   type: string
   placeholder: string
-  register: any
+  register: UseFormRegister<any>
   errorMessage?: string
   required: boolean
   isTextArea?: boolean
+  onChange?: (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => void
 }
 
 const InputBox: React.FC<InputBoxProps> = ({
@@ -19,6 +24,7 @@ const InputBox: React.FC<InputBoxProps> = ({
   errorMessage,
   required = false,
   isTextArea = false,
+  onChange,
 }) => {
   return (
     <div>

@@ -7,7 +7,7 @@ export type Users = Pick<
 >
 export type User = {
   user: Users | null
-  isLogin: boolean
+  isLogin?: boolean
   setUser: (user: Users | null) => void
-  setIsLogin: (isLogin: boolean) => void
+  setIsLogin?: (isLogin: boolean) => void
 }

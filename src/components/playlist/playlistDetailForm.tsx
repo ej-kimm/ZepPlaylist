@@ -1,12 +1,16 @@
 'use client'
 
-import { fetchPlaylistDetails } from '@/api/playlist-detail/actions'
+import {
+  deleteSongFromPlaylist,
+  fetchPlaylistDetails,
+} from '@/api/playlist-detail/actions'
 import MusicPlayer from '@/components/music-play/MusicPlayer'
 import { PlaylistDetails } from '@/types/song'
 import { formatPlayTime } from '@/utils/formatPlayTime'
 import Image from 'next/image'
-import { useEffect, useState } from 'react'
-import { FaPlay } from 'react-icons/fa'
+import { useCallback, useEffect, useState } from 'react'
+import { FaEllipsisV, FaPlay } from 'react-icons/fa'
+import Swal from 'sweetalert2'
 
 export default function PlaylistDetailsComponent({
   params,
@@ -16,23 +20,24 @@ export default function PlaylistDetailsComponent({
   const [playlistDetails, setPlaylistDetails] =
     useState<PlaylistDetails | null>(null)
   const [isPlaying, setIsPlaying] = useState(false)
+  const [dropdownOpen, setDropdownOpen] = useState<string | null>(null)
 
-  // 플레이리스트 데이터 가져오기 (useEffect활용)
-  useEffect(() => {
-    const loadPlaylistDetails = async () => {
-      try {
-        const data = await fetchPlaylistDetails(params.id)
-        setPlaylistDetails(data)
-      } catch (error) {
-        console.error(
-          '플레이리스트 데이터를 가져오는 중 오류가 발생했습니다.',
-          error,
-        )
-      }
+  // 플레이리스트 데이터 가져오기 (useEffect 활용)
+  const loadPlaylistDetails = useCallback(async () => {
+    try {
+      const data = await fetchPlaylistDetails(params.id)
+      setPlaylistDetails(data)
+    } catch (error) {
+      console.error(
+        '플레이리스트 데이터를 가져오는 중 오류가 발생했습니다.',
+        error,
+      )
     }
-
-    loadPlaylistDetails()
   }, [params.id])
+
+  useEffect(() => {
+    loadPlaylistDetails()
+  }, [loadPlaylistDetails])
 
   if (!playlistDetails) {
     return <div>로딩 중...</div>
@@ -55,9 +60,61 @@ export default function PlaylistDetailsComponent({
     setIsPlaying(true)
   }
 
+  const toggleDropdown = (songId: string) => {
+    setDropdownOpen(dropdownOpen === songId ? null : songId)
+  }
+
+  // 삭제 핸들러
+  const handleDeleteSong = async (songId: string) => {
+    try {
+      const confirmResult = await Swal.fire({
+        title: '정말 삭제하시겠습니까?',
+        text: '이 곡은 삭제 후 복구할 수 없습니다.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: '삭제',
+        cancelButtonText: '취소',
+      })
+
+      if (confirmResult.isConfirmed) {
+        const success = await deleteSongFromPlaylist(params.id, songId)
+        if (success) {
+          await loadPlaylistDetails()
+          setDropdownOpen(null)
+          await Swal.fire({
+            title: '삭제 완료!',
+            text: '곡이 성공적으로 삭제되었습니다.',
+            icon: 'success',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: '확인',
+          })
+        } else {
+          await Swal.fire({
+            title: '삭제 실패!',
+            text: '곡 삭제에 실패했습니다. 다시 시도해주세요.',
+            icon: 'error',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: '확인',
+          })
+        }
+      }
+    } catch (error) {
+      console.error('곡 삭제 중 오류가 발생했습니다.', error)
+      await Swal.fire({
+        title: '오류 발생!',
+        text: '곡 삭제 중 문제가 발생했습니다.',
+        icon: 'error',
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: '확인',
+      })
+    }
+  }
+
   return (
     <div className="p-4">
-      <h1 className="mb-4 text-xl font-bold">Music Streaming App</h1>
+      <h1 className="mb-4 text-xl font-bold">플레이리스트</h1>
       <section>
         <h2 className="text-lg font-semibold">{name}</h2>
         <p className="text-gray-500">{description}</p>
@@ -79,13 +136,13 @@ export default function PlaylistDetailsComponent({
         </button>
       </section>
 
-      {isPlaying && <MusicPlayer trackId={spotifyIds} />}
+      {isPlaying && <MusicPlayer />}
 
       <ul className="mt-6">
         {songs.map((song) => (
           <li
             key={song.spotify_id}
-            className="flex items-center justify-between border-b py-3"
+            className="relative flex items-center justify-between border-b py-3"
           >
             <div className="flex items-center">
               <div className="relative h-12 w-12">
@@ -102,9 +159,30 @@ export default function PlaylistDetailsComponent({
                 <p className="text-sm text-gray-500">{song.artist}</p>
               </div>
             </div>
-            <p className="text-sm text-gray-600">
-              {formatPlayTime(song.play_time)}
-            </p>
+
+            <div className="flex items-center">
+              <p className="text-sm text-gray-600">
+                {formatPlayTime(song.play_time)}
+              </p>
+              <div className="relative ml-4">
+                <button
+                  className="p-2 text-gray-600 hover:text-gray-800"
+                  onClick={() => toggleDropdown(song.spotify_id)}
+                >
+                  <FaEllipsisV />
+                </button>
+                {dropdownOpen === song.spotify_id && (
+                  <div className="absolute right-0 z-10 mt-2 w-24 rounded-lg border bg-white shadow-lg">
+                    <button
+                      className="block w-full px-4 py-2 text-left text-sm text-red-500 hover:bg-gray-100"
+                      onClick={() => handleDeleteSong(song.spotify_id)}
+                    >
+                      삭제
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
           </li>
         ))}
       </ul>
