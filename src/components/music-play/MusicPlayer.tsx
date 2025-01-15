@@ -1,20 +1,14 @@
 'use client'
 import usePlayer from '@/hooks/usePlayer'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
-import type { Tables } from '@/types/supabase'
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import ReactPlayer from 'react-player'
-import MusicDetailModal from './MusicDetailModal'
-import MusicDetails from './MusicDetails'
-import PlayerControls from './PlayerControls'
-import ProgressBar from './ProgressBar'
+import MusicDetailModal from './_components/MusicDetailModal'
+import MusicDetails from './_components/MusicDetails'
+import PlayerControls from './_components/PlayerControls'
+import ProgressBar from './_components/ProgressBar'
 
-// 플레이 리스트 전체 재생(배열) 또는 한 곡만 재생
-type MusicPlayerProps = {
-  trackId: Tables<'music'>['spotify_id'] | Tables<'music'>['spotify_id'][]
-}
-
-const MusicPlayer = ({ trackId }: MusicPlayerProps) => {
+const MusicPlayer = () => {
   const { isPlayerOpen } = useMusicPlayerStore()
   const { musicDetail, url, lyrics, isPending } = usePlayer()
   const { isPlaying, togglePlay } = useMusicPlayerStore()
@@ -37,11 +31,6 @@ const MusicPlayer = ({ trackId }: MusicPlayerProps) => {
     setPlayerState({ ...playerState, played: value }) // 클릭한 재생 위치로 업데이트
     playerRef.current?.seekTo(value) // 재생 위치 변경
   }
-
-  useEffect(() => {
-    const updatedTrackIds = Array.isArray(trackId) ? trackId : [trackId] // 여러곡 또는 한곡 재생할 경우 => 배열
-    useMusicPlayerStore.setState({ trackIds: updatedTrackIds })
-  }, [])
 
   if (!isPlayerOpen) return null // 초기에 노래를 재생하지 않으면 플레이어바 숨김
   if (!url) return <>URL loading</>

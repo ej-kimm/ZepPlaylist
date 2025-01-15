@@ -1,7 +1,7 @@
 'use client'
 
 import { fetchPlaylistDetails } from '@/api/playlist-detail/actions'
-import MusicPlayer from '@/app/music-play/_components/MusicPlayer'
+import MusicPlayer from '@/components/music-play/MusicPlayer'
 import { PlaylistDetails } from '@/types/song'
 import { formatPlayTime } from '@/utils/formatPlayTime'
 import Image from 'next/image'

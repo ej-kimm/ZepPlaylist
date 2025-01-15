@@ -34,7 +34,9 @@ export default function MusicDetailModal({
   const { user } = userStore()
   const user_id = user?.id || ''
   const { songLike, isPending, updateLike } = useSongLike({ user_id })
+
   const [isLiked, setIsLiked] = useState<boolean>(false)
+  const [isSaved, setIsSaved] = useState<boolean>(false)
 
   const handleLike = async () => {
     if (!user_id) {
@@ -50,9 +52,6 @@ export default function MusicDetailModal({
     // 로그인 한 유저
     if (user_id && songLike !== undefined) {
       setIsLiked(songLike)
-    } else {
-      // 로그인 안한 유저
-      setIsLiked(false)
     }
   }, [songLike])
 
@@ -69,7 +68,10 @@ export default function MusicDetailModal({
               {isLiked ? '💔 좋아요 취소' : '❤ 좋아요'}
             </button>
           )}
-          |<button onClick={handleSave}>☑ 담기</button>
+          |
+          <button onClick={handleSave}>
+            {isSaved ? '담기취소!' : '☑ 담기'}
+          </button>
         </div>
         <AlbumCover musicDetail={musicDetail} />
         <Lyrics lyrics={lyrics} />

@@ -1,4 +1,4 @@
-import { fetchSongLike, updateSongLike } from '@/api/music-play/actions'
+import { isSongLiked, updateSongLike } from '@/api/music-play/actions'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import { Tables } from '@/types/supabase'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
@@ -15,7 +15,7 @@ const useSongLike = ({ user_id }: useSongLikeProps) => {
 
   const { data: songLike, isPending } = useQuery({
     queryKey: ['song_like', user_id, currentTrackId],
-    queryFn: () => fetchSongLike({ user_id, music_id: currentTrackId }),
+    queryFn: () => isSongLiked({ user_id, music_id: currentTrackId }),
     enabled: !!user_id && !!currentTrackId,
   })
 

@@ -1,3 +1,4 @@
+import { Tables } from '@/types/supabase'
 import { create } from 'zustand'
 
 type PlayerState = {
@@ -6,6 +7,7 @@ type PlayerState = {
   isPlayerOpen: boolean
   isPlaying: boolean
   setPlayerOpen: () => void
+  setTrackIds: (trackIds: string[]) => void
   playNextTrack: () => void
   playPreviousTrack: () => void
   togglePlay: () => void
@@ -14,9 +16,17 @@ type PlayerState = {
 export const useMusicPlayerStore = create<PlayerState>()((set) => ({
   trackIds: [],
   currentTrackIndex: 0,
-  isPlayerOpen: true, // TODO : false로 바꿔야함
+  isPlayerOpen: false,
   isPlaying: false,
   setPlayerOpen: () => set(() => ({ isPlayerOpen: true })),
+  setTrackIds: (
+    trackId: Tables<'music'>['spotify_id'] | Tables<'music'>['spotify_id'][],
+  ) =>
+    set(() => {
+      // 플레이 리스트 전체 재생(배열) 또는 한 곡만 재생
+      const updatedTrackIds = Array.isArray(trackId) ? trackId : [trackId]
+      return { trackIds: updatedTrackIds }
+    }),
   playNextTrack: () =>
     set((state) => {
       const nextIndex = (state.currentTrackIndex + 1) % state.trackIds.length

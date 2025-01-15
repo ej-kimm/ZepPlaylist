@@ -3,6 +3,7 @@ import Header from '@/components/layout/Header'
 import QueryProvider from '@/components/providers/QueryProvider'
 import type { Metadata } from 'next'
 import localFont from 'next/font/local'
+import MusicPlayer from '../components/music-play/MusicPlayer'
 import '../styles/globals.css'
 
 const pretendard = localFont({
@@ -29,6 +30,7 @@ export default function RootLayout({
           <Header />
           {children}
           <Footer />
+          <MusicPlayer />
         </QueryProvider>
       </body>
     </html>
