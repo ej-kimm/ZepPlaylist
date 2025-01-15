@@ -7,7 +7,9 @@ type PlayerState = {
   isPlayerOpen: boolean
   isPlaying: boolean
   setPlayerOpen: () => void
-  setTrackIds: (trackIds: string[]) => void
+  setTrackIds: (
+    trackIds: Tables<'music'>['spotify_id'] | Tables<'music'>['spotify_id'][],
+  ) => void
   playNextTrack: () => void
   playPreviousTrack: () => void
   togglePlay: () => void
