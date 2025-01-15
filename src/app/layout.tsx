@@ -1,4 +1,3 @@
-import Footer from '@/components/layout/Footer'
 import Header from '@/components/layout/Header'
 import QueryProvider from '@/components/providers/QueryProvider'
 import type { Metadata } from 'next'
@@ -28,8 +27,9 @@ export default function RootLayout({
       <body className={`${pretendard.className}`}>
         <QueryProvider>
           <Header />
-          {children}
-          <Footer />
+          <div className="h-screen w-full px-6">{children}</div>
+          {/* Footer 잠시 주석처리 */}
+          {/* <Footer /> */}
           <MusicPlayer />
         </QueryProvider>
       </body>
