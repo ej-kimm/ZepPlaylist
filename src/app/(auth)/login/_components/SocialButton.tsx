@@ -50,8 +50,13 @@ const SocialButton = () => {
   return (
     <form className="flex space-x-4">
       <SocialButtonItem
-        label="kakao"
-        bgColor="bg-yellow-500"
+        hoverColor="hover:bg-red-600 focus:ring-red-500"
+        onClick={() => handleSignIn('google')}
+        icon={
+          <Image src={googleLogo} alt="구글 아이콘" width={30} height={30} />
+        }
+      />
+      <SocialButtonItem
         hoverColor="hover:bg-yellow-600 focus:ring-yellow-500"
         onClick={() => handleSignIn('kakao')}
         icon={
@@ -59,8 +64,6 @@ const SocialButton = () => {
         }
       />
       <SocialButtonItem
-        label="spotify"
-        bgColor="bg-blue-500"
         hoverColor="hover:bg-blue-600 focus:ring-blue-500"
         onClick={() => handleSignIn('spotify')}
         icon={
@@ -70,15 +73,6 @@ const SocialButton = () => {
             width={30}
             height={30}
           />
-        }
-      />
-      <SocialButtonItem
-        label="google"
-        bgColor="bg-red-500"
-        hoverColor="hover:bg-red-600 focus:ring-red-500"
-        onClick={() => handleSignIn('google')}
-        icon={
-          <Image src={googleLogo} alt="구글 아이콘" width={30} height={30} />
         }
       />
     </form>

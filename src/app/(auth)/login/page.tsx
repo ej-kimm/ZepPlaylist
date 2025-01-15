@@ -9,7 +9,7 @@ const page = () => {
       <LoginForm />
       <SocialForm />
       <Link
-        className="mt-6 w-full rounded-lg bg-[#B15EFF] py-3 text-white transition-all hover:bg-[#9F54E5] focus:outline-none focus:ring-2 focus:ring-[#B15EFF]"
+        className="mt-6 w-full rounded-lg py-3 text-black transition-all focus:outline-none focus:ring-2"
         href={'/sign-up'}
       >
         회원가입

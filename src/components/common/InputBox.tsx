@@ -1,4 +1,4 @@
-import type { UseFormRegister } from "react-hook-form"
+import type { UseFormRegister } from 'react-hook-form'
 
 // extends 타입확장 리액트훅폼에서 주는 타입스크립트 단일타입말고 상위에있는거 한번 보고
 type InputBoxProps = {
@@ -10,6 +10,7 @@ type InputBoxProps = {
   errorMessage?: string
   required: boolean
   isTextArea?: boolean
+  className?: string
   onChange?: (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => void
@@ -24,8 +25,14 @@ const InputBox: React.FC<InputBoxProps> = ({
   errorMessage,
   required = false,
   isTextArea = false,
+  className = '',
   onChange,
 }) => {
+  const inputClass = `w-full rounded-lg border p-3 focus:outline-none focus:ring-2 ${
+    errorMessage
+      ? 'border-red-500 focus:ring-red-500'
+      : 'border-gray-300 focus:ring-purple-500'
+  } ${className}`
   return (
     <div>
       <label className="mb-2 block text-gray-700">{label}</label>
@@ -35,11 +42,7 @@ const InputBox: React.FC<InputBoxProps> = ({
           placeholder={placeholder}
           required={required}
           {...register(name)}
-          className={`w-full rounded-lg border p-3 focus:outline-none focus:ring-2 ${
-            errorMessage
-              ? 'border-red-500 focus:ring-red-500'
-              : 'border-gray-300 focus:ring-blue-500'
-          }`}
+          className={inputClass}
         />
       ) : (
         <textarea

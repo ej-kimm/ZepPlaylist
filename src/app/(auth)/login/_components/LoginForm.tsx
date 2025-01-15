@@ -78,9 +78,9 @@ const LoginForm = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="mx-auto max-w-md rounded-lg bg-white p-6 shadow-md"
+      className="mx-auto max-w-sm rounded-lg bg-white p-4 shadow-lg sm:p-6"
     >
-      <h2 className="mb-6 text-center text-2xl font-bold">로그인</h2>
+      <h2 className="mb-6 text-center text-xl sm:text-2xl">로그인</h2>
       <InputBox
         label="이메일"
         name="email"
@@ -89,6 +89,7 @@ const LoginForm = () => {
         required
         errorMessage={errors.email?.message}
         register={register}
+        className="border-gray-300 focus:ring-purple-500"
       />
       <InputBox
         label="비밀번호"
