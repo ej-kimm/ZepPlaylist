@@ -13,7 +13,7 @@ const passwordChangeSchema = z
   })
   .refine(
     ({ newPassword, passwordCheck }) => newPassword === passwordCheck,
-    { message: '비밀번호가 일치하지 않습니다.', path: ['passwordCheck'] }, // 특정 필드에 에러 메시지 표시
+    { message: '비밀번호가 일치하지 않습니다.', path: ['passwordCheck'] },
   )
 
 type PasswordChangeForm = z.infer<typeof passwordChangeSchema>
