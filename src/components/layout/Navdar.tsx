@@ -1,6 +1,11 @@
+'use client'
+
+import { userStore } from '@/store/userSlice'
 import Link from 'next/link'
 
 const Navdar = () => {
+  const { user } = userStore((state) => state)
+
   return (
     <nav className="hidden items-center gap-4 md:flex">
       <div className="flex flex-col space-y-4 md:flex-row md:space-x-4 md:space-y-0">
@@ -21,15 +26,15 @@ const Navdar = () => {
             Chart
           </Link>
 
-          {/* 로그아웃 상태일 때  */}
-          <Link href={'/login'} className="px-3 py-5">
-            Login
-          </Link>
-
-          {/* 로그인 상태일 때 */}
-          <Link href={'/my-page'} className="px-3 py-5">
-            My Page
-          </Link>
+          {!user ? (
+            <Link href={'/login'} className="px-3 py-5">
+              Login
+            </Link>
+          ) : (
+            <Link href={'/my-page'} className="px-3 py-5">
+              My Page
+            </Link>
+          )}
         </div>
       </div>
     </nav>

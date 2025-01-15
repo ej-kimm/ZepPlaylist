@@ -1,20 +1,27 @@
 'use client'
 
+import { userStore } from '@/store/userSlice'
 import { useRouter } from 'next/navigation'
 import { useCallback, useState } from 'react'
 
 const Hamburger = () => {
+  const { user } = userStore((state) => state)
+
   const router = useRouter()
   const [isHamburgerOpen, setIsHamburgerOpen] = useState<boolean>(false)
 
   const links = [
     { to: '/', text: 'Home' },
     { to: '/playlist', text: 'PlayList' },
-    { to: '/community', text: 'Coummity' },
+    { to: '/community', text: 'Community' },
     { to: '/chart', text: 'Chart' },
-    { to: '/login', text: 'Login' },
-    { to: '/my-page', text: 'MyPage' },
   ]
+
+  if (!user) {
+    links.push({ to: '/login', text: 'login' })
+  } else {
+    links.push({ to: '/my-page', text: 'MyPage' })
+  }
 
   const toggleMenu = useCallback(() => {
     setIsHamburgerOpen((prev) => !prev)
