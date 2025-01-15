@@ -11,10 +11,12 @@ type Top20ListProps = {
   billboardTop20ChartList: BillboradSong[]
 }
 
+// image, 제목, 가수명, ranking
 const Top20List: React.FC<Top20ListProps> = ({
   koreaTop20ChartList,
   billboardTop20ChartList,
 }) => {
+  // useState로만 해도 될 듯 -> Top 100은 필요가 없어짐
   const { isKoreaChart, setIsKoreaChart } = useChartStore()
 
   const chartList: Array<MelonChartSong | BillboradSong> = isKoreaChart
@@ -36,7 +38,7 @@ const Top20List: React.FC<Top20ListProps> = ({
         </h1>
       </div>
       <Link
-        href={isKoreaChart ? '/KoreaTop100' : '/BillboardTop100'}
+        href={isKoreaChart ? '/koreaTop100' : '/billboardTop100'}
         className="mb-6 inline-block"
       >
         더보기
