@@ -11,5 +11,5 @@ export const useChartStore = create<Chart>()((set) => ({
   //     set((state) => ({ isKoreaChart: !state.isKoreaChart })),
 
   setIsKoreaChart: (value) => set(() => ({ isKoreaChart: value })),
-  setKoreaTop100: '/KoreaTop100',
+  setKoreaTop100: '/koreaTop100',
 }))

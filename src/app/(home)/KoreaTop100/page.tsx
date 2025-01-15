@@ -4,7 +4,7 @@ import Top100ChartList from '../_components/Top100ChartList'
 
 export const revalidate = 3600
 
-const KoreaTop100 = async () => {
+const koreaTop100 = async () => {
   const koreaTop100Chart = await fetchMelonChart()
 
   const koreaTop100ChartList = koreaTop100Chart.response.SONGLIST
@@ -23,4 +23,4 @@ const KoreaTop100 = async () => {
   )
 }
 
-export default KoreaTop100
+export default koreaTop100
