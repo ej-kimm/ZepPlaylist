@@ -13,8 +13,8 @@ const LatestAlbums = async () => {
 
   return (
     <div className="w-full">
-      <h2 className="mt-6">최신 음반</h2>
-      <ul className="flex space-x-4 overflow-x-auto p-4">
+      <h2 className="my-4">최신 음반</h2>
+      <ul className="flex space-x-4 overflow-x-auto">
         {latestAlbumList.map((album) => (
           <li key={album.id} className="flex-none">
             <div className="w-32 text-left">
