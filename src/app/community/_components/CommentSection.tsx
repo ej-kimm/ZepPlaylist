@@ -1,5 +1,6 @@
 'use client'
 
+import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import { supabase } from '@/utils/supabase/client'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
@@ -36,6 +37,8 @@ export default function CommunityDetail({
   const [content, setContent] = useState<string>('')
   const [editingComment, setEditingComment] = useState<Comment | null>(null)
   const [currentUserId, setCurrentUserId] = useState<string | null>(null)
+  const { setTrackIds, togglePlay, playNextTrack, setPlayerOpen } =
+    useMusicPlayerStore()
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -45,7 +48,25 @@ export default function CommunityDetail({
       }
     }
     fetchUser()
-  }, [])
+
+    if (songs.length > 0) {
+      setTrackIds(songs.map((song) => song.spotify_id))
+      setPlayerOpen()
+      togglePlay()
+    }
+  }, [songs, setTrackIds, togglePlay])
+
+  const handleSongClick = () => {
+    setTrackIds(songs.map((song) => song.spotify_id))
+    playNextTrack()
+
+    const debugState = () => {
+      const state = useMusicPlayerStore.getState()
+      console.log('Music Player State:', state)
+    }
+
+    debugState()
+  }
 
   const handleAddComment = async () => {
     if (!currentUserId) {
@@ -117,7 +138,8 @@ export default function CommunityDetail({
             songs.map((song) => (
               <li
                 key={song.spotify_id}
-                className="flex items-center justify-between border-b py-2"
+                className="flex cursor-pointer items-center justify-between border-b py-2 hover:bg-gray-100"
+                onClick={() => handleSongClick()}
               >
                 <div className="flex items-center">
                   <div className="relative h-12 w-12">
