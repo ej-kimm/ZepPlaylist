@@ -3,11 +3,12 @@ import Image from 'next/image'
 
 type MusicDetailsProps = {
   musicDetail: Tables<'music'> | undefined
+  toggleModal: () => void
 }
 
-const MusicDetails = ({ musicDetail }: MusicDetailsProps) => {
+const MusicDetails = ({ musicDetail, toggleModal }: MusicDetailsProps) => {
   return (
-    <div className="flex">
+    <div className="flex flex-grow bg-green-100" onClick={toggleModal}>
       <Image
         // TODO : 웹버전 src default 커버 설정하기
         className="hidden"
