@@ -31,7 +31,9 @@ const ProgressBar = ({
   }
 
   return (
-    <div className={`${isModalOpen ? 'block' : 'hidden'} flex flex-col gap-1`}>
+    <div
+      className={`${isModalOpen ? 'block' : 'hidden'} flex w-full flex-col gap-1`}
+    >
       <div className="flex justify-between">
         <time className="text-[8px] font-normal leading-none tracking-normal text-[rgba(0,0,0,0.6)]">
           {formatTime(played * duration)}

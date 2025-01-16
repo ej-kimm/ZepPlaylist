@@ -21,7 +21,7 @@ export default function AlbumCover({ musicDetail }: AlbumCoverProps) {
 
   return (
     <div
-      className="group h-[500px] w-[500px] [perspective:1000px]"
+      className="group h-[266px] w-[266px] [perspective:1000px]"
       onClick={handleFlip}
     >
       <div
@@ -33,8 +33,8 @@ export default function AlbumCover({ musicDetail }: AlbumCoverProps) {
           <Image
             src={album_cover || '/No cover'}
             alt={title || 'No Title'}
-            width={500}
-            height={500}
+            layout="fill"
+            objectFit="cover"
           />
         </div>
         <div className="rotate-y-180 absolute left-0 top-0 z-10 flex h-full w-full flex-col bg-white [backface-visibility:hidden]">
