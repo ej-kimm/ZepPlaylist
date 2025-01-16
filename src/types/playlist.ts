@@ -28,3 +28,9 @@ export type PlaylistUpdate = {
   name?: string
   user_id?: string
 }
+
+export type MusicData = {
+  id: string
+  title: string
+  artist: string
+}

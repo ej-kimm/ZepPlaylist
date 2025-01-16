@@ -1,57 +1,25 @@
 'use client'
-import { fetchPlaylistsWithCovers } from '@/api/playlist/actions'
 import MoreOptionsButton from '@/components/common/MoreOptionsButton'
+import usePlaylistOperations from '@/hooks/usePlaylistOperations'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import { userStore } from '@/store/userSlice'
-import type { PlaylistRow } from '@/types/playlist'
 import Image from 'next/image'
-import { useState } from 'react'
 
 type SearchResultProps = {
   item: SpotifyApi.TrackObjectFull
-}
-
-type MusicData = {
-  artist: string
-  id: string
-  title: string
 }
 
 const SearchResultItem = ({ item }: SearchResultProps) => {
   const { user } = userStore((state) => state)
   const { isPlayerOpen, setTrackIds, togglePlay, setPlayerOpen } =
     useMusicPlayerStore()
-  const [playlists, setPlaylists] = useState<PlaylistRow[]>([])
+  const { playlists, handleMoreOptionBtn } = usePlaylistOperations()
 
   const handlePlayBtn = async (songId: string) => {
     console.log(songId)
     if (!isPlayerOpen) setPlayerOpen() // 페이지 방문 후, 첫 곡 재생이면 플레이어바 보여줌
     setTrackIds(songId)
     togglePlay()
-  }
-
-  const getplayList = async () => {
-    try {
-      const data = await fetchPlaylistsWithCovers()
-      setPlaylists(data)
-    } catch (error) {
-      console.error('Error fetching playlists:', error)
-    }
-  }
-
-  const handleMoreOptionBtn = async (
-    id: string,
-    musicName: string,
-    artistName: string,
-  ) => {
-    getplayList()
-    const data = {
-      id: id,
-      title: musicName,
-      artist: artistName,
-    }
-
-    return data
   }
 
   return (

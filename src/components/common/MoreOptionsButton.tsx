@@ -1,7 +1,7 @@
 'use client'
 
 import { usePlaylistMusicUpsert } from '@/hooks/usePlaylistMusicUpsert'
-import type { PlaylistRow } from '@/types/playlist'
+import type { MusicData, PlaylistRow } from '@/types/playlist'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
@@ -14,12 +14,6 @@ type MoreOptionsButtonProps = {
   user: User | null
   onFetchMusicData: () => Promise<MusicData>
   playlists: PlaylistRow[]
-}
-
-type MusicData = {
-  artist: string
-  id: string
-  title: string
 }
 
 type User = {
