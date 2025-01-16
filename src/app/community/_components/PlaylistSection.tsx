@@ -1,16 +1,16 @@
-'use client';
+'use client'
 
-import PlaylistCard from '@/app/community/_components/PlaylistCard';
+import PlaylistCard from '@/app/community/_components/PlaylistCard'
 
 type PlaylistSectionProps = {
-  userId: string;
+  userId: string
   playlists: {
-    id: string;
-    name: string;
-    likeCount: number;
-    likedByUser?: boolean;
-  }[];
-};
+    id: string
+    name: string
+    likeCount: number
+    likedByUser?: boolean
+  }[]
+}
 
 const PlaylistSection = ({ userId, playlists }: PlaylistSectionProps) => {
   return (
@@ -19,7 +19,7 @@ const PlaylistSection = ({ userId, playlists }: PlaylistSectionProps) => {
         <PlaylistCard key={playlist.id} playlist={playlist} userId={userId} />
       ))}
     </div>
-  );
-};
+  )
+}
 
-export default PlaylistSection;
+export default PlaylistSection
