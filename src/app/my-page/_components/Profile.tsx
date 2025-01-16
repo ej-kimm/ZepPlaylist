@@ -1,32 +1,28 @@
 'use client'
 
+import defaultProfileImg from '@/assets/images/defaultProfileImg.png'
 import { userStore } from '@/store/userSlice'
 import Image from 'next/image'
 import ProfileEdit from './ProfileEdit'
 
 const Profile = () => {
   const { user, setUser } = userStore()
-  console.log('user', user)
-
-  const defaultImg = '/image/defalut-profile.png' //임시 기본이미지지
   if (!user) {
     return
   }
   return (
-    <div>
-      <div className="mb-6 flex items-center">
+    <div className="mb-6 flex w-full items-center">
+      <div className="h-11 w-11 overflow-hidden rounded-full">
         <Image
-          src={user.profile_image || defaultImg}
-          width={100}
-          height={100}
+          src={user.profile_image || defaultProfileImg}
+          width={44}
+          height={44}
           alt="프로필 이미지"
-          className="mr-4 rounded-full"
+          className="mb-[46px] h-11 w-11"
         />
-        <ProfileEdit user={user} setUser={setUser} />
       </div>
-      <p className="text-lg">{user.nickname}</p>
-      <h2 className="mb-4 text-xl">내가 커뮤니티에 쓴 글</h2>
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3"></div>
+      <p className="body-2 ml-4">{user.nickname}</p>
+      <ProfileEdit user={user} setUser={setUser} />
     </div>
   )
 }

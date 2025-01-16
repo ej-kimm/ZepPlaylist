@@ -1,11 +1,13 @@
 'use client'
 
+import defaultProfileImg from '@/assets/images/defaultProfileImg.png'
 import { Button } from '@/components/common'
 import InputBox from '@/components/common/InputBox'
 import { supabase } from '@/utils/supabase/client'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
+import Swal from 'sweetalert2'
 import { z } from 'zod'
 
 const SignupForm = () => {
@@ -44,71 +46,79 @@ const SignupForm = () => {
       options: {
         data: {
           name: formData.nickname,
-          profile_image:
-            'https://i.namu.wiki/i/6AijZLjqdKDGjVzMK1CHNGiEyvrEyUVnl1_6Es4s5k5kfbep022bOHvG-sEn4_8opqy0uzzu9M7WUtU_sxb5UYmhY-fw_19wiRVJxTZDLHdaBKLbL1vEJPqQotCe18kx4bWvXMg-mbKtt-d5YjuCdG86CYBRDBmnAxBrnk9drLQ.webp',
+          profile_image: defaultProfileImg,
         },
       },
     })
     if (signUpError) {
       console.error(signUpError.message)
-      alert(signUpError.message)
+      Swal.fire({
+        icon: 'error',
+        text: '회원가입중 오류가 발생했습니다 다시시도해주세요!',
+      })
       return
     }
+    Swal.fire('완료', '회원가입 완료!', 'success')
     router.push('/login')
   }
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="mx-auto max-w-lg rounded-lg bg-white p-6 shadow-md"
-    >
-      <h2 className="mb-6 text-center text-2xl font-bold">회원가입</h2>
+    <form onSubmit={handleSubmit(onSubmit)} className="w-full bg-white">
       <InputBox
-        label="아이디"
         name="email"
         type="email"
-        placeholder="아이디를 입력해주세요"
+        placeholder="아이디"
         required={true}
         errorMessage={errors.email?.message}
         register={register}
+        className="caption-2 mb-6 w-full rounded-lg border-white bg-[#f4f4f4]"
       />
       <InputBox
-        label="비밀번호"
         name="password"
         type="password"
-        placeholder="비밀번호를 입력해주세요"
+        placeholder="비밀번호"
         required={true}
         register={register}
         errorMessage={errors.password?.message}
+        className="caption-2 mb-6 w-full rounded-lg border-white bg-[#f4f4f4]"
       />
       <InputBox
-        label="비밀번호 확인"
         name="passwordCheck"
         type="password"
-        placeholder="다시 비밀번호를 입력해주세요"
+        placeholder="비밀번호 확인인"
         required={true}
         register={register}
         errorMessage={errors.passwordCheck?.message}
+        className="caption-2 mb-6 w-full rounded-lg border-white bg-[#f4f4f4]"
       />
       <InputBox
-        label="닉네임"
         name="nickname"
         type="text"
-        placeholder="닉네임을 입력해주세요"
+        placeholder="닉네임"
         required={true}
         register={register}
         errorMessage={errors.nickname?.message}
+        className="caption-2 mb-6 w-full rounded-lg border-white bg-[#f4f4f4]"
       />
-      <div className="mt-6 flex items-center">
+      <div className="mt-8 flex items-center">
         <input
           type="checkbox"
-          className="mr-2 h-5 w-5 rounded border-gray-300 text-blue-500 focus:ring-2 focus:ring-blue-500"
+          className="mr-2 h-5 w-5 rounded border-gray-300 accent-primary"
         />
-        <span className="text-sm text-gray-600">서비스 정책 이용약관</span>
+        <span className="caption-1">서비스 정책 이용약관</span>
       </div>
-      <Button type="submit">회원가입</Button>
+      <Button
+        type="submit"
+        className="button-2 mt-12 h-[39px] w-full rounded-full border-primary"
+      >
+        회원가입
+      </Button>
     </form>
   )
 }
 
 export default SignupForm
+// width 가로
+// heigth 세로로
+// m(마진) 요소간에 간격을 떨어트리는용도
+// 그다음에 컬러를 체크

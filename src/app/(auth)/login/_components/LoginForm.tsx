@@ -7,6 +7,7 @@ import { supabase } from '@/utils/supabase/client'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import Swal from 'sweetalert2'
 import { z } from 'zod'
 
 const validator = z.object({
@@ -43,7 +44,10 @@ const LoginForm = () => {
 
     if (error) {
       console.error(error)
-      alert(error.message || '아이디 혹은 비밀번호를 확인해주세요')
+      Swal.fire({
+        icon: 'error',
+        text: '아이디 혹은 비밀번호를 확인해주세요!',
+      })
       return
     }
     let loginUser = null
@@ -74,30 +78,40 @@ const LoginForm = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="mx-auto max-w-md rounded-lg bg-white p-6 shadow-md"
+      className="mx-auto max-w-sm border-b border-black border-opacity-40 bg-white pb-[36px] sm:p-6"
     >
-      <h2 className="mb-6 text-center text-2xl font-bold">로그인</h2>
+      <h2 className="title-1 mb-10 text-left">로그인</h2>
       <InputBox
-        label="이메일"
         name="email"
         type="email"
-        placeholder="이메일을 입력하세요"
+        placeholder="아이디"
         required
         errorMessage={errors.email?.message}
         register={register}
+        className="caption-2 mb-10 w-full rounded-lg border-white bg-[#f4f4f4]"
       />
       <InputBox
-        label="비밀번호"
         name="password"
         type="password"
-        placeholder="비밀번호를 입력하세요"
+        placeholder="비밀번호"
         required
         errorMessage={errors.password?.message}
         register={register}
+        className="caption-2 mb-[52px] w-full rounded-lg border-white bg-[#f4f4f4]"
       />
-      <Button type="submit">로그인</Button>
+      <Button
+        type="submit"
+        className="button-2 h-[39px] w-full rounded-full border-primary"
+      >
+        로그인
+      </Button>
     </form>
   )
 }
 
 export default LoginForm
+
+// width 가로
+// heigth 세로로
+// m(마진) 요소간에 간격을 떨어트리는용도
+// 그다음에 컬러를 체크
