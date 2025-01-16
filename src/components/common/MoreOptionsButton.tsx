@@ -1,29 +1,28 @@
 'use client'
 
+import { usePlaylistMusicUpsert } from '@/hooks/usePlaylistMusicUpsert'
 import type { PlaylistRow } from '@/types/playlist'
-import { supabase } from '@/utils/supabase/client'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
-import Swal from 'sweetalert2'
 import BottomSheet from './BottomSheet'
 
-type ArtistProps = {
+type MoreOptionsButtonProps = {
   musicName: string
   artistName: string
-  songImage: string
-  user: UserState | null
-  onClickMoreOptionBtn: () => Promise<playListData>
+  albumCover: string
+  user: User | null
+  onFetchMusicData: () => Promise<MusicData>
   playlists: PlaylistRow[]
 }
 
-type playListData = {
+type MusicData = {
   artist: string
   id: string
   title: string
 }
 
-type UserState = {
+type User = {
   email: string
   id: string
   nickname: string
@@ -33,123 +32,40 @@ type UserState = {
 const MoreOptionsButton = ({
   musicName,
   artistName,
-  songImage,
+  albumCover,
   user,
-  onClickMoreOptionBtn,
+  onFetchMusicData,
   playlists,
-}: ArtistProps) => {
-  const [isOpen, setIsOpen] = useState(false)
+}: MoreOptionsButtonProps) => {
+  const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false)
+
+  const { upsertMusic, addMusicToPlaylistTable } =
+    usePlaylistMusicUpsert(albumCover)
 
   const handleOpenBottomSheet = async () => {
-    setIsOpen(true)
+    setIsBottomSheetOpen(true)
     try {
-      await onClickMoreOptionBtn()
+      await onFetchMusicData()
     } catch (error) {
       console.error('Error in handleOpenBottomSheet:', error)
     }
   }
 
+  // 특정 플레이리스트 목록을 동작하는 함수
   const addMusiscInPlayList = async (playlistId: string) => {
     try {
-      const data = await onClickMoreOptionBtn()
-      const musicId = await insertMusic(data)
-      await insertPlayList(musicId as string, playlistId)
+      // ... 버튼 클릭 시 해당 곡의 data 정보를 가저온다
+      const musicData = await onFetchMusicData()
+
+      // spubase music 테이블에 곡 담아주는 함수 호출
+      const musicId = await upsertMusic(musicData)
+
+      // spubase playlist_music 테이블에 곡 담아주는 함수 호출
+      await addMusicToPlaylistTable(musicId as string, playlistId)
     } catch (error) {
       console.error('Error in addMusiscInPlayList:', error)
       throw error
     }
-  }
-
-  const insertMusic = async (data: playListData) => {
-    if (data) {
-      const { data: isMusic, error: isMusicError } = await supabase
-        .from('music')
-        .select('*')
-        .eq('spotify_id', data.id)
-
-      if (isMusic?.length === 0) {
-        // First, insert the music into the 'music' table
-        const { data: insertedData, error: insertError } = await supabase
-          .from('music')
-          .insert({
-            spotify_id: data.id,
-            title: data.title,
-            artist: data.artist,
-            album_cover: songImage,
-            play_time: 0,
-            created_at: new Date().toISOString(),
-          })
-          .select()
-          .single()
-
-        if (insertError) {
-          console.error('Error inserting new music:', insertError)
-          return null
-        }
-
-        console.log('Insert successful:', insertedData)
-
-        const musicId = insertedData.spotify_id
-        return musicId
-      } else {
-        const { data: updatedData, error: updateError } = await supabase
-          .from('music')
-          .update({ created_at: new Date().toISOString() })
-          .eq('spotify_id', data.id)
-          .select()
-          .single()
-
-        if (updateError) {
-          console.error('Error updating create_at:', updateError)
-          return null
-        }
-
-        const musicId = updatedData.spotify_id
-        return musicId
-      }
-    } else {
-      console.log('No data returned from onClickMoreOptionBtn')
-    }
-  }
-
-  const insertPlayList = async (musicId: string, playlistId: string) => {
-    if (musicId) {
-      const { data: isPlayList, error: isMusicError } = await supabase
-        .from('playlist_music')
-        .select('music_id')
-        .eq('playlist_id', playlistId)
-
-      const isMusicId = isPlayList
-        ?.map((item) => item.music_id)
-        .some((item) => item === musicId)
-
-      if (isMusicId) {
-        Swal.fire(
-          '취소',
-          '해당 곡은 이미 플레이리스트에 저장된 곡입니다. ',
-          'warning',
-        )
-        return { success: true, musicId }
-      } else {
-        const { error: insertPlaylistError } = await supabase
-          .from('playlist_music')
-          .insert({
-            playlist_id: playlistId,
-            music_id: musicId,
-          })
-
-        if (insertPlaylistError) {
-          console.error('Error adding music to playlist:', insertPlaylistError)
-          return null
-        }
-        Swal.fire(
-          '완료',
-          '해당 곡이 플레이리스트에 저장되었습니다. ',
-          'success',
-        )
-      }
-    }
-    return { success: true, musicId }
   }
 
   return (
@@ -166,8 +82,8 @@ const MoreOptionsButton = ({
         </div>
       </button>
       <BottomSheet
-        isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
+        isOpen={isBottomSheetOpen}
+        onClose={() => setIsBottomSheetOpen(false)}
         height="50%"
         maxWidth="100%"
       >
@@ -185,7 +101,7 @@ const MoreOptionsButton = ({
               <div className="relative flex items-center space-x-4">
                 <div className="relative h-16 w-16 overflow-hidden rounded">
                   <Image
-                    src={songImage}
+                    src={albumCover}
                     alt="앨범 커버"
                     layout="fill"
                     objectFit="cover"

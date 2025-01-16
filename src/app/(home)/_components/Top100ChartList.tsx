@@ -95,9 +95,9 @@ const Top100ChartList = ({
       <MoreOptionsButton
         musicName={musicName}
         artistName={artistName}
-        songImage={albumCover}
+        albumCover={albumCover}
         user={user}
-        onClickMoreOptionBtn={() => handleMoreOptionBtn(musicName, artistName)}
+        onFetchMusicData={() => handleMoreOptionBtn(musicName, artistName)}
         playlists={playlists}
       />
     </li>
