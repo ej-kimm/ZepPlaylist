@@ -1,5 +1,5 @@
 import Hamburger from './Hamburger'
-import Navbar from './Navdar'
+import Navbar from './Navbar'
 
 const Header = async () => {
   return (
