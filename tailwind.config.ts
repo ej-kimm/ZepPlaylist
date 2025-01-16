@@ -26,6 +26,7 @@ const config: Config = {
       zIndex: {
         header: '10',
         player: '10',
+        'player-modal': '20',
       },
       fontFamily: {
         pretendard: ['var(--font-pretendard)'],
