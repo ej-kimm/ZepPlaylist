@@ -61,17 +61,16 @@ const MusicPlayer = () => {
         />
         <PlayerControls isModalOpen={isModalOpen} />
       </div>
-      {isModalOpen && (
-        <MusicDetailModal
-          url={url}
-          toggleModal={toggleModal}
-          isModalOpen={isModalOpen}
-          musicDetail={musicDetail}
-          lyrics={lyrics}
-          playerState={playerState}
-          onSeek={handleSeek}
-        />
-      )}
+
+      <MusicDetailModal
+        url={url}
+        toggleModal={toggleModal}
+        isModalOpen={isModalOpen}
+        musicDetail={musicDetail}
+        lyrics={lyrics}
+        playerState={playerState}
+        onSeek={handleSeek}
+      />
     </section>
   )
 }

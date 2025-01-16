@@ -29,20 +29,21 @@ export default function AlbumCover({ musicDetail }: AlbumCoverProps) {
           isFlipped ? 'rotate-y-180' : ''
         }`}
       >
-        <div className="absolute left-0 top-0 z-10 h-full w-full bg-white [backface-visibility:hidden]">
+        <div className="absolute left-0 top-0 h-full w-full [backface-visibility:hidden]">
           <Image
             src={album_cover || '/No cover'}
             alt={title || 'No Title'}
-            layout="fill"
-            objectFit="cover"
+            width={266}
+            height={266}
+            className="object-cover"
           />
         </div>
-        <div className="rotate-y-180 absolute left-0 top-0 z-10 flex h-full w-full flex-col bg-white [backface-visibility:hidden]">
-          <h3>{title}</h3>
-          <p>{artist}</p>
-          <p>발매일: {album?.releaseDate}</p>
-          <p>앨범명: {album?.albumName}</p>
-          <p>장르: {genre.genres}</p>
+        <div className="rotate-y-180 absolute left-0 top-0 flex h-full w-full flex-col [backface-visibility:hidden]">
+          <p className="caption-1">{title}</p>
+          <p className="caption-1">{artist}</p>
+          <p className="caption-1">{album?.releaseDate}</p>
+          <p className="caption-1">{album?.albumName}</p>
+          <p className="caption-1">{genre.genres}</p>
         </div>
       </div>
     </div>

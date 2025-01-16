@@ -76,7 +76,7 @@
     letter-spacing: 0em;
   }
 
-  /* 기본 style 제거 */
+  /* 기본 style 추가 및 제거 */
   input:focus,
   input:active {
     @apply shadow-none outline-none;
@@ -88,18 +88,23 @@
 }
 
 @layer components {
-  .lyrics {
-    height: 60px;
-    overflow-y: scroll;
-
+  .lyrics-small,
+  .lyrics-full {
     -ms-overflow-style: none;
     scrollbar-width: none;
-    -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
   }
 
+  .lyrics-small {
+    -webkit-line-clamp: 3;
+  }
+
+  .lyrics-full {
+    -webkit-line-clamp: 11;
+  }
+
   .range-slider {
-    @apply bg-secondaryOpacity;
+    @apply bg-secondary-opacity;
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;

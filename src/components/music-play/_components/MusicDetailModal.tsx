@@ -41,6 +41,7 @@ export default function MusicDetailModal({
   const user_id = user?.id || ''
   const { songLike, isPending, updateLike } = useSongLike({ user_id })
 
+  const [isFullLyrics, setIsFullLyrics] = useState<boolean>(false)
   const [isLiked, setIsLiked] = useState<boolean>(false)
 
   const handleLike = async () => {
@@ -53,6 +54,8 @@ export default function MusicDetailModal({
 
   const handleSave = async () => {}
 
+  const handleLClickLyrics = () => setIsFullLyrics((prev) => !prev)
+
   useEffect(() => {
     // 로그인 한 유저
     if (user_id && songLike !== undefined) {
@@ -61,7 +64,9 @@ export default function MusicDetailModal({
   }, [songLike])
 
   return (
-    <section className="absolute bottom-0 left-0 h-screen w-full bg-slate-200 px-6">
+    <section
+      className={`${isModalOpen ? 'translate-y-0' : 'translate-y-full'} h-navBar-calc fixed bottom-0 left-0 w-full bg-slate-200 px-6 transition-all duration-500 ease-out`}
+    >
       <div className="flex h-full max-h-[620px] flex-col items-center">
         <div className="w-full max-w-[266px] py-[10px]">
           <div className="flex flex-col items-center">
@@ -84,8 +89,12 @@ export default function MusicDetailModal({
               </button>
             </div>
           </div>
-          <AlbumCover musicDetail={musicDetail} />
-          <Lyrics lyrics={lyrics} />
+          {!isFullLyrics && <AlbumCover musicDetail={musicDetail} />}
+          <Lyrics
+            lyrics={lyrics}
+            isFullLyrics={isFullLyrics}
+            onClickLyrics={handleLClickLyrics}
+          />
         </div>
         <ProgressBar
           url={url}
