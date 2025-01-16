@@ -53,7 +53,7 @@ const MoreOptionsButton = ({
     try {
       const data = await onClickMoreOptionBtn()
       const musicId = await insertMusic(data)
-      await insertPlayList(musicId, playlistId)
+      await insertPlayList(musicId as string, playlistId)
     } catch (error) {
       console.error('Error in addMusiscInPlayList:', error)
       throw error

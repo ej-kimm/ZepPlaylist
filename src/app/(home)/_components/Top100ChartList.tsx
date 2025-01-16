@@ -26,13 +26,11 @@ type BillboardChart = {
 
 type Chart = KoreanChart | BillboardChart
 
-type playListData =
-  | {
-      id: string
-      artist: string
-      title: string
-    }
-  | undefined
+type playListData = {
+  id: string
+  artist: string
+  title: string
+}
 
 const Top100ChartList = ({
   isKoreaChart,
