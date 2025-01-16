@@ -1,6 +1,7 @@
 import InputBox from '@/components/common/InputBox'
 import { supabase } from '@/utils/supabase/client'
 import { useForm } from 'react-hook-form'
+import Swal from 'sweetalert2'
 import { z } from 'zod'
 const passwordChangeSchema = z
   .object({
@@ -11,10 +12,10 @@ const passwordChangeSchema = z
       .string()
       .min(6, { message: '비밀번호 확인을 입력해주세요.' }),
   })
-  .refine(
-    ({ newPassword, passwordCheck }) => newPassword === passwordCheck,
-    { message: '비밀번호가 일치하지 않습니다.', path: ['passwordCheck'] },
-  )
+  .refine(({ newPassword, passwordCheck }) => newPassword === passwordCheck, {
+    message: '비밀번호가 일치하지 않습니다.',
+    path: ['passwordCheck'],
+  })
 
 type PasswordChangeForm = z.infer<typeof passwordChangeSchema>
 type PasswordChangeProps = {
@@ -35,9 +36,12 @@ export const PasswordChange = ({ setIsOpenPassword }: PasswordChangeProps) => {
 
     if (passwordChangeError) {
       console.error(passwordChangeError.message)
-      alert('비밀번호 변경 에러')
+      Swal.fire({
+        icon: 'error',
+        text: '비밀번호 변경중 오류가 발생했습니다 다시시도해주세요!',
+      })
     } else {
-      alert('비밀번호가 성공적으로 변경되었습니다.')
+      Swal.fire('완료', '비밀번호가 변경되었습니다.', 'success')
     }
   }
 

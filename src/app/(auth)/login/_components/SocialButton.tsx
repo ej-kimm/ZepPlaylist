@@ -1,6 +1,10 @@
 'use client'
+import googleLogo from '@/assets/images/googleLogo.svg'
+import kakaoLogo from '@/assets/images/kakaoLogo.svg'
+import spotifyLogo from '@/assets/images/spotifyLogo.svg'
 import { supabase } from '@/utils/supabase/client'
 import { useMutation } from '@tanstack/react-query'
+import Image from 'next/image'
 import SocialButtonItem from './SocialButtonItem'
 
 const SocialButton = () => {
@@ -16,16 +20,11 @@ const SocialButton = () => {
         provider,
         options: { redirectTo },
       })
-      console.log('data======================', data)
       if (error) throw new Error(error.message)
       return data ? { ...data } : data
     },
     onSuccess: async (data: any) => {
       if (data?.url) {
-        console.log('data', data)
-        const { data: user } = await supabase.auth.getUser()
-        console.log('user=======', user)
-        // setUser(data.session?.user.user_metadata)
         window.location.href = data.url
       }
     },
@@ -51,22 +50,31 @@ const SocialButton = () => {
   return (
     <form className="flex space-x-4">
       <SocialButtonItem
-        label="카카오"
-        bgColor="bg-yellow-500"
-        hoverColor="hover:bg-yellow-600 focus:ring-yellow-500"
-        onClick={() => handleSignIn('kakao')}
-      />
-      <SocialButtonItem
-        label="스포티파이"
-        bgColor="bg-blue-500"
-        hoverColor="hover:bg-blue-600 focus:ring-blue-500"
-        onClick={() => handleSignIn('spotify')}
-      />
-      <SocialButtonItem
-        label="구글"
-        bgColor="bg-red-500"
         hoverColor="hover:bg-red-600 focus:ring-red-500"
         onClick={() => handleSignIn('google')}
+        icon={
+          <Image src={googleLogo} alt="구글 아이콘" width={30} height={30} />
+        }
+      />
+      <SocialButtonItem
+        hoverColor="hover:bg-yellow-600 focus:ring-yellow-500"
+        onClick={() => handleSignIn('kakao')}
+        icon={
+          <Image src={kakaoLogo} alt="카카오 아이콘" width={30} height={30} />
+        }
+      />
+      <SocialButtonItem
+        hoverColor="hover:bg-blue-600 focus:ring-blue-500"
+        onClick={() => handleSignIn('spotify')}
+        icon={
+          <Image
+            src={spotifyLogo}
+            alt="스포티파이 아이콘"
+            width={30}
+            height={30}
+          />
+        }
+        
       />
     </form>
   )

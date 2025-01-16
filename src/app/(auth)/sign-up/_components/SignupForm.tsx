@@ -1,11 +1,13 @@
 'use client'
 
+import defaultProfileImg from '@/assets/images/defaultProfileImg.png'
 import { Button } from '@/components/common'
 import InputBox from '@/components/common/InputBox'
 import { supabase } from '@/utils/supabase/client'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
+import Swal from 'sweetalert2'
 import { z } from 'zod'
 
 const SignupForm = () => {
@@ -44,16 +46,19 @@ const SignupForm = () => {
       options: {
         data: {
           name: formData.nickname,
-          profile_image:
-            'https://i.namu.wiki/i/6AijZLjqdKDGjVzMK1CHNGiEyvrEyUVnl1_6Es4s5k5kfbep022bOHvG-sEn4_8opqy0uzzu9M7WUtU_sxb5UYmhY-fw_19wiRVJxTZDLHdaBKLbL1vEJPqQotCe18kx4bWvXMg-mbKtt-d5YjuCdG86CYBRDBmnAxBrnk9drLQ.webp',
+          profile_image: defaultProfileImg,
         },
       },
     })
     if (signUpError) {
       console.error(signUpError.message)
-      alert(signUpError.message)
+      Swal.fire({
+        icon: 'error',
+        text: '회원가입중 오류가 발생했습니다 다시시도해주세요!',
+      })
       return
     }
+    Swal.fire('완료', '회원가입 완료!', 'success')
     router.push('/login')
   }
 

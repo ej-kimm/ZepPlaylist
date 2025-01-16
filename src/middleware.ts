@@ -1,9 +1,18 @@
-import { type NextRequest } from 'next/server'
+import { NextResponse, type NextRequest } from 'next/server'
 import { updateSession } from './utils/supabase/middleware'
+import { createClient } from './utils/supabase/server'
 
 export async function middleware(request: NextRequest) {
-  // 서버상태라 클라이언트한테 alert이나 뭐 로그인해야한다 알림 띄울방법이없는것같음
-  // 한번 물어보기
+  const supabase = createClient()
+  const {
+    data: { session },
+    error,
+  } = await supabase.auth.getSession()
+
+  if (!session?.user) {
+    const loginUrl = new URL('http://localhost:3000/login', request.url)
+    return NextResponse.redirect(loginUrl)
+  }
   return await updateSession(request)
 }
 
