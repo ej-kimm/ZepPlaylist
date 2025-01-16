@@ -37,7 +37,7 @@ const MusicPlayer = () => {
   if (isPending) return <>Loading...</>
 
   return (
-    <div className="fixed bottom-0 left-0 h-14 w-full rounded-md bg-black">
+    <section className="z-player shadow-drop fixed bottom-0 left-0 h-[60px] w-full bg-white">
       <ReactPlayer
         url={url}
         ref={playerRef}
@@ -45,30 +45,33 @@ const MusicPlayer = () => {
         controls={false}
         width="0"
         height="0"
+        volume={0.3} // TODO : 임시로 볼륨 조절
         onReady={handleReady} // 영상 준비 완료 상태
         onDuration={handleDuration} // 총 재생 시간
         onProgress={handleProgress} // 현재 재생 시간
         onEnded={togglePlay}
       />
-      <div className="flex items-center justify-between">
-        <MusicDetails musicDetail={musicDetail} />
-        <ProgressBar playerState={playerState} onSeek={handleSeek} url={url} />
-        <PlayerControls />
-        <button className="text-white" onClick={toggleModal}>
-          열기
-        </button>
-      </div>
-      {isModalOpen && (
-        <MusicDetailModal
-          url={url}
-          toggleModal={toggleModal}
-          musicDetail={musicDetail}
-          lyrics={lyrics}
+      <div className="flex h-full items-center justify-between px-6">
+        <MusicDetails musicDetail={musicDetail} toggleModal={toggleModal} />
+        <ProgressBar
           playerState={playerState}
+          isModalOpen={isModalOpen}
           onSeek={handleSeek}
+          url={url}
         />
-      )}
-    </div>
+        <PlayerControls isModalOpen={isModalOpen} />
+      </div>
+
+      <MusicDetailModal
+        url={url}
+        toggleModal={toggleModal}
+        isModalOpen={isModalOpen}
+        musicDetail={musicDetail}
+        lyrics={lyrics}
+        playerState={playerState}
+        onSeek={handleSeek}
+      />
+    </section>
   )
 }
 
