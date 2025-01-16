@@ -3,9 +3,9 @@ const Skeleton = () => {
     <section className="z-player shadow-drop fixed bottom-0 left-0 flex h-[60px] w-full bg-white">
       <div className="flex h-full w-full animate-pulse items-center justify-between px-6">
         <div className="flex flex-grow">
-          <div className="flex w-5/6 flex-col items-start justify-start gap-1">
-            <div className="h-4 w-full rounded bg-gray-300" />
-            <div className="h-3 w-full rounded bg-gray-300" />
+          <div className="flex w-full flex-col items-start justify-start gap-1">
+            <div className="h-4 w-3/5 rounded bg-gray-300" />
+            <div className="h-3 w-2/5 rounded bg-gray-300" />
           </div>
         </div>
 
