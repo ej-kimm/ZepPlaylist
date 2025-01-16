@@ -37,9 +37,6 @@ export default function KeywordCarousel({
                   : 'border-[#9032E8] bg-white text-[#9032E8]'
               }`}
               style={{
-                boxShadow: selectedKeywords.includes(label)
-                  ? '0px 4px 6px rgba(144, 50, 232, 0.4)'
-                  : '0px 4px 6px rgba(0, 0, 0, 0.1)',
                 fontSize: '12px',
                 padding: '6px 12px',
                 transition: 'all 0.3s ease',
