@@ -100,7 +100,7 @@ const SignupForm = () => {
         errorMessage={errors.nickname?.message}
         className="caption-2 mb-6 w-full rounded-lg border-white bg-[#f4f4f4]"
       />
-      <div className="mt-6 flex items-center">
+      <div className="mt-8 flex items-center">
         <input
           type="checkbox"
           className="mr-2 h-5 w-5 rounded border-gray-300 accent-primary"

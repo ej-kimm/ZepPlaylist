@@ -88,15 +88,11 @@ const ProfileEdit = ({ user, setUser }: User) => {
       <BottomSheet
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
-        height="50%"
-        maxWidth="500px"
+        height="350px"
+        maxWidth="375px"
       >
-        {/* // width 가로 // heigth 세로로 // m(마진) 요소간에 간격을 떨어트리는용도
-        // 그다음에 컬러를 체크 */}
-        <div className="flex flex-col items-center space-y-6 p-4">
-          <h1 className="flex items-center space-x-4 text-xl text-[#333]">
-            프로필 변경
-          </h1>
+        <div className="flex flex-col items-center space-y-6 p-4 mt-10">
+          <h1 className="title-1 text-left">프로필 수정</h1>
           <div className="flex w-full items-center justify-between">
             <div className="flex items-center space-x-4">
               <Image
@@ -104,7 +100,7 @@ const ProfileEdit = ({ user, setUser }: User) => {
                 height={44}
                 src={profileImage!}
                 alt="프로필 이미지"
-                className="rounded-full border border-gray-300 object-cover"
+                className="h-11 w-11 rounded-full border border-gray-300 object-cover"
                 onClick={handleImgClick}
               />
             </div>
@@ -123,7 +119,6 @@ const ProfileEdit = ({ user, setUser }: User) => {
             </button>
           </div>
           <div className="w-full">
-            <label className="mb-2 block text-gray-700">닉네임</label>
             <input
               type="text"
               value={editNickname}

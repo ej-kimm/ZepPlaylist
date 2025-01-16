@@ -18,7 +18,7 @@ const Profile = () => {
           width={44}
           height={44}
           alt="프로필 이미지"
-          className="h-11 w-11"
+          className="mb-[46px] h-11 w-11"
         />
       </div>
       <p className="body-2 ml-4">{user.nickname}</p>

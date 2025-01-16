@@ -47,6 +47,7 @@ export const PasswordChange = ({ setIsOpenPassword }: PasswordChangeProps) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <h1 className="title-1">비밀번호 변경</h1>
       <InputBox
         name="newPassword"
         type="password"
@@ -54,18 +55,20 @@ export const PasswordChange = ({ setIsOpenPassword }: PasswordChangeProps) => {
         register={register}
         errorMessage={errors.newPassword?.message}
         required={true}
+        className="caption-2 mb-6 w-full rounded-lg border-white bg-[#f4f4f4]"
       />
       <InputBox
         name="passwordCheck"
         type="password"
-        placeholder="비밀번호 확인인"
+        placeholder="비밀번호 확인"
         register={register}
         errorMessage={errors.passwordCheck?.message}
         required={true}
+        className="caption-2 mb-6 w-full rounded-lg border-white bg-[#f4f4f4]"
       />
       <button
         type="submit"
-        className="w-full rounded-lg bg-[#B15EFF] py-3 text-white transition-all hover:bg-[#9F54E5] focus:outline-none focus:ring-2 focus:ring-[#B15EFF]"
+        className="button-2 w-full rounded-lg bg-[#B15EFF] py-3 transition-all hover:bg-[#9F54E5] focus:outline-none focus:ring-2 focus:ring-[#B15EFF]"
         onClick={() => {
           setIsOpenPassword(false)
         }}

@@ -7,11 +7,11 @@ const MyPage = async () => {
   const playlists = await getPlaylists()
   return (
     <>
-      <div className="mt-[18px]">
+      <div className="mb-[46px] mt-[18px]">
         <Profile />
       </div>
       <div>
-        <h2 className="mb-4 text-xl">내가 커뮤니티에 쓴 글</h2>
+        <h1 className="mb-4 text-xl">내가 커뮤니티에 쓴 글</h1>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3"></div>
         {playlists && playlists.length > 0 ? (
           playlists.map((p) => (
