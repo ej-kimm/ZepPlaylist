@@ -2,6 +2,7 @@
 
 import {
   addPlaylist,
+  fetchLatestLikedSongCover,
   fetchPlaylistsWithCovers,
   updatePlaylist,
 } from '@/api/playlist/actions'
@@ -11,7 +12,6 @@ import { PlaylistRow } from '@/types/playlist'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { FaLock, FaLockOpen } from 'react-icons/fa'
 import Swal from 'sweetalert2'
 
 type PlaylistComponentProps = {
@@ -25,6 +25,9 @@ export default function PlaylistComponent({
   const router = useRouter()
 
   const [playlists, setPlaylists] = useState<PlaylistRow[]>(initialPlaylists)
+  const [latestLikedSongCover, setLatestLikedSongCover] = useState<
+    string | null
+  >(null)
   const [modalType, setModalType] = useState<'add' | 'edit' | null>(null)
   const [selectedPlaylist, setSelectedPlaylist] = useState<PlaylistRow | null>(
     null,
@@ -36,29 +39,30 @@ export default function PlaylistComponent({
   const [showDropdown, setShowDropdown] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
 
+  // 데이터 로드
   useEffect(() => {
     if (!isLogin || !user) return
 
-    const loadPlaylists = async () => {
+    const loadPlaylistsAndLikedCover = async () => {
       setIsLoading(true)
       try {
+        const cover = await fetchLatestLikedSongCover(user.id)
+        setLatestLikedSongCover(cover)
+
         const data = await fetchPlaylistsWithCovers()
         setPlaylists(data)
       } catch (error) {
-        console.error('플레이리스트 가져오기 오류:', error)
-        Swal.fire(
-          '오류',
-          '플레이리스트를 가져오는 중 문제가 발생했습니다.',
-          'error',
-        )
+        console.error('데이터 로드 오류:', error)
+        Swal.fire('오류', '데이터를 가져오는 중 문제가 발생했습니다.', 'error')
       } finally {
         setIsLoading(false)
       }
     }
 
-    loadPlaylists()
+    loadPlaylistsAndLikedCover()
   }, [isLogin, user])
 
+  // 새로운 플리 추가
   const handleAddPlaylist = async () => {
     if (!isLogin || !user) {
       Swal.fire('오류', '로그인이 필요합니다.', 'error')
@@ -83,6 +87,7 @@ export default function PlaylistComponent({
     }
   }
 
+  // 플리 수정
   const handleEditPlaylist = async () => {
     if (!selectedPlaylist || !isLogin || !user) {
       Swal.fire('오류', '로그인이 필요합니다.', 'error')
@@ -106,6 +111,7 @@ export default function PlaylistComponent({
     }
   }
 
+  // 모달 관련 로직
   const openModal = (type: 'add' | 'edit', playlist?: PlaylistRow) => {
     setModalType(type)
     if (type === 'edit' && playlist) {
@@ -132,6 +138,7 @@ export default function PlaylistComponent({
     setSelectedKeywords([])
   }
 
+  // 키워드
   const toggleKeyword = (keyword: string) => {
     setSelectedKeywords((prev) =>
       prev.includes(keyword)
@@ -140,6 +147,7 @@ export default function PlaylistComponent({
     )
   }
 
+  // 플리 핸들러
   const handlePlaylistClick = (playlistId: string) => {
     router.push(`/playlist/${playlistId}`)
   }
@@ -159,6 +167,28 @@ export default function PlaylistComponent({
             <p className="text-center text-gray-500">로딩 중...</p>
           ) : (
             <ul className="mt-4 space-y-2">
+              {latestLikedSongCover && (
+                <li
+                  className="flex h-[80px] w-[378px] cursor-pointer items-center justify-between rounded-lg border bg-white px-4 py-2 shadow-sm"
+                  onClick={() => router.push(`/likes`)}
+                >
+                  <div className="relative flex items-center space-x-4">
+                    <div className="relative h-16 w-16 overflow-hidden rounded">
+                      <Image
+                        src={latestLikedSongCover}
+                        alt="좋아요 최신 커버"
+                        layout="fill"
+                        objectFit="cover"
+                      />
+                    </div>
+                    <div>
+                      <p className="text-lg font-semibold">Likes</p>
+                      <p className="text-sm text-gray-500">내가 좋아요한 곡</p>
+                    </div>
+                  </div>
+                </li>
+              )}
+
               {playlists.map((playlist) => (
                 <li
                   key={playlist.id}
@@ -179,13 +209,6 @@ export default function PlaylistComponent({
                           No Cover
                         </div>
                       )}
-                      <div className="absolute right-1 top-1">
-                        {playlist.is_public ? (
-                          <FaLockOpen className="text-white" />
-                        ) : (
-                          <FaLock className="text-white" />
-                        )}
-                      </div>
                     </div>
                     <div>
                       <p className="text-lg font-semibold">{playlist.name}</p>
