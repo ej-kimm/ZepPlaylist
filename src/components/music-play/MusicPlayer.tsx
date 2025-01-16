@@ -6,8 +6,8 @@ import ReactPlayer from 'react-player'
 import MusicDetailModal from './_components/MusicDetailModal'
 import MusicDetails from './_components/MusicDetails'
 import PlayerControls from './_components/PlayerControls'
+import PlayerSkeleton from './_components/PlayerSkeleton'
 import ProgressBar from './_components/ProgressBar'
-import Skeleton from './_components/Skeleton'
 
 const MusicPlayer = () => {
   const { isPlayerOpen } = useMusicPlayerStore()
@@ -34,7 +34,9 @@ const MusicPlayer = () => {
   }
 
   if (!isPlayerOpen) return null // 초기에 노래를 재생하지 않으면 플레이어바 숨김
-  if (!url || isPending) return <Skeleton />
+  if (!url || isPending) {
+    return !isModalOpen && <PlayerSkeleton />
+  }
 
   return (
     <section className="z-player shadow-drop fixed bottom-0 left-0 h-[60px] w-full bg-white">

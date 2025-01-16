@@ -1,4 +1,4 @@
-const Skeleton = () => {
+const PlayerSkeleton = () => {
   return (
     <section className="z-player shadow-drop fixed bottom-0 left-0 flex h-[60px] w-full bg-white">
       <div className="flex h-full w-full animate-pulse items-center justify-between px-6">
@@ -20,4 +20,4 @@ const Skeleton = () => {
   )
 }
 
-export default Skeleton
+export default PlayerSkeleton
