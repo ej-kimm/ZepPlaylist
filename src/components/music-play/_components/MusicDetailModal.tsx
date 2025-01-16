@@ -65,7 +65,7 @@ export default function MusicDetailModal({
 
   return (
     <section
-      className={`${isModalOpen ? 'translate-y-0' : 'translate-y-full'} h-navBar-calc fixed bottom-0 left-0 w-full bg-slate-200 px-6 transition-all duration-500 ease-out`}
+      className={`h-navBar-calc fixed bottom-0 left-0 w-full bg-slate-200 px-6 transition-all duration-500 ease-out ${isModalOpen ? 'translate-y-0' : 'translate-y-full'}`}
     >
       <div className="flex h-full max-h-[620px] flex-col items-center">
         <div className="w-full max-w-[266px] py-[10px]">

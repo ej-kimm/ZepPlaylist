@@ -32,7 +32,7 @@ const ProgressBar = ({
 
   return (
     <div
-      className={`${isModalOpen ? 'block' : 'hidden'} flex w-full flex-col gap-1`}
+      className={`flex w-full flex-col gap-1 ${isModalOpen ? 'block' : 'hidden'}`}
     >
       <div className="flex justify-between">
         <time className="text-[8px] font-normal leading-none tracking-normal opacity-60">
