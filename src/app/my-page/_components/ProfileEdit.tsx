@@ -76,11 +76,11 @@ const ProfileEdit = ({ user, setUser }: User) => {
     setEitNickname(e.target.value)
   }
   return (
-    <div>
+    <div className="ml-auto">
       <button
         type="button"
         onClick={() => setIsOpen(true)}
-        className="rounded bg-[#B15EFF] px-4 py-2 text-white hover:bg-[#9F54E5] focus:outline-none focus:ring-2 focus:ring-[#B15EFF]"
+        className="caption-2"
       >
         프로필 변경
       </button>
@@ -91,18 +91,20 @@ const ProfileEdit = ({ user, setUser }: User) => {
         height="50%"
         maxWidth="500px"
       >
+        {/* // width 가로 // heigth 세로로 // m(마진) 요소간에 간격을 떨어트리는용도
+        // 그다음에 컬러를 체크 */}
         <div className="flex flex-col items-center space-y-6 p-4">
           <h1 className="flex items-center space-x-4 text-xl text-[#333]">
-            프로필 수정
+            프로필 변경
           </h1>
           <div className="flex w-full items-center justify-between">
             <div className="flex items-center space-x-4">
               <Image
-                width={100}
-                height={100}
+                width={44}
+                height={44}
                 src={profileImage!}
                 alt="프로필 이미지"
-                className="h-24 w-24 rounded-full border border-gray-300 object-cover"
+                className="rounded-full border border-gray-300 object-cover"
                 onClick={handleImgClick}
               />
             </div>

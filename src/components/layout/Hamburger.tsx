@@ -23,7 +23,7 @@ const Hamburger = () => {
         text: '로그아웃중 에러가 발생했습니다. 다시시도해주세요',
       })
     }
-    sessionStorage.removeItem('user')
+    localStorage.removeItem('user')
     setUser(null)
   }
 

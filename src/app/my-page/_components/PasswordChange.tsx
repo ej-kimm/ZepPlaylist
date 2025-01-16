@@ -48,19 +48,17 @@ export const PasswordChange = ({ setIsOpenPassword }: PasswordChangeProps) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <InputBox
-        label="새로운 비밀번호"
         name="newPassword"
         type="password"
-        placeholder="새로운 비밀번호를 입력해주세요."
+        placeholder="새로운 비밀번호"
         register={register}
         errorMessage={errors.newPassword?.message}
         required={true}
       />
       <InputBox
-        label="비밀번호 확인"
         name="passwordCheck"
         type="password"
-        placeholder="비밀번호를 다시 입력해주세요."
+        placeholder="비밀번호 확인인"
         register={register}
         errorMessage={errors.passwordCheck?.message}
         required={true}
