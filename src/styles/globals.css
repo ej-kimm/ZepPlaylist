@@ -68,7 +68,7 @@
   }
 
   .button-2 {
-    @apply text-black;
+    @apply text-white;
     font-size: 14px;
     font-weight: 600;
     line-height: normal;
