@@ -65,8 +65,8 @@ export default function MusicDetailModal({
       <div className="flex h-full max-h-[620px] flex-col items-center">
         <div className="w-full max-w-[266px] py-[10px]">
           <div className="flex flex-col items-center">
-            <h3 className="title-1 mb-6">{title}</h3>
-            <p className="caption-1 mb-4">{artist}</p>
+            <h3 className="title-1">{title}</h3>
+            <p className="caption-1">{artist}</p>
             <div className="flex gap-6">
               {!isPending && (
                 <button onClick={handleLike}>
@@ -94,8 +94,8 @@ export default function MusicDetailModal({
           onSeek={onSeek}
         />
         <PlayerControls isModalOpen={isModalOpen} />
+        <button onClick={toggleModal}>모달닫기임시버튼^^..</button>
       </div>
-      {/* <button onClick={toggleModal}>모달닫기임시버튼^^..</button> */}
     </section>
   )
 }

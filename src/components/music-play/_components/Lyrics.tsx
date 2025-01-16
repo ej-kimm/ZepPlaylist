@@ -1,7 +1,11 @@
-const Lyrics = ({ lyrics }: { lyrics: string }) => {
+type LyricsProps = {
+  lyrics: string
+}
+
+const Lyrics = ({ lyrics }: LyricsProps) => {
   return (
     <p
-      className="h-[60px] overflow-y-scroll bg-green-100 text-center"
+      className="lyrics caption-1 text-center leading-5"
       dangerouslySetInnerHTML={{ __html: lyrics }}
     ></p>
   )
