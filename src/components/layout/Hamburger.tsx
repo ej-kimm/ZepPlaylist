@@ -1,6 +1,7 @@
 'use client'
 
 import { userStore } from '@/store/userSlice'
+import { supabase } from '@/utils/supabase/client'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useCallback, useState } from 'react'
@@ -9,9 +10,22 @@ import { BsBarChartLineFill } from 'react-icons/bs'
 import { FaComment } from 'react-icons/fa'
 import { FiChevronRight } from 'react-icons/fi'
 import { ImHeadphones } from 'react-icons/im'
+import Swal from 'sweetalert2'
 const Hamburger = () => {
-  const { user } = userStore((state) => state)
+  const { user, setUser } = userStore()
   console.log(user)
+  const handleLogOut = async () => {
+    const { error } = await supabase.auth.signOut()
+    if (error) {
+      console.error(error.message)
+      Swal.fire({
+        icon: 'error',
+        text: '로그아웃중 에러가 발생했습니다. 다시시도해주세요',
+      })
+    }
+    sessionStorage.removeItem('user')
+    setUser(null)
+  }
 
   const router = useRouter()
   const [isHamburgerOpen, setIsHamburgerOpen] = useState<boolean>(false)
@@ -97,6 +111,11 @@ const Hamburger = () => {
                 </button>
                 //seo ....안잡힘 이슈 -> 보완할때해도 ㄱㅊ
               ))}
+              {!user ? (
+                <p></p>
+              ) : (
+                <button onClick={handleLogOut}>로그아웃</button>
+              )}
             </div>
           </div>
         </div>
