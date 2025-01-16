@@ -5,11 +5,10 @@ import { createClient } from './utils/supabase/server'
 export async function middleware(request: NextRequest) {
   const supabase = createClient()
   const {
-    data: { session },
+    data: { user },
     error,
-  } = await supabase.auth.getSession()
-
-  if (!session?.user) {
+  } = await supabase.auth.getUser()
+  if (!user?.id) {
     const loginUrl = new URL('http://localhost:3000/login', request.url)
     return NextResponse.redirect(loginUrl)
   }

@@ -11,7 +11,14 @@ const config: Config = {
       colors: {
         primary: '#B15EFF',
         secondary: '#9032E8',
-        secondaryOpacity: 'rgba(177, 94, 255, 0.1)',
+        'secondary-opacity': 'rgba(177, 94, 255, 0.1)',
+      },
+      height: {
+        navBar: '56px',
+        'navBar-calc': 'calc(100vh - 56px)',
+      },
+      padding: {
+        navBar: '56px',
       },
       boxShadow: {
         drop: '0px -4px 4px rgba(0, 0, 0, 0.04)',

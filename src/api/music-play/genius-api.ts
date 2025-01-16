@@ -138,19 +138,11 @@ const crawlLyrics = async (lyricsUrl: string): Promise<string> => {
     if (matches) {
       const rawLyrics = matches.join('')
       const cleanedLyrics = rawLyrics
-        .replace(/&amp;/g, '&') // &amp;를 &로 변환
-        .replace(/&lt;/g, '<') // &lt;를 <로 변환
-        .replace(/&gt;/g, '>') // &gt;를 >로 변환
-        .replace(/&quot;/g, '"') // &quot;를 "로 변환
-        .replace(/&#x27;/g, "'") // &#x27;를 '로 변환
-        .replace(/<strong>/g, '') // <strong> 태그 제거
-        .replace(/<\/strong>/g, '') // </strong> 태그 제거
-        .replace(/<b>/g, '') // <b> 태그 제거
-        .replace(/<\/b>/g, '') // </b> 태그 제거
-        .replace(/<em>/g, '') // <em> 태그 제거
-        .replace(/<\/em>/g, '') // </em> 태그 제거
-        .replace(/<i>/g, '') // <i> 태그 제거
-        .replace(/<\/i>/g, '') // </i> 태그 제거
+        .replace(/<(?!br\s*\/?)[^>]+>/g, '') // <br> 태그를 제외한 모든 태그 제거
+        .replace(/\[.*?\].*?\n?/g, '') // 대괄호가 포함된 문장 제거
+        .replace(/(<br\s*\/?>\s*){3,}/g, '<br><br>') // 연속된 <br> 태그가 3개 이상일 경우 2개로 줄임
+        // .replace(/^<br\s*\/?>|<br\s*\/?>$/g, '') // 맨 처음과 맨 끝의 <br> 태그 제거 맨첫줄 띄울지?
+        .replace(/^(<br\s*\/?>)+|(<br\s*\/?>)+$/g, '') // 맨 처음과 맨 끝에 있는 모든 <br> 태그 제거 맨첫줄 안띄울지
         .trim() // 양쪽 공백 제거
       return cleanedLyrics
     } else {

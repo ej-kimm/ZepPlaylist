@@ -13,8 +13,8 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
   isOpen,
   onClose,
   children,
-  height = '50%',
-  maxWidth = '500px',
+  height = '350px',
+  maxWidth = '375px',
 }) => {
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -46,9 +46,8 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
             style={{
               height,
               maxWidth,
-              top: '50%',
-              left: '50%',
               transform: 'translate(-50%, -50%)',
+              margin: '0 auto',
             }}
             initial={{ y: '100%' }}
             animate={{ y: '0%' }}
