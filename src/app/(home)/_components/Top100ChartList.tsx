@@ -3,6 +3,7 @@
 import { fetchPlaylistsWithCovers } from '@/api/playlist/actions'
 import MoreOptionsButton from '@/components/common/MoreOptionsButton'
 import { useSpotifySearch } from '@/hooks/useGetSpotifyMusicId'
+import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import { userStore } from '@/store/userSlice'
 import type { PlaylistRow } from '@/types/playlist'
 import Image from 'next/image'
@@ -47,6 +48,9 @@ const Top100ChartList = ({
 
   const { searchSpotifyId } = useSpotifySearch()
 
+  const { isPlayerOpen, setTrackIds, togglePlay, setPlayerOpen } =
+    useMusicPlayerStore()
+
   const getplayList = async () => {
     setIsLoading(true)
     try {
@@ -73,24 +77,38 @@ const Top100ChartList = ({
     return data
   }
 
+  const handlePlayBtn = async () => {
+    const data = await searchSpotifyId(musicName, artistName)
+    const songId = data!.id
+    if (!isPlayerOpen) setPlayerOpen() // 페이지 방문 후, 첫 곡 재생이면 플레이어바 보여줌
+    setTrackIds(songId)
+    togglePlay()
+  }
+
   return (
-    <li className="flex items-center space-x-4 rounded-lg p-3 transition-colors">
-      <div className="relative flex-shrink-0">
-        <Image
-          src={albumCover}
-          alt={musicName}
-          width={50}
-          height={50}
-          className="rounded-md"
-          priority
-        />
-      </div>
-      <p className="truncate text-lg">{index + 1}</p>
-      <div className="min-w-0 flex-1">
-        <h3 className="truncate text-base font-medium text-gray-900">
-          {musicName}
-        </h3>
-        <p className="truncate text-sm text-gray-500">{artistName}</p>
+    <li className="flex">
+      <div
+        className="mr-auto flex items-center space-x-4 rounded-lg p-3 transition-colors"
+        onClick={() => handlePlayBtn()}
+      >
+        <p className="truncate text-lg">{index + 1}</p>
+        <div className="relative flex-shrink-0">
+          <Image
+            src={albumCover}
+            alt={musicName}
+            width={50}
+            height={50}
+            className="rounded-md"
+            priority
+          />
+        </div>
+
+        <div className="min-w-0 flex-1">
+          <h3 className="truncate text-base font-medium text-gray-900">
+            {musicName}
+          </h3>
+          <p className="truncate text-sm text-gray-500">{artistName}</p>
+        </div>
       </div>
       <MoreOptionsButton
         musicName={musicName}
