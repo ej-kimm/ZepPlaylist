@@ -1,13 +1,13 @@
 import React from 'react'
 
-type ButtonProps = {
+type PrimaryButtonProps = {
   type?: 'button' | 'submit'
   onClick?: () => void
   children: React.ReactNode
   className?: string
 }
 
-const Button: React.FC<ButtonProps> = ({
+export const PrimaryButton: React.FC<PrimaryButtonProps> = ({
   type = 'button',
   onClick,
   children,
@@ -23,5 +23,3 @@ const Button: React.FC<ButtonProps> = ({
     </button>
   )
 }
-
-export default Button

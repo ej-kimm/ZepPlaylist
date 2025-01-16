@@ -1,5 +1,5 @@
 'use client'
-import { Button } from '@/components/common'
+import { PrimaryButton } from '@/components/common'
 import InputBox from '@/components/common/InputBox'
 import { userStore } from '@/store/userSlice'
 import type { Users } from '@/types/auth'
@@ -100,7 +100,7 @@ const LoginForm = () => {
         errorMessage={errors.password?.message}
         register={register}
       />
-      <Button type="submit">로그인</Button>
+      <PrimaryButton type="submit">로그인</PrimaryButton>
     </form>
   )
 }

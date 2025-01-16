@@ -1,7 +1,7 @@
 'use client'
 
 import defaultProfileImg from '@/assets/images/defaultProfileImg.png'
-import { Button } from '@/components/common'
+import { PrimaryButton } from '@/components/common'
 import InputBox from '@/components/common/InputBox'
 import { supabase } from '@/utils/supabase/client'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -111,7 +111,7 @@ const SignupForm = () => {
         />
         <span className="text-sm text-gray-600">서비스 정책 이용약관</span>
       </div>
-      <Button type="submit">회원가입</Button>
+      <PrimaryButton type="submit">회원가입</PrimaryButton>
     </form>
   )
 }
