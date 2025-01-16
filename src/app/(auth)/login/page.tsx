@@ -1,3 +1,6 @@
+import like from '@/assets/images/like.svg'
+import like2 from '@/assets/images/like2.svg'
+import Image from 'next/image'
 import Link from 'next/link'
 import LoginForm from './_components/LoginForm'
 import SocialForm from './_components/SocialForm'
@@ -14,6 +17,12 @@ const page = () => {
       >
         회원가입
       </Link>
+      <button>
+        {<Image src={like} height={40} width={40} alt="좋아요버튼" />}
+      </button>
+      <button>
+        {<Image src={like2} height={40} width={40} alt="좋아요버튼" />}
+      </button>
     </div>
   )
 }
