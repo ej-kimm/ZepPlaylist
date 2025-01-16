@@ -69,7 +69,7 @@ const MoreOptionsButton = ({
   }
 
   return (
-    <>
+    <div className="flex items-center">
       <button
         type="button"
         className="mt-0 w-fit bg-white"
@@ -148,7 +148,7 @@ const MoreOptionsButton = ({
           </div>
         </div>
       </BottomSheet>
-    </>
+    </div>
   )
 }
 
