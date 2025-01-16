@@ -8,7 +8,7 @@ type MusicDetailsProps = {
 
 const MusicDetails = ({ musicDetail, toggleModal }: MusicDetailsProps) => {
   return (
-    <div className="flex flex-grow bg-green-100" onClick={toggleModal}>
+    <div className="flex flex-grow" onClick={toggleModal}>
       <Image
         // TODO : 웹버전 src default 커버 설정하기
         className="hidden"

@@ -15,6 +15,7 @@ type PlayerState = {
 
 type MusicDetailModalProps = {
   musicDetail: Tables<'music'> | undefined
+  isModalOpen: boolean
   lyrics: string
   url: string[]
   playerState: PlayerState
@@ -24,6 +25,7 @@ type MusicDetailModalProps = {
 
 export default function MusicDetailModal({
   toggleModal,
+  isModalOpen,
   musicDetail,
   url,
   lyrics,
@@ -56,33 +58,31 @@ export default function MusicDetailModal({
   }, [songLike])
 
   return (
-    <div className="absolute bottom-0 left-0 h-screen w-full overflow-y-scroll bg-slate-200">
-      <div>
-        <div>
-          <h3>{title}</h3>
-          <p>{artist}</p>
-        </div>
-        <div>
+    <section className="absolute bottom-0 left-0 h-screen w-full bg-slate-200 px-6">
+      <div className="flex w-full flex-col items-center py-[10px]">
+        <h3 className="title-1">{title}</h3>
+        <p className="caption-1">{artist}</p>
+        <div className="flex">
           {!isPending && (
             <button onClick={handleLike}>
               {isLiked ? '💔 좋아요 취소' : '❤ 좋아요'}
             </button>
           )}
-          |
           <button onClick={handleSave}>
             {isSaved ? '담기취소!' : '☑ 담기'}
           </button>
         </div>
         <AlbumCover musicDetail={musicDetail} />
         <Lyrics lyrics={lyrics} />
-        <ProgressBar
-          url={url}
-          playerState={{ ready, played, duration }}
-          onSeek={onSeek}
-        />
-        <PlayerControls />
-        <button onClick={toggleModal}>모달닫기임시버튼^^..</button>
       </div>
-    </div>
+      <ProgressBar
+        url={url}
+        isModalOpen={isModalOpen}
+        playerState={{ ready, played, duration }}
+        onSeek={onSeek}
+      />
+      <PlayerControls isModalOpen={isModalOpen} />
+      {/* <button onClick={toggleModal}>모달닫기임시버튼^^..</button> */}
+    </section>
   )
 }

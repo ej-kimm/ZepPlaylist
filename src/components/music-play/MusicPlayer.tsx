@@ -53,8 +53,13 @@ const MusicPlayer = () => {
       />
       <div className="flex h-full items-center justify-between px-6">
         <MusicDetails musicDetail={musicDetail} toggleModal={toggleModal} />
-        <ProgressBar playerState={playerState} onSeek={handleSeek} url={url} />
-        <PlayerControls />
+        <ProgressBar
+          playerState={playerState}
+          isModalOpen={isModalOpen}
+          onSeek={handleSeek}
+          url={url}
+        />
+        <PlayerControls isModalOpen={isModalOpen} />
       </div>
       {isModalOpen && (
         <MusicDetailModal

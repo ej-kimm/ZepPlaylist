@@ -7,30 +7,55 @@ import skipNext from '@/assets/images/skipNext.svg'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import Image from 'next/image'
 
-const PlayerControls = () => {
+type PlayerControlsProps = {
+  isModalOpen: boolean
+}
+
+const PlayerControls = ({ isModalOpen }: PlayerControlsProps) => {
   const { isPlaying, togglePlay, playNextTrack, playPreviousTrack } =
     useMusicPlayerStore()
 
+  const ICON_SIZE = isModalOpen ? 36 : 24
+
   return (
-    <div className="flex items-center justify-end gap-2">
+    <div
+      className={`flex items-center justify-end ${isModalOpen ? 'gap-10' : 'gap-2'}`}
+    >
       <button type="button" onClick={playPreviousTrack}>
-        <Image src={skipBack} width={24} height={24} alt="skipBack" />
+        <Image
+          src={skipBack}
+          width={ICON_SIZE}
+          height={ICON_SIZE}
+          alt="skipBack"
+        />
       </button>
       <button type="button" onClick={togglePlay}>
         <Image
           src={isPlaying ? pause : play}
-          width={24}
-          height={24}
+          width={ICON_SIZE}
+          height={ICON_SIZE}
           alt={isPlaying ? 'pause' : 'play'}
         />
       </button>
       <button type="button" onClick={playNextTrack}>
-        <Image src={skipNext} width={24} height={24} alt="skipNext" />
+        <Image
+          src={skipNext}
+          width={ICON_SIZE}
+          height={ICON_SIZE}
+          alt="skipNext"
+        />
       </button>
       {/* TODO : playlist 기능 만들어야함 */}
-      <button type="button" onClick={playNextTrack}>
-        <Image src={playlist} width={24} height={24} alt="playlist" />
-      </button>
+      {!isModalOpen && (
+        <button type="button" onClick={playNextTrack}>
+          <Image
+            src={playlist}
+            width={ICON_SIZE}
+            height={ICON_SIZE}
+            alt="playlist"
+          />
+        </button>
+      )}
     </div>
   )
 }
