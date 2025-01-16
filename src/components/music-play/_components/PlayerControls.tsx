@@ -18,10 +18,10 @@ const PlayerControls = () => {
       </button>
       <button type="button" onClick={togglePlay}>
         <Image
-          src={isPlaying ? play : pause}
+          src={isPlaying ? pause : play}
           width={24}
           height={24}
-          alt={isPlaying ? 'play' : 'pause'}
+          alt={isPlaying ? 'pause' : 'play'}
         />
       </button>
       <button type="button" onClick={playNextTrack}>
