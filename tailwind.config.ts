@@ -31,6 +31,16 @@ const config: Config = {
       fontFamily: {
         pretendard: ['var(--font-pretendard)'],
       },
+      animation: {
+        'custom-pulse': 'skeleton-loading 1.5s infinite ease-in-out',
+      },
+      keyframes: {
+        'skeleton-loading': {
+          '0%': { backgroundColor: '#e0e0e0' },
+          '50%': { backgroundColor: '#f0f0f0' },
+          '100%': { backgroundColor: '#e0e0e0' },
+        },
+      },
     },
   },
   plugins: [],
