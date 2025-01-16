@@ -12,6 +12,7 @@ const usePlaylistLike = ({ user_id, playlist_id }: UsePlaylistLikeProps) => {
   const { data: isLiked, isLoading: isPending } = useQuery({
     queryKey: ['playlist_like', user_id, playlist_id],
     queryFn: () => fetchPlaylistLike({ user_id, playlist_id }),
+    initialData: false,
   })
 
   const updateLike = useMutation({
@@ -44,7 +45,6 @@ const usePlaylistLike = ({ user_id, playlist_id }: UsePlaylistLikeProps) => {
     toggleLike: updateLike.mutate,
     isLiked,
     isPending,
-    updateLike,
   }
 }
 
