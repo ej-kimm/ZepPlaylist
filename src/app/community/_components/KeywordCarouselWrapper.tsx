@@ -43,11 +43,11 @@ const KeywordCarouselWrapper = ({
 
   return (
     <div>
+      <h1 className="title-1">전체 플레이리스트</h1>
       <KeywordCarousel
         selectedKeywords={selectedKeywords}
         onToggleKeyword={handleToggleKeyword}
       />
-      <h1 className="mb-4 mt-8 text-2xl font-bold">전체 플레이리스트</h1>
       <PlaylistSection playlists={filteredPlaylists} userId={userId} />
     </div>
   )
