@@ -60,7 +60,7 @@ const Hamburger = () => {
   return (
     <>
       {!isHamburgerOpen ? (
-        <div className="m-5 flex justify-end">
+        <div className="z-header fixed left-0 top-0 flex h-14 w-full items-center justify-end bg-white px-6">
           <button className="block md:hidden" onClick={toggleMenu}>
             <svg
               className="h-6 w-6 text-gray-800"
