@@ -19,7 +19,6 @@ export default function PlaylistDetailsComponent({
 }) {
   const [playlistDetails, setPlaylistDetails] =
     useState<PlaylistDetails | null>(null)
-  // const [isPlaying, setIsPlaying] = useState(false)
   const [dropdownOpen, setDropdownOpen] = useState<string | null>(null)
   const { isPlayerOpen, setTrackIds, togglePlay, setPlayerOpen } =
     useMusicPlayerStore()

@@ -45,7 +45,7 @@ const MusicPlayer = () => {
         controls={false}
         width="0"
         height="0"
-        volume={0.3} // TODO : 임시로 볼륨 조절
+        volume={0.1} // TODO : 임시로 볼륨 조절
         onReady={handleReady} // 영상 준비 완료 상태
         onDuration={handleDuration} // 총 재생 시간
         onProgress={handleProgress} // 현재 재생 시간

@@ -152,6 +152,10 @@ export default function PlaylistComponent({
     router.push(`/playlist/${playlistId}`)
   }
 
+  const handleLikesClick = () => {
+    router.push('/playlist/likes')
+  }
+
   return (
     <div className="p-4">
       {isLogin ? (
@@ -170,7 +174,7 @@ export default function PlaylistComponent({
               {latestLikedSongCover && (
                 <li
                   className="flex h-[80px] w-[378px] cursor-pointer items-center justify-between rounded-lg border bg-white px-4 py-2 shadow-sm"
-                  onClick={() => router.push(`/likes`)}
+                  onClick={handleLikesClick}
                 >
                   <div className="relative flex items-center space-x-4">
                     <div className="relative h-16 w-16 overflow-hidden rounded">
