@@ -3,32 +3,76 @@
 import type { Database } from '@/types/supabase'
 import { createClient } from '@supabase/supabase-js'
 
-const supabase = createClient<Database>(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-)
+const createServerSupabaseClient = (cookies: string) => {
+  return createClient<Database>(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      global: {
+        headers: {
+          cookie: cookies,
+        },
+      },
+    },
+  )
+}
 
-export async function getCommunityDetail(playlistId: string) {
-  try {
-    const { data: playlistMusic, error: playlistMusicError } = await supabase
-      .from('playlist_music')
-      .select('*')
-      .eq('playlist_id', playlistId)
+export const getCommunitySongs = async (
+  playlistId: string,
+  cookies: string,
+) => {
+  const supabase = createServerSupabaseClient(cookies)
 
-    if (playlistMusicError) throw new Error(playlistMusicError.message)
+  const { data, error } = await supabase
+    .from('playlist_music')
+    .select(
+      `
+      music_id,
+      music:music_id (
+        spotify_id,
+        title,
+        artist,
+        album_cover,
+        play_time
+      )
+    `,
+    )
+    .eq('playlist_id', playlistId)
 
-    const musicIds = playlistMusic.map((item) => item.music_id)
-
-    const { data: songs, error: musicError } = await supabase
-      .from('music')
-      .select('spotify_id, title, artist, album_cover, play_time')
-      .in('spotify_id', musicIds)
-
-    if (musicError) throw new Error(musicError.message)
-
-    return { songs, songCount: songs.length }
-  } catch (error) {
-    console.error('Error fetching community detail:', error)
-    throw new Error('Failed to fetch community detail.')
+  if (error) {
+    console.error('Error fetching songs:', error.message)
+    throw new Error('플레이리스트 곡 데이터를 가져오는 데 실패했습니다.')
   }
+
+  return data?.map((item) => item.music) || []
+}
+
+export const getCommunityComments = async (
+  playlistId: string,
+  cookies: string,
+) => {
+  const supabase = createServerSupabaseClient(cookies)
+
+  const { data, error } = await supabase
+    .from('comments')
+    .select('*')
+    .eq('playlist_id', playlistId)
+    .order('created_at', { ascending: true })
+
+  if (error) {
+    console.error('Error fetching comments:', error.message)
+    throw new Error('댓글 데이터를 가져오는 데 실패했습니다.')
+  }
+
+  return data || []
+}
+
+export const getCommunityDetail = async (
+  playlistId: string,
+  cookies: string,
+) => {
+  const songs = await getCommunitySongs(playlistId, cookies)
+  const comments = await getCommunityComments(playlistId, cookies)
+
+  return { songs, songCount: songs.length, comments }
 }

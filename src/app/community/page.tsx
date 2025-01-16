@@ -1,21 +1,17 @@
-import { getPlaylists, getPopularPlaylists } from '@/api/community/playlists'
+import { getPlaylists, getPopularPlaylists } from '@/api/community/actions'
 import PlaylistSection from '@/app/community/_components/PlaylistSection'
-import type { Database } from '@/types/supabase'
+import ClientSwiper from '@/components/common/ClientSwiper'
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
+import KeywordCarouselWrapper from './_components/KeywordCarouselWrapper'
 
 const CommunityPage = async (): Promise<JSX.Element> => {
-  const supabase = createServerClient<Database>(
+  const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
         getAll: () => cookies().getAll(),
-        setAll: (cookiesToSet) => {
-          cookiesToSet.forEach(({ name, value, options }) => {
-            cookies().set(name, value, options)
-          })
-        },
       },
     },
   )
@@ -34,25 +30,19 @@ const CommunityPage = async (): Promise<JSX.Element> => {
   }
 
   const userId = session.session.user.id
-
-  const playlists = (await getPlaylists(userId)).map((playlist) => ({
-    ...playlist,
-    description: playlist.description || '',
-  }))
-  const popularPlaylists = (await getPopularPlaylists(userId)).map(
-    (playlist) => ({
-      ...playlist,
-      description: playlist.description || '',
-    }),
-  )
+  const allPlaylists = await getPlaylists(userId)
+  const popularPlaylists = await getPopularPlaylists(userId)
 
   return (
     <div className="p-4">
       <h1 className="mb-4 text-2xl font-bold">인기 있는 플레이리스트</h1>
-      <PlaylistSection playlists={popularPlaylists} isSwiper userId={userId} />
-
-      <h1 className="mb-4 mt-8 text-2xl font-bold">전체 플레이리스트</h1>
-      <PlaylistSection playlists={playlists} userId={userId} />
+      <ClientSwiper
+        items={popularPlaylists.map((playlist) => ({
+          id: playlist.id,
+          content: <PlaylistSection playlists={[playlist]} userId={userId} />,
+        }))}
+      />
+      <KeywordCarouselWrapper allPlaylists={allPlaylists} userId={userId} />
     </div>
   )
 }

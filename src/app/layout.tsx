@@ -27,7 +27,9 @@ export default function RootLayout({
       <body className={`${pretendard.className}`}>
         <QueryProvider>
           <Header />
-          <div className="h-full w-full bg-white px-6 pt-14">{children}</div>
+          <div className="pt-navBar h-full w-full bg-white px-6">
+            {children}
+          </div>
           {/* Footer 잠시 주석처리 */}
           {/* <Footer /> */}
           <MusicPlayer />

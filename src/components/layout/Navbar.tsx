@@ -3,7 +3,7 @@
 import { userStore } from '@/store/userSlice'
 import Link from 'next/link'
 
-const Navdar = () => {
+const Navbar = () => {
   const { user } = userStore((state) => state)
 
   return (
@@ -41,4 +41,4 @@ const Navdar = () => {
   )
 }
 
-export default Navdar
+export default Navbar
