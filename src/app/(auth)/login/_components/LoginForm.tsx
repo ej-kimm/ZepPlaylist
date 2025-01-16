@@ -46,14 +46,25 @@ const LoginForm = () => {
       alert(error.message || '아이디 혹은 비밀번호를 확인해주세요')
       return
     }
+    let loginUser = null
+    if (userData.user) {
+      const { data: fetchuser, error: fetchError } = await supabase
+        .from('users')
+        .select('*')
+        .eq('id', userData.user.id)
+      if (fetchError) {
+        console.error(fetchError)
+        return
+      }
+      loginUser = fetchuser
+    }
 
-    const user: Users | null = userData?.user
+    const user: Users | null = loginUser
       ? {
-          id: userData.user.id,
-          email: userData.user.email!,
-          nickname: userData.user.user_metadata?.name,
-          profile_image:
-            'https://i.namu.wiki/i/6AijZLjqdKDGjVzMK1CHNGiEyvrEyUVnl1_6Es4s5k5kfbep022bOHvG-sEn4_8opqy0uzzu9M7WUtU_sxb5UYmhY-fw_19wiRVJxTZDLHdaBKLbL1vEJPqQotCe18kx4bWvXMg-mbKtt-d5YjuCdG86CYBRDBmnAxBrnk9drLQ.webp',
+          id: loginUser[0].id,
+          email: loginUser[0].email,
+          nickname: loginUser[0].nickname,
+          profile_image: loginUser[0].profile_image,
         }
       : null
     setUser(user)

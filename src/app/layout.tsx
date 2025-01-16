@@ -1,8 +1,8 @@
-import Footer from '@/components/layout/Footer'
 import Header from '@/components/layout/Header'
 import QueryProvider from '@/components/providers/QueryProvider'
 import type { Metadata } from 'next'
 import localFont from 'next/font/local'
+import MusicPlayer from '../components/music-play/MusicPlayer'
 import '../styles/globals.css'
 
 const pretendard = localFont({
@@ -27,8 +27,10 @@ export default function RootLayout({
       <body className={`${pretendard.className}`}>
         <QueryProvider>
           <Header />
-          {children}
-          <Footer />
+          <div className="h-full w-full bg-white px-6 pt-14">{children}</div>
+          {/* Footer 잠시 주석처리 */}
+          {/* <Footer /> */}
+          <MusicPlayer />
         </QueryProvider>
       </body>
     </html>

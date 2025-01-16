@@ -1,4 +1,5 @@
 import useSongLike from '@/hooks/useSongLike'
+import { userStore } from '@/store/userSlice'
 import { Tables } from '@/types/supabase'
 import { useEffect, useState } from 'react'
 import AlbumCover from './AlbumCover'
@@ -29,27 +30,30 @@ export default function MusicDetailModal({
   playerState: { played, duration, ready },
   onSeek,
 }: MusicDetailModalProps) {
-  const { spotify_id = '', title, artist } = musicDetail || {}
+  const { title, artist } = musicDetail || {}
+  const { user } = userStore()
+  const user_id = user?.id || ''
+  const { songLike, isPending, updateLike } = useSongLike({ user_id })
+
   const [isLiked, setIsLiked] = useState<boolean>(false)
-  const user_id = '01aa6bb6-670f-4776-a4d9-b25126a4b085' // TODO : user_id 변경
-  const { songLike, isPending, updateLike } = useSongLike({
-    user_id,
-    music_id: spotify_id,
-  })
+  const [isSaved, setIsSaved] = useState<boolean>(false)
 
   const handleLike = async () => {
-    updateLike.mutate({ music_id: spotify_id, user_id })
+    if (!user_id) {
+      alert('로그인을 해주세요!')
+      return
+    }
+    updateLike.mutate({ user_id })
   }
 
   const handleSave = async () => {}
 
   useEffect(() => {
-    if (songLike !== undefined) {
+    // 로그인 한 유저
+    if (user_id && songLike !== undefined) {
       setIsLiked(songLike)
     }
   }, [songLike])
-
-  if (isPending) return <>Loading....</>
 
   return (
     <div className="absolute bottom-0 left-0 h-screen w-full overflow-y-scroll bg-slate-200">
@@ -59,10 +63,15 @@ export default function MusicDetailModal({
           <p>{artist}</p>
         </div>
         <div>
-          <button onClick={handleLike}>
-            {isLiked ? '💔 좋아요 취소' : '❤ 좋아요'}
+          {!isPending && (
+            <button onClick={handleLike}>
+              {isLiked ? '💔 좋아요 취소' : '❤ 좋아요'}
+            </button>
+          )}
+          |
+          <button onClick={handleSave}>
+            {isSaved ? '담기취소!' : '☑ 담기'}
           </button>
-          |<button onClick={handleSave}>☑ 담기</button>
         </div>
         <AlbumCover musicDetail={musicDetail} />
         <Lyrics lyrics={lyrics} />

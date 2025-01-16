@@ -1,5 +1,5 @@
 'use client'
-import { useMusicPlayerStore } from '@/store/musicPlayerStore'
+import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 
 const PlayerControls = () => {
   const { isPlaying, togglePlay, playNextTrack, playPreviousTrack } =

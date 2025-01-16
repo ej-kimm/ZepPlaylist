@@ -4,7 +4,7 @@ import Top100ChartList from '../_components/Top100ChartList'
 
 export const revalidate = 3600
 
-const BillboardTop100 = async () => {
+const billboardTop100 = async () => {
   const billboardTop100Chart = await fetchGlobalChart()
   const billboardTop100ChartList = billboardTop100Chart.songs
 
@@ -22,4 +22,4 @@ const BillboardTop100 = async () => {
   )
 }
 
-export default BillboardTop100
+export default billboardTop100

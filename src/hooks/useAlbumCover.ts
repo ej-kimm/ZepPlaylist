@@ -1,11 +1,15 @@
 import { fetchGenre, fetchTrack } from '@/api/music-play/spotify-api'
-import { Tables } from '@/types/supabase'
+import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import { useQuery } from '@tanstack/react-query'
 
-const useAlbumCover = (spotify_id: Tables<'music'>['spotify_id']) => {
+const useAlbumCover = () => {
+  const currentTrackId = useMusicPlayerStore(
+    (state) => state.trackIds[state.currentTrackIndex],
+  )
+
   const { data: album, isPending: isAlbumPending } = useQuery({
-    queryKey: ['album', spotify_id],
-    queryFn: () => fetchTrack(spotify_id),
+    queryKey: ['album', currentTrackId],
+    queryFn: () => fetchTrack(currentTrackId),
     select: (data) => {
       return {
         artistId: data.artists[0].id || '',
@@ -13,7 +17,7 @@ const useAlbumCover = (spotify_id: Tables<'music'>['spotify_id']) => {
         albumName: data.album.name || '',
       }
     },
-    enabled: !!spotify_id,
+    enabled: !!currentTrackId,
   })
 
   const { data: genre, isPending: isGenrePending } = useQuery({
