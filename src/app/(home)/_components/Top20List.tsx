@@ -50,6 +50,21 @@ const Top20List: React.FC<Top20ListProps> = ({
             }
             chart={chart}
             index={index}
+            musicName={
+              isKoreaChart
+                ? (chart as MelonChartSong).SONGNAME
+                : (chart as BillboradSong).title
+            }
+            artistName={
+              isKoreaChart
+                ? (chart as MelonChartSong).ARTISTLIST[0].ARTISTNAME
+                : (chart as BillboradSong).artist
+            }
+            albumCover={
+              isKoreaChart
+                ? (chart as MelonChartSong).ALBUMIMG
+                : (chart as BillboradSong).cover
+            }
           />
         ))}
       </ul>

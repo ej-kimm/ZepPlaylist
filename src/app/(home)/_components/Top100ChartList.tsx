@@ -1,8 +1,8 @@
 'use client'
 
 import { fetchPlaylistsWithCovers } from '@/api/playlist/actions'
-import { fetchSpotifyToken } from '@/api/spotifyToken'
 import MoreOptionsButton from '@/components/common/MoreOptionsButton'
+import { useSpotifySearch } from '@/hooks/useGetSpotifyMusicId'
 import { userStore } from '@/store/userSlice'
 import type { PlaylistRow } from '@/types/playlist'
 import Image from 'next/image'
@@ -45,46 +45,7 @@ const Top100ChartList = ({
   const [isLoading, setIsLoading] = useState(false)
   const [playlists, setPlaylists] = useState<PlaylistRow[]>([])
 
-  const fetchSearchTracks = async (searchParams: string) => {
-    const token = await fetchSpotifyToken()
-
-    try {
-      const res = await fetch(
-        `https://api.spotify.com/v1/search?q=${searchParams}&type=track&limit=10`,
-        {
-          method: 'GET',
-          headers: {
-            Authorization: 'Bearer ' + token,
-          },
-        },
-      )
-      if (!res.ok) {
-        console.error(`API error: ${res.status} ${res.statusText}`)
-        throw new Error(`Failed to fetch data: ${res.status} ${res.statusText}`)
-      }
-      const data: SpotifyApi.TrackSearchResponse = await res.json()
-
-      return data.tracks.items
-    } catch (error) {
-      console.error('Fetch error:', error)
-      throw new Error('An unexpected error occurred')
-    }
-  }
-
-  const seachSpotifyId = async (musicName: string, artistName: string) => {
-    const data = await fetchSearchTracks(musicName)
-
-    const searchSpotifyData = data
-      .map((item) => ({
-        id: item.id,
-        artist: item.artists[0].name,
-        title: item.name,
-      }))
-      .find((item) => {
-        return item.artist === artistName || item.title === musicName
-      })
-    return searchSpotifyData
-  }
+  const { searchSpotifyId } = useSpotifySearch()
 
   const getplayList = async () => {
     setIsLoading(true)
@@ -103,7 +64,7 @@ const Top100ChartList = ({
     artistName: string,
   ): Promise<playListData> => {
     await getplayList() // Wait for the playlist to be fetched
-    const data = await seachSpotifyId(musicName, artistName)
+    const data = await searchSpotifyId(musicName, artistName)
 
     if (!data) {
       throw new Error('Failed to fetch Spotify ID')
