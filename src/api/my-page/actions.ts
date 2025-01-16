@@ -32,7 +32,7 @@ export const getPlaylists = async () => {
   }
   const { data: playlists, error } = await supabase
     .from('playlists')
-    .select(`*, playlist_music(* , music(*)) `)
+    .select(`*, playlist_like(*), playlist_music(* , music(*)) `)
     .eq('user_id', user.user!.id)
   if (error) {
     console.error('error', error)
