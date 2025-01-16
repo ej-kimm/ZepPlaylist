@@ -32,21 +32,12 @@ const CommunityPage = async (): Promise<JSX.Element> => {
 
   const userId = session.session.user.id;
 
-  const allPlaylists = (await getPlaylists(userId)).map((playlist) => ({
-    ...playlist,
-    description: playlist.description || '',
-  }));
+  const allPlaylists = await getPlaylists(userId);
 
-  const popularPlaylists = (await getPopularPlaylists(userId)).map(
-    (playlist) => ({
-      ...playlist,
-      description: playlist.description || '',
-    })
-  );
+  const popularPlaylists = await getPopularPlaylists(userId);
 
   return (
     <div className="p-4">
-      {/* 인기 있는 플레이리스트 섹션 */}
       <h1 className="mb-4 text-2xl font-bold">인기 있는 플레이리스트</h1>
       <ClientSwiper
         items={popularPlaylists.map((playlist) => ({
@@ -56,8 +47,6 @@ const CommunityPage = async (): Promise<JSX.Element> => {
           ),
         }))}
       />
-
-      {/* 키워드 캐러셀 섹션 */}
       <KeywordCarouselWrapper allPlaylists={allPlaylists} userId={userId} />
     </div>
   );
