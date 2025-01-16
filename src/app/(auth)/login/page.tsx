@@ -1,5 +1,5 @@
-import like from '@/assets/images/like.svg'
-import like2 from '@/assets/images/like2.svg'
+import likeFalse from '@/assets/images/likeFalse.svg'
+import likeTrue from '@/assets/images/likeTrue.svg'
 import Image from 'next/image'
 import Link from 'next/link'
 import LoginForm from './_components/LoginForm'
@@ -18,10 +18,10 @@ const page = () => {
         회원가입
       </Link>
       <button>
-        {<Image src={like} height={40} width={40} alt="좋아요버튼" />}
+        {<Image src={likeFalse} height={40} width={40} alt="좋아요버튼" />}
       </button>
       <button>
-        {<Image src={like2} height={40} width={40} alt="좋아요버튼" />}
+        {<Image src={likeTrue} height={80} width={40} alt="좋아요버튼" />}
       </button>
     </div>
   )
