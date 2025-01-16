@@ -1,9 +1,9 @@
 'use client'
 
-import { useChartStore } from '@/store/useChartSlice'
 import type { BillboradSong } from '@/types/billboradCharts'
 import type { MelonChartSong } from '@/types/melonCharts'
 import Link from 'next/link'
+import { useState } from 'react'
 import Top20Item from './Top20Item'
 
 type Top20ListProps = {
@@ -11,13 +11,11 @@ type Top20ListProps = {
   billboardTop20ChartList: BillboradSong[]
 }
 
-// image, 제목, 가수명, ranking
 const Top20List: React.FC<Top20ListProps> = ({
   koreaTop20ChartList,
   billboardTop20ChartList,
 }) => {
-  // useState로만 해도 될 듯 -> Top 100은 필요가 없어짐
-  const { isKoreaChart, setIsKoreaChart } = useChartStore()
+  const [isKoreaChart, setIsKoreaChart] = useState(true)
 
   const chartList: Array<MelonChartSong | BillboradSong> = isKoreaChart
     ? koreaTop20ChartList
