@@ -5,12 +5,14 @@ import Profile from './_components/Profile'
 
 const MyPage = async () => {
   const playlists = await getPlaylists()
-  console.log('playlists', playlists)
   return (
-    <div className="p-6">
-      <h1 className="mb-6 text-2xl">마이페이지</h1>
-      <div className="mb-6 flex items-center">
+    <>
+      <div className="mb-[46px] mt-[18px]">
         <Profile />
+      </div>
+      <div>
+        <h1 className="mb-4 text-xl">내가 커뮤니티에 쓴 글</h1>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3"></div>
         {playlists && playlists.length > 0 ? (
           playlists.map((p) => (
             <Link key={p.id} href={`/community/${p.id}`}>
@@ -48,7 +50,7 @@ const MyPage = async () => {
           <p className="text-gray-500">작성한 플레이리스트가 없습니다.</p>
         )}
       </div>
-    </div>
+    </>
   )
 }
 
