@@ -14,11 +14,7 @@ export const PrimaryButton: React.FC<ButtonProps> = ({
   className,
 }) => {
   return (
-    <button
-      type={type}
-      onClick={onClick}
-      className={`mt-6 w-full rounded-lg bg-primary py-3 text-white transition-all hover:bg-[#9F54E5] focus:outline-none focus:ring-2 focus:ring-primary ${className}`}
-    >
+    <button type={type} onClick={onClick} className={`bg-primary ${className}`}>
       {children}
     </button>
   )

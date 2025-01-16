@@ -1,8 +1,8 @@
 import { getPlaylists, getPopularPlaylists } from '@/api/community/actions'
-import PlaylistSection from '@/app/community/_components/PlaylistSection'
 import ClientSwiper from '@/components/common/ClientSwiper'
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
+import ClientPlaylistUI from './_components/ClientPlaylistUI'
 import KeywordCarouselWrapper from './_components/KeywordCarouselWrapper'
 
 const CommunityPage = async (): Promise<JSX.Element> => {
@@ -21,7 +21,7 @@ const CommunityPage = async (): Promise<JSX.Element> => {
   if (!session || !session.session?.user) {
     console.error('유저 정보를 가져오는 데 실패했습니다.')
     return (
-      <div className="p-4">
+      <div>
         <h1 className="text-2xl font-bold text-red-500">
           로그인된 사용자가 없습니다. 다시 로그인해주세요.
         </h1>
@@ -34,12 +34,21 @@ const CommunityPage = async (): Promise<JSX.Element> => {
   const popularPlaylists = await getPopularPlaylists(userId)
 
   return (
-    <div className="p-4">
-      <h1 className="mb-4 text-2xl font-bold">인기 있는 플레이리스트</h1>
+    <div>
+      <h1 className="title-1">인기 있는 플레이리스트</h1>
       <ClientSwiper
         items={popularPlaylists.map((playlist) => ({
           id: playlist.id,
-          content: <PlaylistSection playlists={[playlist]} userId={userId} />,
+          content: (
+            <ClientPlaylistUI
+              playlist={{
+                albumCover: playlist.album_cover ?? '',
+                isLiked: playlist.likedByUser ?? false,
+                likeCount: playlist.likeCount,
+                id: playlist.id,
+              }}
+            />
+          ),
         }))}
       />
       <KeywordCarouselWrapper allPlaylists={allPlaylists} userId={userId} />

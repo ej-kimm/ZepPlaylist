@@ -5,6 +5,7 @@ import spotifyLogo from '@/assets/images/spotifyLogo.svg'
 import { supabase } from '@/utils/supabase/client'
 import { useMutation } from '@tanstack/react-query'
 import Image from 'next/image'
+import Link from 'next/link'
 import SocialButtonItem from './SocialButtonItem'
 
 const SocialButton = () => {
@@ -48,35 +49,36 @@ const SocialButton = () => {
   }
 
   return (
-    <form className="flex space-x-4">
-      <SocialButtonItem
-        hoverColor="hover:bg-red-600 focus:ring-red-500"
-        onClick={() => handleSignIn('google')}
-        icon={
-          <Image src={googleLogo} alt="구글 아이콘" width={30} height={30} />
-        }
-      />
-      <SocialButtonItem
-        hoverColor="hover:bg-yellow-600 focus:ring-yellow-500"
-        onClick={() => handleSignIn('kakao')}
-        icon={
-          <Image src={kakaoLogo} alt="카카오 아이콘" width={30} height={30} />
-        }
-      />
-      <SocialButtonItem
-        hoverColor="hover:bg-blue-600 focus:ring-blue-500"
-        onClick={() => handleSignIn('spotify')}
-        icon={
-          <Image
-            src={spotifyLogo}
-            alt="스포티파이 아이콘"
-            width={30}
-            height={30}
-          />
-        }
-        
-      />
-    </form>
+    <>
+      <form className="flex justify-center gap-[14px]">
+        <SocialButtonItem
+          onClick={() => handleSignIn('google')}
+          icon={
+            <Image src={googleLogo} alt="구글 아이콘" width={44} height={44} />
+          }
+        />
+        <SocialButtonItem
+          onClick={() => handleSignIn('kakao')}
+          icon={
+            <Image src={kakaoLogo} alt="카카오 아이콘" width={44} height={44} />
+          }
+        />
+        <SocialButtonItem
+          onClick={() => handleSignIn('spotify')}
+          icon={
+            <Image
+              src={spotifyLogo}
+              alt="스포티파이 아이콘"
+              width={44}
+              height={44}
+            />
+          }
+        />
+      </form>
+      <Link className="caption-1 flex justify-center" href={'/sign-up'}>
+        회원가입
+      </Link>
+    </>
   )
 }
 
