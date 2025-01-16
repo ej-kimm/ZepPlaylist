@@ -23,11 +23,11 @@ const koreaTop100 = async () => {
         <ul>
           {newData.list.map((chart, index) => (
             <Top100ChartList
+              key={chart.SONGID}
               isKoreaChart={newData.isKoreaChart}
               musicName={chart.SONGNAME}
               artistName={chart.ARTISTLIST[0].ARTISTNAME}
               albumCover={chart.ALBUMIMG}
-              id={index}
               index={index}
             />
           ))}

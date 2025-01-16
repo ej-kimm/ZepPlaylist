@@ -1,10 +1,10 @@
 'use client'
 
-import { fetchPlaylistsWithCovers } from '@/api/playlist/actions'
 import type { PlaylistRow } from '@/types/playlist'
+import { supabase } from '@/utils/supabase/client'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import Swal from 'sweetalert2'
 import BottomSheet from './BottomSheet'
 
@@ -13,7 +13,14 @@ type ArtistProps = {
   artistName: string
   songImage: string
   user: UserState | null
-  onClick: () => stirng
+  onClickMoreOptionBtn: () => Promise<playListData>
+  playlists: PlaylistRow[]
+}
+
+type playListData = {
+  artist: string
+  id: string
+  title: string
 }
 
 type UserState = {
@@ -28,52 +35,121 @@ const MoreOptionsButton = ({
   artistName,
   songImage,
   user,
-  onClick,
+  onClickMoreOptionBtn,
+  playlists,
 }: ArtistProps) => {
   const [isOpen, setIsOpen] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
-  const [playlists, setPlaylists] = useState<PlaylistRow[]>([])
-  const [selectSong, setSelectSong] = useState({})
 
-  useEffect(() => {
-    if (!user) return
+  const handleOpenBottomSheet = async () => {
+    setIsOpen(true)
+    try {
+      await onClickMoreOptionBtn()
+    } catch (error) {
+      console.error('Error in handleOpenBottomSheet:', error)
+    }
+  }
 
-    const loadPlaylists = async () => {
-      setIsLoading(true)
-      try {
-        const data = await fetchPlaylistsWithCovers()
-        setPlaylists(data)
-      } catch (error) {
-        console.error('플레이리스트 가져오기 오류:', error)
+  const addMusiscInPlayList = async (playlistId: string) => {
+    try {
+      const data = await onClickMoreOptionBtn()
+      const musicId = await insertMusic(data)
+      await insertPlayList(musicId, playlistId)
+    } catch (error) {
+      console.error('Error in addMusiscInPlayList:', error)
+      throw error
+    }
+  }
+
+  const insertMusic = async (data: playListData) => {
+    if (data) {
+      const { data: isMusic, error: isMusicError } = await supabase
+        .from('music')
+        .select('*')
+        .eq('spotify_id', data.id)
+
+      if (isMusic?.length === 0) {
+        // First, insert the music into the 'music' table
+        const { data: insertedData, error: insertError } = await supabase
+          .from('music')
+          .insert({
+            spotify_id: data.id,
+            title: data.title,
+            artist: data.artist,
+            album_cover: songImage,
+            play_time: 0,
+            created_at: new Date().toISOString(),
+          })
+          .select()
+          .single()
+
+        if (insertError) {
+          console.error('Error inserting new music:', insertError)
+          return null
+        }
+
+        console.log('Insert successful:', insertedData)
+
+        const musicId = insertedData.spotify_id
+        return musicId
+      } else {
+        const { data: updatedData, error: updateError } = await supabase
+          .from('music')
+          .update({ created_at: new Date().toISOString() })
+          .eq('spotify_id', data.id)
+          .select()
+          .single()
+
+        if (updateError) {
+          console.error('Error updating create_at:', updateError)
+          return null
+        }
+
+        const musicId = updatedData.spotify_id
+        return musicId
+      }
+    } else {
+      console.log('No data returned from onClickMoreOptionBtn')
+    }
+  }
+
+  const insertPlayList = async (musicId: string, playlistId: string) => {
+    if (musicId) {
+      const { data: isPlayList, error: isMusicError } = await supabase
+        .from('playlist_music')
+        .select('music_id')
+        .eq('playlist_id', playlistId)
+
+      const isMusicId = isPlayList
+        ?.map((item) => item.music_id)
+        .some((item) => item === musicId)
+
+      if (isMusicId) {
         Swal.fire(
-          '오류',
-          '플레이리스트를 가져오는 중 문제가 발생했습니다.',
-          'error',
+          '취소',
+          '해당 곡은 이미 플레이리스트에 저장된 곡입니다. ',
+          'warning',
         )
-      } finally {
-        setIsLoading(false)
+        return { success: true, musicId }
+      } else {
+        const { error: insertPlaylistError } = await supabase
+          .from('playlist_music')
+          .insert({
+            playlist_id: playlistId,
+            music_id: musicId,
+          })
+
+        if (insertPlaylistError) {
+          console.error('Error adding music to playlist:', insertPlaylistError)
+          return null
+        }
+        Swal.fire(
+          '완료',
+          '해당 곡이 플레이리스트에 저장되었습니다. ',
+          'success',
+        )
       }
     }
-
-    loadPlaylists()
-  }, [user])
-
-  console.log('playlists', playlists)
-  console.log('user', user)
-  console.log('isLoading', isLoading)
-
-  const handleSelectSong = (playlistId, artistName, songImage) => {
-    // setSelectSong({ playlistId, artistName, songImage })
-    //   // API 호출로 선택된 노래를 플레이리스트에 추가
-    //   // addSongToPlaylist(playlistId, { musicName, artistName, songImage })
-    //   .then(() => {
-    //     Swal.fire('성공', '노래가 플레이리스트에 추가되었습니다.', 'success')
-    //     setIsOpen(false) // 바텀 시트 닫기
-    //   })
-    //   .catch((error) => {
-    //     console.error('노래 추가 오류:', error)
-    //     Swal.fire('오류', '노래를 추가하는 중 문제가 발생했습니다.', 'error')
-    //   })
+    return { success: true, musicId }
   }
 
   return (
@@ -81,7 +157,7 @@ const MoreOptionsButton = ({
       <button
         type="button"
         className="mt-0 w-fit bg-white"
-        onClick={() => setIsOpen(true)}
+        onClick={handleOpenBottomSheet}
       >
         <div className="flex gap-[2px]">
           <div className="h-1 w-1 rounded-full bg-gray-800" />
@@ -125,11 +201,7 @@ const MoreOptionsButton = ({
                 {playlists.map((playlist) => (
                   <li
                     key={playlist.id}
-                    onClick={handleSelectSong(
-                      playlist.id,
-                      artistName,
-                      songImage,
-                    )}
+                    onClick={() => addMusiscInPlayList(playlist.id)}
                   >
                     <div className="relative flex items-center space-x-4">
                       <div className="relative h-16 w-16 overflow-hidden rounded">
