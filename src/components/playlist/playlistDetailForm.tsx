@@ -4,7 +4,7 @@ import {
   deleteSongFromPlaylist,
   fetchPlaylistDetails,
 } from '@/api/playlist-detail/actions'
-import MusicPlayer from '@/components/music-play/MusicPlayer'
+import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import { PlaylistDetails } from '@/types/song'
 import { formatPlayTime } from '@/utils/formatPlayTime'
 import Image from 'next/image'
@@ -19,8 +19,9 @@ export default function PlaylistDetailsComponent({
 }) {
   const [playlistDetails, setPlaylistDetails] =
     useState<PlaylistDetails | null>(null)
-  const [isPlaying, setIsPlaying] = useState(false)
   const [dropdownOpen, setDropdownOpen] = useState<string | null>(null)
+  const { isPlayerOpen, setTrackIds, togglePlay, setPlayerOpen } =
+    useMusicPlayerStore()
 
   // 플레이리스트 데이터 가져오기 (useEffect 활용)
   const loadPlaylistDetails = useCallback(async () => {
@@ -53,11 +54,13 @@ export default function PlaylistDetailsComponent({
   } = playlistDetails
 
   // Spotify ID 배열 추출
-  const spotifyIds = songs.map((song) => song.spotify_id)
+  const trackId = songs.map((song) => song.spotify_id)
 
   // 전체 재생 핸들러
   const handlePlayAll = () => {
-    setIsPlaying(true)
+    if (!isPlayerOpen) setPlayerOpen() // 페이지 방문 후, 첫 곡 재생이면 플레이어바 보여줌
+    setTrackIds(trackId) // 재생할 곡 아이디 넘겨주기
+    togglePlay()
   }
 
   const toggleDropdown = (songId: string) => {
@@ -135,8 +138,6 @@ export default function PlaylistDetailsComponent({
           <span className="ml-2">전체 재생</span>
         </button>
       </section>
-
-      {isPlaying && <MusicPlayer />}
 
       <ul className="mt-6">
         {songs.map((song) => (

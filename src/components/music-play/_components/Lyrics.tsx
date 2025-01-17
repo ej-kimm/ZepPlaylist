@@ -1,4 +1,5 @@
 'use client'
+import { UnderLineButton } from '@/components/common'
 import { useState } from 'react'
 
 type LyricsProps = {
@@ -17,28 +18,26 @@ const Lyrics = ({ lyrics, isFullLyrics, onClickLyrics }: LyricsProps) => {
     <div>
       {isFullLyrics && (
         <div className="mb-5 flex gap-1">
-          <button
-            type="button"
-            className={`button-2 border-b-2 p-[10px] ${
+          <UnderLineButton
+            onClick={handleMenuLyrics}
+            className={
               !isTranslation
                 ? 'border-primary'
                 : 'border-transparent text-opacity-60'
-            }`}
-            onClick={handleMenuLyrics}
+            }
           >
             가사
-          </button>
-          <button
-            type="button"
-            className={`button-2 border-b-2 p-[10px] ${
+          </UnderLineButton>
+          <UnderLineButton
+            onClick={handleMenuTranslation}
+            className={
               isTranslation
                 ? 'border-primary'
                 : 'border-transparent text-opacity-60'
-            }`}
-            onClick={handleMenuTranslation}
+            }
           >
             번역
-          </button>
+          </UnderLineButton>
         </div>
       )}
       {isTranslation ? (

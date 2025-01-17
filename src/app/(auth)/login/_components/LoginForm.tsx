@@ -1,5 +1,5 @@
 'use client'
-import { Button } from '@/components/common'
+import { PrimaryButton } from '@/components/common'
 import InputBox from '@/components/common/InputBox'
 import { userStore } from '@/store/userSlice'
 import type { Users } from '@/types/auth'
@@ -99,12 +99,12 @@ const LoginForm = () => {
         register={register}
         className="caption-2 mb-[52px] w-full rounded-lg border-white bg-[#f4f4f4]"
       />
-      <Button
+      <PrimaryButton
         type="submit"
         className="button-2 h-[39px] w-full rounded-full border-primary"
       >
         로그인
-      </Button>
+      </PrimaryButton>
     </form>
   )
 }
