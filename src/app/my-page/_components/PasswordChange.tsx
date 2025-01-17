@@ -1,6 +1,7 @@
-import { Button } from '@/components/common'
+import { PrimaryButton } from '@/components/common'
 import InputBox from '@/components/common/InputBox'
 import { supabase } from '@/utils/supabase/client'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import Swal from 'sweetalert2'
 import { z } from 'zod'
@@ -28,7 +29,9 @@ export const PasswordChange = ({ setIsOpenPassword }: PasswordChangeProps) => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<PasswordChangeForm>()
+  } = useForm<PasswordChangeForm>({
+    resolver: zodResolver(passwordChangeSchema),
+  })
   const onSubmit = async (data: PasswordChangeForm) => {
     const { newPassword } = data
     const { error: passwordChangeError } = await supabase.auth.updateUser({
@@ -67,7 +70,7 @@ export const PasswordChange = ({ setIsOpenPassword }: PasswordChangeProps) => {
         required={true}
         className="caption-2 mb-9 w-full rounded-lg border-white bg-[#f4f4f4]"
       />
-      <Button
+      <PrimaryButton
         type="submit"
         className="button-2 h-[39px] w-full rounded-full"
         onClick={() => {
@@ -75,7 +78,7 @@ export const PasswordChange = ({ setIsOpenPassword }: PasswordChangeProps) => {
         }}
       >
         확인
-      </Button>
+      </PrimaryButton>
     </form>
   )
 }

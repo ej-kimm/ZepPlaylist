@@ -1,7 +1,7 @@
 'use client'
 
 import { updateProfile } from '@/api/my-page/actions'
-import { Button } from '@/components/common'
+import { PrimaryButton } from '@/components/common'
 import BottomSheet from '@/components/common/BottomSheet'
 import type { User } from '@/types/auth'
 import Image from 'next/image'
@@ -131,13 +131,13 @@ const ProfileEdit = ({ user, setUser }: User) => {
           >
             비밀번호 변경
           </button>
-          <Button
+          <PrimaryButton
             type="button"
             className="button-2 mt-9 h-[39px] w-full rounded-full"
             onClick={updatedNickname}
           >
             확인
-          </Button>
+          </PrimaryButton>
         </div>
       </BottomSheet>
       <BottomSheet

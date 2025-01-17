@@ -3,10 +3,16 @@ import googleLogo from '@/assets/images/googleLogo.svg'
 import kakaoLogo from '@/assets/images/kakaoLogo.svg'
 import spotifyLogo from '@/assets/images/spotifyLogo.svg'
 import { supabase } from '@/utils/supabase/client'
+import type { AuthError } from '@supabase/supabase-js'
 import { useMutation } from '@tanstack/react-query'
 import Image from 'next/image'
 import Link from 'next/link'
 import SocialButtonItem from './SocialButtonItem'
+
+type Data = {
+  provider?: string
+  url?: string
+}
 
 const SocialButton = () => {
   const signInMutation = useMutation({
@@ -24,12 +30,13 @@ const SocialButton = () => {
       if (error) throw new Error(error.message)
       return data ? { ...data } : data
     },
-    onSuccess: async (data: any) => {
+    onSuccess: async (data: Data) => {
       if (data?.url) {
         window.location.href = data.url
       }
     },
-    onError: (error: any) => {
+    onError: (error: AuthError) => {
+      console.log('first', error)
       console.error(error.message)
       alert('에러가 발생하였습니다. 잠시후 다시 시도해주세요')
     },

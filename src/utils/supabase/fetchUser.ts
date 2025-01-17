@@ -7,7 +7,7 @@ export const fetchUser = async () => {
     const {
       data: { session },
     } = await supabase.auth.getSession()
-
+    console.log('first', session)
     if (session) {
       const userId = session.user.id
       const { data: userData, error } = await supabase
@@ -22,7 +22,9 @@ export const fetchUser = async () => {
         setIsLogin(false)
         return
       }
-
+      if (!userData) {
+        return
+      }
       setUser({
         id: userData.id,
         email: userData.email,
