@@ -12,16 +12,13 @@ import ProgressBar from './_components/ProgressBar'
 const MusicPlayer = () => {
   const { isPlayerOpen } = useMusicPlayerStore()
   const { musicDetail, url, lyrics, isPending } = usePlayer()
-  const { isPlaying, togglePlay } = useMusicPlayerStore()
+  const { isPlaying, isPlayerModalOpen, togglePlay } = useMusicPlayerStore()
   const [playerState, setPlayerState] = useState({
     ready: false, // onReady에서 영상이 로드된 상태값을 받아 사용
     played: 0, // 현재 재생 중인 시간 (0~0.9999)
     duration: 0, // 총 재생 시간
   })
-  const [isModalOpen, setIsModalOpen] = useState(false)
   const playerRef = useRef<ReactPlayer>(null)
-
-  const toggleModal = () => setIsModalOpen((prev) => !prev)
 
   const handleReady = () => setPlayerState({ ...playerState, ready: true })
   const handleDuration = (duration: number) =>
@@ -35,11 +32,11 @@ const MusicPlayer = () => {
 
   if (!isPlayerOpen) return null // 초기에 노래를 재생하지 않으면 플레이어바 숨김
   if (!url || isPending) {
-    return !isModalOpen && <PlayerSkeleton />
+    return !isPlayerModalOpen && <PlayerSkeleton />
   }
 
   return (
-    <section className="z-player shadow-drop fixed bottom-0 left-0 h-[60px] w-full bg-white">
+    <section className="fixed bottom-0 left-0 z-player h-[60px] w-full bg-white shadow-drop">
       <ReactPlayer
         url={url}
         ref={playerRef}
@@ -54,20 +51,13 @@ const MusicPlayer = () => {
         onEnded={togglePlay}
       />
       <div className="flex h-full items-center justify-between px-6">
-        <MusicDetails musicDetail={musicDetail} toggleModal={toggleModal} />
-        <ProgressBar
-          playerState={playerState}
-          isModalOpen={isModalOpen}
-          onSeek={handleSeek}
-          url={url}
-        />
-        <PlayerControls isModalOpen={isModalOpen} />
+        <MusicDetails musicDetail={musicDetail} />
+        <ProgressBar playerState={playerState} onSeek={handleSeek} url={url} />
+        <PlayerControls />
       </div>
 
       <MusicDetailModal
         url={url}
-        toggleModal={toggleModal}
-        isModalOpen={isModalOpen}
         musicDetail={musicDetail}
         lyrics={lyrics}
         playerState={playerState}

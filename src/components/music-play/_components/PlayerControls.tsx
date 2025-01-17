@@ -7,19 +7,20 @@ import skipNext from '@/assets/images/skipNext.svg'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import Image from 'next/image'
 
-type PlayerControlsProps = {
-  isModalOpen: boolean
-}
+const PlayerControls = () => {
+  const {
+    isPlaying,
+    isPlayerModalOpen,
+    togglePlay,
+    playNextTrack,
+    playPreviousTrack,
+  } = useMusicPlayerStore()
 
-const PlayerControls = ({ isModalOpen }: PlayerControlsProps) => {
-  const { isPlaying, togglePlay, playNextTrack, playPreviousTrack } =
-    useMusicPlayerStore()
-
-  const ICON_SIZE = isModalOpen ? 36 : 24
+  const ICON_SIZE = isPlayerModalOpen ? 36 : 24
 
   return (
     <div
-      className={`flex items-center justify-end ${isModalOpen ? 'gap-10' : 'gap-2'}`}
+      className={`flex items-center justify-end ${isPlayerModalOpen ? 'gap-10' : 'gap-2'}`}
     >
       <button type="button" onClick={playPreviousTrack}>
         <Image
@@ -46,7 +47,7 @@ const PlayerControls = ({ isModalOpen }: PlayerControlsProps) => {
         />
       </button>
       {/* TODO : playlist 기능 만들어야함 */}
-      {!isModalOpen && (
+      {!isPlayerModalOpen && (
         <button type="button" onClick={playNextTrack}>
           <Image
             src={playlist}

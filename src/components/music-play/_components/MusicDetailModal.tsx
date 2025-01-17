@@ -2,6 +2,7 @@ import likeFalse from '@/assets/images/likeFalse.svg'
 import likeTrue from '@/assets/images/likeTrue.svg'
 import save from '@/assets/images/save.svg'
 import useSongLike from '@/hooks/useSongLike'
+import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import { userStore } from '@/store/userSlice'
 import { Tables } from '@/types/supabase'
 import Image from 'next/image'
@@ -19,17 +20,13 @@ type PlayerState = {
 
 type MusicDetailModalProps = {
   musicDetail: Tables<'music'> | undefined
-  isModalOpen: boolean
   lyrics: string
   url: string[]
   playerState: PlayerState
-  toggleModal: () => void
   onSeek: (value: number) => void
 }
 
 export default function MusicDetailModal({
-  toggleModal,
-  isModalOpen,
   musicDetail,
   url,
   lyrics,
@@ -39,6 +36,7 @@ export default function MusicDetailModal({
   const { title, artist } = musicDetail || {}
   const { user } = userStore()
   const user_id = user?.id || ''
+  const { isPlayerModalOpen } = useMusicPlayerStore()
   const { songLike, isPending, updateLike } = useSongLike({ user_id })
 
   const [isFullLyrics, setIsFullLyrics] = useState<boolean>(false)
@@ -65,7 +63,7 @@ export default function MusicDetailModal({
 
   return (
     <section
-      className={`h-navBar-calc z-player-modal fixed bottom-0 left-0 w-full bg-slate-300 px-6 transition-all duration-500 ease-out ${isModalOpen ? 'translate-y-0' : 'translate-y-full'}`}
+      className={`fixed bottom-0 left-0 z-player-modal h-navBar-calc w-full bg-slate-300 px-6 transition-all duration-500 ease-out ${isPlayerModalOpen ? 'translate-y-0' : 'translate-y-full'}`}
     >
       <div className="flex h-full max-h-[620px] flex-col items-center">
         <div className="w-full max-w-[266px] py-[10px]">
@@ -98,12 +96,10 @@ export default function MusicDetailModal({
         </div>
         <ProgressBar
           url={url}
-          isModalOpen={isModalOpen}
           playerState={{ ready, played, duration }}
           onSeek={onSeek}
         />
-        <PlayerControls isModalOpen={isModalOpen} />
-        <button onClick={toggleModal}>모달닫기임시버튼^^..</button>
+        <PlayerControls />
       </div>
     </section>
   )
