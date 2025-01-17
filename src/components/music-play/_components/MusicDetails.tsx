@@ -17,7 +17,7 @@ const MusicDetails = ({ musicDetail, toggleModal }: MusicDetailsProps) => {
         width={40}
         height={40}
       />
-      <div className="flex flex-col items-start justify-start gap-[2px]">
+      <div className="flex flex-col gap-[2px]">
         <h3 className="body-2">{musicDetail?.title}</h3>
         <p className="caption-2">{musicDetail?.artist}</p>
       </div>

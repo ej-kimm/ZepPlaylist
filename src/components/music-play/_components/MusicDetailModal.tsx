@@ -65,13 +65,13 @@ export default function MusicDetailModal({
 
   return (
     <section
-      className={`h-navBar-calc fixed bottom-0 left-0 w-full bg-slate-200 px-6 transition-all duration-500 ease-out ${isModalOpen ? 'translate-y-0' : 'translate-y-full'}`}
+      className={`h-navBar-calc z-player-modal fixed bottom-0 left-0 w-full bg-slate-300 px-6 transition-all duration-500 ease-out ${isModalOpen ? 'translate-y-0' : 'translate-y-full'}`}
     >
       <div className="flex h-full max-h-[620px] flex-col items-center">
         <div className="w-full max-w-[266px] py-[10px]">
           <div className="flex flex-col items-center">
-            <h3 className="title-1">{title}</h3>
-            <p className="caption-1">{artist}</p>
+            <h3 className="title-1 text-center">{title}</h3>
+            <p className="caption-1 text-center">{artist}</p>
             <div className="flex gap-6">
               {!isPending && (
                 <button onClick={handleLike}>
