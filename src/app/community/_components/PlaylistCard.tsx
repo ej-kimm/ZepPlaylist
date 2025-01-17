@@ -1,9 +1,10 @@
 'use client'
 
+import likeFalse from '@/assets/images/likeFalse.svg'
+import likeTrue from '@/assets/images/likeTrue.svg'
 import usePlaylistLike from '@/hooks/usePlaylistLike'
+import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { AiTwotoneHeart } from 'react-icons/ai'
-import { BiHeart } from 'react-icons/bi'
 
 type PlaylistCardProps = {
   playlist: {
@@ -47,11 +48,12 @@ const PlaylistCard = ({ playlist, userId }: PlaylistCardProps) => {
             handleLikeToggle()
           }}
         >
-          {isLiked ? (
-            <AiTwotoneHeart className="text-red-500" />
-          ) : (
-            <BiHeart className="text-gray-500" />
-          )}
+          <Image
+            src={isLiked ? likeTrue : likeFalse}
+            alt={isLiked ? 'Liked' : 'Not Liked'}
+            width={24}
+            height={24}
+          />
         </button>
       </div>
       <p className="mt-2 text-gray-600">
