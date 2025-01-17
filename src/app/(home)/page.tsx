@@ -2,7 +2,7 @@ import { Suspense } from 'react'
 import Charts from './_components/Charts'
 import LatestAlbums from './_components/LatestAlbums'
 import { SearchBar } from './_components/SearchBar'
-
+import UserLikedSong from './_components/UserLikedSong'
 export default function Home() {
   return (
     <>
@@ -12,6 +12,7 @@ export default function Home() {
       </Suspense>
       <LatestAlbums />
       <Charts />
+      <UserLikedSong />
     </>
   )
 }
