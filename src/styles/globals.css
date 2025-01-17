@@ -69,7 +69,7 @@
   }
 
   .button-2 {
-    @apply text-white;
+    @apply text-black;
     font-size: 14px;
     font-weight: 600;
     line-height: normal;
@@ -96,7 +96,7 @@
   }
 
   .lyrics-small {
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 2;
   }
 
   .lyrics-full {

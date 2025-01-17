@@ -2,6 +2,7 @@
 
 import hamburger from '@/assets/images/hamburger.svg'
 import leftArrow from '@/assets/images/leftArrow.svg'
+import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import { userStore } from '@/store/userSlice'
 import { supabase } from '@/utils/supabase/client'
 import Image from 'next/image'
@@ -16,6 +17,7 @@ import Swal from 'sweetalert2'
 
 const Hamburger = () => {
   const { user, setUser } = userStore()
+  const { isPlayerModalOpen, togglePlayerModal } = useMusicPlayerStore()
 
   console.log(user)
   const handleLogOut = async () => {
@@ -67,10 +69,10 @@ const Hamburger = () => {
   return (
     <>
       {!isHamburgerOpen ? (
-        <div className="z-header h-navBar fixed left-0 top-0 flex w-full items-center justify-between bg-white px-6">
+        <div className="fixed left-0 top-0 z-header flex h-navBar w-full items-center justify-between bg-white px-6">
           <button
             className={`md:hidden ${pathname !== '/' ? 'visible' : 'invisible'}`}
-            onClick={handleBack}
+            onClick={isPlayerModalOpen ? togglePlayerModal : handleBack}
           >
             <Image src={leftArrow} width={24} height={24} alt="leftArrow" />
           </button>
@@ -85,7 +87,7 @@ const Hamburger = () => {
           </div>
           <div className="/*min-h-screen*/ m-5 flex flex-col items-center justify-center">
             <button onClick={linkMenu(!user ? '/login' : '/my-page')}>
-              <div className="flex h-16 w-64 flex-shrink-0 items-center space-x-3 rounded-lg p-2 shadow-xl transition-colors">
+              <div className="flex h-16 w-64 flex-shrink-0 items-center space-x-3 rounded-lg shadow-xl transition-colors">
                 <Image
                   src={user?.profile_image || '/path/to/default-image.jpg'}
                   width={80}
