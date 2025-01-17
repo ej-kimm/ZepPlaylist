@@ -1,5 +1,7 @@
 'use client'
 
+import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
+
 type PlayerState = {
   ready: boolean
   played: number
@@ -8,17 +10,17 @@ type PlayerState = {
 
 type ProgressBarProps = {
   playerState: PlayerState
-  isModalOpen: boolean
   onSeek: (value: number) => void
   url: string[]
 }
 
 const ProgressBar = ({
   playerState: { ready, played, duration },
-  isModalOpen,
   onSeek,
   url,
 }: ProgressBarProps) => {
+  const { isPlayerModalOpen } = useMusicPlayerStore()
+
   // 시간 포맷 함수 (초 → mm:ss)
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60)
@@ -32,7 +34,7 @@ const ProgressBar = ({
 
   return (
     <div
-      className={`flex w-full flex-col gap-1 ${isModalOpen ? 'block' : 'hidden'}`}
+      className={`flex w-full flex-col gap-1 ${isPlayerModalOpen ? 'block' : 'hidden'}`}
     >
       <div className="flex justify-between">
         <time className="text-[8px] font-normal leading-none tracking-normal opacity-60">

@@ -6,6 +6,7 @@ type PlayerState = {
   currentTrackIndex: number
   isPlayerOpen: boolean
   isPlaying: boolean
+  isPlayerModalOpen: boolean
   setPlayerOpen: () => void
   setTrackIds: (
     trackIds: Tables<'music'>['spotify_id'] | Tables<'music'>['spotify_id'][],
@@ -13,13 +14,15 @@ type PlayerState = {
   playNextTrack: () => void
   playPreviousTrack: () => void
   togglePlay: () => void
+  togglePlayerModal: () => void
 }
 
 export const useMusicPlayerStore = create<PlayerState>()((set) => ({
-  trackIds: [],
-  currentTrackIndex: 0,
-  isPlayerOpen: false,
-  isPlaying: false,
+  trackIds: [], // 재생할 플레이 리스트들
+  currentTrackIndex: 0, // 현재 재생중인 음악 index
+  isPlayerOpen: false, // 첫 페이지 방문시 노래 재생중인지 판단 여부
+  isPlaying: false, // 현재 재생중인지 여부
+  isPlayerModalOpen: false,
   setPlayerOpen: () => set(() => ({ isPlayerOpen: true })),
   setTrackIds: (
     trackId: Tables<'music'>['spotify_id'] | Tables<'music'>['spotify_id'][],
@@ -46,6 +49,8 @@ export const useMusicPlayerStore = create<PlayerState>()((set) => ({
       }
     }),
   togglePlay: () => set((state) => ({ isPlaying: !state.isPlaying })),
+  togglePlayerModal: () =>
+    set((state) => ({ isPlayerModalOpen: !state.isPlayerModalOpen })),
 }))
 
 // 첫 플레이어 시작일 때는 플레이어 안보임 => isPlayerOpne: false
