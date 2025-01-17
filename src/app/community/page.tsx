@@ -2,8 +2,8 @@ import { getPlaylists, getPopularPlaylists } from '@/api/community/actions'
 import ClientSwiper from '@/components/common/ClientSwiper'
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
-import ClientPlaylistUI from './_components/ClientPlaylistUI'
 import KeywordCarouselWrapper from './_components/KeywordCarouselWrapper'
+import ClientPopularPlaylistUI from './_components/ClientPopularPlaylistUI'
 
 const CommunityPage = async (): Promise<JSX.Element> => {
   const supabase = createServerClient(
@@ -40,7 +40,7 @@ const CommunityPage = async (): Promise<JSX.Element> => {
         items={popularPlaylists.map((playlist) => ({
           id: playlist.id,
           content: (
-            <ClientPlaylistUI
+            <ClientPopularPlaylistUI
               playlist={{
                 albumCover: playlist.album_cover ?? '',
                 isLiked: playlist.likedByUser ?? false,

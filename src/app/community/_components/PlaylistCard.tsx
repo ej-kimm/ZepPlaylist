@@ -1,37 +1,37 @@
-'use client'
+'use client';
 
-import usePlaylistLike from '@/hooks/usePlaylistLike'
-import { useRouter } from 'next/navigation'
-import { AiTwotoneHeart } from 'react-icons/ai'
-import { BiHeart } from 'react-icons/bi'
+import usePlaylistLike from '@/hooks/usePlaylistLike';
+import { useRouter } from 'next/navigation';
+import { AiTwotoneHeart } from 'react-icons/ai';
+import { BiHeart } from 'react-icons/bi';
 
 type PlaylistCardProps = {
   playlist: {
-    id: string
-    name: string
-    likeCount: number
-    likedByUser?: boolean
-  }
-  userId: string
-}
+    id: string;
+    name: string;
+    likeCount: number;
+    likedByUser?: boolean;
+  };
+  userId: string;
+};
 
 const PlaylistCard = ({ playlist, userId }: PlaylistCardProps) => {
-  const router = useRouter()
+  const router = useRouter();
 
   const { toggleLike, isLiked, isPending } = usePlaylistLike({
     user_id: userId,
     playlist_id: playlist.id,
-  })
+  });
 
   const handleLikeToggle = () => {
     if (!isPending) {
-      toggleLike()
+      toggleLike();
     }
-  }
+  };
 
   const handleDivClick = () => {
-    router.push(`/community/${playlist.id}`)
-  }
+    router.push(`/community/${playlist.id}`);
+  };
 
   return (
     <div
@@ -43,8 +43,8 @@ const PlaylistCard = ({ playlist, userId }: PlaylistCardProps) => {
         <button
           className="text-2xl"
           onClick={(e) => {
-            e.stopPropagation()
-            handleLikeToggle()
+            e.stopPropagation();
+            handleLikeToggle();
           }}
         >
           {isLiked ? (
@@ -58,7 +58,7 @@ const PlaylistCard = ({ playlist, userId }: PlaylistCardProps) => {
         좋아요: {playlist.likeCount + (isLiked ? 1 : 0)}
       </p>
     </div>
-  )
-}
+  );
+};
 
-export default PlaylistCard
+export default PlaylistCard;
