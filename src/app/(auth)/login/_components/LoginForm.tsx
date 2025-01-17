@@ -78,7 +78,7 @@ const LoginForm = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="mx-auto max-w-sm border-b border-black border-opacity-40 bg-white pb-[36px] sm:p-6"
+      className="mx-auto max-w-sm border-b border-black border-opacity-40 pb-[36px] sm:p-6"
     >
       <h2 className="title-1 mb-10 text-left">로그인</h2>
       <InputBox
