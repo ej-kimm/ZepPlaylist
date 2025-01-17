@@ -34,7 +34,6 @@ type playListData = {
 }
 
 const Top100ChartList = ({
-  isKoreaChart,
   musicName,
   artistName,
   albumCover,
@@ -43,7 +42,7 @@ const Top100ChartList = ({
   // 유저정보 가져오기
   const { user } = userStore((state) => state)
 
-  const [isLoading, setIsLoading] = useState(false)
+  const [setIsLoading] = useState(false)
   const [playlists, setPlaylists] = useState<PlaylistRow[]>([])
 
   const { searchSpotifyId } = useSpotifySearch()
@@ -69,6 +68,7 @@ const Top100ChartList = ({
   ): Promise<playListData> => {
     await getplayList() // Wait for the playlist to be fetched
     const data = await searchSpotifyId(musicName, artistName)
+    console.log('searchSpotifyId 71', data)
 
     if (!data) {
       throw new Error('Failed to fetch Spotify ID')
