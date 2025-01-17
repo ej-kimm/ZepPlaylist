@@ -26,11 +26,15 @@ export const fetchMusicDetailByMusicId = async (
     .from('music')
     .select('*')
     .eq('spotify_id', musicId)
-    .single()
+    .maybeSingle()
 
   if (error) {
     console.error('Error fetching music:', error)
     throw error
+  }
+
+  if (!musicDetail) {
+    throw new Error('Music not found')
   }
 
   return musicDetail
