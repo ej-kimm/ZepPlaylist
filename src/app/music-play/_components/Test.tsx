@@ -3,7 +3,7 @@ import { fetchMusicId } from '@/api/music-play/actions'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 
 export default function Test() {
-  const { isPlaying, isPlayerOpen, setTrackIds, setPlayerOpen, stopPlay } =
+  const { isPlayerOpen, setTrackIds, setPlayerOpen, stopPlay } =
     useMusicPlayerStore()
 
   return (

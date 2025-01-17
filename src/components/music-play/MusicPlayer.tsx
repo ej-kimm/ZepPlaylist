@@ -36,7 +36,7 @@ const MusicPlayer = () => {
   useEffect(() => {
     play()
     // console.log('useEffect안 isPlyaing', isPlaying)
-  }, [isPlayerOpen])
+  }, [isPlayerOpen, play])
 
   if (!isPlayerOpen) return null // 초기에 노래를 재생하지 않으면 플레이어바 숨김
   if (!url || isPending) {
