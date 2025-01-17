@@ -7,7 +7,6 @@ type ClientPopularPlaylistUIProps = {
   playlist: {
     albumCover: string
     isLiked: boolean
-    likeCount: number
     id: string
   }
 }
@@ -16,6 +15,7 @@ const ClientPopularPlaylistUI: React.FC<ClientPopularPlaylistUIProps> = ({
   playlist,
 }) => {
   const router = useRouter()
+
   const handleLikeToggle = () => {
     console.log('Like toggled for', playlist.id)
   }
