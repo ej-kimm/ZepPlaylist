@@ -6,7 +6,7 @@ import Profile from './_components/Profile'
 
 const MyPage = async () => {
   const playlists = await fetchPlaylistsWithCovers()
-
+  console.log('first', playlists)
   return (
     <>
       <div className="mb-[46px] mt-[18px]">

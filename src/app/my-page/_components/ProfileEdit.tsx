@@ -133,7 +133,7 @@ const ProfileEdit = ({ user, setUser }: User) => {
           </button>
           <PrimaryButton
             type="button"
-            className="button-2 mt-9 h-[39px] w-full rounded-full"
+            className="button-2 mt-9 h-[39px] w-full rounded-full text-white"
             onClick={updatedNickname}
           >
             확인
