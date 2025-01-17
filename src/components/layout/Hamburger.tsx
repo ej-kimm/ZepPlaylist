@@ -13,7 +13,7 @@ import { ImHeadphones } from 'react-icons/im'
 import Swal from 'sweetalert2'
 const Hamburger = () => {
   const { user, setUser } = userStore()
-  console.log(user)
+  console.log('first==========================', user)
   const handleLogOut = async () => {
     const { error } = await supabase.auth.signOut()
     if (error) {

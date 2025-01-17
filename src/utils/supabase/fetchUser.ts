@@ -10,7 +10,6 @@ export const fetchUser = async () => {
 
     if (session) {
       const userId = session.user.id
-
       const { data: userData, error } = await supabase
         .from('users')
         .select('*')

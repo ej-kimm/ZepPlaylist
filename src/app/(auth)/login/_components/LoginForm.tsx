@@ -110,8 +110,3 @@ const LoginForm = () => {
 }
 
 export default LoginForm
-
-// width 가로
-// heigth 세로로
-// m(마진) 요소간에 간격을 떨어트리는용도
-// 그다음에 컬러를 체크

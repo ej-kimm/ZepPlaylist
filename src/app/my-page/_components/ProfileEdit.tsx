@@ -1,6 +1,7 @@
 'use client'
 
 import { updateProfile } from '@/api/my-page/actions'
+import { Button } from '@/components/common'
 import BottomSheet from '@/components/common/BottomSheet'
 import type { User } from '@/types/auth'
 import Image from 'next/image'
@@ -88,19 +89,19 @@ const ProfileEdit = ({ user, setUser }: User) => {
       <BottomSheet
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
-        height="350px"
-        maxWidth="375px"
+        height="50%"
+        maxWidth="100%"
       >
-        <div className="flex flex-col items-center space-y-6 p-4 mt-10">
-          <h1 className="title-1 text-left">프로필 수정</h1>
+        <h1 className="title-1 mt-10 text-left">프로필 수정</h1>
+        <div className="mt-7 flex flex-col items-center space-y-6 p-4">
           <div className="flex w-full items-center justify-between">
-            <div className="flex items-center space-x-4">
+            <div className="mb-[30px] flex items-center space-x-4">
               <Image
-                width={44}
-                height={44}
+                width={64}
+                height={64}
                 src={profileImage!}
                 alt="프로필 이미지"
-                className="h-11 w-11 rounded-full border border-gray-300 object-cover"
+                className="h-16 w-16 rounded-full"
                 onClick={handleImgClick}
               />
             </div>
@@ -111,53 +112,39 @@ const ProfileEdit = ({ user, setUser }: User) => {
               style={{ display: 'none' }}
               onChange={handleProfileImgChange}
             />
-            <button
-              onClick={handleImgClick}
-              className="text-sm text-[#B15EFF] underline"
-            >
+            <button onClick={handleImgClick} className="caption-1 mb-6">
               프로필 사진 변경
             </button>
           </div>
-          <div className="w-full">
-            <input
-              type="text"
-              value={editNickname}
-              onChange={handleNickname}
-              placeholder="닉네임을 입력하세요"
-              required
-              className="w-full rounded-lg border border-gray-300 p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-          <div className="w-full">
-            <div className="flex items-center justify-between">
-              <button
-                className="text-sm text-gray-500"
-                onClick={() => {
-                  setIsOpen(false)
-                  setIsOpenPassword(true)
-                }}
-              >
-                비밀번호 변경
-              </button>
-              <button className="text-sm text-[#B15EFF] underline"></button>
-            </div>
-          </div>
-          <div className="w-full">
-            <button
-              type="button"
-              className="w-full rounded-lg bg-[#B15EFF] py-3 text-white transition-all hover:bg-[#9F54E5] focus:outline-none focus:ring-2 focus:ring-[#B15EFF]"
-              onClick={updatedNickname}
-            >
-              확인
-            </button>
-          </div>
+          <input
+            type="text"
+            value={editNickname}
+            onChange={handleNickname}
+            className="caption-2 h-9 w-full rounded-lg border border-white bg-[#f4f4f4]"
+          />
+          <button
+            className="caption-1 mt-5 w-full text-left"
+            onClick={() => {
+              setIsOpen(false)
+              setIsOpenPassword(true)
+            }}
+          >
+            비밀번호 변경
+          </button>
+          <Button
+            type="button"
+            className="button-2 mt-9 h-[39px] w-full rounded-full"
+            onClick={updatedNickname}
+          >
+            확인
+          </Button>
         </div>
       </BottomSheet>
       <BottomSheet
         isOpen={isOpenPassword}
         onClose={() => setIsOpenPassword(false)}
-        height="50%"
-        maxWidth="500px"
+        height="40%"
+        maxWidth="100%"
       >
         <PasswordChange setIsOpenPassword={setIsOpenPassword} />
       </BottomSheet>

@@ -1,3 +1,4 @@
+import { Button } from '@/components/common'
 import InputBox from '@/components/common/InputBox'
 import { supabase } from '@/utils/supabase/client'
 import { useForm } from 'react-hook-form'
@@ -46,8 +47,8 @@ export const PasswordChange = ({ setIsOpenPassword }: PasswordChangeProps) => {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      <h1 className="title-1">비밀번호 변경</h1>
+    <form onSubmit={handleSubmit(onSubmit)} className="mt-10">
+      <h1 className="title-1 mb-7">비밀번호 변경</h1>
       <InputBox
         name="newPassword"
         type="password"
@@ -55,7 +56,7 @@ export const PasswordChange = ({ setIsOpenPassword }: PasswordChangeProps) => {
         register={register}
         errorMessage={errors.newPassword?.message}
         required={true}
-        className="caption-2 mb-6 w-full rounded-lg border-white bg-[#f4f4f4]"
+        className="caption-2 mb-3 w-full rounded-lg border-white bg-[#f4f4f4]"
       />
       <InputBox
         name="passwordCheck"
@@ -64,17 +65,17 @@ export const PasswordChange = ({ setIsOpenPassword }: PasswordChangeProps) => {
         register={register}
         errorMessage={errors.passwordCheck?.message}
         required={true}
-        className="caption-2 mb-6 w-full rounded-lg border-white bg-[#f4f4f4]"
+        className="caption-2 mb-9 w-full rounded-lg border-white bg-[#f4f4f4]"
       />
-      <button
+      <Button
         type="submit"
-        className="button-2 w-full rounded-lg bg-[#B15EFF] py-3 transition-all hover:bg-[#9F54E5] focus:outline-none focus:ring-2 focus:ring-[#B15EFF]"
+        className="button-2 h-[39px] w-full rounded-full"
         onClick={() => {
           setIsOpenPassword(false)
         }}
       >
         확인
-      </button>
+      </Button>
     </form>
   )
 }

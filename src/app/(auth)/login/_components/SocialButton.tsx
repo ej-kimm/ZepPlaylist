@@ -47,7 +47,6 @@ const SocialButton = () => {
       redirectTo: redirect[provider],
     })
   }
-
   return (
     <>
       <form className="flex justify-center gap-[14px]">
