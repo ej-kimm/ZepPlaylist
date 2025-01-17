@@ -19,7 +19,7 @@ const Hamburger = () => {
   const { user, setUser } = userStore()
   const { isPlayerModalOpen, togglePlayerModal } = useMusicPlayerStore()
 
-  console.log(user)
+  // console.log(user)
   const handleLogOut = async () => {
     const { error } = await supabase.auth.signOut()
     if (error) {
