@@ -5,12 +5,14 @@ const SearchResult = async ({ searchParams }: { searchParams: string }) => {
   const searchResult = await fetchSearchTracks(searchParams)
   const searchResultList = searchResult!.tracks.items
 
+  console.log('searchResultList', searchResultList)
+
   return (
     <div className="mx-auto max-w-3xl p-4">
       <h1 className="mb-3 text-2xl font-bold">{searchParams} 검색 결과</h1>
       <ul>
         {searchResultList.map((item) => (
-          <SearchResultItem item={item} />
+          <SearchResultItem item={item} key={item.id} />
         ))}
       </ul>
     </div>

@@ -13,6 +13,7 @@ const SearchResultItem = ({ item }: SearchResultProps) => {
   const { user } = userStore((state) => state)
   const { isPlayerOpen, setTrackIds, togglePlay, setPlayerOpen } =
     useMusicPlayerStore()
+
   const { playlists, handleMoreOptionBtn } = usePlaylistOperations()
 
   const handlePlayBtn = async (songId: string) => {
@@ -26,7 +27,6 @@ const SearchResultItem = ({ item }: SearchResultProps) => {
     <li
       onClick={() => handlePlayBtn(item.id)}
       className="flex items-center space-x-4 rounded-lg p-3 transition-colors"
-      key={item.id}
     >
       <div className="relative flex-shrink-0">
         <Image
@@ -50,7 +50,7 @@ const SearchResultItem = ({ item }: SearchResultProps) => {
         albumCover={item.album.images[0].url}
         user={user}
         onFetchMusicData={() =>
-          handleMoreOptionBtn(item.name, item.name, item.artists[0].name)
+          handleMoreOptionBtn(item.id, item.name, item.artists[0].name)
         }
         playlists={playlists}
       />
