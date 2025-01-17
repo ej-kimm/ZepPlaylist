@@ -11,8 +11,8 @@ import PasswordChange from './PasswordChange'
 const ProfileEdit = ({ user, setUser }: User) => {
   const [isOpen, setIsOpen] = useState(false) // 그냥 바텀시트
   const [isOpenPassword, setIsOpenPassword] = useState(false) // 비밀번호 변경 바텀시트
-  const [editNickname, setEitNickname] = useState(user?.nickname || '')
-  const [profileImage, setProfileImage] = useState(user?.profile_image)
+  const [editNickname, setEitNickname] = useState(user!.nickname || '')
+  const [profileImage, setProfileImage] = useState(user!.profile_image)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const handleImgClick = () => {
     if (fileInputRef.current) {
@@ -93,7 +93,7 @@ const ProfileEdit = ({ user, setUser }: User) => {
         maxWidth="100%"
       >
         <h1 className="title-1 mt-10 text-left">프로필 수정</h1>
-        <div className="mt-7 flex flex-col items-center space-y-6 p-4">
+        <div className="mt-7 flex flex-col items-center space-y-6">
           <div className="flex w-full items-center justify-between">
             <div className="mb-[30px] flex items-center space-x-4">
               <Image
@@ -109,8 +109,8 @@ const ProfileEdit = ({ user, setUser }: User) => {
               type="file"
               accept="image/*"
               ref={fileInputRef}
-              style={{ display: 'none' }}
               onChange={handleProfileImgChange}
+              className="hidden"
             />
             <button onClick={handleImgClick} className="caption-1 mb-6">
               프로필 사진 변경
@@ -120,7 +120,7 @@ const ProfileEdit = ({ user, setUser }: User) => {
             type="text"
             value={editNickname}
             onChange={handleNickname}
-            className="caption-2 h-9 w-full rounded-lg border border-white bg-[#f4f4f4]"
+            className="caption-2 h-9 w-full rounded-lg border border-white bg-[#f4f4f4] pl-2"
           />
           <button
             className="caption-1 mt-5 w-full text-left"

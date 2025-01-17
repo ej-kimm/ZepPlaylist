@@ -40,3 +40,22 @@ export const getPlaylists = async () => {
   }
   return playlists
 }
+
+// export const getAlbumImg = async () => {
+//   const { data: playlists } = await supabase.from('playlists').select('id')
+//   if (!playlists) {
+//     return
+//   }
+//   const id = playlists[0].id
+//   const { data: albumImg, error } = await supabase
+//     .from('playlist_music')
+//     .select(`*,music_id(*), playlists(*)`)
+//     .eq('playlists_id', id)
+//   if (error) {
+//     console.error('albumImgError', error)
+//   }
+//   return albumImg
+// }
+
+// 1.a 라는 playlists_music 테이블에서 playlists가 a라는 music 의 모든정보를 찾을수있음
+// 2. 가져올때 create_at 을통해 정렬시켜서 get해와서 첫번째꺼만 빼오면 최신앨범커버 <<

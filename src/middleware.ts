@@ -10,7 +10,7 @@ export async function middleware(request: NextRequest) {
   } = await supabase.auth.getUser()
   if (!user?.id) {
     const loginUrl = new URL('http://localhost:3000/login', request.url)
-    if (error) { 
+    if (error) {
       console.error(error.message)
     }
 
