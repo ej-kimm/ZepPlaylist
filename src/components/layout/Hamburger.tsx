@@ -1,19 +1,38 @@
 'use client'
 
+import hamburger from '@/assets/images/hamburger.svg'
+import leftArrow from '@/assets/images/leftArrow.svg'
 import { userStore } from '@/store/userSlice'
+import { supabase } from '@/utils/supabase/client'
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { useCallback, useState } from 'react'
 import { BiAlbum } from 'react-icons/bi'
 import { BsBarChartLineFill } from 'react-icons/bs'
 import { FaComment } from 'react-icons/fa'
 import { FiChevronRight } from 'react-icons/fi'
 import { ImHeadphones } from 'react-icons/im'
+import Swal from 'sweetalert2'
+
 const Hamburger = () => {
-  const { user } = userStore((state) => state)
+  const { user, setUser } = userStore()
+
   console.log(user)
+  const handleLogOut = async () => {
+    const { error } = await supabase.auth.signOut()
+    if (error) {
+      console.error(error.message)
+      Swal.fire({
+        icon: 'error',
+        text: '로그아웃중 에러가 발생했습니다. 다시시도해주세요',
+      })
+    }
+    localStorage.removeItem('user')
+    setUser(null)
+  }
 
   const router = useRouter()
+  const pathname = usePathname()
   const [isHamburgerOpen, setIsHamburgerOpen] = useState<boolean>(false)
 
   const links = [
@@ -33,6 +52,8 @@ const Hamburger = () => {
     setIsHamburgerOpen((prev) => !prev)
   }, [])
 
+  const handleBack = () => router.back()
+
   const linkMenu = useCallback(
     (to: string) => {
       return () => {
@@ -46,17 +67,15 @@ const Hamburger = () => {
   return (
     <>
       {!isHamburgerOpen ? (
-        <div className="z-header fixed left-0 top-0 flex h-14 w-full items-center justify-end bg-white px-6">
+        <div className="z-header h-navBar fixed left-0 top-0 flex w-full items-center justify-between bg-white px-6">
+          <button
+            className={`md:hidden ${pathname !== '/' ? 'visible' : 'invisible'}`}
+            onClick={handleBack}
+          >
+            <Image src={leftArrow} width={24} height={24} alt="leftArrow" />
+          </button>
           <button className="block md:hidden" onClick={toggleMenu}>
-            <svg
-              className="h-6 w-6 text-gray-800"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="currentColor"
-              viewBox="0 0 17 14"
-            >
-              <path d="M16 2H1a1 1 0 0 1 0-2h15a1 1 0 1 1 0 2Zm0 6H1a1 1 0 0 1 0-2h15a1 1 0 1 1 0 2Zm0 6H1a1 1 0 0 1 0-2h15a1 1 0 0 1 0 2Z" />
-            </svg>
+            <Image src={hamburger} width={24} height={24} alt="hamburger" />
           </button>
         </div>
       ) : (
@@ -97,6 +116,11 @@ const Hamburger = () => {
                 </button>
                 //seo ....안잡힘 이슈 -> 보완할때해도 ㄱㅊ
               ))}
+              {!user ? (
+                <p></p>
+              ) : (
+                <button onClick={handleLogOut}>로그아웃</button>
+              )}
             </div>
           </div>
         </div>

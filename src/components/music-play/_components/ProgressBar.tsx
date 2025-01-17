@@ -8,12 +8,14 @@ type PlayerState = {
 
 type ProgressBarProps = {
   playerState: PlayerState
+  isModalOpen: boolean
   onSeek: (value: number) => void
   url: string[]
 }
 
 const ProgressBar = ({
   playerState: { ready, played, duration },
+  isModalOpen,
   onSeek,
   url,
 }: ProgressBarProps) => {
@@ -21,7 +23,7 @@ const ProgressBar = ({
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60)
     const secs = Math.floor(seconds % 60)
-    return `${minutes}:${secs < 10 ? `0${secs}` : secs}`
+    return `${minutes < 10 ? `0${minutes}` : minutes}:${secs < 10 ? `0${secs}` : secs}`
   }
 
   if (url.length === 0) {
@@ -29,12 +31,19 @@ const ProgressBar = ({
   }
 
   return (
-    <div className="flex items-center gap-2">
-      <time className="text-sm text-white">
-        {formatTime(played * duration)}
-      </time>
+    <div
+      className={`flex w-full flex-col gap-1 ${isModalOpen ? 'block' : 'hidden'}`}
+    >
+      <div className="flex justify-between">
+        <time className="text-[8px] font-normal leading-none tracking-normal opacity-60">
+          {formatTime(played * duration)}
+        </time>
+        <time className="text-[8px] font-normal leading-none tracking-normal opacity-60">
+          {formatTime(duration)}
+        </time>
+      </div>
       <input
-        className="h-1 flex-grow cursor-pointer rounded-lg bg-gray-600"
+        className="range-slider"
         type="range"
         min="0"
         max="0.999999"
@@ -42,8 +51,10 @@ const ProgressBar = ({
         value={played}
         disabled={!ready}
         onChange={(e) => onSeek(parseFloat(e.target.value))}
+        style={{
+          background: `linear-gradient(to right, #B15EFF ${played * 100}%, #B15EFF ${played * 100}%, rgba(177, 94, 255, 0.1) ${played * 100}%, rgba(177, 94, 255, 0.1) 100%)`,
+        }}
       />
-      <time className="text-sm text-white">{formatTime(duration)}</time>
     </div>
   )
 }

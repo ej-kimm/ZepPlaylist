@@ -3,21 +3,23 @@ import Image from 'next/image'
 
 type MusicDetailsProps = {
   musicDetail: Tables<'music'> | undefined
+  toggleModal: () => void
 }
 
-const MusicDetails = ({ musicDetail }: MusicDetailsProps) => {
+const MusicDetails = ({ musicDetail, toggleModal }: MusicDetailsProps) => {
   return (
-    <div className="flex">
+    <div className="flex flex-grow cursor-pointer" onClick={toggleModal}>
       <Image
-        // TODO : src default 커버 설정하기
+        // TODO : 웹버전 src default 커버 설정하기
+        className="hidden"
         src={musicDetail?.album_cover || '/No cover'}
         alt={musicDetail?.title || 'No Title'}
         width={40}
         height={40}
       />
-      <div>
-        <h3 className="text-white">{musicDetail?.title}</h3>
-        <p className="text-white">{musicDetail?.artist}</p>
+      <div className="flex flex-col gap-[2px]">
+        <h3 className="body-2">{musicDetail?.title}</h3>
+        <p className="caption-2">{musicDetail?.artist}</p>
       </div>
     </div>
   )

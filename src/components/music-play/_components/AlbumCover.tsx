@@ -21,7 +21,7 @@ export default function AlbumCover({ musicDetail }: AlbumCoverProps) {
 
   return (
     <div
-      className="group h-[500px] w-[500px] [perspective:1000px]"
+      className="group h-[266px] w-[266px] [perspective:1000px]"
       onClick={handleFlip}
     >
       <div
@@ -29,20 +29,30 @@ export default function AlbumCover({ musicDetail }: AlbumCoverProps) {
           isFlipped ? 'rotate-y-180' : ''
         }`}
       >
-        <div className="absolute left-0 top-0 z-10 h-full w-full bg-white [backface-visibility:hidden]">
+        <div className="absolute left-0 top-0 h-full w-full [backface-visibility:hidden]">
           <Image
             src={album_cover || '/No cover'}
             alt={title || 'No Title'}
-            width={500}
-            height={500}
+            width={266}
+            height={266}
+            className="rounded object-cover"
           />
         </div>
-        <div className="rotate-y-180 absolute left-0 top-0 z-10 flex h-full w-full flex-col bg-white [backface-visibility:hidden]">
-          <h3>{title}</h3>
-          <p>{artist}</p>
-          <p>발매일: {album?.releaseDate}</p>
-          <p>앨범명: {album?.albumName}</p>
-          <p>장르: {genre.genres}</p>
+        <div className="rotate-y-180 absolute left-0 top-0 h-full w-full [backface-visibility:hidden]">
+          <Image
+            src={album_cover || '/No cover'}
+            alt={title || 'No Title'}
+            width={266}
+            height={266}
+            className="rounded bg-gradient-to-t from-black/35 to-black/35 object-cover blur-[10px]"
+          />
+          <div className="absolute left-0 top-0 flex h-full w-full flex-col items-center justify-center gap-6">
+            <p className="caption-1 text-white">{title}</p>
+            <p className="caption-1 text-white">{artist}</p>
+            <p className="caption-1 text-white">{album?.releaseDate}</p>
+            <p className="caption-1 text-white">{album?.albumName}</p>
+            <p className="caption-1 text-white">{genre.genres}</p>
+          </div>
         </div>
       </div>
     </div>

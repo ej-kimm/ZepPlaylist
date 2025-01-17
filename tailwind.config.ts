@@ -11,7 +11,14 @@ const config: Config = {
       colors: {
         primary: '#B15EFF',
         secondary: '#9032E8',
-        secondaryOpacity: 'rgba(177, 94, 255, 0.1)',
+        'secondary-opacity': 'rgba(177, 94, 255, 0.1)',
+      },
+      height: {
+        navBar: '56px',
+        'navBar-calc': 'calc(100vh - 56px)',
+      },
+      padding: {
+        navBar: '56px',
       },
       boxShadow: {
         drop: '0px -4px 4px rgba(0, 0, 0, 0.04)',
@@ -19,9 +26,20 @@ const config: Config = {
       zIndex: {
         header: '10',
         player: '10',
+        'player-modal': '20',
       },
       fontFamily: {
         pretendard: ['var(--font-pretendard)'],
+      },
+      animation: {
+        'custom-pulse': 'skeleton-loading 1.5s infinite ease-in-out',
+      },
+      keyframes: {
+        'skeleton-loading': {
+          '0%': { backgroundColor: '#e0e0e0' },
+          '50%': { backgroundColor: '#f0f0f0' },
+          '100%': { backgroundColor: '#e0e0e0' },
+        },
       },
     },
   },

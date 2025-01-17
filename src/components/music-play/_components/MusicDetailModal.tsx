@@ -1,6 +1,10 @@
+import likeFalse from '@/assets/images/likeFalse.svg'
+import likeTrue from '@/assets/images/likeTrue.svg'
+import save from '@/assets/images/save.svg'
 import useSongLike from '@/hooks/useSongLike'
 import { userStore } from '@/store/userSlice'
 import { Tables } from '@/types/supabase'
+import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import AlbumCover from './AlbumCover'
 import Lyrics from './Lyrics'
@@ -15,6 +19,7 @@ type PlayerState = {
 
 type MusicDetailModalProps = {
   musicDetail: Tables<'music'> | undefined
+  isModalOpen: boolean
   lyrics: string
   url: string[]
   playerState: PlayerState
@@ -24,6 +29,7 @@ type MusicDetailModalProps = {
 
 export default function MusicDetailModal({
   toggleModal,
+  isModalOpen,
   musicDetail,
   url,
   lyrics,
@@ -35,8 +41,8 @@ export default function MusicDetailModal({
   const user_id = user?.id || ''
   const { songLike, isPending, updateLike } = useSongLike({ user_id })
 
+  const [isFullLyrics, setIsFullLyrics] = useState<boolean>(false)
   const [isLiked, setIsLiked] = useState<boolean>(false)
-  const [isSaved, setIsSaved] = useState<boolean>(false)
 
   const handleLike = async () => {
     if (!user_id) {
@@ -48,6 +54,8 @@ export default function MusicDetailModal({
 
   const handleSave = async () => {}
 
+  const handleLClickLyrics = () => setIsFullLyrics((prev) => !prev)
+
   useEffect(() => {
     // 로그인 한 유저
     if (user_id && songLike !== undefined) {
@@ -56,33 +64,47 @@ export default function MusicDetailModal({
   }, [songLike])
 
   return (
-    <div className="absolute bottom-0 left-0 h-screen w-full overflow-y-scroll bg-slate-200">
-      <div>
-        <div>
-          <h3>{title}</h3>
-          <p>{artist}</p>
+    <section
+      className={`h-navBar-calc z-player-modal fixed bottom-0 left-0 w-full bg-slate-300 px-6 transition-all duration-500 ease-out ${isModalOpen ? 'translate-y-0' : 'translate-y-full'}`}
+    >
+      <div className="flex h-full max-h-[620px] flex-col items-center">
+        <div className="w-full max-w-[266px] py-[10px]">
+          <div className="flex flex-col items-center">
+            <h3 className="title-1 text-center">{title}</h3>
+            <p className="caption-1 text-center">{artist}</p>
+            <div className="flex gap-6">
+              {!isPending && (
+                <button onClick={handleLike}>
+                  <Image
+                    src={isLiked ? likeTrue : likeFalse}
+                    width={16}
+                    height={16}
+                    alt={isLiked ? 'likeTrue' : 'likeFalse'}
+                  />
+                </button>
+              )}
+              {/* TODO : 플레이리스트 추가 기능 해야함 */}
+              <button onClick={handleSave}>
+                <Image src={save} width={16} height={16} alt="save" />
+              </button>
+            </div>
+          </div>
+          {!isFullLyrics && <AlbumCover musicDetail={musicDetail} />}
+          <Lyrics
+            lyrics={lyrics}
+            isFullLyrics={isFullLyrics}
+            onClickLyrics={handleLClickLyrics}
+          />
         </div>
-        <div>
-          {!isPending && (
-            <button onClick={handleLike}>
-              {isLiked ? '💔 좋아요 취소' : '❤ 좋아요'}
-            </button>
-          )}
-          |
-          <button onClick={handleSave}>
-            {isSaved ? '담기취소!' : '☑ 담기'}
-          </button>
-        </div>
-        <AlbumCover musicDetail={musicDetail} />
-        <Lyrics lyrics={lyrics} />
         <ProgressBar
           url={url}
+          isModalOpen={isModalOpen}
           playerState={{ ready, played, duration }}
           onSeek={onSeek}
         />
-        <PlayerControls />
+        <PlayerControls isModalOpen={isModalOpen} />
         <button onClick={toggleModal}>모달닫기임시버튼^^..</button>
       </div>
-    </div>
+    </section>
   )
 }
