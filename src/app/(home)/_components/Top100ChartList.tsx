@@ -42,7 +42,7 @@ const Top100ChartList = ({
   // 유저정보 가져오기
   const { user } = userStore((state) => state)
 
-  const [setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const [playlists, setPlaylists] = useState<PlaylistRow[]>([])
 
   const { searchSpotifyId } = useSpotifySearch()
@@ -84,6 +84,8 @@ const Top100ChartList = ({
     setTrackIds(songId)
     togglePlay()
   }
+
+  if (isLoading) return <></>
 
   return (
     <li className="flex">

@@ -1,6 +1,6 @@
 'use client'
 import pause from '@/assets/images/pause.svg'
-import play from '@/assets/images/play.svg'
+import playing from '@/assets/images/play.svg'
 import playlist from '@/assets/images/playlist.svg'
 import skipBack from '@/assets/images/skipBack.svg'
 import skipNext from '@/assets/images/skipNext.svg'
@@ -32,7 +32,7 @@ const PlayerControls = () => {
       </button>
       <button type="button" onClick={togglePlay}>
         <Image
-          src={isPlaying ? pause : play}
+          src={isPlaying ? pause : playing}
           width={ICON_SIZE}
           height={ICON_SIZE}
           alt={isPlaying ? 'pause' : 'play'}
