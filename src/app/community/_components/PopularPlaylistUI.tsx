@@ -1,6 +1,6 @@
 'use client'
 
-import Implay from '@/assets/images/Implay3.svg'
+import Implay from '@/assets/images/Implay.svg'
 import likeTrue from '@/assets/images/likeTrue.svg'
 import whiteHeart from '@/assets/images/whiteHeart.svg'
 import Image from 'next/image'

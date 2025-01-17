@@ -1,7 +1,7 @@
 'use client'
 
 import { removeLikedSong } from '@/api/like-music/actions'
-import Implay from '@/assets/images/Implay3.svg'
+import Implay from '@/assets/images/Implay.svg'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import { LikedSong } from '@/types/song'
 import Image from 'next/image'
