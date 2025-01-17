@@ -27,14 +27,14 @@ export default function RootLayout({
     <html lang="ko">
       <body className={`${pretendard.className}`}>
         <QueryProvider>
-          <ThemeProvider>
+          {/* <ThemeProvider> */}
             <Header />
 
             <div className="h-full w-full px-6 pt-navBar bg-white">{children}</div>
             {/* Footer 잠시 주석처리 */}
             {/* <Footer /> */}
             <MusicPlayer />
-          </ThemeProvider>
+          {/* </ThemeProvider> */}
         </QueryProvider>
       </body>
     </html>
