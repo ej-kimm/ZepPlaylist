@@ -4,7 +4,7 @@ import {
   deleteSongFromPlaylist,
   fetchPlaylistDetails,
 } from '@/api/playlist-detail/actions'
-import imPlay from '@/assets/images/imPlay.svg'
+import imPlay from '@/assets/images/likeTrue.svg'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import { PlaylistDetails } from '@/types/song'
 import { differenceInDays } from 'date-fns'
