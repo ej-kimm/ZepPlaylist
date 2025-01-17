@@ -54,7 +54,7 @@ export default function CommunityDetail({
       setPlayerOpen()
       togglePlay()
     }
-  }, [songs, setTrackIds, togglePlay])
+  }, [songs, setTrackIds, setPlayerOpen, togglePlay])
 
   const handleSongClick = () => {
     setTrackIds(songs.map((song) => song.spotify_id))

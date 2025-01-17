@@ -1,14 +1,16 @@
+import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import { Tables } from '@/types/supabase'
 import Image from 'next/image'
 
 type MusicDetailsProps = {
   musicDetail: Tables<'music'> | undefined
-  toggleModal: () => void
 }
 
-const MusicDetails = ({ musicDetail, toggleModal }: MusicDetailsProps) => {
+const MusicDetails = ({ musicDetail }: MusicDetailsProps) => {
+  const { togglePlayerModal } = useMusicPlayerStore()
+
   return (
-    <div className="flex flex-grow cursor-pointer" onClick={toggleModal}>
+    <div className="flex flex-grow cursor-pointer" onClick={togglePlayerModal}>
       <Image
         // TODO : 웹버전 src default 커버 설정하기
         className="hidden"

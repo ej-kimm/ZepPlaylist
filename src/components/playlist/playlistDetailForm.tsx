@@ -152,7 +152,7 @@ export default function PlaylistDetailsComponent({
           </button>
         </div>
       </section>
-
+      
       <ul className="mt-6 space-y-2">
         {songs.map((song) => (
           <li
