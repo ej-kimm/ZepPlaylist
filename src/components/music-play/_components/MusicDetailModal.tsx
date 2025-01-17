@@ -59,7 +59,7 @@ export default function MusicDetailModal({
     if (user_id && songLike !== undefined) {
       setIsLiked(songLike)
     }
-  }, [songLike])
+  }, [songLike, user_id])
 
   return (
     <section
