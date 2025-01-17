@@ -15,26 +15,26 @@ const Lyrics = ({ lyrics, isFullLyrics, onClickLyrics }: LyricsProps) => {
   const handleMenuTranslation = () => setIsTranslation(true)
 
   return (
-    <div>
+    <div className="w-full">
       {isFullLyrics && (
         <div className="mb-5 flex gap-1">
           <UnderLineButton
             onClick={handleMenuLyrics}
-            className={
+            className={`button-2 ${
               !isTranslation
                 ? 'border-primary'
                 : 'border-transparent text-opacity-60'
-            }
+            }`}
           >
             가사
           </UnderLineButton>
           <UnderLineButton
             onClick={handleMenuTranslation}
-            className={
+            className={`button-2 ${
               isTranslation
                 ? 'border-primary'
                 : 'border-transparent text-opacity-60'
-            }
+            }`}
           >
             번역
           </UnderLineButton>
