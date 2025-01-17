@@ -54,7 +54,7 @@ const UserLikedSong = () => {
     }
 
     fetchSongLikesAndMusic()
-  }, [user])
+  }, [user, myLikedSong])
 
   return (
     <div>
