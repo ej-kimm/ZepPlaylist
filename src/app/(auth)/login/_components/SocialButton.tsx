@@ -81,7 +81,10 @@ const SocialButton = () => {
           }
         />
       </form>
-      <Link className="caption-1 flex justify-center" href={'/sign-up'}>
+      <Link
+        className="caption-1 flex justify-center opacity-60"
+        href={'/sign-up'}
+      >
         회원가입
       </Link>
     </>

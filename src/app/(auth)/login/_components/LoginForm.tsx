@@ -13,13 +13,10 @@ import { z } from 'zod'
 const validator = z.object({
   email: z
     .string()
-    .email('유효한 이메일 형식이어야 합니다.')
-    .min(1, '이메일을 입력해주세요.'),
-  password: z
-    .string()
-    .min(4, '비밀번호는 최소 4글자 이상이어야 합니다.')
-    .max(12, '비밀번호는 12글자를 초과할 수 없습니다.')
-    .nonempty('비밀번호를 입력해주세요.'),
+    .min(1, '이메일을 입력해주세요.')
+    .email('잘못된 이메일 형식입니다.'),
+
+  password: z.string(),
 })
 type LoginFormData = z.infer<typeof validator>
 
@@ -32,6 +29,7 @@ const LoginForm = () => {
     formState: { errors },
   } = useForm<LoginFormData>({
     resolver: zodResolver(validator),
+    mode: 'onChange',
   })
 
   const onSubmit: SubmitHandler<LoginFormData> = async (data) => {
@@ -80,7 +78,7 @@ const LoginForm = () => {
       onSubmit={handleSubmit(onSubmit)}
       className="mx-auto max-w-sm border-b border-black border-opacity-40 pb-[36px] sm:p-6"
     >
-      <h2 className="title-1 mb-10 text-left">로그인</h2>
+      <h2 className="title-1 mt-[72px] text-left">로그인</h2>
       <InputBox
         name="email"
         type="email"
@@ -88,20 +86,19 @@ const LoginForm = () => {
         required
         errorMessage={errors.email?.message}
         register={register}
-        className="caption-2 mb-10 w-full rounded-lg border-white bg-[#f4f4f4]"
+        className="caption-2 mt-10 w-full rounded-lg border-white bg-[#f4f4f4]"
       />
       <InputBox
         name="password"
         type="password"
         placeholder="비밀번호"
         required
-        errorMessage={errors.password?.message}
         register={register}
-        className="caption-2 mb-[52px] w-full rounded-lg border-white bg-[#f4f4f4]"
+        className="caption-2 mt-10 w-full rounded-lg border-white bg-[#f4f4f4]"
       />
       <PrimaryButton
         type="submit"
-        className="button-2 h-[39px] w-full rounded-full border-primary"
+        className="button-2 mt-[52px] h-[39px] w-full rounded-full border-primary"
       >
         로그인
       </PrimaryButton>
