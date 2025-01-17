@@ -1,100 +1,124 @@
 'use client'
 
+import { fetchPlaylistsWithCovers } from '@/api/playlist/actions'
+import MoreOptionsButton from '@/components/common/MoreOptionsButton'
+import { useSpotifySearch } from '@/hooks/useGetSpotifyMusicId'
+import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import { userStore } from '@/store/userSlice'
-import type { BillboradSong } from '@/types/billboradCharts'
-import type { MelonChartSong } from '@/types/melonCharts'
+import type { PlaylistRow } from '@/types/playlist'
 import Image from 'next/image'
-
-// {isKorean: true, data:[{}, {}]}
-// {isKorean: false, data:[{}, {}]}
-
-// discriminated union
+import { useState } from 'react'
 
 type KoreanChart = {
   isKoreaChart: true
-  list: MelonChartSong[]
+  musicName: string
+  artistName: string
+  albumCover: string
+  index: number
 }
 
 type BillboardChart = {
   isKoreaChart: false
-  list: BillboradSong[]
+  musicName: string
+  artistName: string
+  albumCover: string
+  index: number
 }
 
 type Chart = KoreanChart | BillboardChart
 
-// const ChartList = ({ data }: { data: Chart }) => {
-//   return (
-//     <div>
-//       {/*  */}
-//       {data.isKorean &&
-//         data.list.map((item) => <div>{item.ARTISTLIST[0].ARTISTNAME}</div>)}
+type playListData = {
+  id: string
+  artist: string
+  title: string
+}
 
-//       {!data.isKorean &&
-//         data.list.map((item) => (
-//           <div>
-//             <>{item.artist}</>
-//           </div>
-//         ))}
-//     </div>
-//   )
-// }
-
-// export default ChartList
-// // ====================================
-
-const Top100ChartList = ({ data }: { data: Chart }) => {
+const Top100ChartList = ({
+  musicName,
+  artistName,
+  albumCover,
+  index,
+}: Chart) => {
   // 유저정보 가져오기
   const { user } = userStore((state) => state)
-  console.log('user', user)
+
+  const [setIsLoading] = useState(false)
+  const [playlists, setPlaylists] = useState<PlaylistRow[]>([])
+
+  const { searchSpotifyId } = useSpotifySearch()
+
+  const { isPlayerOpen, setTrackIds, togglePlay, setPlayerOpen } =
+    useMusicPlayerStore()
+
+  const getplayList = async () => {
+    setIsLoading(true)
+    try {
+      const data = await fetchPlaylistsWithCovers()
+      setPlaylists(data)
+    } catch (error) {
+      console.error('Error fetching playlists:', error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const handleMoreOptionBtn = async (
+    musicName: string,
+    artistName: string,
+  ): Promise<playListData> => {
+    await getplayList() // Wait for the playlist to be fetched
+    const data = await searchSpotifyId(musicName, artistName)
+    console.log('searchSpotifyId 71', data)
+
+    if (!data) {
+      throw new Error('Failed to fetch Spotify ID')
+    }
+
+    return data
+  }
+
+  const handlePlayBtn = async () => {
+    const data = await searchSpotifyId(musicName, artistName)
+    const songId = data!.id
+    if (!isPlayerOpen) setPlayerOpen() // 페이지 방문 후, 첫 곡 재생이면 플레이어바 보여줌
+    setTrackIds(songId)
+    togglePlay()
+  }
 
   return (
-    <div className="mx-auto max-w-3xl p-4">
-      <h1 className="mb-3 text-2xl font-bold">TOP 100</h1>
-      <ul>
-        {data.list.map((chart, index) => (
-          <li
-            key={
-              data.isKoreaChart
-                ? (chart as MelonChartSong).SONGID
-                : (chart as BillboradSong).rank
-            }
-            className="flex items-center space-x-4 rounded-lg p-3 transition-colors"
-          >
-            <div className="relative flex-shrink-0">
-              <Image
-                src={
-                  data.isKoreaChart
-                    ? (chart as MelonChartSong).ALBUMIMG
-                    : (chart as BillboradSong).cover
-                }
-                alt={
-                  data.isKoreaChart
-                    ? (chart as MelonChartSong).ALBUMNAME
-                    : (chart as BillboradSong).title
-                }
-                width={50}
-                height={50}
-                className="rounded-md"
-                priority
-              />
-            </div>
-            <p className="truncate text-lg">{index + 1}</p>
-            <div className="min-w-0 flex-1">
-              <h3 className="truncate text-base font-medium text-gray-900">
-                {data.isKoreaChart
-                  ? (chart as MelonChartSong).SONGNAME
-                  : (chart as BillboradSong).title}
-              </h3>
-              <p className="truncate text-sm text-gray-500">
-                {data.isKoreaChart
-                  ? (chart as MelonChartSong).ARTISTLIST[0].ARTISTNAME
-                  : (chart as BillboradSong).artist}
-              </p>
-            </div>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <li className="flex">
+      <div
+        className="mr-auto flex items-center space-x-4 rounded-lg p-3 transition-colors"
+        onClick={() => handlePlayBtn()}
+      >
+        <p className="truncate text-lg">{index + 1}</p>
+        <div className="relative flex-shrink-0">
+          <Image
+            src={albumCover}
+            alt={musicName}
+            width={50}
+            height={50}
+            className="rounded-md"
+            priority
+          />
+        </div>
+
+        <div className="min-w-0 flex-1">
+          <h3 className="truncate text-base font-medium text-gray-900">
+            {musicName}
+          </h3>
+          <p className="truncate text-sm text-gray-500">{artistName}</p>
+        </div>
+      </div>
+      <MoreOptionsButton
+        musicName={musicName}
+        artistName={artistName}
+        albumCover={albumCover}
+        user={user}
+        onFetchMusicData={() => handleMoreOptionBtn(musicName, artistName)}
+        playlists={playlists}
+      />
+    </li>
   )
 }
 

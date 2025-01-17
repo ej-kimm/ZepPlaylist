@@ -23,3 +23,9 @@ export type PlaylistUpdate = {
   is_public?: boolean
   keyword?: string
 }
+
+export type MusicData = {
+  id: string
+  title: string
+  artist: string
+}

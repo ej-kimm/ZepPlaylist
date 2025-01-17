@@ -29,7 +29,7 @@ export const UnderLineButton: React.FC<ButtonProps> = ({
   return (
     <button
       type={type}
-      className={`button-2 border-b-2 border-primary p-[10px] ${className}`}
+      className={`border-b-2 border-primary p-[10px] ${className}`}
       onClick={onClick}
     >
       {children}
