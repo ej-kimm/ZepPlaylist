@@ -20,7 +20,7 @@ const PlayerControls = () => {
 
   return (
     <div
-      className={`flex items-center justify-end ${isPlayerModalOpen ? 'gap-10' : 'gap-2'}`}
+      className={`flex items-center justify-end py-2 ${isPlayerModalOpen ? 'gap-10' : 'gap-2'}`}
     >
       <button type="button" onClick={playPreviousTrack}>
         <Image
