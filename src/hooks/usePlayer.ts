@@ -30,6 +30,8 @@ const usePlayer = () => {
       return { trackUrl, musicDetail, lyrics }
     },
     enabled: !!currentTrackId,
+    staleTime: 12 * 60 * 60 * 1000, // 12시간
+    gcTime: 24 * 60 * 60 * 1000, // 24시간
   })
 
   // const playerQueries = useQueries({
