@@ -5,7 +5,6 @@ import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 export default function Test() {
   const { isPlaying, isPlayerOpen, setTrackIds, togglePlay, setPlayerOpen } =
     useMusicPlayerStore()
-  const test = '5alUYFVxEur17iUbc3sNsX' // 1. 한곡 재생할 경우
 
   return (
     <p

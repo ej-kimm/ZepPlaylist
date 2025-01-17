@@ -33,14 +33,17 @@ const getAccessToken = async (): Promise<string> => {
 
     const data = await response.json()
     return data.access_token
-  } catch (error: any) {
-    console.error(
-      'Unexpected error while fetching access token:',
-      error.message,
-    )
-    throw new Error(
-      `An unexpected error occurred: ${error.message}. Please check the logs.`,
-    )
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error(
+        'Unexpected error while fetching access token:',
+        error.message,
+      )
+      throw new Error(
+        `An unexpected error occurred: ${error.message}. Please check the logs.`,
+      )
+    }
+    throw new Error(`An unexpected error occurred: Please check the logs.`)
   }
 }
 
@@ -86,9 +89,12 @@ const getSongId = async ({
       return null
     }
     return searchResults[0].result.id
-  } catch (error: any) {
-    console.error('Error fetching song ID:', error.message)
-    throw new Error(`An error occurred: ${error.message}`)
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error('Error fetching song ID:', error.message)
+      throw new Error(`An error occurred: ${error.message}`)
+    }
+    throw new Error(`An error occurred`)
   }
 }
 
@@ -114,6 +120,10 @@ const getLyricsUrl = async (
     const lyricsUrl = songDetails.response.song.url
     return lyricsUrl
   } catch (error) {
+    if (error instanceof Error) {
+      console.error('An unknown error occurred while fetching lyrics URL.')
+      throw new Error('An unknown error occurred while fetching lyrics URL.')
+    }
     throw new Error('An unknown error occurred while fetching lyrics URL.')
   }
 }
@@ -149,6 +159,10 @@ const crawlLyrics = async (lyricsUrl: string): Promise<string> => {
       throw new Error('Lyrics container not found in the provided HTML.')
     }
   } catch (error) {
+    if (error instanceof Error) {
+      console.error('An unknown error occurred while crawling lyrics.')
+      throw new Error('An unknown error occurred while crawling lyrics.')
+    }
     throw new Error('An unknown error occurred while crawling lyrics.')
   }
 }
