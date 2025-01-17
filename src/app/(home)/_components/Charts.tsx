@@ -5,18 +5,13 @@ import Top20List from './Top20List'
 export const revalidate = 3600
 
 const Charts = async () => {
-  const koreaChart = await fetchMelonChart()
+  const [koreaChart, billboardChart] = await Promise.all([
+    fetchMelonChart(),
+    fetchGlobalChart(),
+  ])
 
-  const koreaTop100ChartList = koreaChart.response.SONGLIST
-
-  const koreaTop20ChartList = koreaTop100ChartList.slice(undefined, 20)
-
-  const billboardTop100ChaertList = await fetchGlobalChart()
-
-  const billboardTop20ChartList = billboardTop100ChaertList.songs.slice(
-    undefined,
-    20,
-  )
+  const koreaTop20ChartList = koreaChart.response.SONGLIST.slice(0, 20)
+  const billboardTop20ChartList = billboardChart.songs.slice(0, 20)
 
   return (
     <>

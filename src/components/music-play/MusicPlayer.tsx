@@ -53,10 +53,10 @@ const MusicPlayer = () => {
         width="0"
         height="0"
         volume={0.3} // TODO : 임시로 볼륨 조절
-        // onReady={handleReady} // 영상 준비 완료 상태
-        // onDuration={handleDuration} // 총 재생 시간
-        // onProgress={handleProgress} // 현재 재생 시간
-        // onEnded={togglePlay}
+        onReady={handleReady} // 영상 준비 완료 상태
+        onDuration={handleDuration} // 총 재생 시간
+        onProgress={handleProgress} // 현재 재생 시간
+        onEnded={togglePlay}
       />
       <div className="flex h-full items-center justify-between px-6">
         <MusicDetails musicDetail={musicDetail} />

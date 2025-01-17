@@ -2,7 +2,7 @@ import { getPlaylists, getPopularPlaylists } from '@/api/community/actions'
 import ClientSwiper from '@/components/common/ClientSwiper'
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
-import ClientPlaylistUI from './_components/ClientPlaylistUI'
+import ClientPopularPlaylistUI from './_components/ClientPopularPlaylistUI'
 import KeywordCarouselWrapper from './_components/KeywordCarouselWrapper'
 
 const CommunityPage = async (): Promise<JSX.Element> => {
@@ -30,6 +30,8 @@ const CommunityPage = async (): Promise<JSX.Element> => {
   }
 
   const userId = session.session.user.id
+
+  // 수정된 actions.ts에 맞게 함수 호출
   const allPlaylists = await getPlaylists(userId)
   const popularPlaylists = await getPopularPlaylists(userId)
 
@@ -40,11 +42,10 @@ const CommunityPage = async (): Promise<JSX.Element> => {
         items={popularPlaylists.map((playlist) => ({
           id: playlist.id,
           content: (
-            <ClientPlaylistUI
+            <ClientPopularPlaylistUI
               playlist={{
                 albumCover: playlist.album_cover ?? '',
                 isLiked: playlist.likedByUser ?? false,
-                likeCount: playlist.likeCount,
                 id: playlist.id,
               }}
             />
