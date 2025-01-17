@@ -2,7 +2,7 @@
 
 import { removeLikedSong } from '@/api/like-music/actions'
 import Implay3 from '@/assets/images/Implay3.svg'
-import { useMusicPlayerStore } from '@/store/useMusicPlayerStore' // 플레이어 상태 관리
+import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import { LikedSong } from '@/types/song'
 import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
@@ -10,15 +10,14 @@ import { FaEllipsisH } from 'react-icons/fa'
 import Swal from 'sweetalert2'
 
 type LikedSongsPageProps = {
-  initialLikedSongs: LikedSong[] // SSR에서 전달받는 초기 데이터
+  initialLikedSongs: LikedSong[]
 }
 
 export default function LikedSongsPage({
   initialLikedSongs,
 }: LikedSongsPageProps) {
-  const { isPlayerOpen, setTrackIds, togglePlay, setPlayerOpen } =
-    useMusicPlayerStore() // 플레이어 상태 연결
-  const [likedSongs, setLikedSongs] = useState<LikedSong[]>(initialLikedSongs) // 좋아요 리스트 데이터
+  const { isPlayerOpen, setTrackIds, setPlayerOpen } = useMusicPlayerStore()
+  const [likedSongs, setLikedSongs] = useState<LikedSong[]>(initialLikedSongs)
   const [showDropdown, setShowDropdown] = useState<string | null>(null)
   const dropdownRef = useRef<HTMLDivElement | null>(null)
 
@@ -53,7 +52,7 @@ export default function LikedSongsPage({
     const allTrackIds = likedSongs.map((song) => song.music.spotify_id)
     if (!isPlayerOpen) setPlayerOpen()
     setTrackIds(allTrackIds)
-    togglePlay()
+    // togglePlay()
   }
 
   // 특정 곡부터
@@ -63,7 +62,7 @@ export default function LikedSongsPage({
       .map((song) => song.music.spotify_id)
     if (!isPlayerOpen) setPlayerOpen()
     setTrackIds(selectedTrackIds)
-    togglePlay()
+    // togglePlay()
   }
 
   return (

@@ -2,7 +2,6 @@
 
 import { createClient } from '@/utils/supabase/server'
 
-// 유저 정보 가져오기 함수
 export async function getUser() {
   const supabase = createClient()
 
@@ -19,10 +18,9 @@ export async function getUser() {
   return user
 }
 
-// 좋아요 리스트 가져오기
 export async function fetchLikedSongs() {
   const supabase = createClient()
-  const user = await getUser() // 유저 정보 가져오기
+  const user = await getUser()
 
   if (!user?.id) {
     throw new Error('로그인된 사용자 정보를 확인할 수 없습니다.')
@@ -43,7 +41,7 @@ export async function fetchLikedSongs() {
         id
       `,
       )
-      .eq('user_id', user.id) // 유저 ID로 필터링
+      .eq('user_id', user.id)
       .order('created_at', { ascending: false })
 
     if (error) throw error
@@ -55,10 +53,9 @@ export async function fetchLikedSongs() {
   }
 }
 
-// 좋아요 리스트 삭제
 export async function removeLikedSong(likeId: string) {
   const supabase = createClient()
-  const user = await getUser() // 유저 정보 가져오기
+  const user = await getUser()
 
   if (!user?.id) {
     throw new Error('로그인된 사용자 정보를 확인할 수 없습니다.')
@@ -68,8 +65,8 @@ export async function removeLikedSong(likeId: string) {
     const { error } = await supabase
       .from('song_like')
       .delete()
-      .eq('id', likeId) // 삭제할 곡 ID로 필터링
-      .eq('user_id', user.id) // 유저 ID로 검증
+      .eq('id', likeId)
+      .eq('user_id', user.id)
 
     if (error) throw error
 
