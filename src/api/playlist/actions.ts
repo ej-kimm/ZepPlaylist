@@ -3,7 +3,7 @@
 import { PlaylistInsert, PlaylistRow, PlaylistUpdate } from '@/types/playlist'
 import { createClient } from '@/utils/supabase/server'
 
-// 사용자 정보 가져오기
+// 유저 정보 가져오기
 export async function getUser() {
   const supabase = createClient()
 
@@ -20,6 +20,7 @@ export async function getUser() {
   return user
 }
 
+// 플리 가져오기
 export async function fetchPlaylists(): Promise<PlaylistRow[]> {
   const user = await getUser()
 
@@ -45,7 +46,7 @@ export async function fetchPlaylists(): Promise<PlaylistRow[]> {
   }
 }
 
-// 가장 최근에 등록된 음악의의 커버 가져오기
+// 플리에서 음악앨범 커버 이미지 가져오기
 export async function fetchLatestAlbumCover(
   playlistId: string,
 ): Promise<string | null> {
@@ -74,10 +75,10 @@ export async function fetchLatestAlbumCover(
   }
 }
 
-// 플레이리스트와 최신 음악 커버 통합
 export async function fetchPlaylistsWithCovers(): Promise<PlaylistRow[]> {
   const playlists = await fetchPlaylists()
 
+  // 각 플레이리스트에 최신 음악 커버 보여주기
   const playlistsWithCovers = await Promise.all(
     playlists.map(async (playlist) => {
       const latestSongCover = await fetchLatestAlbumCover(playlist.id)
@@ -91,7 +92,7 @@ export async function fetchPlaylistsWithCovers(): Promise<PlaylistRow[]> {
   return playlistsWithCovers
 }
 
-// 플리 추가
+// 새 플레이리스트 추가
 export async function addPlaylist(
   playlistData: PlaylistInsert,
 ): Promise<{ success: boolean }> {
@@ -118,7 +119,7 @@ export async function addPlaylist(
   }
 }
 
-// 플리 업데이트
+// 플레이리스트 업데이트
 export async function updatePlaylist(
   playlistId: string,
   updatedData: PlaylistUpdate,
@@ -136,12 +137,66 @@ export async function updatePlaylist(
       .update(updatedData)
       .eq('id', playlistId)
       .eq('user_id', user.id)
-
     if (error) throw error
 
     return { success: true }
   } catch (error) {
     console.error('플레이리스트 수정 오류:', error)
     throw new Error('플레이리스트를 수정하는 중 문제가 발생했습니다.')
+  }
+}
+
+export async function fetchLikedSongs(userId: string) {
+  const supabase = createClient()
+
+  try {
+    const { data, error } = await supabase
+      .from('song_like')
+      .select(
+        `
+        music:music_id (
+          title,
+          album_cover,
+          artist
+        ),
+        created_at
+      `,
+      )
+      .eq('user_id', userId)
+      .order('created_at', { ascending: false })
+
+    if (error) throw error
+
+    return data || []
+  } catch (error) {
+    console.error('좋아요 리스트 가져오기 오류:', error)
+    throw new Error('좋아요 리스트를 가져오는 중 문제가 발생했습니다.')
+  }
+}
+
+// 최신 좋아요 곡의 커버 이미지 가져오기
+export async function fetchLatestLikedSongCover(userId: string) {
+  const supabase = createClient()
+
+  try {
+    const { data, error } = await supabase
+      .from('song_like')
+      .select(
+        `
+        music:music_id (
+          album_cover
+        )
+      `,
+      )
+      .eq('user_id', userId)
+      .order('created_at', { ascending: false })
+      .limit(1)
+
+    if (error) throw error
+
+    return data?.[0]?.music?.album_cover || null
+  } catch (error) {
+    console.error('최신 좋아요 곡 커버 가져오기 오류:', error)
+    return null
   }
 }
