@@ -2,22 +2,37 @@ import React from 'react'
 
 type ButtonProps = {
   type?: 'button' | 'submit'
-  onClick?: () => void
   children: React.ReactNode
   className?: string
+  onClick?: () => void
 }
 
-const Button: React.FC<ButtonProps> = ({
+export const PrimaryButton: React.FC<ButtonProps> = ({
   type = 'button',
   onClick,
   children,
   className,
 }) => {
   return (
-    <button type={type} onClick={onClick} className={`bg-primary  ${className}`}>
+    <button type={type} onClick={onClick} className={`bg-primary ${className}`}>
       {children}
     </button>
   )
 }
 
-export default Button
+export const UnderLineButton: React.FC<ButtonProps> = ({
+  type = 'button',
+  onClick,
+  children,
+  className = '',
+}) => {
+  return (
+    <button
+      type={type}
+      className={`button-2 border-b-2 border-primary p-[10px] ${className}`}
+      onClick={onClick}
+    >
+      {children}
+    </button>
+  )
+}
