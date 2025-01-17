@@ -1,6 +1,6 @@
 'use client'
 
-import Implay3 from '@/assets/images/Implay3.svg'
+import Implay from '@/assets/images/Implay3.svg'
 import likeTrue from '@/assets/images/likeTrue.svg'
 import whiteHeart from '@/assets/images/whiteHeart.svg'
 import Image from 'next/image'
@@ -49,8 +49,7 @@ const PopularPlaylistUI = ({
       <div className="absolute bottom-16 left-2 text-white"></div>
 
       {/* 좋아요 개수 */}
-      <div className="absolute right-2 top-16 text-white">
-      </div>
+      <div className="absolute right-2 top-16 text-white"></div>
 
       {/* 재생 버튼 */}
       <button
@@ -60,7 +59,7 @@ const PopularPlaylistUI = ({
           onPlay()
         }}
       >
-        <Image src={Implay3} alt="Play Button" width={32} height={32} />
+        <Image src={Implay} alt="Play Button" width={32} height={32} />
       </button>
     </div>
   )
