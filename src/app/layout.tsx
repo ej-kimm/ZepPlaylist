@@ -1,7 +1,6 @@
 import Header from '@/components/layout/Header'
 import QueryProvider from '@/components/providers/QueryProvider'
 import type { Metadata } from 'next'
-import { ThemeProvider } from 'next-themes'
 import localFont from 'next/font/local'
 import MusicPlayer from '../components/music-play/MusicPlayer'
 import '../styles/globals.css'
@@ -27,14 +26,13 @@ export default function RootLayout({
     <html lang="ko">
       <body className={`${pretendard.className}`}>
         <QueryProvider>
-          <ThemeProvider>
-            <Header />
-
-            <div className="h-full w-full px-6 pt-navBar bg-white">{children}</div>
-            {/* Footer 잠시 주석처리 */}
-            {/* <Footer /> */}
-            <MusicPlayer />
-          </ThemeProvider>
+          <Header />
+          <div className="h-full w-full bg-white px-6 pt-navBar">
+            {children}
+          </div>
+          {/* Footer 잠시 주석처리 */}
+          {/* <Footer /> */}
+          <MusicPlayer />
         </QueryProvider>
       </body>
     </html>

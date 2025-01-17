@@ -4,7 +4,7 @@ import {
   deleteSongFromPlaylist,
   fetchPlaylistDetails,
 } from '@/api/playlist-detail/actions'
-import Implay from '@/assets/images/Implay.svg'
+import imPlay from '@/assets/images/imPlay.svg'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import { PlaylistDetails } from '@/types/song'
 import { differenceInDays } from 'date-fns'
@@ -148,7 +148,7 @@ export default function PlaylistDetailsComponent({
             className="relative flex h-14 w-14 items-center justify-center rounded-full bg-secondary"
             onClick={handlePlayAll}
           >
-            <Image src={Implay} alt="전체 재생" width={24} height={24} />
+            <Image src={imPlay} alt="전체 재생" width={24} height={24} />
           </button>
         </div>
       </section>

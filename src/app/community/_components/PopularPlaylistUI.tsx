@@ -1,6 +1,6 @@
 'use client'
 
-import Implay from '@/assets/images/Implay.svg'
+import imPlay from '@/assets/images/imPlay.svg'
 import likeTrue from '@/assets/images/likeTrue.svg'
 import whiteHeart from '@/assets/images/whiteHeart.svg'
 import Image from 'next/image'
@@ -59,7 +59,7 @@ const PopularPlaylistUI = ({
           onPlay()
         }}
       >
-        <Image src={Implay} alt="Play Button" width={32} height={32} />
+        <Image src={imPlay} alt="Play Button" width={32} height={32} />
       </button>
     </div>
   )

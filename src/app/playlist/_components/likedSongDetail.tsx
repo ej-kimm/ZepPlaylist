@@ -1,7 +1,7 @@
 'use client'
 
 import { removeLikedSong } from '@/api/like-music/actions'
-import Implay from '@/assets/images/Implay.svg'
+import imPlay from '@/assets/images/imPlay.svg'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import { LikedSong } from '@/types/song'
 import Image from 'next/image'
@@ -80,7 +80,7 @@ export default function LikedSongsPage({
           onClick={handlePlayAll}
           className="relative flex h-12 w-12 items-center justify-center rounded-full bg-purple-500"
         >
-          <Image src={Implay} alt="전체 재생" width={24} height={24} />
+          <Image src={imPlay} alt="전체 재생" width={24} height={24} />
         </button>
       </header>
       <ul className="space-y-2">
