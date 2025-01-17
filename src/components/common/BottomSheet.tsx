@@ -5,8 +5,8 @@ type BottomSheetProps = {
   isOpen: boolean
   onClose: () => void
   children: React.ReactNode
-  height: string
-  maxWidth: string
+  height?: string
+  maxWidth?: string
 }
 
 const BottomSheet: React.FC<BottomSheetProps> = ({

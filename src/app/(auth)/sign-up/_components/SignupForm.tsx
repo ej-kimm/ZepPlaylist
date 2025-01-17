@@ -15,7 +15,10 @@ const SignupForm = () => {
 
   const validator = z
     .object({
-      email: z.string().email('잘못된 이메일 형식입니다.'),
+      email: z
+        .string()
+        .min(1, '이메일을 입력해주세요.')
+        .email('잘못된 이메일 형식입니다.'),
       password: z
         .string()
         .min(4, '비밀번호는 최소 4글자 이상이어야 합니다.')
@@ -63,7 +66,10 @@ const SignupForm = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="w-full bg-white">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="mt-[50px] w-full bg-white"
+    >
       <InputBox
         name="email"
         type="email"
@@ -71,7 +77,7 @@ const SignupForm = () => {
         required={true}
         errorMessage={errors.email?.message}
         register={register}
-        className="caption-2 mb-6 w-full rounded-lg border-white bg-[#f4f4f4]"
+        className="caption-2 w-full rounded-lg border-white bg-[#f4f4f4]"
       />
       <InputBox
         name="password"
@@ -80,7 +86,7 @@ const SignupForm = () => {
         required={true}
         register={register}
         errorMessage={errors.password?.message}
-        className="caption-2 mb-6 w-full rounded-lg border-white bg-[#f4f4f4]"
+        className="caption-2 mt-6 w-full rounded-lg border-white bg-[#f4f4f4]"
       />
       <InputBox
         name="passwordCheck"
@@ -89,7 +95,7 @@ const SignupForm = () => {
         required={true}
         register={register}
         errorMessage={errors.passwordCheck?.message}
-        className="caption-2 mb-6 w-full rounded-lg border-white bg-[#f4f4f4]"
+        className="caption-2 mt-6 w-full rounded-lg border-white bg-[#f4f4f4]"
       />
       <InputBox
         name="nickname"
@@ -98,7 +104,7 @@ const SignupForm = () => {
         required={true}
         register={register}
         errorMessage={errors.nickname?.message}
-        className="caption-2 mb-6 w-full rounded-lg border-white bg-[#f4f4f4]"
+        className="caption-2 mt-6 w-full rounded-lg border-white bg-[#f4f4f4]"
       />
       <div className="mt-8 flex items-center">
         <input
@@ -118,7 +124,3 @@ const SignupForm = () => {
 }
 
 export default SignupForm
-// width 가로
-// heigth 세로로
-// m(마진) 요소간에 간격을 떨어트리는용도
-// 그다음에 컬러를 체크
