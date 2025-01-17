@@ -6,6 +6,7 @@ import ReactPlayer from 'react-player'
 import MusicDetailModal from './_components/MusicDetailModal'
 import MusicDetails from './_components/MusicDetails'
 import PlayerControls from './_components/PlayerControls'
+import PlayerSkeleton from './_components/PlayerSkeleton'
 import ProgressBar from './_components/ProgressBar'
 
 const MusicPlayer = () => {
@@ -33,8 +34,9 @@ const MusicPlayer = () => {
   }
 
   if (!isPlayerOpen) return null // 초기에 노래를 재생하지 않으면 플레이어바 숨김
-  if (!url) return <>URL loading</>
-  if (isPending) return <>Loading...</>
+  if (!url || isPending) {
+    return !isModalOpen && <PlayerSkeleton />
+  }
 
   return (
     <section className="z-player shadow-drop fixed bottom-0 left-0 h-[60px] w-full bg-white">
@@ -45,7 +47,7 @@ const MusicPlayer = () => {
         controls={false}
         width="0"
         height="0"
-        volume={0.3} // TODO : 임시로 볼륨 조절
+        volume={0.1} // TODO : 임시로 볼륨 조절
         onReady={handleReady} // 영상 준비 완료 상태
         onDuration={handleDuration} // 총 재생 시간
         onProgress={handleProgress} // 현재 재생 시간

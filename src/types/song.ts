@@ -15,3 +15,14 @@ export type PlaylistDetails = {
   last_updated: string
   songs: Song[]
 }
+
+export type LikedSong = {
+  id: string
+  music: {
+    title: string
+    album_cover: string
+    artist: string
+    spotify_id: string
+  }
+  created_at: string
+}
