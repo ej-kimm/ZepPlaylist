@@ -4,12 +4,13 @@ import {
   deleteSongFromPlaylist,
   fetchPlaylistDetails,
 } from '@/api/playlist-detail/actions'
+import Implay3 from '@/assets/images/Implay3.svg'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import { PlaylistDetails } from '@/types/song'
-import { formatPlayTime } from '@/utils/formatPlayTime'
+import { differenceInDays } from 'date-fns'
 import Image from 'next/image'
 import { useCallback, useEffect, useState } from 'react'
-import { FaEllipsisV, FaPlay } from 'react-icons/fa'
+import { FaEllipsisV, FaRandom } from 'react-icons/fa'
 import Swal from 'sweetalert2'
 
 export default function PlaylistDetailsComponent({
@@ -72,7 +73,6 @@ export default function PlaylistDetailsComponent({
     try {
       const confirmResult = await Swal.fire({
         title: '정말 삭제하시겠습니까?',
-        text: '이 곡은 삭제 후 복구할 수 없습니다.',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#d33',
@@ -116,73 +116,78 @@ export default function PlaylistDetailsComponent({
   }
 
   return (
-    <div className="p-4">
-      <h1 className="mb-4 text-xl font-bold">플레이리스트</h1>
-      <section>
-        <h2 className="text-lg font-semibold">{name}</h2>
-        <p className="text-gray-500">{description}</p>
+    <div className="mx-auto h-[858px] max-w-[375px] bg-white p-4">
+      <h1 className="title-1">플레이리스트</h1>
+      <section className="mt-6 flex flex-col items-center">
+        <div
+          className="bg-lightgray h-[248px] w-[248px] rounded-lg bg-cover bg-center"
+          style={{
+            backgroundImage: `url(${songs[0]?.album_cover || '/default-cover.jpg'})`,
+          }}
+        ></div>
+        <h2 className="mt-4 text-xl font-semibold">{name}</h2>
+        <p className="mt-1 text-gray-500">{description}</p>
       </section>
 
-      <section className="mt-4 flex justify-between text-sm text-gray-600">
-        <p>곡 수: {song_count}곡</p>
-        <p>재생시간: {total_play_time}</p>
-        <p>업데이트 날짜: {new Date(last_updated).toLocaleDateString()}</p>
+      <section className="mt-4 flex items-center justify-between">
+        <div className="text-sm text-gray-600">
+          <div className="flex space-x-2">
+            <p>곡 수: {song_count}곡</p>
+            <p>재생시간: {total_play_time}분</p>
+          </div>
+          <p className="mt-1">
+            업데이트: {differenceInDays(new Date(), new Date(last_updated))}일
+            전
+          </p>
+        </div>
+        <div className="flex items-center space-x-4">
+          <button className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-200 hover:bg-gray-300">
+            <FaRandom className="text-gray-600" />
+          </button>
+          <button
+            className="relative flex h-14 w-14 items-center justify-center rounded-full bg-secondary"
+            onClick={handlePlayAll}
+          >
+            <Image src={Implay3} alt="전체 재생" width={24} height={24} />
+          </button>
+        </div>
       </section>
-
-      <section className="mt-6 flex justify-center">
-        <button
-          className="flex items-center justify-center rounded-full bg-black px-6 py-3 text-white hover:bg-gray-800"
-          onClick={handlePlayAll}
-        >
-          <FaPlay className="h-6 w-6" />
-          <span className="ml-2">전체 재생</span>
-        </button>
-      </section>
-
-      <ul className="mt-6">
+      
+      <ul className="mt-6 space-y-2">
         {songs.map((song) => (
           <li
             key={song.spotify_id}
-            className="relative flex items-center justify-between border-b py-3"
+            className="relative flex items-center justify-between rounded-lg border bg-white p-4"
           >
             <div className="flex items-center">
-              <div className="relative h-12 w-12">
-                <Image
-                  src={song.album_cover || '/default-album-cover.jpg'}
-                  alt={`${song.title} 앨범 커버`}
-                  layout="fill"
-                  objectFit="cover"
-                  className="rounded"
-                />
-              </div>
+              <div
+                className="bg-lightgray h-[44px] w-[44px] rounded-lg bg-cover bg-center"
+                style={{
+                  backgroundImage: `url(${song.album_cover || '/default-album-cover.jpg'})`,
+                }}
+              ></div>
               <div className="ml-4">
                 <p className="font-semibold">{song.title}</p>
                 <p className="text-sm text-gray-500">{song.artist}</p>
               </div>
             </div>
-
             <div className="flex items-center">
-              <p className="text-sm text-gray-600">
-                {formatPlayTime(song.play_time)}
-              </p>
-              <div className="relative ml-4">
-                <button
-                  className="p-2 text-gray-600 hover:text-gray-800"
-                  onClick={() => toggleDropdown(song.spotify_id)}
-                >
-                  <FaEllipsisV />
-                </button>
-                {dropdownOpen === song.spotify_id && (
-                  <div className="absolute right-0 z-10 mt-2 w-24 rounded-lg border bg-white shadow-lg">
-                    <button
-                      className="block w-full px-4 py-2 text-left text-sm text-red-500 hover:bg-gray-100"
-                      onClick={() => handleDeleteSong(song.spotify_id)}
-                    >
-                      삭제
-                    </button>
-                  </div>
-                )}
-              </div>
+              <button
+                className="relative p-2 text-gray-500 hover:text-gray-800"
+                onClick={() => toggleDropdown(song.spotify_id)}
+              >
+                <FaEllipsisV />
+              </button>
+              {dropdownOpen === song.spotify_id && (
+                <div className="absolute right-0 mt-2 w-24 rounded-lg border bg-white shadow-lg">
+                  <button
+                    className="block w-full px-4 py-2 text-left text-sm text-red-500 hover:bg-gray-100"
+                    onClick={() => handleDeleteSong(song.spotify_id)}
+                  >
+                    삭제
+                  </button>
+                </div>
+              )}
             </div>
           </li>
         ))}
