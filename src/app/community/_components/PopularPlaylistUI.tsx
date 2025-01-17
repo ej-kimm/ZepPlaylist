@@ -1,9 +1,7 @@
 'use client'
 
-import {
-  default as imPlay,
-  default as likeTrue,
-} from '@/assets/images/likeTrue.svg'
+import imPlay from '@/assets/images/imPlay.svg'
+import likeTrue from '@/assets/images/likeTrue.svg'
 import whiteHeart from '@/assets/images/whiteHeart.svg'
 import Image from 'next/image'
 
