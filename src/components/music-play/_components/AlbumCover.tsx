@@ -38,7 +38,7 @@ export default function AlbumCover({ musicDetail }: AlbumCoverProps) {
             className="rounded object-cover"
           />
         </div>
-        <div className="rotate-y-180 absolute left-0 top-0 h-full w-full [backface-visibility:hidden]">
+        {/* <div className="rotate-y-180 absolute left-0 top-0 h-full w-full [backface-visibility:hidden]">
           <Image
             src={album_cover || '/No cover'}
             alt={title || 'No Title'}
@@ -52,6 +52,24 @@ export default function AlbumCover({ musicDetail }: AlbumCoverProps) {
             <p className="caption-1 text-white">{album?.releaseDate}</p>
             <p className="caption-1 text-white">{album?.albumName}</p>
             <p className="caption-1 text-white">{genre.genres}</p>
+          </div>
+        </div> */}
+        <div className="rotate-y-180 absolute left-0 top-0 h-full w-full [backface-visibility:hidden]">
+          <Image
+            src={album_cover || '/No cover'}
+            alt={title || 'No Title'}
+            width={266}
+            height={266}
+            className="rounded bg-gradient-to-t from-black/80 to-black/80 object-cover blur-[10px]"
+          />
+          <div className="absolute left-0 top-0 flex h-full w-full flex-col items-center justify-center gap-6">
+            <p className="caption-1 text-white">{title}</p>
+            <p className="caption-1 text-white">{artist}</p>
+            <p className="caption-1 text-white">{album?.releaseDate}</p>
+            <p className="caption-1 text-white">{album?.albumName}</p>
+            {genre.genres[0] && (
+              <p className="caption-1 text-white">{genre.genres[0]}</p>
+            )}
           </div>
         </div>
       </div>
