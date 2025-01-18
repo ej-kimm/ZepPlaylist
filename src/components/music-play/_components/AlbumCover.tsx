@@ -51,7 +51,9 @@ export default function AlbumCover({ musicDetail }: AlbumCoverProps) {
             <p className="caption-1 text-white">{artist}</p>
             <p className="caption-1 text-white">{album?.releaseDate}</p>
             <p className="caption-1 text-white">{album?.albumName}</p>
-            <p className="caption-1 text-white">{genre.genres}</p>
+            {genre.genres[0] && (
+              <p className="caption-1 text-white">{genre.genres[0]}</p>
+            )}
           </div>
         </div>
       </div>

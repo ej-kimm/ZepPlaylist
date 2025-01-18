@@ -11,9 +11,17 @@ const useAlbumCover = () => {
     queryKey: ['album', currentTrackId],
     queryFn: () => fetchTrack(currentTrackId),
     select: (data) => {
+      const releaseDate = data.album.release_date || ''
+      const formattedReleaseDate = releaseDate
+        ? new Date(releaseDate).toLocaleDateString('ko-KR', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+          })
+        : ''
       return {
         artistId: data.artists[0].id || '',
-        releaseDate: data.album.release_date || '',
+        releaseDate: formattedReleaseDate,
         albumName: data.album.name || '',
       }
     },
