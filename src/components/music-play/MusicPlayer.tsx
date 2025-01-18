@@ -12,8 +12,7 @@ import ProgressBar from './_components/ProgressBar'
 const MusicPlayer = () => {
   const { isPlayerOpen } = useMusicPlayerStore()
   const { musicDetail, url, lyrics, isPending } = usePlayer()
-  const { isPlaying, isPlayerModalOpen, play, togglePlay } =
-    useMusicPlayerStore()
+  const { isPlaying, isPlayerModalOpen, play, stop } = useMusicPlayerStore()
   const [playerState, setPlayerState] = useState({
     ready: false, // onReady에서 영상이 로드된 상태값을 받아 사용
     played: 0, // 현재 재생 중인 시간 (0~0.9999)
@@ -31,8 +30,6 @@ const MusicPlayer = () => {
     playerRef.current?.seekTo(value) // 재생 위치 변경
   }
 
-  // console.log('MusicPlyaer 이펙트 전', isPlaying)
-
   useEffect(() => {
     play()
     // console.log('useEffect안 isPlyaing', isPlaying)
@@ -42,6 +39,8 @@ const MusicPlayer = () => {
   if (!url || isPending) {
     return !isPlayerModalOpen && <PlayerSkeleton />
   }
+
+  console.log('if 뒤 isPlaying', isPlaying)
 
   return (
     <section className="fixed bottom-0 left-0 z-player h-[60px] w-full bg-white shadow-drop">
@@ -56,7 +55,7 @@ const MusicPlayer = () => {
         onReady={handleReady} // 영상 준비 완료 상태
         onDuration={handleDuration} // 총 재생 시간
         onProgress={handleProgress} // 현재 재생 시간
-        onEnded={togglePlay}
+        onEnded={stop}
       />
       <div className="flex h-full items-center justify-between px-6">
         <MusicDetails musicDetail={musicDetail} />

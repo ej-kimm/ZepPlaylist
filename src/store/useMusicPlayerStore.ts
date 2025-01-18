@@ -14,7 +14,7 @@ type PlayerState = {
   playNextTrack: () => void
   playPreviousTrack: () => void
   play: () => void
-  stopPlay: () => void
+  stop: () => void
   togglePlay: () => void
   togglePlayerModal: () => void
 }
@@ -51,7 +51,7 @@ export const useMusicPlayerStore = create<PlayerState>()((set) => ({
       }
     }),
   play: () => set(() => ({ isPlaying: true })),
-  stopPlay: () => set(() => ({ isPlaying: false })),
+  stop: () => set(() => ({ isPlaying: false })),
   togglePlay: () => set((state) => ({ isPlaying: !state.isPlaying })),
   togglePlayerModal: () =>
     set((state) => ({ isPlayerModalOpen: !state.isPlayerModalOpen })),
