@@ -24,7 +24,6 @@ const SearchResultItem = ({ item }: SearchResultProps) => {
     musicName: string,
     artist: string,
   ) => {
-    console.log(songId, musicName, artist)
     const musicData = await handleMoreOptionBtn(songId, musicName, artist)
     await upsertMusic(musicData)
     if (!isPlayerOpen) setPlayerOpen() // 페이지 방문 후, 첫 곡 재생이면 플레이어바 보여줌
