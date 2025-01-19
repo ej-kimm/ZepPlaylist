@@ -28,10 +28,10 @@ const LikeSongItem: React.FC<SongItemProps> = ({ item }) => {
             height={100}
             alt={item.title!}
             priority
-            className="h-auto w-full rounded-xl shadow-md"
+            className="h-auto w-full rounded-2xl shadow-md"
           />
           <div className="absolute bottom-1 left-3 mb-1 w-[calc(100%-40px)] transform">
-            <h3 className="mt-2 truncate text-sm text-white">{item.title}</h3>
+            <h3 className="mt-2 truncate text-xs text-white">{item.title}</h3>
             <p className="truncate text-xs text-white">{item.artist}</p>
           </div>
 

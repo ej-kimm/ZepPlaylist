@@ -44,16 +44,16 @@ const Top20Item: React.FC<Top20ItemProps> = ({
         <Image
           src={albumCover}
           alt={musicName}
-          width={40}
-          height={40}
-          className="rounded-md object-cover"
+          width={44}
+          height={44}
+          className="rounded-lg object-cover"
           priority
         />
       </div>
 
-      <p className="truncate text-lg">{index + 1}</p>
+      <p className="truncate text-base">{index + 1}</p>
       <div className="min-w-0 flex-1 overflow-hidden">
-        <h3 className="truncate text-sm font-medium text-gray-900">
+        <h3 className="truncate text-base font-medium text-gray-900">
           {musicName}
         </h3>
         <p className="truncate text-xs text-gray-500">{artistName}</p>

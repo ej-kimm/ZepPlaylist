@@ -72,8 +72,8 @@ const LatestAlbumItme = ({ album }: Props) => {
         <div className="relative">
           <Image
             src={album.images[0].url}
-            width={100}
-            height={100}
+            width={96}
+            height={96}
             alt={album.name}
             priority
             className="h-auto w-full rounded-xl shadow-md"
@@ -82,7 +82,7 @@ const LatestAlbumItme = ({ album }: Props) => {
             <Image src={play} width={25} height={25} alt={'play'} />
           </button>
         </div>
-        <h3 className="mt-2 truncate text-sm font-semibold">{album.name}</h3>
+        <h3 className="mt-1 truncate text-sm font-semibold">{album.name}</h3>
         <p className="truncate text-xs text-gray-500">
           {album.artists[0].name}
         </p>

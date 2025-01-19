@@ -13,7 +13,7 @@ const LatestAlbums = async () => {
 
   return (
     <div className="w-full">
-      <h2 className="my-4">최신 음반</h2>
+      <h2 className="mb-4 mt-8 font-medium">최신 음반</h2>
       <ul className="flex space-x-4 overflow-x-auto">
         {latestAlbumList.map((album) => (
           <LatestAlbumItme album={album} key={album.id} />
