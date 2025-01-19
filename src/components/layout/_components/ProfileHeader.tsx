@@ -13,16 +13,14 @@ const ProfileHeader = ({ toggleMenu }: ProfileHeaderProps) => {
   const { user } = userStore()
 
   const linkMenu = (to: string) => {
-    return () => {
-      router.push(to)
-      toggleMenu()
-    }
+    router.push(to)
+    toggleMenu()
   }
 
   return (
     <button
       className="flex h-[76px] w-full items-center justify-between rounded-lg border border-secondary-opacity bg-white px-3 shadow-[inset_0px_4px_4px_0px_rgba(255,255,255,0.25),_0px_4px_10px_0px_rgba(0,0,0,0.04)]"
-      onClick={linkMenu(user ? '/my-page' : '/login')}
+      onClick={() => linkMenu(user ? '/my-page' : '/login')}
     >
       <div className="flex items-center gap-2">
         {user ? (
