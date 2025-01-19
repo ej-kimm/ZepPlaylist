@@ -3,6 +3,7 @@
 import { fetchPlaylistsWithCovers } from '@/api/playlist/actions'
 import MoreOptionsButton from '@/components/common/MoreOptionsButton'
 import { useSpotifySearch } from '@/hooks/useGetSpotifyMusicId'
+import { usePlaylistMusicUpsert } from '@/hooks/usePlaylistMusicUpsert'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import { userStore } from '@/store/userSlice'
 import type { PlaylistRow } from '@/types/playlist'
@@ -77,9 +78,12 @@ const Top100ChartList = ({
     return data
   }
 
+  const { upsertMusic } = usePlaylistMusicUpsert(albumCover)
+
   const handlePlayBtn = async () => {
-    const data = await searchSpotifyId(musicName, artistName)
-    const songId = data!.id
+    const musicData = await searchSpotifyId(musicName, artistName)
+    await upsertMusic(musicData!)
+    const songId = musicData!.id
     if (!isPlayerOpen) setPlayerOpen() // 페이지 방문 후, 첫 곡 재생이면 플레이어바 보여줌
     setTrackIds(songId)
     togglePlay()

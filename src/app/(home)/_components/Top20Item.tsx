@@ -1,5 +1,6 @@
 import play from '@/assets/images/play.svg'
 import { useSpotifySearch } from '@/hooks/useGetSpotifyMusicId'
+import { usePlaylistMusicUpsert } from '@/hooks/usePlaylistMusicUpsert'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import type { BillboradSong } from '@/types/billboradCharts'
 import type { MelonChartSong } from '@/types/melonCharts'
@@ -20,12 +21,16 @@ const Top20Item: React.FC<Top20ItemProps> = ({
   albumCover,
 }) => {
   const { searchSpotifyId } = useSpotifySearch()
+
   const { isPlayerOpen, setTrackIds, togglePlay, setPlayerOpen } =
     useMusicPlayerStore()
 
+  const { upsertMusic } = usePlaylistMusicUpsert(albumCover)
+
   const handlePlayBtn = async () => {
-    const data = await searchSpotifyId(musicName, artistName)
-    const songId = data!.id
+    const musicData = await searchSpotifyId(musicName, artistName)
+    await upsertMusic(musicData!)
+    const songId = musicData!.id
     if (!isPlayerOpen) setPlayerOpen() // 페이지 방문 후, 첫 곡 재생이면 플레이어바 보여줌
     setTrackIds(songId)
     togglePlay()
