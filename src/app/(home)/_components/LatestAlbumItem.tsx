@@ -2,7 +2,6 @@
 import { fetchSpotifyToken } from '@/api/spotifyToken'
 import play from '@/assets/images/imPlay.svg'
 import { usePlaylistMusicUpsert } from '@/hooks/usePlaylistMusicUpsert'
-import usePlaylistOperations from '@/hooks/usePlaylistOperations'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import Image from 'next/image'
 
@@ -37,7 +36,6 @@ const LatestAlbumItme = ({ album }: Props) => {
     }
   }
   const { upsertMusic } = usePlaylistMusicUpsert(album.images[0].url)
-  const { handleMoreOptionBtn } = usePlaylistOperations()
 
   const albumTrackItems = async (albumId: string, artist: string) => {
     const albumData = await fetchAlbums(albumId)
