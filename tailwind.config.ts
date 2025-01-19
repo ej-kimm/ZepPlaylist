@@ -27,6 +27,7 @@ const config: Config = {
         header: '10',
         player: '10',
         'player-modal': '20',
+        sidebar: '40',
       },
       fontFamily: {
         pretendard: ['var(--font-pretendard)'],
