@@ -18,21 +18,22 @@ const Hamburger = () => {
   }, [])
 
   const handleBack = () => {
+    if (isHamburgerOpen) {
+      toggleMenu()
+      return
+    }
+
     if (isPlayerModalOpen) {
       togglePlayerModal()
     } else {
       router.back()
-    }
-
-    if (isHamburgerOpen) {
-      toggleMenu()
     }
   }
 
   return (
     <div className="fixed left-0 top-0 z-header flex h-navBar w-full items-center justify-between bg-white px-6">
       <button
-        className={`md:hidden ${pathname !== '/' || isHamburgerOpen ? 'visible' : 'invisible'}`}
+        className={`md:hidden ${pathname === '/' && !isPlayerModalOpen ? 'invisible' : 'visible'}`}
         onClick={handleBack}
       >
         <Image

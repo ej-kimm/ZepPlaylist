@@ -1,4 +1,5 @@
 import Header from '@/components/layout/Header'
+import MainContainer from '@/components/layout/MainContainer'
 import QueryProvider from '@/components/providers/QueryProvider'
 import type { Metadata } from 'next'
 import localFont from 'next/font/local'
@@ -27,9 +28,7 @@ export default function RootLayout({
       <body className={`${pretendard.className}`}>
         <QueryProvider>
           <Header />
-          <div className="h-full w-full bg-white px-6 pt-navBar">
-            {children}
-          </div>
+          <MainContainer>{children}</MainContainer>
           {/* Footer 잠시 주석처리 */}
           {/* <Footer /> */}
           <MusicPlayer />

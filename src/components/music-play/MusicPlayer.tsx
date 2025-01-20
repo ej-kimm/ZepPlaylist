@@ -34,15 +34,12 @@ const MusicPlayer = () => {
     if (isPlayerOpen) {
       play()
     }
-    // console.log('useEffect안 isPlyaing', isPlaying)
   }, [isPlayerOpen, play])
 
   if (!isPlayerOpen) return null // 초기에 노래를 재생하지 않으면 플레이어바 숨김
   if (!url || isPending) {
     return !isPlayerModalOpen && <PlayerSkeleton />
   }
-
-  // console.log('if 뒤 isPlaying', isPlaying)
 
   return (
     <section className="fixed bottom-0 left-0 z-player h-[60px] w-full bg-white shadow-drop">
