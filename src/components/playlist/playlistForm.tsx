@@ -157,7 +157,7 @@ export default function PlaylistComponent({
   }
 
   return (
-    <div className="mx-auto h-[812px] max-w-[375px] bg-white p-4">
+    <div className="mx-auto h-[812px] max-w-[375px] bg-white">
       <Hamburger title="플레이리스트" />
 
       {isLoading ? (
@@ -166,7 +166,7 @@ export default function PlaylistComponent({
         <>
           <h2 className="title-2 mt-6 font-bold">내가 만든 플레이리스트</h2>
 
-          <ul className="mt-4 space-y-4">
+          <ul className="mt-4 space-y-4 p-4">
             <li
               className="flex cursor-pointer items-center justify-between rounded-lg border border-gray-200 bg-white px-6 py-3 shadow-sm"
               onClick={() => openModal('add')}

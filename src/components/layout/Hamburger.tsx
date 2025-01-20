@@ -11,7 +11,7 @@ interface HamburgerProps {
   title?: string
 }
 
-const Hamburger = ({ title = '기본 타이틀' }: HamburgerProps) => {
+const Hamburger = ({ title = '' }: HamburgerProps) => {
   const router = useRouter()
   const pathname = usePathname()
   const { isPlayerModalOpen, togglePlayerModal } = useMusicPlayerStore()
