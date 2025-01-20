@@ -200,3 +200,31 @@ export async function fetchLatestLikedSongCover(userId: string) {
     return null
   }
 }
+
+// 플리 삭제...
+export async function deletePlaylist(
+  playlistId: string,
+): Promise<{ success: boolean }> {
+  const user = await getUser()
+
+  if (!user?.id) {
+    throw new Error('로그인된 사용자 ID를 확인할 수 없습니다.')
+  }
+
+  const supabase = createClient()
+
+  try {
+    const { error } = await supabase
+      .from('playlists')
+      .delete()
+      .eq('id', playlistId)
+      .eq('user_id', user.id)
+
+    if (error) throw error
+
+    return { success: true }
+  } catch (error) {
+    console.error('플레이리스트 삭제 오류:', error)
+    throw new Error('플레이리스트를 삭제하는 중 문제가 발생했습니다.')
+  }
+}

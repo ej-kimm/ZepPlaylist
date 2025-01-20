@@ -2,12 +2,12 @@
 
 import {
   addPlaylist,
+  deletePlaylist,
   fetchLatestLikedSongCover,
   fetchPlaylistsWithCovers,
   updatePlaylist,
 } from '@/api/playlist/actions'
 import PlaylistBottomSheet from '@/app/playlist/_components/playlistBottomSheet'
-import Hamburger from '@/components/layout/Hamburger'
 import { userStore } from '@/store/userSlice'
 import { PlaylistRow } from '@/types/playlist'
 import { useRouter } from 'next/navigation'
@@ -111,6 +111,32 @@ export default function PlaylistComponent({
     }
   }
 
+  const handleDeletePlaylist = async (playlistId: string) => {
+    const confirm = await Swal.fire({
+      title: '플레이리스트 삭제',
+      text: '정말 삭제하시겠습니까?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#B15EFF',
+      cancelButtonColor: '#d33',
+      confirmButtonText: '삭제',
+      cancelButtonText: '취소',
+    })
+
+    if (!confirm.isConfirmed) return
+
+    try {
+      await deletePlaylist(playlistId)
+      Swal.fire('완료', '플레이리스트가 삭제되었습니다.', 'success')
+
+      const updatedPlaylists = await fetchPlaylistsWithCovers()
+      setPlaylists(updatedPlaylists)
+    } catch (error) {
+      console.error('플레이리스트 삭제 오류:', error)
+      Swal.fire('오류', '플레이리스트 삭제 중 문제가 발생했습니다.', 'error')
+    }
+  }
+
   // 모달 관련 로직
   const openModal = (type: 'add' | 'edit', playlist?: PlaylistRow) => {
     setModalType(type)
@@ -158,8 +184,6 @@ export default function PlaylistComponent({
 
   return (
     <div className="mx-auto h-[812px] max-w-[375px] bg-white">
-      <Hamburger title="플레이리스트" />
-
       {isLoading ? (
         <p className="mt-6 text-center text-gray-500">데이터 로딩 중...</p>
       ) : isLogin ? (
@@ -244,6 +268,15 @@ export default function PlaylistComponent({
                         className="block w-full px-4 py-2 text-left text-sm hover:bg-gray-100"
                       >
                         수정
+                      </button>
+                      <button
+                        className="block w-full px-4 py-2 text-left text-sm text-red-500 hover:bg-gray-100"
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          handleDeletePlaylist(playlist.id)
+                        }}
+                      >
+                        삭제
                       </button>
                     </div>
                   )}
