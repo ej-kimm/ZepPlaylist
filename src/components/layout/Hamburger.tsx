@@ -18,8 +18,15 @@ const Hamburger = () => {
   }, [])
 
   const handleBack = () => {
-    isPlayerModalOpen ? togglePlayerModal() : router.back()
-    isHamburgerOpen && toggleMenu()
+    if (isPlayerModalOpen) {
+      togglePlayerModal()
+    } else {
+      router.back()
+    }
+
+    if (isHamburgerOpen) {
+      toggleMenu()
+    }
   }
 
   return (
