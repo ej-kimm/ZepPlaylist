@@ -15,7 +15,6 @@ export const fetchNewReleases = async () => {
       },
     })
     if (!res.ok) {
-      console.log('빌보드 에러')
       console.error(`API error: ${res.status} ${res.statusText}`)
       throw new Error(`Failed to fetch data: ${res.status} ${res.statusText}`)
     }
@@ -34,8 +33,9 @@ export const fetchMelonChart = async () => {
       'https://m2.melon.com/m6/chart/ent/songChartList.json',
     )
 
+    console.log('멜론에러 37')
     if (!res.ok) {
-      console.log('멜론에러')
+      console.log('멜론에러 39')
       console.error(`API error: ${res.status} ${res.statusText}`)
       throw new Error(`Failed to fetch data: ${res.status} ${res.statusText}`)
     }
@@ -52,10 +52,12 @@ export const fetchGlobalChart = async (): Promise<BillboradCharts> => {
   try {
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     const { getChart } = await require('billboard-top-100')
+    console.log('빌보드 에러 55')
 
     return new Promise((resolve, reject) => {
       getChart((err: Error, chart: BillboradCharts) => {
         if (err) {
+          console.log('빌보드 에러 59')
           console.error(err)
           reject(err)
         } else {
