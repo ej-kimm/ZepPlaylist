@@ -17,6 +17,7 @@ type PlayerState = {
   stop: () => void
   togglePlay: () => void
   togglePlayerModal: () => void
+  closePlayerModal: () => void
 }
 
 export const useMusicPlayerStore = create<PlayerState>()((set) => ({
@@ -59,4 +60,5 @@ export const useMusicPlayerStore = create<PlayerState>()((set) => ({
   togglePlay: () => set((state) => ({ isPlaying: !state.isPlaying })),
   togglePlayerModal: () =>
     set((state) => ({ isPlayerModalOpen: !state.isPlayerModalOpen })),
+  closePlayerModal: () => set(() => ({ isPlayerModalOpen: false })),
 }))

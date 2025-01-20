@@ -2,9 +2,14 @@ import chartBarVertical from '@/assets/images/chartBarVertical.svg'
 import chats from '@/assets/images/chats.svg'
 import headphone from '@/assets/images/headphone.svg'
 import home from '@/assets/images/home.svg'
+import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import Image from 'next/image'
 import Link from 'next/link'
 import { BsSpotify } from 'react-icons/bs'
+
+type SidebarMenuProps = {
+  toggleMenu: () => void
+}
 
 const LINKS = [
   {
@@ -40,7 +45,14 @@ const LINKS = [
   },
 ]
 
-const SidebarMenu = () => {
+const SidebarMenu = ({ toggleMenu }: SidebarMenuProps) => {
+  const { closePlayerModal } = useMusicPlayerStore()
+
+  const handleClick = () => {
+    toggleMenu()
+    closePlayerModal()
+  }
+
   return (
     <ul className="flex flex-col items-start justify-center gap-2">
       {LINKS.map((link) => (
@@ -49,6 +61,7 @@ const SidebarMenu = () => {
             href={link.to}
             className="flex h-10 items-center justify-start gap-1"
             target={link.external ? '_blank' : '_self'}
+            onClick={handleClick}
           >
             {link.icon}
             <span className="body-1">{link.text}</span>
