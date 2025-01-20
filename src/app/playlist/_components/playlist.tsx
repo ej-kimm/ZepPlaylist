@@ -6,7 +6,7 @@ import {
   fetchPlaylistsWithCovers,
   updatePlaylist,
 } from '@/api/playlist/actions'
-import PlaylistModal from '@/app/playlist/_components/playlistModel'
+import PlaylistBottomSheet from '@/app/playlist/_components/playlistBottomSheet'
 import Hamburger from '@/components/layout/Hamburger'
 import { userStore } from '@/store/userSlice'
 import { PlaylistRow } from '@/types/playlist'
@@ -254,7 +254,9 @@ export default function PlaylistComponent({
         <p className="mt-6 text-center text-gray-500">로그인이 필요합니다.</p>
       )}
 
-      <PlaylistModal
+      <PlaylistBottomSheet
+        isOpen={!!modalType}
+        onClose={closeModal}
         modalType={modalType}
         name={name}
         description={description}
@@ -264,7 +266,6 @@ export default function PlaylistComponent({
         setDescription={setDescription}
         setIsPublic={setIsPublic}
         toggleKeyword={toggleKeyword}
-        closeModal={closeModal}
         handleSubmit={
           modalType === 'add' ? handleAddPlaylist : handleEditPlaylist
         }
