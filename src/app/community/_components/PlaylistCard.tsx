@@ -5,7 +5,7 @@ import usePlaylistLike from '@/hooks/usePlaylistLike'
 import type { StaticImageData } from 'next/image'
 import { useRouter } from 'next/navigation'
 
-type PlaylistCardProps = {
+export type PlaylistCardProps = {
   playlist: {
     id: string
     name: string

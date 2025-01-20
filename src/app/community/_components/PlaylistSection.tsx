@@ -3,7 +3,7 @@
 import PlaylistCard from '@/app/community/_components/PlaylistCard'
 import defaultProfileImg from '@/assets/images/defaultProfileImg.png'
 
-type PlaylistSectionProps = {
+export type PlaylistSectionProps = {
   userId: string
   playlists: {
     id: string

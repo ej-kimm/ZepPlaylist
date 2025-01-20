@@ -1,56 +1,59 @@
-'use client'
-
-import { useInfiniteQuery } from '@tanstack/react-query'
-import { useInView } from 'react-intersection-observer'
-import { FetchPlay } from './_components/FetchPlay'
-
-const page = () => {
-  const {
-    data,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    error,
-    isLoading,
-  } = useInfiniteQuery({
-    queryKey: ['playlist'],
-    queryFn: ({ pageParam = 0 }) => FetchPlay({ pageParam }),
-    getNextPageParam: (lastPage) => lastPage.nextCurosr || undefined,
-    getPreviousPageParam: (firstPage) => firstPage.prevCursor || undefined,
-    initialPageParam: 0,
-  })
-  const { ref } = useInView({
-    threshold: 1,
-    onChange: (inView) => {
-      if (inView && hasNextPage && !isFetchingNextPage) {
-        fetchNextPage()
-      }
-    },
-  })
-  console.log('first', data)
-
-  return (
-    <div>
-      <h1>playlist</h1>
-      <div>
-        {data?.pages.map((page, pageIndex) => {
-          return (
-            <div key={pageIndex}>
-              {page.playlist?.map((p) => {
-                return (
-                  <div key={p.id}>
-                    {p.name}
-                    <h1 className="mt-32">{p.description}</h1>
-                  </div>
-                )
-              })}
-            </div>
-          )
-        })}
-      </div>
-      <div ref={ref}>{isFetchingNextPage && <p>ㄱㄷㄱㄷ 곧나옴 </p>}</div>
-    </div>
-  )
-}
-
-export default page
+// 'use client'
+// import { fetchPlaylistsWithCovers } from '@/api/playlist/actions'
+// import { userStore } from '@/store/userSlice'
+// import type { PlaylistRow } from '@/types/playlist'
+// import Image from 'next/image'
+// import { useEffect, useState } from 'react'
+// function Test() {
+//   const { user } = userStore((state) => state)
+//   const [playlists, setPlaylists] = useState<PlaylistRow[]>([])
+//   console.log('playlists', playlists)
+//   useEffect(() => {
+//     const getPlayList = async () => {
+//       try {
+//         const data = await fetchPlaylistsWithCovers()
+//         setPlaylists(data)
+//       } catch (error) {
+//         console.error('Error fetching playlists:', error)
+//       }
+//     }
+//     getPlayList()
+//   }, [])
+//   return (
+//     <div>
+//       {!user && playlists.length > 0 ? (
+//         <p className="text-center text-gray-500">로딩 중...</p>
+//       ) : (
+//         <ul className="mt-4 space-y-2">
+//           {playlists.map((playlist) => (
+//             <li key={playlist.id}>
+//               <div className="relative flex items-center space-x-4">
+//                 <div className="relative h-16 w-16 overflow-hidden rounded">
+//                   {playlist.latest_song_cover ? (
+//                     <Image
+//                       src={playlist.latest_song_cover}
+//                       alt="앨범 커버"
+//                       layout="fill"
+//                       objectFit="cover"
+//                     />
+//                   ) : (
+//                     <div className="flex h-full w-full items-center justify-center bg-gray-200 text-gray-400">
+//                       No Cover
+//                     </div>
+//                   )}
+//                 </div>
+//                 <div>
+//                   <p className="text-lg font-semibold">{playlist.name}</p>
+//                   <p className="text-sm text-gray-500">
+//                     {playlist.description}
+//                   </p>
+//                 </div>
+//               </div>
+//             </li>
+//           ))}
+//         </ul>
+//       )}
+//     </div>
+//   )
+// }
+// export default Test
