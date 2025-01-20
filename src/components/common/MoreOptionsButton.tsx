@@ -66,10 +66,10 @@ const MoreOptionsButton = ({
     <div className="flex items-center">
       <button
         type="button"
-        className="mt-0 w-fit bg-white"
         onClick={handleOpenBottomSheet}
+        className="px-6 py-5"
       >
-        <div className="flex gap-[2px]">
+        <div className="flex gap-[3px]">
           <div className="h-1 w-1 rounded-full bg-gray-800" />
           <div className="h-1 w-1 rounded-full bg-gray-800" />
           <div className="h-1 w-1 rounded-full bg-gray-800" />
@@ -81,19 +81,17 @@ const MoreOptionsButton = ({
         height="50%"
         maxWidth="100%"
       >
-        <div>
-          <div className="m-2">
-            <h3 className="truncate text-base font-medium text-gray-900">
-              {musicName}
-            </h3>
-            <p className="truncate text-sm text-gray-500">{artistName}</p>
+        <div className="">
+          <div className="mx-4 my-5">
+            <h3 className="truncate text-lg font-medium">{musicName}</h3>
+            <p className="truncate text-base text-gray-500">{artistName}</p>
           </div>
           <div className="border-t-2 border-gray-300">
-            <h1 className="m-2">플레이리스트 담기</h1>
+            <h1 className="my-3 text-base">플레이리스트 담기</h1>
 
             <Link href={'/playlist'}>
-              <div className="relative flex items-center space-x-4">
-                <div className="relative h-16 w-16 overflow-hidden rounded">
+              <div className="relative mx-4 flex items-center space-x-4">
+                <div className="relative h-16 w-16 overflow-hidden rounded-lg">
                   <Image
                     src={albumCover}
                     alt="앨범 커버"
@@ -101,7 +99,7 @@ const MoreOptionsButton = ({
                     objectFit="cover"
                   />
                 </div>
-                <p>새 플레이리스트 만들기</p>
+                <p className="text-sm">새 플레이리스트 만들기</p>
               </div>
             </Link>
             {!user && playlists.length > 0 ? (
@@ -113,8 +111,8 @@ const MoreOptionsButton = ({
                     key={playlist.id}
                     onClick={() => addMusiscInPlayList(playlist.id)}
                   >
-                    <div className="relative flex items-center space-x-4">
-                      <div className="relative h-16 w-16 overflow-hidden rounded">
+                    <div className="relative mx-4 flex items-center space-x-4">
+                      <div className="relative h-16 w-16 overflow-hidden rounded-lg">
                         {playlist.latest_song_cover ? (
                           <Image
                             src={playlist.latest_song_cover}
@@ -129,10 +127,10 @@ const MoreOptionsButton = ({
                         )}
                       </div>
                       <div>
-                        <p className="text-lg font-semibold">{playlist.name}</p>
-                        <p className="text-sm text-gray-500">
+                        <p className="text-sm">{playlist.name} 플레이리스트</p>
+                        {/* <p className="text-sm text-gray-500">
                           {playlist.description}
-                        </p>
+                        </p> */}
                       </div>
                     </div>
                   </li>

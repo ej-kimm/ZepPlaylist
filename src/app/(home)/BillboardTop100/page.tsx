@@ -2,7 +2,7 @@ import { fetchGlobalChart } from '@/api/home/actions'
 import type { BillboradSong } from '@/types/billboradCharts'
 import Top100ChartList from '../_components/Top100ChartList'
 
-export const revalidate = 3600
+// export const revalidate = 3600
 
 const billboardTop100 = async () => {
   const billboardTop100Chart = await fetchGlobalChart()
@@ -17,9 +17,9 @@ const billboardTop100 = async () => {
   }
   return (
     <div>
-      <div className="mx-auto max-w-3xl p-4">
-        <h1 className="mb-3 text-2xl font-bold">TOP 100</h1>
-        <ul>
+      <div className="mx-auto flex w-full max-w-3xl flex-col items-center">
+        <h1 className="mb-3 text-lg font-medium">빌보드 TOP 100</h1>
+        <ul className="w-full space-y-2">
           {newData.list.map((chart, index) => (
             <Top100ChartList
               key={chart.rank}

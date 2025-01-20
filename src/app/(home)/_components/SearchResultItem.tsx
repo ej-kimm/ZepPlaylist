@@ -1,5 +1,6 @@
 'use client'
 import MoreOptionsButton from '@/components/common/MoreOptionsButton'
+import { usePlaylistMusicUpsert } from '@/hooks/usePlaylistMusicUpsert'
 import usePlaylistOperations from '@/hooks/usePlaylistOperations'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import { userStore } from '@/store/userSlice'
@@ -14,10 +15,17 @@ const SearchResultItem = ({ item }: SearchResultProps) => {
   const { isPlayerOpen, setTrackIds, togglePlay, setPlayerOpen } =
     useMusicPlayerStore()
 
+  const { upsertMusic } = usePlaylistMusicUpsert(item.album.images[0].url)
+
   const { playlists, handleMoreOptionBtn } = usePlaylistOperations()
 
-  const handlePlayBtn = async (songId: string) => {
-    console.log(songId)
+  const handlePlayBtn = async (
+    songId: string,
+    musicName: string,
+    artist: string,
+  ) => {
+    const musicData = await handleMoreOptionBtn(songId, musicName, artist)
+    await upsertMusic(musicData)
     if (!isPlayerOpen) setPlayerOpen() // 페이지 방문 후, 첫 곡 재생이면 플레이어바 보여줌
     setTrackIds(songId)
     togglePlay()
@@ -25,8 +33,8 @@ const SearchResultItem = ({ item }: SearchResultProps) => {
 
   return (
     <li
-      onClick={() => handlePlayBtn(item.id)}
-      className="flex items-center space-x-4 rounded-lg p-3 transition-colors"
+      onClick={() => handlePlayBtn(item.id, item.name, item.artists[0].name)}
+      className="flex items-center space-x-4 rounded-lg py-2 transition-colors"
     >
       <div className="relative flex-shrink-0">
         <Image
