@@ -107,7 +107,7 @@ export default function LikedSongsPage({
                 }}
               ></div>
               <div>
-                <p className="text-lg font-semibold">{song.music.title}</p>
+                <p className="font-pretendard text-lg">{song.music.title}</p>
                 <p className="text-sm text-gray-500">{song.music.artist}</p>
               </div>
             </div>
