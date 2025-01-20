@@ -1,14 +1,13 @@
 'use client'
 
 import { userStore } from '@/store/userSlice'
-import type { LikedSong, UserLikedSongDetails } from '@/types/LikedSongs'
+import type { UserLikedSongDetails } from '@/types/LikedSongs'
 import { supabase } from '@/utils/supabase/client'
 import { useEffect, useState } from 'react'
 import LikeSongItem from './LikeSongItem'
 
 const UserLikedSong = () => {
   const { user } = userStore((state) => state)
-  const [myLikedSong, setMyLikedSong] = useState<LikedSong[]>([])
   const [matchedMusicInfo, setMatchedMusicInfo] = useState<
     UserLikedSongDetails[]
   >([])
@@ -17,7 +16,6 @@ const UserLikedSong = () => {
     const fetchSongLikesAndMusic = async () => {
       if (user) {
         try {
-          // 사용자가 좋아요한 노래 가져오기
           const { data: likedSongs, error: likeError } = await supabase
             .from('song_like')
             .select('*')
@@ -25,12 +23,8 @@ const UserLikedSong = () => {
 
           if (likeError) throw new Error(likeError.message)
 
-          setMyLikedSong(likedSongs)
-
-          // 좋아요한 노래의 music_id 목록 생성
           const musicIds = likedSongs.map((song) => song.music_id)
 
-          // 음악 테이블에서 일치하는 음악 정보 가져오기
           const { data: musicData, error: musicError } = await supabase
             .from('music')
             .select('*')
@@ -38,7 +32,6 @@ const UserLikedSong = () => {
 
           if (musicError) throw new Error(musicError.message)
 
-          // 좋아요한 노래와 음악 정보 매칭
           const matchedMusic = likedSongs.map((likedSong) => {
             const musicInfo = musicData.find(
               (music) => music.spotify_id === likedSong.music_id,
@@ -54,7 +47,7 @@ const UserLikedSong = () => {
     }
 
     fetchSongLikesAndMusic()
-  }, [user, myLikedSong])
+  }, [user])
 
   return (
     <div>
