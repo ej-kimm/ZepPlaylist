@@ -12,7 +12,7 @@ type PlaylistUIProps = {
   likeCount: number
   isLiked: boolean
   onLikeToggle: () => void
-  onClick: () => void
+  onClick?: () => void
 }
 
 const PlaylistUI = ({

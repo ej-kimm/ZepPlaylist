@@ -72,7 +72,7 @@ export const PasswordChange = ({ setIsOpenPassword }: PasswordChangeProps) => {
       />
       <PrimaryButton
         type="submit"
-        className="button-2 h-[39px] w-full rounded-full"
+        className="button-2 h-[39px] w-full rounded-full text-white"
         onClick={() => {
           setIsOpenPassword(false)
         }}

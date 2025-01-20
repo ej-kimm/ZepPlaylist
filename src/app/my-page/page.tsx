@@ -14,7 +14,6 @@ const MyPage = async () => {
       </div>
       <div>
         <h1 className="mb-4 text-xl">내가 커뮤니티에 쓴 글</h1>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3"></div>
         {playlists && playlists.length > 0 ? (
           playlists.map((p) => (
             <Link key={p.id} href={`/community/${p.id}`}>
@@ -26,8 +25,10 @@ const MyPage = async () => {
                 alt="앨범이미지"
                 className="rounded-2xl"
               />
-              <p className="text-gray-800">{p.name}</p>
-              <p className="mt-1 text-sm text-gray-600">{p.description}</p>
+              <p className="break-all text-gray-800">{p.name}</p>
+              <p className="mt-1 break-all text-sm text-gray-600">
+                {p.description}
+              </p>
             </Link>
           ))
         ) : (

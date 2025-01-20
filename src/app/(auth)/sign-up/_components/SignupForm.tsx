@@ -115,7 +115,7 @@ const SignupForm = () => {
       </div>
       <PrimaryButton
         type="submit"
-        className="button-2 mt-12 h-[39px] w-full rounded-full border-primary"
+        className="button-2 mt-12 h-[39px] w-full rounded-full border-primary text-white"
       >
         회원가입
       </PrimaryButton>
