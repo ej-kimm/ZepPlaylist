@@ -25,7 +25,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body className={`${pretendard.className}`}>
+      <body className={`scroll-invisible ${pretendard.className}`}>
         <QueryProvider>
           <Header />
           <MainContainer>{children}</MainContainer>
