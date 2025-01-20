@@ -2,7 +2,7 @@ import { fetchMelonChart } from '@/api/home/actions'
 import type { MelonChartSong } from '@/types/melonCharts'
 import Top100ChartList from '../_components/Top100ChartList'
 
-export const revalidate = 3600
+// export const revalidate = 3600
 
 const koreaTop100 = async () => {
   const koreaTop100Chart = await fetchMelonChart()
