@@ -2,7 +2,7 @@ import { fetchGlobalChart } from '@/api/home/actions'
 import type { BillboradSong } from '@/types/billboradCharts'
 import Top100ChartList from '../_components/Top100ChartList'
 
-// export const revalidate = 3600
+export const revalidate = 3600
 
 const billboardTop100 = async () => {
   const billboardTop100Chart = await fetchGlobalChart()
