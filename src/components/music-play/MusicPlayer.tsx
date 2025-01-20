@@ -31,7 +31,9 @@ const MusicPlayer = () => {
   }
 
   useEffect(() => {
-    isPlayerOpen && play()
+    if (isPlayerOpen) {
+      play()
+    }
     // console.log('useEffect안 isPlyaing', isPlaying)
   }, [isPlayerOpen, play])
 
