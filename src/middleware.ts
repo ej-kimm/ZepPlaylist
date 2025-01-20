@@ -8,17 +8,20 @@ export async function middleware(request: NextRequest) {
     data: { user },
     error,
   } = await supabase.auth.getUser()
+  const { pathname } = new URL(request.url)
+  if (user?.id && (pathname === '/login' || pathname === '/sign-up')) {
+    return NextResponse.redirect(new URL('/', request.url))
+  }
   if (!user?.id) {
     const loginUrl = new URL('http://localhost:3000/login', request.url)
     if (error) {
       console.error(error.message)
     }
-
     return NextResponse.redirect(loginUrl)
   }
   return await updateSession(request)
 }
 
 export const config = {
-  matcher: ['/my-page'],
+  matcher: ['/my-page', '/login', 'sign-up'],
 }

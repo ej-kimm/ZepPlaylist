@@ -91,7 +91,7 @@ const SignupForm = () => {
       <InputBox
         name="passwordCheck"
         type="password"
-        placeholder="비밀번호 확인인"
+        placeholder="비밀번호 확인"
         required={true}
         register={register}
         errorMessage={errors.passwordCheck?.message}
