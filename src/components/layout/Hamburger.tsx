@@ -75,6 +75,7 @@ const Hamburger = () => {
           >
             <Image src={leftArrow} width={24} height={24} alt="leftArrow" />
           </button>
+          ss
           <button className="block md:hidden" onClick={toggleMenu}>
             <Image src={hamburger} width={24} height={24} alt="hamburger" />
           </button>

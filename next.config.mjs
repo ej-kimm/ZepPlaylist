@@ -1,5 +1,4 @@
 /** @type {import('next').NextConfig} */
-
 const nextConfig = {
   reactStrictMode: false,
   images: {
@@ -7,14 +6,11 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'i.scdn.co',
-        protocol: 'https',
-        hostname: '**',
       },
       {
         protocol: 'https',
         hostname: 'cdnimg.melon.co.kr',
       },
-
       {
         protocol: 'https',
         hostname: 'charts-static.billboard.com',

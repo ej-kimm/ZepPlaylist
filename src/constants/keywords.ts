@@ -12,5 +12,5 @@ export const availableKeywords = [
   { emoji: '😊', label: '행복한' },
   { emoji: '😢', label: '슬픈' },
   { emoji: '🚶‍♂️', label: '산책' },
-  { emoji: '🎸', label: '기타' },
+  { label: '기타' },
 ]

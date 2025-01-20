@@ -21,8 +21,7 @@ export default function PlaylistDetailsComponent({
   const [playlistDetails, setPlaylistDetails] =
     useState<PlaylistDetails | null>(null)
   const [dropdownOpen, setDropdownOpen] = useState<string | null>(null)
-  const { isPlayerOpen, setTrackIds, togglePlay, setPlayerOpen } =
-    useMusicPlayerStore()
+  const { isPlayerOpen, setTrackIds, setPlayerOpen } = useMusicPlayerStore()
 
   // 플레이리스트 데이터 가져오기 (useEffect 활용)
   const loadPlaylistDetails = useCallback(async () => {
@@ -61,7 +60,6 @@ export default function PlaylistDetailsComponent({
   const handlePlayAll = () => {
     if (!isPlayerOpen) setPlayerOpen() // 페이지 방문 후, 첫 곡 재생이면 플레이어바 보여줌
     setTrackIds(trackId) // 재생할 곡 아이디 넘겨주기
-    togglePlay()
   }
 
   const toggleDropdown = (songId: string) => {

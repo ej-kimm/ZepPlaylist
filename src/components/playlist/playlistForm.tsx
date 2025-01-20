@@ -9,7 +9,6 @@ import {
 import KeywordCarousel from '@/components/keywords/keywordCarousel'
 import { userStore } from '@/store/userSlice'
 import { PlaylistRow } from '@/types/playlist'
-import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import Swal from 'sweetalert2'
@@ -157,108 +156,104 @@ export default function PlaylistComponent({
   }
 
   return (
-    <div className="p-4">
+    <div className="mx-auto h-[812px] max-w-[375px] bg-white p-4">
+      <h1 className="flex items-center justify-between"></h1>
+      <h1 className="title-1 -ml-6 flex-1 text-center">플레이리스트</h1>
+
       {isLogin ? (
         <>
-          <button
-            onClick={() => openModal('add')}
-            className="flex h-[48px] w-[245px] items-center justify-center rounded-lg border-2 border-[#9032E8] text-lg text-[#9032E8]"
-          >
-            새 플레이리스트 만들기
-          </button>
+          <h2 className="title-2 mt-6 font-bold">내가 만든 플레이리스트</h2>
 
-          {isLoading ? (
-            <p className="text-center text-gray-500">로딩 중...</p>
-          ) : (
-            <ul className="mt-4 space-y-2">
-              {latestLikedSongCover && (
-                <li
-                  className="flex h-[80px] w-[378px] cursor-pointer items-center justify-between rounded-lg border bg-white px-4 py-2 shadow-sm"
-                  onClick={handleLikesClick}
-                >
-                  <div className="relative flex items-center space-x-4">
-                    <div className="relative h-16 w-16 overflow-hidden rounded">
-                      <Image
-                        src={latestLikedSongCover}
-                        alt="좋아요 최신 커버"
-                        layout="fill"
-                        objectFit="cover"
-                      />
-                    </div>
-                    <div>
-                      <p className="text-lg font-semibold">Likes</p>
-                      <p className="text-sm text-gray-500">내가 좋아요한 곡</p>
-                    </div>
-                  </div>
-                </li>
-              )}
+          <ul className="mt-4 space-y-4">
+            <li
+              className="flex cursor-pointer items-center justify-between rounded-lg border border-gray-200 bg-white px-6 py-3 shadow-sm"
+              onClick={() => openModal('add')}
+            >
+              <div className="flex items-center space-x-4">
+                <div className="flex h-[44px] w-[44px] items-center justify-center rounded-lg bg-gray-200">
+                  <span className="text-lg font-bold text-secondary">+</span>
+                </div>
+                <p className="text-lg font-semibold text-secondary">
+                  새 플레이리스트 만들기
+                </p>
+              </div>
+            </li>
 
-              {playlists.map((playlist) => (
-                <li
-                  key={playlist.id}
-                  className="flex h-[80px] w-[378px] cursor-pointer items-center justify-between rounded-lg border bg-white px-4 py-2 shadow-sm"
-                  onClick={() => handlePlaylistClick(playlist.id)}
-                >
-                  <div className="relative flex items-center space-x-4">
-                    <div className="relative h-16 w-16 overflow-hidden rounded">
-                      {playlist.latest_song_cover ? (
-                        <Image
-                          src={playlist.latest_song_cover}
-                          alt="앨범 커버"
-                          layout="fill"
-                          objectFit="cover"
-                        />
-                      ) : (
-                        <div className="flex h-full w-full items-center justify-center bg-gray-200 text-gray-400">
-                          No Cover
-                        </div>
-                      )}
-                    </div>
-                    <div>
-                      <p className="text-lg font-semibold">{playlist.name}</p>
-                      <p className="text-sm text-gray-500">
-                        {playlist.description || '곡 NN개'}
-                      </p>
-                    </div>
+            {latestLikedSongCover && (
+              <li
+                className="flex cursor-pointer items-center justify-between rounded-lg border border-gray-200 bg-white px-6 py-3 shadow-sm"
+                onClick={handleLikesClick}
+              >
+                <div className="flex items-center space-x-4">
+                  <div
+                    className="h-[44px] w-[44px] rounded-lg bg-cover bg-center"
+                    style={{ backgroundImage: `url(${latestLikedSongCover})` }}
+                  ></div>
+                  <div>
+                    <p className="text-lg font-semibold">좋아요 표시한 곡</p>
+                    <p className="text-sm text-gray-500">곡 NN개</p>
                   </div>
-                  <div className="relative">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        setShowDropdown((prev) =>
-                          prev === playlist.id ? null : playlist.id,
-                        )
-                      }}
-                      className="text-xl text-gray-500"
-                    >
-                      ⋮
-                    </button>
-                    {showDropdown === playlist.id && (
-                      <div className="absolute right-0 mt-2 w-24 rounded-lg bg-white shadow-lg">
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation()
-                            openModal('edit', playlist)
-                          }}
-                          className="block w-full px-4 py-2 text-left text-sm hover:bg-gray-100"
-                        >
-                          수정
-                        </button>
-                      </div>
-                    )}
+                </div>
+              </li>
+            )}
+
+            {playlists.map((playlist) => (
+              <li
+                key={playlist.id}
+                className="flex items-center justify-between rounded-lg border border-gray-200 bg-white px-6 py-3 shadow-sm"
+                onClick={() => handlePlaylistClick(playlist.id)}
+              >
+                <div className="flex items-center space-x-4">
+                  <div
+                    className="h-[44px] w-[44px] rounded-lg bg-cover bg-center"
+                    style={{
+                      backgroundImage: `url(${playlist.latest_song_cover || '/default-cover.jpg'})`,
+                    }}
+                  ></div>
+                  <div>
+                    <p className="text-lg font-semibold">{playlist.name}</p>
+                    <p className="text-sm text-gray-500">
+                      {playlist.description || '곡 NN개'}
+                    </p>
                   </div>
-                </li>
-              ))}
-            </ul>
-          )}
+                </div>
+                <div className="relative">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      setShowDropdown((prev) =>
+                        prev === playlist.id ? null : playlist.id,
+                      )
+                    }}
+                    className="text-xl text-gray-500"
+                  >
+                    ⋮
+                  </button>
+                  {showDropdown === playlist.id && (
+                    <div className="absolute right-0 mt-2 w-24 rounded-lg bg-white shadow-lg">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          openModal('edit', playlist)
+                        }}
+                        className="block w-full px-4 py-2 text-left text-sm hover:bg-gray-100"
+                      >
+                        수정
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </li>
+            ))}
+          </ul>
         </>
       ) : (
-        <p className="text-center text-gray-500">로그인이 필요합니다.</p>
+        <p className="mt-6 text-center text-gray-500">로그인이 필요합니다.</p>
       )}
 
       {modalType && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="w-[420px] rounded-lg bg-white p-6 shadow-lg">
+          <div className="w-[360px] rounded-lg bg-white p-6 shadow-lg">
             <h2 className="mb-4 text-lg font-bold text-[#4a4a4a]">
               {modalType === 'add' ? '플레이리스트 추가' : '플레이리스트 수정'}
             </h2>
@@ -285,7 +280,7 @@ export default function PlaylistComponent({
               <button
                 className={`flex-1 rounded-l-md py-2 text-center ${
                   isPublic
-                    ? 'bg-[#9032E8] text-white'
+                    ? 'bg-secondary text-white'
                     : 'bg-gray-200 text-gray-500'
                 }`}
                 onClick={() => setIsPublic(true)}
@@ -295,7 +290,7 @@ export default function PlaylistComponent({
               <button
                 className={`flex-1 rounded-r-md py-2 text-center ${
                   !isPublic
-                    ? 'bg-[#9032E8] text-white'
+                    ? 'bg-secondary text-white'
                     : 'bg-gray-200 text-gray-500'
                 }`}
                 onClick={() => setIsPublic(false)}
@@ -314,7 +309,7 @@ export default function PlaylistComponent({
                 onClick={
                   modalType === 'add' ? handleAddPlaylist : handleEditPlaylist
                 }
-                className="ml-2 rounded bg-[#9032E8] px-4 py-2 text-white"
+                className="ml-2 rounded bg-secondary px-4 py-2 text-white"
               >
                 {modalType === 'add' ? '추가하기' : '저장하기'}
               </button>
