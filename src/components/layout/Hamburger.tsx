@@ -7,11 +7,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import { useCallback, useState } from 'react'
 import Sidebar from './_components/Sidebar'
 
-interface HamburgerProps {
-  title?: string
-}
-
-const Hamburger = ({ title = '' }: HamburgerProps) => {
+const Hamburger = () => {
   const router = useRouter()
   const pathname = usePathname()
   const { isPlayerModalOpen, togglePlayerModal } = useMusicPlayerStore()
