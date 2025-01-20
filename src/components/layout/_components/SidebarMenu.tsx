@@ -13,12 +13,12 @@ const LINKS = [
     icon: <Image src={album} width={24} height={24} alt="album" />,
   },
   {
-    to: '/koreaTop100',
+    to: '/koreaTopChart',
     text: '국내 TOP 100',
     icon: <Image src={chartBarVertical} width={24} height={24} alt="album" />,
   },
   {
-    to: '/billboardTop100',
+    to: '/billboardTopChart',
     text: '빌보드 TOP 100',
     icon: <Image src={chartBarVertical} width={24} height={24} alt="album" />,
   },
