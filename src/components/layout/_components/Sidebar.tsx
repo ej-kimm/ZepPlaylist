@@ -35,7 +35,7 @@ const Sidebar = ({ isOpen, toggleMenu }: SidebarProps) => {
 
       <nav className="mb-[7px]">
         <h2 className="title-1 mb-4">음악 감상</h2>
-        <SidebarMenu />
+        <SidebarMenu toggleMenu={toggleMenu} />
       </nav>
 
       {user && (
