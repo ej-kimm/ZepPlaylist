@@ -66,8 +66,8 @@ const Top100ChartList = ({
         className="flex w-full cursor-pointer items-center space-x-2 py-2 pr-2 transition-colors"
         onClick={() => handlePlayBtn()}
       >
-        <p className="text-center text-base font-medium">{index + 1}</p>
-        <div className="relativeflex-shrink-0">
+        <p className="title-2">{index + 1}</p>
+        <div className="relative flex-shrink-0">
           <Image
             src={albumCover}
             alt={musicName}
