@@ -22,23 +22,23 @@ const Top20List: React.FC<Top20ListProps> = ({
     : billboardTop20ChartList
 
   return (
-    <div>
+    <div className="mb-10">
       <div className="mt-5 flex">
-        <h1 onClick={() => setIsKoreaChart(true)} className="mr-3">
+        <h1 onClick={() => setIsKoreaChart(true)} className="mr-4 font-medium">
           국내 TOP 100
         </h1>
 
-        <h1 className="mr-3" onClick={() => setIsKoreaChart(false)}>
+        <h1 className="mr-4 font-medium" onClick={() => setIsKoreaChart(false)}>
           빌보드 TOP 100
         </h1>
       </div>
       <Link
-        href={isKoreaChart ? '/koreaTop100' : '/billboardTop100'}
-        className="m-2 flex justify-end text-sm"
+        href={isKoreaChart ? '/koreaTopChart' : '/billboardTopChart'}
+        className="flex justify-end text-sm"
       >
         더보기
       </Link>
-      <ul className="grid auto-cols-auto grid-flow-col grid-rows-4 gap-4 overflow-x-auto">
+      <ul className="grid auto-cols-auto grid-flow-col grid-rows-4 gap-2 overflow-x-auto">
         {chartList.map((chart, index) => (
           <Top20Item
             key={

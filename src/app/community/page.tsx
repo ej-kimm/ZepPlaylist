@@ -1,9 +1,11 @@
 import { getPlaylists, getPopularPlaylists } from '@/api/community/actions'
-import ClientSwiper from '@/components/common/ClientSwiper'
+import defaultProfileImg from '@/assets/images/defaultProfileImg.png'
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 import ClientPopularPlaylistUI from './_components/ClientPopularPlaylistUI'
+import CustomSwiper from './_components/CustomSwiper'
 import KeywordCarouselWrapper from './_components/KeywordCarouselWrapper'
+import PlaylistSection from './_components/PlaylistSection'
 
 const CommunityPage = async (): Promise<JSX.Element> => {
   const supabase = createServerClient(
@@ -31,14 +33,13 @@ const CommunityPage = async (): Promise<JSX.Element> => {
 
   const userId = session.session.user.id
 
-  // 수정된 actions.ts에 맞게 함수 호출
   const allPlaylists = await getPlaylists(userId)
   const popularPlaylists = await getPopularPlaylists(userId)
 
   return (
     <div>
-      <h1 className="title-1">인기 있는 플레이리스트</h1>
-      <ClientSwiper
+      <h1 className="title-1 mb-4 mt-5">인기 있는 플레이리스트</h1>
+      <CustomSwiper
         items={popularPlaylists.map((playlist) => ({
           id: playlist.id,
           content: (
@@ -47,12 +48,20 @@ const CommunityPage = async (): Promise<JSX.Element> => {
                 albumCover: playlist.album_cover ?? '',
                 isLiked: playlist.likedByUser ?? false,
                 id: playlist.id,
+                playlistName: playlist.name,
+                profileImg: playlist.profile_image ?? defaultProfileImg,
+                nickName:
+                  playlist.nickname && playlist.nickname.trim() !== ''
+                    ? playlist.nickname
+                    : 'Anonymous',
               }}
+              userId={userId}
             />
           ),
         }))}
       />
       <KeywordCarouselWrapper allPlaylists={allPlaylists} userId={userId} />
+      <PlaylistSection userId={userId} playlists={allPlaylists} />
     </div>
   )
 }

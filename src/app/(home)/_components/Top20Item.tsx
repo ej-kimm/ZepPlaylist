@@ -1,5 +1,6 @@
 import play from '@/assets/images/play.svg'
 import { useSpotifySearch } from '@/hooks/useGetSpotifyMusicId'
+import { usePlaylistMusicUpsert } from '@/hooks/usePlaylistMusicUpsert'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import type { BillboradSong } from '@/types/billboradCharts'
 import type { MelonChartSong } from '@/types/melonCharts'
@@ -20,12 +21,20 @@ const Top20Item: React.FC<Top20ItemProps> = ({
   albumCover,
 }) => {
   const { searchSpotifyId } = useSpotifySearch()
+
   const { isPlayerOpen, setTrackIds, togglePlay, setPlayerOpen } =
     useMusicPlayerStore()
 
+  const { upsertMusic } = usePlaylistMusicUpsert(albumCover)
+
   const handlePlayBtn = async () => {
-    const data = await searchSpotifyId(musicName, artistName)
-    const songId = data!.id
+    // 데이터 일치화를 위해 ()와 안의 텍스트 제거
+    const newMusicName = musicName.replace(/\s*\(.*?\)\s*/g, '')
+    const newArtistiName = artistName.replace(/\s*\(.*?\)\s*/g, '')
+
+    const musicData = await searchSpotifyId(newMusicName, newArtistiName)
+    await upsertMusic(musicData!)
+    const songId = musicData!.id
     if (!isPlayerOpen) setPlayerOpen() // 페이지 방문 후, 첫 곡 재생이면 플레이어바 보여줌
     setTrackIds(songId)
     togglePlay()
@@ -39,16 +48,16 @@ const Top20Item: React.FC<Top20ItemProps> = ({
         <Image
           src={albumCover}
           alt={musicName}
-          width={40}
-          height={40}
-          className="rounded-md object-cover"
+          width={44}
+          height={44}
+          className="rounded-lg object-cover"
           priority
         />
       </div>
 
-      <p className="truncate text-lg">{index + 1}</p>
+      <p className="truncate text-base">{index + 1}</p>
       <div className="min-w-0 flex-1 overflow-hidden">
-        <h3 className="truncate text-sm font-medium text-gray-900">
+        <h3 className="truncate text-base font-medium text-gray-900">
           {musicName}
         </h3>
         <p className="truncate text-xs text-gray-500">{artistName}</p>

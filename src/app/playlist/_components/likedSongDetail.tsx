@@ -52,7 +52,6 @@ export default function LikedSongsPage({
     const allTrackIds = likedSongs.map((song) => song.music.spotify_id)
     if (!isPlayerOpen) setPlayerOpen()
     setTrackIds(allTrackIds)
-    // togglePlay()
   }
 
   // 특정 곡부터
@@ -62,12 +61,11 @@ export default function LikedSongsPage({
       .map((song) => song.music.spotify_id)
     if (!isPlayerOpen) setPlayerOpen()
     setTrackIds(selectedTrackIds)
-    // togglePlay()
   }
 
   return (
     <div
-      className="mx-auto h-[812px] w-[375px] p-4"
+      className="mx-auto h-[812px] w-[375px]"
       style={{
         display: 'flex',
         flexDirection: 'column',

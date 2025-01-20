@@ -8,16 +8,12 @@ const CommunityDetailPage = async ({
   params: { id: string }
 }): Promise<JSX.Element> => {
   const cookies = headers().get('cookie') || ''
-  const { songs, songCount, comments } = await getCommunityDetail(
-    params.id,
-    cookies,
-  )
+  const { songs, comments } = await getCommunityDetail(params.id, cookies)
 
   return (
-    <div className="p-4">
+    <div>
       <CommentSection
         songs={songs}
-        songCount={songCount}
         comments={comments}
         playlistId={params.id}
       />

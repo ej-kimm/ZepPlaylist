@@ -68,24 +68,24 @@ export default function MusicDetailModal({
       <div className="flex h-full flex-col items-center justify-between">
         <header>
           <h3 className="title-1 mb-2 text-center">{title}</h3>
-          <p className="caption-1 mb-4 text-center">{artist}</p>
-          <div className="flex items-center justify-center gap-[23px]">
-            {!isPending && (
-              <button onClick={handleLike}>
-                <Image
-                  src={isLiked ? likeTrue : likeFalse}
-                  width={16}
-                  height={16}
-                  alt={isLiked ? 'likeTrue' : 'likeFalse'}
-                />
-              </button>
-            )}
-            {/* TODO : 플레이리스트 추가 기능 해야함 */}
-            <button onClick={handleSave}>
-              <Image src={save} width={16} height={16} alt="save" />
-            </button>
-          </div>
+          <p className="caption-1 text-center">{artist}</p>
         </header>
+        <div className="flex items-center justify-center gap-[23px]">
+          {!isPending && (
+            <button onClick={handleLike}>
+              <Image
+                src={isLiked ? likeTrue : likeFalse}
+                width={16}
+                height={16}
+                alt={isLiked ? 'likeTrue' : 'likeFalse'}
+              />
+            </button>
+          )}
+          {/* TODO : 플레이리스트 추가 기능 해야함 */}
+          <button onClick={handleSave}>
+            <Image src={save} width={16} height={16} alt="save" />
+          </button>
+        </div>
         {!isFullLyrics && <AlbumCover musicDetail={musicDetail} />}
         <Lyrics
           lyrics={lyrics}

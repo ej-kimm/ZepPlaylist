@@ -57,14 +57,14 @@ export function SearchBar() {
 
   return (
     <>
-      <div className="max-auto relative">
+      <div className="max-auto relative mr-6">
         <form onSubmit={handleSubmit(onSubmit)}>
           <input
             id="search-input"
             {...register('search')}
             type="text"
             placeholder="검색어를 입력하세요"
-            className="h-10 w-full rounded-lg bg-gray-100 pl-4 pr-10 text-sm focus:outline-none"
+            className="h-10 w-full rounded-lg bg-gray-100 px-2 text-sm focus:outline-none"
           />
           <button
             type="submit"

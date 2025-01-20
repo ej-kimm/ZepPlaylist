@@ -1,5 +1,8 @@
 'use client'
 
+import defaultProfileImg from '@/assets/images/defaultProfileImg.png'
+import usePlaylistLike from '@/hooks/usePlaylistLike'
+import type { StaticImageData } from 'next/image'
 import { useRouter } from 'next/navigation'
 import PopularPlaylistUI from './PopularPlaylistUI'
 
@@ -8,16 +11,28 @@ type ClientPopularPlaylistUIProps = {
     albumCover: string
     isLiked: boolean
     id: string
+    playlistName: string
+    profileImg: string | StaticImageData
+    nickName: string
   }
+  userId: string
 }
 
 const ClientPopularPlaylistUI: React.FC<ClientPopularPlaylistUIProps> = ({
   playlist,
+  userId,
 }) => {
   const router = useRouter()
 
+  const { isLiked, toggleLike, isPending } = usePlaylistLike({
+    user_id: userId,
+    playlist_id: playlist.id,
+  })
+
   const handleLikeToggle = () => {
-    console.log('Like toggled for', playlist.id)
+    if (!isPending) {
+      toggleLike()
+    }
   }
 
   const handlePlay = () => {
@@ -27,9 +42,12 @@ const ClientPopularPlaylistUI: React.FC<ClientPopularPlaylistUIProps> = ({
   return (
     <PopularPlaylistUI
       albumCover={playlist.albumCover}
-      isLiked={playlist.isLiked}
+      isLiked={isLiked}
       onLikeToggle={handleLikeToggle}
       onPlay={handlePlay}
+      playlistName={playlist.playlistName}
+      profileImg={playlist.profileImg || defaultProfileImg}
+      nickName={playlist.nickName}
     />
   )
 }
