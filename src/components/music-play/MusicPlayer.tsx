@@ -1,7 +1,7 @@
 'use client'
 import usePlayer from '@/hooks/usePlayer'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import ReactPlayer from 'react-player'
 import MusicDetailModal from './_components/MusicDetailModal'
 import MusicDetails from './_components/MusicDetails'
@@ -10,9 +10,9 @@ import PlayerSkeleton from './_components/PlayerSkeleton'
 import ProgressBar from './_components/ProgressBar'
 
 const MusicPlayer = () => {
-  const { isPlayerOpen } = useMusicPlayerStore()
+  const { isPlayerOpen, isPlaying, isPlayerModalOpen, play, stop } =
+    useMusicPlayerStore()
   const { musicDetail, url, lyrics, isPending } = usePlayer()
-  const { isPlaying, isPlayerModalOpen, togglePlay } = useMusicPlayerStore()
   const [playerState, setPlayerState] = useState({
     ready: false, // onReady에서 영상이 로드된 상태값을 받아 사용
     played: 0, // 현재 재생 중인 시간 (0~0.9999)
@@ -30,10 +30,19 @@ const MusicPlayer = () => {
     playerRef.current?.seekTo(value) // 재생 위치 변경
   }
 
+  useEffect(() => {
+    if (isPlayerOpen) {
+      play()
+    }
+    // console.log('useEffect안 isPlyaing', isPlaying)
+  }, [isPlayerOpen, play])
+
   if (!isPlayerOpen) return null // 초기에 노래를 재생하지 않으면 플레이어바 숨김
   if (!url || isPending) {
     return !isPlayerModalOpen && <PlayerSkeleton />
   }
+
+  // console.log('if 뒤 isPlaying', isPlaying)
 
   return (
     <section className="fixed bottom-0 left-0 z-player h-[60px] w-full bg-white shadow-drop">
@@ -44,11 +53,11 @@ const MusicPlayer = () => {
         controls={false}
         width="0"
         height="0"
-        volume={0.1} // TODO : 임시로 볼륨 조절
+        volume={0.3} // TODO : 임시로 볼륨 조절
         onReady={handleReady} // 영상 준비 완료 상태
         onDuration={handleDuration} // 총 재생 시간
         onProgress={handleProgress} // 현재 재생 시간
-        onEnded={togglePlay}
+        onEnded={stop}
       />
       <div className="flex h-full items-center justify-between px-6">
         <MusicDetails musicDetail={musicDetail} />

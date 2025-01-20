@@ -2,7 +2,7 @@ import { fetchGlobalChart, fetchMelonChart } from '@/api/home/actions'
 import Top20List from './Top20List'
 
 // 1시간 간격의 ISR
-export const revalidate = 3600
+// export const revalidate = 3600
 
 const Charts = async () => {
   const [koreaChart, billboardChart] = await Promise.all([

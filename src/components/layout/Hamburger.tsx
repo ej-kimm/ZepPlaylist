@@ -1,133 +1,54 @@
 'use client'
-
 import hamburger from '@/assets/images/hamburger.svg'
 import leftArrow from '@/assets/images/leftArrow.svg'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
-import { userStore } from '@/store/userSlice'
-import { supabase } from '@/utils/supabase/client'
 import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
 import { useCallback, useState } from 'react'
-import { BiAlbum } from 'react-icons/bi'
-import { BsBarChartLineFill } from 'react-icons/bs'
-import { FaComment } from 'react-icons/fa'
-import { FiChevronRight } from 'react-icons/fi'
-import { ImHeadphones } from 'react-icons/im'
-import Swal from 'sweetalert2'
+import Sidebar from './_components/Sidebar'
 
 const Hamburger = () => {
-  const { user, setUser } = userStore()
-  const { isPlayerModalOpen, togglePlayerModal } = useMusicPlayerStore()
-
-  const handleLogOut = async () => {
-    const { error } = await supabase.auth.signOut()
-    if (error) {
-      console.error(error.message)
-      Swal.fire({
-        icon: 'error',
-        text: '로그아웃중 에러가 발생했습니다. 다시시도해주세요',
-      })
-    }
-    localStorage.removeItem('user')
-    setUser(null)
-  }
-
   const router = useRouter()
   const pathname = usePathname()
+  const { isPlayerModalOpen, togglePlayerModal } = useMusicPlayerStore()
   const [isHamburgerOpen, setIsHamburgerOpen] = useState<boolean>(false)
-
-  const links = [
-    { to: '/', text: 'Home', icon: <BiAlbum /> },
-    { to: '/koreaTop100', text: '국내 TOP 100', icon: <BsBarChartLineFill /> },
-    {
-      to: '/billboardTop100',
-      text: '빌보드 TOP 100',
-      icon: <BsBarChartLineFill />,
-    },
-    { to: '/playlist', text: '플레이리스트', icon: <ImHeadphones /> },
-    { to: '/community', text: '커뮤니티', icon: <FaComment /> },
-    // { to: '/', text: '스포티파이 바로가기' },
-  ]
 
   const toggleMenu = useCallback(() => {
     setIsHamburgerOpen((prev) => !prev)
   }, [])
 
-  const handleBack = () => router.back()
+  const handleBack = () => {
+    if (isPlayerModalOpen) {
+      togglePlayerModal()
+    } else {
+      router.back()
+    }
 
-  const linkMenu = useCallback(
-    (to: string) => {
-      return () => {
-        setIsHamburgerOpen(false)
-        router.push(to)
-      }
-    },
-    [router],
-  )
+    if (isHamburgerOpen) {
+      toggleMenu()
+    }
+  }
 
   return (
-    <>
-      {!isHamburgerOpen ? (
-        <div className="fixed left-0 top-0 z-header flex h-navBar w-full items-center justify-between bg-white px-6">
-          <button
-            className={`md:hidden ${pathname !== '/' ? 'visible' : 'invisible'}`}
-            onClick={isPlayerModalOpen ? togglePlayerModal : handleBack}
-          >
-            <Image src={leftArrow} width={24} height={24} alt="leftArrow" />
-          </button>
-          ss
-          <button className="block md:hidden" onClick={toggleMenu}>
-            <Image src={hamburger} width={24} height={24} alt="hamburger" />
-          </button>
-        </div>
-      ) : (
-        <div className="m-8 block md:hidden">
-          <div>
-            <button onClick={toggleMenu}>X</button>
-          </div>
-          <div className="/*min-h-screen*/ m-5 flex flex-col items-center justify-center">
-            <button onClick={linkMenu(!user ? '/login' : '/my-page')}>
-              <div className="flex h-16 w-64 flex-shrink-0 items-center space-x-3 rounded-lg shadow-xl transition-colors">
-                <Image
-                  src={user?.profile_image || '/path/to/default-image.jpg'}
-                  width={80}
-                  height={80}
-                  alt={user ? '프로필 이미지' : '기본 이미지'}
-                  className="m-4 rounded-full"
-                  style={{
-                    width: '50px',
-                    height: '50px',
-                    objectFit: 'cover',
-                  }}
-                />
-                <p>{!user ? '로그인을 해주세요' : user.nickname}</p>
-                <FiChevronRight />
-              </div>
-            </button>
-            <div className="m-8 flex flex-col">
-              {links.map((link) => (
-                <button
-                  className="m-2"
-                  key={link.to}
-                  onClick={linkMenu(link.to)}
-                >
-                  <div className="flex- flex">
-                    {link.icon}
-                    <span className="ml-2">{link.text}</span>
-                  </div>
-                </button>
-                //seo ....안잡힘 이슈 -> 보완할때해도 ㄱㅊ
-              ))}
-              {!user ? (
-                <p></p>
-              ) : (
-                <button onClick={handleLogOut}>로그아웃</button>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
-    </>
+    <div className="fixed left-0 top-0 z-header flex h-navBar w-full items-center justify-between bg-white px-6">
+      <button
+        className={`md:hidden ${pathname !== '/' || isHamburgerOpen ? 'visible' : 'invisible'}`}
+        onClick={handleBack}
+      >
+        <Image
+          src={leftArrow}
+          width={24}
+          height={24}
+          alt="leftArrow"
+          className={`${isPlayerModalOpen ? '-rotate-90' : ''} ${isHamburgerOpen ? 'rotate-180' : ''}`}
+        />
+      </button>
+      <button className="block md:hidden" onClick={toggleMenu}>
+        <Image src={hamburger} width={24} height={24} alt="hamburger" />
+      </button>
+
+      <Sidebar isOpen={isHamburgerOpen} toggleMenu={toggleMenu} />
+    </div>
   )
 }
 

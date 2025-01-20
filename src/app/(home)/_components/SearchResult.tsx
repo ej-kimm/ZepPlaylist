@@ -8,8 +8,8 @@ const SearchResult = async ({ searchParams }: { searchParams: string }) => {
   console.log('searchResultList', searchResultList)
 
   return (
-    <div className="mx-auto max-w-3xl p-4">
-      <h1 className="mb-3 text-2xl font-bold">{searchParams} 검색 결과</h1>
+    <div className="mx-auto max-w-3xl">
+      <h1 className="mb-3 pt-5 text-2xl font-bold">{searchParams} 검색 결과</h1>
       <ul>
         {searchResultList.map((item) => (
           <SearchResultItem item={item} key={item.id} />
