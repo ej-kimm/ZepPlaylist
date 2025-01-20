@@ -10,7 +10,7 @@ import { PlaylistDetails } from '@/types/song'
 import { differenceInDays } from 'date-fns'
 import Image from 'next/image'
 import { useCallback, useEffect, useState } from 'react'
-import { FaEllipsisV, FaRandom } from 'react-icons/fa'
+import { FaEllipsisV } from 'react-icons/fa'
 import Swal from 'sweetalert2'
 
 export default function PlaylistDetailsComponent({
@@ -21,8 +21,7 @@ export default function PlaylistDetailsComponent({
   const [playlistDetails, setPlaylistDetails] =
     useState<PlaylistDetails | null>(null)
   const [dropdownOpen, setDropdownOpen] = useState<string | null>(null)
-  const { isPlayerOpen, setTrackIds, togglePlay, setPlayerOpen } =
-    useMusicPlayerStore()
+  const { isPlayerOpen, setTrackIds, setPlayerOpen } = useMusicPlayerStore()
 
   // 플레이리스트 데이터 가져오기 (useEffect 활용)
   const loadPlaylistDetails = useCallback(async () => {
@@ -49,7 +48,7 @@ export default function PlaylistDetailsComponent({
     name,
     description,
     song_count,
-    total_play_time,
+    // total_play_time,
     last_updated,
     songs,
   } = playlistDetails
@@ -61,7 +60,6 @@ export default function PlaylistDetailsComponent({
   const handlePlayAll = () => {
     if (!isPlayerOpen) setPlayerOpen() // 페이지 방문 후, 첫 곡 재생이면 플레이어바 보여줌
     setTrackIds(trackId) // 재생할 곡 아이디 넘겨주기
-    togglePlay()
   }
 
   const toggleDropdown = (songId: string) => {
@@ -116,7 +114,7 @@ export default function PlaylistDetailsComponent({
   }
 
   return (
-    <div className="mx-auto h-[858px] max-w-[375px] bg-white p-4">
+    <div className="mx-auto h-[858px] max-w-[375px] bg-white">
       <h1 className="title-1">플레이리스트</h1>
       <section className="mt-6 flex flex-col items-center">
         <div
@@ -125,15 +123,14 @@ export default function PlaylistDetailsComponent({
             backgroundImage: `url(${songs[0]?.album_cover || '/default-cover.jpg'})`,
           }}
         ></div>
-        <h2 className="mt-4 text-xl font-semibold">{name}</h2>
+        <h2 className="mt-4 font-pretendard text-xl">{name}</h2>
         <p className="mt-1 text-gray-500">{description}</p>
       </section>
 
       <section className="mt-4 flex items-center justify-between">
-        <div className="text-sm text-gray-600">
+        <div className="font-pretendard text-sm text-gray-600">
           <div className="flex space-x-2">
             <p>곡 수: {song_count}곡</p>
-            <p>재생시간: {total_play_time}분</p>
           </div>
           <p className="mt-1">
             업데이트: {differenceInDays(new Date(), new Date(last_updated))}일
@@ -141,9 +138,6 @@ export default function PlaylistDetailsComponent({
           </p>
         </div>
         <div className="flex items-center space-x-4">
-          <button className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-200 hover:bg-gray-300">
-            <FaRandom className="text-gray-600" />
-          </button>
           <button
             className="relative flex h-14 w-14 items-center justify-center rounded-full bg-secondary"
             onClick={handlePlayAll}
@@ -167,7 +161,7 @@ export default function PlaylistDetailsComponent({
                 }}
               ></div>
               <div className="ml-4">
-                <p className="font-semibold">{song.title}</p>
+                <p className="font-pretendard">{song.title}</p>
                 <p className="text-sm text-gray-500">{song.artist}</p>
               </div>
             </div>

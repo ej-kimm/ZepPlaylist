@@ -7,7 +7,11 @@ import { usePathname, useRouter } from 'next/navigation'
 import { useCallback, useState } from 'react'
 import Sidebar from './_components/Sidebar'
 
-const Hamburger = () => {
+interface HamburgerProps {
+  title?: string
+}
+
+const Hamburger = ({ title = '' }: HamburgerProps) => {
   const router = useRouter()
   const pathname = usePathname()
   const { isPlayerModalOpen, togglePlayerModal } = useMusicPlayerStore()
@@ -44,10 +48,12 @@ const Hamburger = () => {
           className={`${isPlayerModalOpen ? '-rotate-90' : ''} ${isHamburgerOpen ? 'rotate-180' : ''}`}
         />
       </button>
+
+      <h1 className="title-2 flex-1 text-center">{title}</h1>
+
       <button className="block md:hidden" onClick={toggleMenu}>
         <Image src={hamburger} width={24} height={24} alt="hamburger" />
       </button>
-
       <Sidebar isOpen={isHamburgerOpen} toggleMenu={toggleMenu} />
     </div>
   )

@@ -14,7 +14,6 @@ export default async function LikesPage() {
 
   return (
     <div>
-      {/* CSR 컴포넌트에 초기 데이터를 전달 */}
       <LikedSongsPage initialLikedSongs={likedSongs} />
     </div>
   )
