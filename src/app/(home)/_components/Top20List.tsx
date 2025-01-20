@@ -33,7 +33,7 @@ const Top20List: React.FC<Top20ListProps> = ({
         </h1>
       </div>
       <Link
-        href={isKoreaChart ? '/koreaTopChart' : '/billboardTop100'}
+        href={isKoreaChart ? '/koreaTopChart' : '/billboardTopChart'}
         className="flex justify-end text-sm"
       >
         더보기
