@@ -5,6 +5,7 @@ import type { MusicData, PlaylistRow } from '@/types/playlist'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
+import { FiMoreHorizontal } from 'react-icons/fi'
 import BottomSheet from './BottomSheet'
 
 type MoreOptionsButtonProps = {
@@ -63,17 +64,9 @@ const MoreOptionsButton = ({
   }
 
   return (
-    <div className="flex items-center">
-      <button
-        type="button"
-        onClick={handleOpenBottomSheet}
-        className="px-6 py-5"
-      >
-        <div className="flex gap-[3px]">
-          <div className="h-1 w-1 rounded-full bg-gray-800" />
-          <div className="h-1 w-1 rounded-full bg-gray-800" />
-          <div className="h-1 w-1 rounded-full bg-gray-800" />
-        </div>
+    <>
+      <button type="button" onClick={handleOpenBottomSheet}>
+        <FiMoreHorizontal fontSize={24} />
       </button>
       <BottomSheet
         isOpen={isBottomSheetOpen}
@@ -140,7 +133,7 @@ const MoreOptionsButton = ({
           </div>
         </div>
       </BottomSheet>
-    </div>
+    </>
   )
 }
 
