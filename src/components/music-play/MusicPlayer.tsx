@@ -10,9 +10,9 @@ import PlayerSkeleton from './_components/PlayerSkeleton'
 import ProgressBar from './_components/ProgressBar'
 
 const MusicPlayer = () => {
-  const { isPlayerOpen } = useMusicPlayerStore()
+  const { isPlayerOpen, isPlaying, isPlayerModalOpen, play, stop } =
+    useMusicPlayerStore()
   const { musicDetail, url, lyrics, isPending } = usePlayer()
-  const { isPlaying, isPlayerModalOpen, play, stop } = useMusicPlayerStore()
   const [playerState, setPlayerState] = useState({
     ready: false, // onReady에서 영상이 로드된 상태값을 받아 사용
     played: 0, // 현재 재생 중인 시간 (0~0.9999)
@@ -31,7 +31,7 @@ const MusicPlayer = () => {
   }
 
   useEffect(() => {
-    play()
+    isPlayerOpen && play()
     // console.log('useEffect안 isPlyaing', isPlaying)
   }, [isPlayerOpen, play])
 
@@ -40,7 +40,7 @@ const MusicPlayer = () => {
     return !isPlayerModalOpen && <PlayerSkeleton />
   }
 
-  console.log('if 뒤 isPlaying', isPlaying)
+  // console.log('if 뒤 isPlaying', isPlaying)
 
   return (
     <section className="fixed bottom-0 left-0 z-player h-[60px] w-full bg-white shadow-drop">
