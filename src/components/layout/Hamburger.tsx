@@ -34,6 +34,24 @@ const Hamburger = ({ title = '' }: HamburgerProps) => {
     }
   }
 
+  const isPathName = (pathname: string) => {
+    console.log(pathname)
+    switch (true) {
+      case pathname === '/koreaTopChart':
+        return '국내 TOP 100'
+      case pathname === '/billboardTopChart':
+        return '빌보드 TOP 100'
+      case pathname === '/playlist' || '/playlist/likes':
+        return '플레이리스트'
+      case pathname.startsWith('/community/') || '/community':
+        return '커뮤니티'
+      case pathname === '/my-page':
+        return '마이 페이지'
+      default:
+        return ''
+    }
+  }
+
   return (
     <div className="fixed left-0 top-0 z-header flex h-navBar w-full items-center justify-between bg-white px-6">
       <button
@@ -49,7 +67,7 @@ const Hamburger = ({ title = '' }: HamburgerProps) => {
         />
       </button>
 
-      <h1 className="title-2 flex-1 text-center">{title}</h1>
+      <h1 className="title-2 flex-1 text-center">{isPathName(pathname)}</h1>
 
       <button className="block md:hidden" onClick={toggleMenu}>
         <Image src={hamburger} width={24} height={24} alt="hamburger" />
