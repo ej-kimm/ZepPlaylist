@@ -1,31 +1,31 @@
-'use client';
+'use client'
 
-import Image from 'next/image';
+import Image from 'next/image'
 
 type Song = {
-  spotify_id: string;
-  title: string;
-  artist: string;
-  album_cover: string | null;
-};
+  spotify_id: string
+  title: string
+  artist: string
+  album_cover: string | null
+}
 
 type Comment = {
-  id: string;
-  created_at: string;
-  user_id: string;
-  content: string;
-};
+  id: string
+  created_at: string
+  user_id: string
+  content: string
+}
 
 type CommunityDetailUIProps = {
-  songs: Song[];
-  comments: Comment[];
-  content: string;
-  setContent: React.Dispatch<React.SetStateAction<string>>;
-  handleSongClick: () => void;
-  handleAddComment: () => Promise<void>;
-  handleDeleteComment: (commentId: string) => Promise<void>;
-  currentUserId: string | null;
-};
+  songs: Song[]
+  comments: Comment[]
+  content: string
+  setContent: React.Dispatch<React.SetStateAction<string>>
+  handleSongClick: () => void
+  handleAddComment: () => Promise<void>
+  handleDeleteComment: (commentId: string) => Promise<void>
+  currentUserId: string | null
+}
 
 export default function CommunityDetailUI({
   songs,
@@ -113,5 +113,5 @@ export default function CommunityDetailUI({
         </div>
       </div>
     </div>
-  );
+  )
 }

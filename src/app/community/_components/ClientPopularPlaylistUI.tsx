@@ -46,7 +46,7 @@ const ClientPopularPlaylistUI: React.FC<ClientPopularPlaylistUIProps> = ({
       onLikeToggle={handleLikeToggle}
       onPlay={handlePlay}
       playlistName={playlist.playlistName}
-      profileImg={playlist.profileImg || defaultProfileImg} // 기본 프로필 이미지 설정
+      profileImg={playlist.profileImg || defaultProfileImg}
       nickName={playlist.nickName}
     />
   )

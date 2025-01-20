@@ -26,28 +26,25 @@ const PopularPlaylistUI = ({
 }: PopularPlaylistUIProps) => {
   return (
     <div className="flex flex-col items-start">
-      {/* 이미지 및 버튼 영역 */}
       <div
         className="relative flex-shrink-0 cursor-pointer overflow-hidden rounded-lg"
         style={{
-          width: '140px', // 전체 컨테이너 너비
-          height: '100px', // 전체 컨테이너 높이
+          width: '140px',
+          height: '100px',
         }}
-        onClick={onPlay} // 클릭 이벤트 추가
+        onClick={onPlay}
       >
-        {/* 블러 처리된 배경 이미지 */}
         <div
           className="absolute inset-0 -z-10 blur-lg filter"
           style={{
-            width: '100%', // 배경 너비를 컨테이너 전체로 설정
-            height: '100%', // 배경 높이를 컨테이너 전체로 설정
+            width: '100%',
+            height: '100%',
             backgroundImage: `url(${albumCover})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
           }}
         ></div>
 
-        {/* 선명한 앨범 커버 */}
         <div
           className="absolute"
           style={{
@@ -66,7 +63,6 @@ const PopularPlaylistUI = ({
           />
         </div>
 
-        {/* 좋아요 버튼 */}
         <button
           className="absolute z-20 flex items-center justify-center"
           style={{
@@ -76,7 +72,7 @@ const PopularPlaylistUI = ({
             right: '8px',
           }}
           onClick={(e) => {
-            e.stopPropagation() // 클릭 이벤트 전파 방지
+            e.stopPropagation()
             onLikeToggle()
           }}
         >
@@ -88,7 +84,6 @@ const PopularPlaylistUI = ({
           />
         </button>
 
-        {/* 재생 버튼 */}
         <button
           className="absolute z-20 flex items-center justify-center"
           style={{
@@ -98,7 +93,7 @@ const PopularPlaylistUI = ({
             right: '5px',
           }}
           onClick={(e) => {
-            e.stopPropagation() // 클릭 이벤트 전파 방지
+            e.stopPropagation()
             onPlay()
           }}
         >
@@ -106,7 +101,6 @@ const PopularPlaylistUI = ({
         </button>
       </div>
 
-      {/* 플레이리스트 정보 (하단 왼쪽 정렬) */}
       <div className="mt-2 w-full">
         <h3 className="caption-1 font-bold">{playlistName}</h3>
         <div className="mt-1 flex items-center">
