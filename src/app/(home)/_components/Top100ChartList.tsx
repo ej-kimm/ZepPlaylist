@@ -7,7 +7,6 @@ import usePlaylistOperations from '@/hooks/usePlaylistOperations'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import { userStore } from '@/store/userSlice'
 import Image from 'next/image'
-import { useState } from 'react'
 
 type KoreanChart = {
   isKoreaChart: true
@@ -27,12 +26,6 @@ type BillboardChart = {
 
 type Chart = KoreanChart | BillboardChart
 
-type playListData = {
-  id: string
-  artist: string
-  title: string
-}
-
 const Top100ChartList = ({
   musicName,
   artistName,
@@ -41,9 +34,6 @@ const Top100ChartList = ({
 }: Chart) => {
   // 유저정보 가져오기
   const { user } = userStore((state) => state)
-
-  const [isLoading, setIsLoading] = useState(false)
-  // const [playlists, setPlaylists] = useState<PlaylistRow[]>([])
 
   const { searchSpotifyId } = useSpotifySearch()
 
@@ -69,8 +59,6 @@ const Top100ChartList = ({
     setTrackIds(songId)
     togglePlay()
   }
-
-  if (isLoading) return <></>
 
   return (
     <li className="flex flex-row items-center transition-shadow">
@@ -105,7 +93,6 @@ const Top100ChartList = ({
         onFetchMusicData={() => handleMoreOptionBtn('_', musicName, artistName)}
         playlists={playlists}
       />
-      {/* </div> */}
     </li>
   )
 }
