@@ -156,7 +156,7 @@ export default function PlaylistComponent({
   }
 
   return (
-    <div className="mx-auto h-[812px] max-w-[375px] bg-white">
+    <div className="mx-auto h-full w-full max-w-[375px] bg-white">
       {isLoading ? (
         <p className="mt-6 text-center text-gray-500">데이터 로딩 중...</p>
       ) : isLogin ? (
