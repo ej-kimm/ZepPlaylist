@@ -1,6 +1,14 @@
 'use client'
 
+import commentSubmitButton from '@/assets/images/commentSubmit.svg'
+import defaultProfileImg from '@/assets/images/defaultProfileImg.png'
+import likeFalse from '@/assets/images/likeFalse.svg'
+import likeTrue from '@/assets/images/likeTrue.svg'
+import moreButton from '@/assets/images/moreButton.svg'
+import BottomSheet from '@/components/common/BottomSheet'
 import Image from 'next/image'
+import { useState } from 'react'
+import { TbTrash } from 'react-icons/tb'
 
 type Song = {
   spotify_id: string
@@ -14,45 +22,99 @@ type Comment = {
   created_at: string
   user_id: string
   content: string
+  profileImage?: string | null
 }
 
 type CommunityDetailUIProps = {
+  nickname: string
+  profileImage: string | null
+  description: string | null
+  playlistName: string
   songs: Song[]
   comments: Comment[]
   content: string
   setContent: React.Dispatch<React.SetStateAction<string>>
-  handleSongClick: () => void
+  //   handleSongClick: () => void
   handleAddComment: () => Promise<void>
   handleDeleteComment: (commentId: string) => Promise<void>
   currentUserId: string | null
+  isLiked: boolean
+  onLikeToggle: () => Promise<void>
 }
 
 export default function CommunityDetailUI({
+  nickname,
+  profileImage,
+  description,
+  playlistName,
   songs,
   comments,
   content,
   setContent,
-  handleSongClick,
+  //   handleSongClick,
   handleAddComment,
   handleDeleteComment,
   currentUserId,
+  isLiked,
+  onLikeToggle,
 }: CommunityDetailUIProps) {
+  const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false)
+  const [selectedSong, setSelectedSong] = useState<Song | null>(null)
+
+  const handleMoreButtonClick = (song: Song) => {
+    setSelectedSong(song)
+    setIsBottomSheetOpen(true)
+  }
+
   return (
-    <div className="flex flex-row gap-8 p-4">
-      <div className="flex-1">
-        <h1 className="text-xl font-bold">플레이리스트 정보</h1>
-        <ul className="mt-6">
-          {songs?.length > 0 ? (
+    <div>
+      {/* 상단 정보 */}
+      <div>
+        <div className="flex w-full items-center justify-between">
+          <h1 className="title-1 mb-2 mt-2">{playlistName}</h1>
+          <button onClick={onLikeToggle} className="mb-2 mt-2 h-6 w-6">
+            <Image
+              src={isLiked ? likeTrue : likeFalse}
+              alt="Like Button"
+              width={16}
+              height={16}
+            />
+          </button>
+        </div>
+        <p className="body-1 mb-2">{description || '설명이 없습니다.'}</p>
+        <div className="flex items-center gap-2">
+          <div
+            className="flex-shrink-0 overflow-hidden rounded-full"
+            style={{
+              width: '24px',
+              height: '24px',
+            }}
+          >
+            <Image
+              src={profileImage || defaultProfileImg}
+              alt="프로필 이미지"
+              width={24}
+              height={24}
+              className="object-contain"
+            />
+          </div>
+          <span className="caption-2">{nickname}</span>
+        </div>
+      </div>
+
+      {/* 노래 목록 */}
+      <div className="flex flex-col">
+        <ul className="mt-4">
+          {songs.length > 0 ? (
             songs.map((song) => (
               <li
                 key={song.spotify_id}
-                className="flex cursor-pointer items-center justify-between border-b py-2 hover:bg-gray-100"
-                onClick={handleSongClick}
+                className="flex items-center justify-between py-4"
               >
                 <div className="flex items-center">
                   <div className="relative h-12 w-12">
                     <Image
-                      src={song.album_cover || '/default-album-cover.jpg'}
+                      src={song.album_cover || '이미지가 없습니다.'}
                       alt={`${song.title} 앨범 커버`}
                       layout="fill"
                       objectFit="cover"
@@ -60,10 +122,21 @@ export default function CommunityDetailUI({
                     />
                   </div>
                   <div className="ml-4">
-                    <p className="font-semibold">{song.title}</p>
-                    <p className="text-sm text-gray-500">{song.artist}</p>
+                    <p className="text-sm font-semibold">{song.title}</p>
+                    <p className="text-xs text-gray-500">{song.artist}</p>
                   </div>
                 </div>
+                <button
+                  className="h-6 w-6"
+                  onClick={() => handleMoreButtonClick(song)}
+                >
+                  <Image
+                    src={moreButton}
+                    alt="More Options"
+                    width={24}
+                    height={24}
+                  />
+                </button>
               </li>
             ))
           ) : (
@@ -72,46 +145,99 @@ export default function CommunityDetailUI({
         </ul>
       </div>
 
-      <div className="flex flex-1 flex-col space-y-4">
-        <ul className="space-y-4">
-          {comments.map((comment) => (
-            <li
-              key={comment.id}
-              className="flex flex-col space-y-2 border-b pb-4"
-            >
-              <p className="text-gray-700">{comment.content}</p>
+      {/* 댓글 섹션 */}
+      <div className="fixed bottom-0 left-0 right-0 z-10 h-[240px] w-full bg-gradient-to-t from-black/50 via-gray-800/30 to-white/10 shadow-lg backdrop-blur-md">
+        <div className="flex h-full flex-col">
+          {/* 댓글 목록 */}
+          <div className="flex-1 overflow-y-auto p-4">
+            <ul className="space-y-4">
+              {comments.map((comment) => (
+                <li
+                  key={comment.id}
+                  className="flex items-start space-x-4 pb-4"
+                >
+                  {/* 댓글 작성자의 프로필 이미지 */}
+                  <div className="flex-shrink-0 rounded-full">
+                    <Image
+                      src={comment.profileImage || defaultProfileImg}
+                      alt="작성자 프로필 이미지"
+                      width={32}
+                      height={32}
+                      className="object-cover"
+                    />
+                  </div>
 
-              {currentUserId === comment.user_id && (
-                <div className="flex space-x-2">
-                  <button
-                    onClick={() => handleDeleteComment(comment.id)}
-                    className="rounded bg-red-500 px-3 py-1 text-white hover:bg-red-600"
-                  >
-                    삭제
-                  </button>
-                </div>
-              )}
-            </li>
-          ))}
-        </ul>
+                  {/* 댓글 내용과 삭제 버튼을 묶는 컨테이너 */}
+                  <div className="flex flex-1 items-center justify-between">
+                    {/* 댓글 내용 */}
+                    <p className="caption-1 mt-2 flex-1 text-white">
+                      {comment.content}
+                    </p>
 
-        <div className="flex items-center rounded-md border p-2">
-          <textarea
-            className="flex-1 resize-none border-none p-2 focus:outline-none"
-            placeholder="댓글을 입력하세요..."
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-          />
-          {content.length > 0 && (
-            <button
-              onClick={handleAddComment}
-              className="ml-2 rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
-            >
-              등록
-            </button>
-          )}
+                    {/* 삭제 버튼 */}
+                    {currentUserId === comment.user_id && (
+                      <button
+                        onClick={() => handleDeleteComment(comment.id)}
+                        className="flex h-6 w-6 items-center justify-center text-gray-500"
+                      >
+                        <TbTrash size={20} />
+                      </button>
+                    )}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* 댓글 입력 */}
+          <div className="flex items-center rounded-t-md border-t p-2">
+            <input
+              type="text"
+              className="h-8 flex-1 rounded border border-gray-300 px-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="댓글을 입력하세요..."
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && content.trim().length > 0) {
+                  handleAddComment()
+                }
+              }}
+            />
+            {content.trim().length > 0 && (
+              <button
+                onClick={handleAddComment}
+                className="ml-2 flex h-8 w-8 items-center justify-center"
+              >
+                <Image
+                  src={commentSubmitButton}
+                  alt="Submit Comment"
+                  width={36}
+                  height={36}
+                />
+              </button>
+            )}
+          </div>
         </div>
       </div>
+
+      {/* 바텀시트 */}
+      <BottomSheet
+        isOpen={isBottomSheetOpen}
+        onClose={() => setIsBottomSheetOpen(false)}
+        height="50%"
+      >
+        {selectedSong && (
+          <div className="p-4">
+            <h3 className="truncate text-lg font-medium">
+              {selectedSong.title}
+            </h3>
+            <p className="truncate text-base text-gray-500">
+              {selectedSong.artist}
+            </p>
+            <div className="mt-4"></div>
+          </div>
+        )}
+      </BottomSheet>
     </div>
   )
 }
