@@ -100,7 +100,7 @@
   }
 
   .lyrics-full {
-    -webkit-line-clamp: 11;
+    -webkit-line-clamp: 10;
   }
 
   .range-slider {

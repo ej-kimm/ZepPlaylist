@@ -1,6 +1,5 @@
 'use client'
 
-import PlaylistSection from '@/app/community/_components/PlaylistSection'
 import KeywordCarousel from '@/components/keywords/keywordCarousel'
 import { useState } from 'react'
 
@@ -9,6 +8,8 @@ type Playlist = {
   name: string
   likeCount: number
   likedByUser?: boolean
+  profile_image: string | null
+  nickname: string | null
 }
 
 type KeywordCarouselWrapperProps = {
@@ -18,11 +19,11 @@ type KeywordCarouselWrapperProps = {
 
 const KeywordCarouselWrapper = ({
   allPlaylists,
-  userId,
 }: KeywordCarouselWrapperProps) => {
   const [selectedKeywords, setSelectedKeywords] = useState<string[]>([])
   const [filteredPlaylists, setFilteredPlaylists] =
     useState<Playlist[]>(allPlaylists)
+  console.log(filteredPlaylists)
 
   const handleToggleKeyword = (keyword: string) => {
     const updatedKeywords = selectedKeywords.includes(keyword)
@@ -43,12 +44,11 @@ const KeywordCarouselWrapper = ({
 
   return (
     <div>
-      <h1 className="title-1">전체 플레이리스트</h1>
+      <h1 className="title-1 mt-4">플레이리스트</h1>
       <KeywordCarousel
         selectedKeywords={selectedKeywords}
         onToggleKeyword={handleToggleKeyword}
       />
-      <PlaylistSection playlists={filteredPlaylists} userId={userId} />
     </div>
   )
 }

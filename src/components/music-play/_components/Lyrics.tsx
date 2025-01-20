@@ -15,9 +15,9 @@ const Lyrics = ({ lyrics, isFullLyrics, onClickLyrics }: LyricsProps) => {
   const handleMenuTranslation = () => setIsTranslation(true)
 
   return (
-    <div className="w-full">
+    <div className={`w-full ${isFullLyrics ? 'h-[315px]' : 'h-10'}`}>
       {isFullLyrics && (
-        <div className="mb-5 flex gap-1">
+        <div className="mb-1 flex gap-1">
           <UnderLineButton
             onClick={handleMenuLyrics}
             className={`button-2 ${
@@ -44,7 +44,7 @@ const Lyrics = ({ lyrics, isFullLyrics, onClickLyrics }: LyricsProps) => {
         <p className="caption-1">번역기능은 MVP이후지롱</p>
       ) : (
         <p
-          className={`cursor-pointer overflow-y-scroll ${isFullLyrics ? 'lyrics-full caption-2 relative -left-1 h-[300px] text-left leading-[25px]' : 'lyrics-small caption-1 h-[40px] text-center leading-5'}`}
+          className={`cursor-pointer overflow-y-scroll ${isFullLyrics ? 'lyrics-full caption-2 relative -left-1 h-[250px] text-left leading-[25px]' : 'lyrics-small caption-1 h-full text-center leading-5'}`}
           dangerouslySetInnerHTML={{ __html: lyrics }}
           onClick={onClickLyrics}
         />

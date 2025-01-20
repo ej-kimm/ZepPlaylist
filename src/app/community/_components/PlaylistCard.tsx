@@ -1,9 +1,8 @@
 'use client'
 
-import likeFalse from '@/assets/images/likeFalse.svg'
-import likeTrue from '@/assets/images/likeTrue.svg'
+import PlaylistUI from '@/components/common/PlaylistUI'
 import usePlaylistLike from '@/hooks/usePlaylistLike'
-import Image from 'next/image'
+import type { StaticImageData } from 'next/image'
 import { useRouter } from 'next/navigation'
 
 type PlaylistCardProps = {
@@ -12,6 +11,8 @@ type PlaylistCardProps = {
     name: string
     likeCount: number
     likedByUser?: boolean
+    profileImg: string | StaticImageData
+    nickName: string
   }
   userId: string
 }
@@ -35,31 +36,15 @@ const PlaylistCard = ({ playlist, userId }: PlaylistCardProps) => {
   }
 
   return (
-    <div
-      className="mt-8 cursor-pointer rounded border p-4 shadow"
+    <PlaylistUI
+      profileImg={playlist.profileImg}
+      playlistName={playlist.name}
+      nickName={playlist.nickName}
+      likeCount={playlist.likeCount + (isLiked ? 1 : 0)}
+      isLiked={isLiked}
+      onLikeToggle={handleLikeToggle}
       onClick={handleDivClick}
-    >
-      <div className="flex items-center justify-between">
-        <h3 className="text-lg font-bold">{playlist.name}</h3>
-        <button
-          className="text-2xl"
-          onClick={(e) => {
-            e.stopPropagation()
-            handleLikeToggle()
-          }}
-        >
-          <Image
-            src={isLiked ? likeTrue : likeFalse}
-            alt={isLiked ? 'Liked' : 'Not Liked'}
-            width={24}
-            height={24}
-          />
-        </button>
-      </div>
-      <p className="mt-2 text-gray-600">
-        좋아요: {playlist.likeCount + (isLiked ? 1 : 0)}
-      </p>
-    </div>
+    />
   )
 }
 

@@ -3,6 +3,7 @@
 import imPlay from '@/assets/images/imPlay.svg'
 import likeTrue from '@/assets/images/likeTrue.svg'
 import whiteHeart from '@/assets/images/whiteHeart.svg'
+import type { StaticImageData } from 'next/image'
 import Image from 'next/image'
 
 export type PopularPlaylistUIProps = {
@@ -10,6 +11,9 @@ export type PopularPlaylistUIProps = {
   isLiked: boolean
   onLikeToggle: () => void
   onPlay: () => void
+  playlistName: string
+  profileImg: string | StaticImageData
+  nickName: string
 }
 
 const PopularPlaylistUI = ({
@@ -17,50 +21,94 @@ const PopularPlaylistUI = ({
   isLiked,
   onLikeToggle,
   onPlay,
+  playlistName,
+  nickName,
 }: PopularPlaylistUIProps) => {
   return (
-    <div className="relative h-56 w-full cursor-pointer overflow-hidden rounded-lg">
-      {/* 앨범 커버 */}
-      <Image
-        src={albumCover}
-        alt="Album Cover"
-        layout="fill"
-        objectFit="cover"
-        className="rounded-lg"
-      />
-
-      {/* 좋아요 버튼 */}
-      <button
-        className="absolute right-2 top-2 flex h-12 w-12 items-center justify-center"
-        onClick={(e) => {
-          e.stopPropagation()
-          onLikeToggle()
+    <div className="flex flex-col items-start">
+      <div
+        className="relative flex-shrink-0 cursor-pointer overflow-hidden rounded-lg"
+        style={{
+          width: '140px',
+          height: '100px',
         }}
+        onClick={onPlay}
       >
-        <Image
-          src={isLiked ? likeTrue : whiteHeart}
-          alt="Like Button"
-          width={24}
-          height={24}
-        />
-      </button>
+        <div
+          className="absolute inset-0 -z-10 blur-lg filter"
+          style={{
+            width: '100%',
+            height: '100%',
+            backgroundImage: `url(${albumCover})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
+        ></div>
 
-      {/* 플레이리스트 정보 */}
-      <div className="absolute bottom-16 left-2 text-white"></div>
+        <div
+          className="absolute"
+          style={{
+            width: '92px',
+            height: '92px',
+            top: '4px',
+            left: '24px',
+          }}
+        >
+          <Image
+            src={albumCover}
+            alt="Album Cover"
+            layout="fill"
+            objectFit="contain"
+            className="rounded-lg"
+          />
+        </div>
 
-      {/* 좋아요 개수 */}
-      <div className="absolute right-2 top-16 text-white"></div>
+        <button
+          className="absolute z-20 flex items-center justify-center"
+          style={{
+            width: '14px',
+            height: '14px',
+            top: '8px',
+            right: '8px',
+          }}
+          onClick={(e) => {
+            e.stopPropagation()
+            onLikeToggle()
+          }}
+        >
+          <Image
+            src={isLiked ? likeTrue : whiteHeart}
+            alt="Like Button"
+            width={20}
+            height={20}
+          />
+        </button>
 
-      {/* 재생 버튼 */}
-      <button
-        className="absolute bottom-2 right-2 flex h-12 w-12 items-center justify-center"
-        onClick={(e) => {
-          e.stopPropagation()
-          onPlay()
-        }}
-      >
-        <Image src={imPlay} alt="Play Button" width={32} height={32} />
-      </button>
+        <button
+          className="absolute z-20 flex items-center justify-center"
+          style={{
+            width: '18px',
+            height: '18px',
+            bottom: '8px',
+            right: '5px',
+          }}
+          onClick={(e) => {
+            e.stopPropagation()
+            onPlay()
+          }}
+        >
+          <Image src={imPlay} alt="Play Button" width={24} height={24} />
+        </button>
+      </div>
+
+      <div className="mt-2 w-full">
+        <h3 className="caption-1 font-bold">{playlistName}</h3>
+        <div className="mt-1 flex items-center">
+          <span className="caption-2">
+            {nickName && nickName.trim() !== '' ? nickName : 'Anonymous'}
+          </span>
+        </div>
+      </div>
     </div>
   )
 }

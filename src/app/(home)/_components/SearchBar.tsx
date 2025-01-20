@@ -57,7 +57,7 @@ export function SearchBar() {
 
   return (
     <>
-      <div className="max-auto relative">
+      <div className="max-auto relative mr-6">
         <form onSubmit={handleSubmit(onSubmit)}>
           <input
             id="search-input"
