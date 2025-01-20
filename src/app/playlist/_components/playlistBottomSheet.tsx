@@ -41,7 +41,7 @@ export default function PlaylistBottomSheet({
       height="auto"
       maxWidth="100%"
     >
-      <div className="flex w-full flex-col items-start gap-[36px] rounded-t-[36px] bg-white px-0 pb-4 pt-10">
+      <div className="flex w-full flex-col items-start gap-[36px] rounded-t-[36px] bg-white py-10 pb-4">
         <div className="w-full px-6">
           <h2 className="mb-4 text-lg font-bold text-[#4a4a4a]">
             {modalType === 'add' ? '플레이리스트 추가' : '플레이리스트 수정'}
