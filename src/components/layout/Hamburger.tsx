@@ -31,7 +31,6 @@ const Hamburger = () => {
   }
 
   const isPathName = (pathname: string) => {
-    console.log(pathname)
     switch (true) {
       case pathname === '/koreaTopChart':
         return '국내 TOP 100'
