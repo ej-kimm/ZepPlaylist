@@ -79,15 +79,6 @@ const getSongId = async ({
       console.warn(`No results found for query: "${artist} ${title}"`)
       return null
     }
-
-    // artist_names에 artist가 포함되어 있는지 확인 (공백 모두 제거, 영어는 모두 소문자로 변환 후 비교)
-    const resultArtistNames = searchResults[0].result.artist_names
-      .replace(/\s+/g, '')
-      .toLowerCase()
-    const normalizedArtist = artist.replace(/\s+/g, '').toLowerCase()
-    if (!resultArtistNames.includes(normalizedArtist)) {
-      return null
-    }
     return searchResults[0].result.id
   } catch (error) {
     if (error instanceof Error) {
