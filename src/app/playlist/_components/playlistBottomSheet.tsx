@@ -57,41 +57,35 @@ export default function PlaylistBottomSheet({
             placeholder="플레이리스트 설명"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            className="mb-4 w-full border-b border-gray-300 bg-transparent p-2"
+            className="mb-4 w-full border-b border-gray-300 bg-transparent p-0"
           ></textarea>
         </div>
         <div className="mb-4 w-full px-6">
+          <p className="caption-1 text-black">키워드</p>
           <KeywordCarousel
             selectedKeywords={selectedKeywords}
             onToggleKeyword={toggleKeyword}
           />
         </div>
-        <div className="flex w-full px-6">
-          <button
-            className={`flex-1 rounded-l-md py-2 text-center ${isPublic ? 'bg-secondary text-white' : 'bg-gray-200 text-gray-500'}`}
-            onClick={() => setIsPublic(true)}
-          >
-            공개
-          </button>
-          <button
-            className={`flex-1 rounded-r-md py-2 text-center ${!isPublic ? 'bg-secondary text-white' : 'bg-gray-200 text-gray-500'}`}
-            onClick={() => setIsPublic(false)}
-          >
-            비공개
-          </button>
+        <div className="flex w-full items-center justify-between px-6">
+          <p className="caption-1 text-black">공개설정</p>
+          <label className="relative inline-flex cursor-pointer items-center">
+            <input
+              type="checkbox"
+              checked={isPublic}
+              onChange={() => setIsPublic(!isPublic)}
+              className="peer sr-only"
+            />
+            <div className="h-6 w-11 rounded-full bg-gray-300 after:absolute after:left-1 after:top-1 after:h-4 after:w-4 after:rounded-full after:border after:bg-white after:transition-all after:content-[''] peer-checked:bg-secondary peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-secondary"></div>
+          </label>
         </div>
-        <div className="mt-4 flex w-full justify-end px-6">
-          <button
-            onClick={onClose}
-            className="rounded bg-gray-300 px-4 py-2 text-black"
-          >
-            취소
-          </button>
+
+        <div className="mt-4 w-full px-6">
           <button
             onClick={handleSubmit}
-            className="ml-2 rounded bg-secondary px-4 py-2 text-white"
+            className="flex w-full items-center justify-center gap-1 rounded-full bg-primary px-[18px] py-[11px] text-white"
           >
-            {modalType === 'add' ? '추가하기' : '저장하기'}
+            확인
           </button>
         </div>
       </div>
