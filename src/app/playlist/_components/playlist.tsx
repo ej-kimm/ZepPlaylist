@@ -7,7 +7,6 @@ import {
   updatePlaylist,
 } from '@/api/playlist/actions'
 import PlaylistBottomSheet from '@/app/playlist/_components/playlistBottomSheet'
-import Hamburger from '@/components/layout/Hamburger'
 import { userStore } from '@/store/userSlice'
 import { PlaylistRow } from '@/types/playlist'
 import { useRouter } from 'next/navigation'
@@ -158,8 +157,6 @@ export default function PlaylistComponent({
 
   return (
     <div className="mx-auto h-[812px] max-w-[375px] bg-white">
-      <Hamburger title="플레이리스트" />
-
       {isLoading ? (
         <p className="mt-6 text-center text-gray-500">데이터 로딩 중...</p>
       ) : isLogin ? (
