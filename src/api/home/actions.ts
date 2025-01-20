@@ -15,6 +15,7 @@ export const fetchNewReleases = async () => {
       },
     })
     if (!res.ok) {
+      console.log('빌보드 에러')
       console.error(`API error: ${res.status} ${res.statusText}`)
       throw new Error(`Failed to fetch data: ${res.status} ${res.statusText}`)
     }
@@ -34,6 +35,7 @@ export const fetchMelonChart = async () => {
     )
 
     if (!res.ok) {
+      console.log('멜론에러')
       console.error(`API error: ${res.status} ${res.statusText}`)
       throw new Error(`Failed to fetch data: ${res.status} ${res.statusText}`)
     }
