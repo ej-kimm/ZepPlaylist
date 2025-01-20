@@ -7,6 +7,7 @@ import {
   updatePlaylist,
 } from '@/api/playlist/actions'
 import KeywordCarousel from '@/components/keywords/keywordCarousel'
+import Hamburger from '@/components/layout/Hamburger'
 import { userStore } from '@/store/userSlice'
 import { PlaylistRow } from '@/types/playlist'
 import { useRouter } from 'next/navigation'
@@ -157,10 +158,11 @@ export default function PlaylistComponent({
 
   return (
     <div className="mx-auto h-[812px] max-w-[375px] bg-white p-4">
-      <h1 className="flex items-center justify-between"></h1>
-      <h1 className="title-1 -ml-6 flex-1 text-center">플레이리스트</h1>
+      <Hamburger title="플레이리스트" />
 
-      {isLogin ? (
+      {isLoading ? (
+        <p className="mt-6 text-center text-gray-500">데이터 로딩 중...</p>
+      ) : isLogin ? (
         <>
           <h2 className="title-2 mt-6 font-bold">내가 만든 플레이리스트</h2>
 
@@ -170,10 +172,10 @@ export default function PlaylistComponent({
               onClick={() => openModal('add')}
             >
               <div className="flex items-center space-x-4">
-                <div className="flex h-[44px] w-[44px] items-center justify-center rounded-lg bg-gray-200">
-                  <span className="text-lg font-bold text-secondary">+</span>
+                <div className="flex h-[44px] w-[44px] items-center justify-center rounded-lg bg-[#DFDFDF]">
+                  <span className="text-lg font-bold text-white">+</span>
                 </div>
-                <p className="text-lg font-semibold text-secondary">
+                <p className="caption-1 font-pretendard">
                   새 플레이리스트 만들기
                 </p>
               </div>
@@ -190,8 +192,9 @@ export default function PlaylistComponent({
                     style={{ backgroundImage: `url(${latestLikedSongCover})` }}
                   ></div>
                   <div>
-                    <p className="text-lg font-semibold">좋아요 표시한 곡</p>
-                    <p className="text-sm text-gray-500">곡 NN개</p>
+                    <p className="caption-1 font-pretendard">
+                      좋아요 표시한 곡
+                    </p>
                   </div>
                 </div>
               </li>
@@ -211,7 +214,7 @@ export default function PlaylistComponent({
                     }}
                   ></div>
                   <div>
-                    <p className="text-lg font-semibold">{playlist.name}</p>
+                    <p className="caption-1 font-pretendard">{playlist.name}</p>
                     <p className="text-sm text-gray-500">
                       {playlist.description || '곡 NN개'}
                     </p>
