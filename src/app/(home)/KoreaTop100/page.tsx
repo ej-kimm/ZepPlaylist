@@ -17,22 +17,20 @@ const koreaTop100 = async () => {
     list: koreaTop100ChartList,
   }
   return (
-    <div>
-      <div className="mx-auto max-w-3xl p-4">
-        <h1 className="mb-3 text-2xl font-bold">TOP 100</h1>
-        <ul>
-          {newData.list.map((chart, index) => (
-            <Top100ChartList
-              key={chart.SONGID}
-              isKoreaChart={newData.isKoreaChart}
-              musicName={chart.SONGNAME}
-              artistName={chart.ARTISTLIST[0].ARTISTNAME}
-              albumCover={chart.ALBUMIMG}
-              index={index}
-            />
-          ))}
-        </ul>
-      </div>
+    <div className="mx-auto flex w-full max-w-3xl flex-col items-center">
+      <h1 className="mb-3 text-lg font-medium">국내 TOP 100</h1>
+      <ul className="w-full space-y-2">
+        {newData.list.map((chart, index) => (
+          <Top100ChartList
+            key={chart.SONGID}
+            isKoreaChart={newData.isKoreaChart}
+            musicName={chart.SONGNAME}
+            artistName={chart.ARTISTLIST[0].ARTISTNAME}
+            albumCover={chart.ALBUMIMG}
+            index={index}
+          />
+        ))}
+      </ul>
     </div>
   )
 }

@@ -20,7 +20,7 @@ export const usePlaylistMusicUpsert = (albumCover: string) => {
         .from('music')
         .select('*')
         .eq('spotify_id', musicData.id)
-        .single()
+        .maybeSingle()
 
       if (fetchError && fetchError.code !== 'PGRST116') {
         console.error('Error fetching music:', fetchError)
