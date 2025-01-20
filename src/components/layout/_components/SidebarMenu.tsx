@@ -1,16 +1,15 @@
-import album from '@/assets/images/album.svg'
 import chartBarVertical from '@/assets/images/chartBarVertical.svg'
 import chats from '@/assets/images/chats.svg'
 import headphone from '@/assets/images/headphone.svg'
+import home from '@/assets/images/home.svg'
 import Image from 'next/image'
 import { BsSpotify } from 'react-icons/bs'
 
 const LINKS = [
-  // TODO : 최신 음반 link 변경
   {
-    to: '',
-    text: '최신 음반',
-    icon: <Image src={album} width={24} height={24} alt="album" />,
+    to: '/',
+    text: '홈',
+    icon: <Image src={home} width={24} height={24} alt="album" />,
   },
   {
     to: '/koreaTop100',
