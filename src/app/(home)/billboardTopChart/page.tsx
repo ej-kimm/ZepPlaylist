@@ -18,7 +18,6 @@ const billboardTop100 = async () => {
   return (
     <div>
       <div className="mx-auto flex w-full max-w-3xl flex-col items-center">
-        <h1 className="mb-3 text-lg font-medium">빌보드 TOP 100</h1>
         <ul className="w-full space-y-2">
           {newData.list.map((chart, index) => (
             <Top100ChartList

@@ -7,7 +7,6 @@ import {
   updatePlaylist,
 } from '@/api/playlist/actions'
 import PlaylistBottomSheet from '@/app/playlist/_components/playlistBottomSheet'
-import Hamburger from '@/components/layout/Hamburger'
 import { userStore } from '@/store/userSlice'
 import { PlaylistRow } from '@/types/playlist'
 import { useRouter } from 'next/navigation'
@@ -158,22 +157,22 @@ export default function PlaylistComponent({
 
   return (
     <div className="mx-auto h-[812px] max-w-[375px] bg-white">
-      <Hamburger title="플레이리스트" />
-
       {isLoading ? (
         <p className="mt-6 text-center text-gray-500">데이터 로딩 중...</p>
       ) : isLogin ? (
         <>
-          <h2 className="title-2 mt-6 font-bold">내가 만든 플레이리스트</h2>
+          <h2 className="title-2 flex h-[40px] items-center justify-start font-pretendard">
+            내가 만든 플레이리스트
+          </h2>
 
-          <ul className="mt-4 space-y-4 p-4">
+          <ul className="mt-4 space-y-4">
             <li
               className="flex cursor-pointer items-center justify-between rounded-lg border border-gray-200 bg-white px-6 py-3 shadow-sm"
               onClick={() => openModal('add')}
             >
               <div className="flex items-center space-x-4">
                 <div className="flex h-[44px] w-[44px] items-center justify-center rounded-lg bg-[#DFDFDF]">
-                  <span className="text-lg font-bold text-white">+</span>
+                  <span className="font-pretendard text-lg text-white">+</span>
                 </div>
                 <p className="caption-1 font-pretendard">
                   새 플레이리스트 만들기
