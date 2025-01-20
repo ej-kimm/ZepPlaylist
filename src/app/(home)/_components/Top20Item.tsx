@@ -28,7 +28,11 @@ const Top20Item: React.FC<Top20ItemProps> = ({
   const { upsertMusic } = usePlaylistMusicUpsert(albumCover)
 
   const handlePlayBtn = async () => {
-    const musicData = await searchSpotifyId(musicName, artistName)
+    // 데이터 일치화를 위해 ()와 안의 텍스트 제거
+    const newMusicName = musicName.replace(/\s*\(.*?\)\s*/g, '')
+    const newArtistiName = artistName.replace(/\s*\(.*?\)\s*/g, '')
+
+    const musicData = await searchSpotifyId(newMusicName, newArtistiName)
     await upsertMusic(musicData!)
     const songId = musicData!.id
     if (!isPlayerOpen) setPlayerOpen() // 페이지 방문 후, 첫 곡 재생이면 플레이어바 보여줌

@@ -81,7 +81,12 @@ const Top100ChartList = ({
   const { upsertMusic } = usePlaylistMusicUpsert(albumCover)
 
   const handlePlayBtn = async () => {
-    const musicData = await searchSpotifyId(musicName, artistName)
+    // 데이터 일치화를 위해 ()와 안의 텍스트 제거
+    const newMusicName = musicName.replace(/\s*\(.*?\)\s*/g, '')
+    const newArtistiName = artistName.replace(/\s*\(.*?\)\s*/g, '')
+
+    const musicData = await searchSpotifyId(newMusicName, newArtistiName)
+
     await upsertMusic(musicData!)
     const songId = musicData!.id
     if (!isPlayerOpen) setPlayerOpen() // 페이지 방문 후, 첫 곡 재생이면 플레이어바 보여줌
@@ -116,7 +121,6 @@ const Top100ChartList = ({
           <p className="truncate text-xs text-gray-500">{artistName}</p>
         </div>
       </div>
-      {/* <div className="sm:self-center"> */}
       <MoreOptionsButton
         musicName={musicName}
         artistName={artistName}
