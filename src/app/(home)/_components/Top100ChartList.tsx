@@ -116,16 +116,16 @@ const Top100ChartList = ({
           <p className="truncate text-xs text-gray-500">{artistName}</p>
         </div>
       </div>
-      <div className="sm:self-center">
-        <MoreOptionsButton
-          musicName={musicName}
-          artistName={artistName}
-          albumCover={albumCover}
-          user={user}
-          onFetchMusicData={() => handleMoreOptionBtn(musicName, artistName)}
-          playlists={playlists}
-        />
-      </div>
+      {/* <div className="sm:self-center"> */}
+      <MoreOptionsButton
+        musicName={musicName}
+        artistName={artistName}
+        albumCover={albumCover}
+        user={user}
+        onFetchMusicData={() => handleMoreOptionBtn(musicName, artistName)}
+        playlists={playlists}
+      />
+      {/* </div> */}
     </li>
   )
 }

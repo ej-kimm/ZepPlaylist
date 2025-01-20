@@ -34,7 +34,7 @@ const SearchResultItem = ({ item }: SearchResultProps) => {
   return (
     <li
       onClick={() => handlePlayBtn(item.id, item.name, item.artists[0].name)}
-      className="flex items-center space-x-4 rounded-lg p-3 transition-colors"
+      className="flex items-center space-x-4 rounded-lg py-2 transition-colors"
     >
       <div className="relative flex-shrink-0">
         <Image
