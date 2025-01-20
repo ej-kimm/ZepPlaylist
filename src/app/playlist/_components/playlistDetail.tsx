@@ -131,7 +131,6 @@ export default function PlaylistDetailsComponent({
         <div className="font-pretendard text-sm text-gray-600">
           <div className="flex space-x-2">
             <p>곡 수: {song_count}곡</p>
-            {/* <p>재생시간: {total_play_time}분</p> */}
           </div>
           <p className="mt-1">
             업데이트: {differenceInDays(new Date(), new Date(last_updated))}일
