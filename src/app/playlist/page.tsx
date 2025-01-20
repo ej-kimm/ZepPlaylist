@@ -5,7 +5,7 @@ export default async function PlaylistPage() {
   const playlists = await fetchPlaylists()
 
   return (
-    <div className="p-4">
+    <div>
       <PlaylistComponent initialPlaylists={playlists} />
     </div>
   )
