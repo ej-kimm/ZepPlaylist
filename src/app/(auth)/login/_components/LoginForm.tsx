@@ -98,7 +98,7 @@ const LoginForm = () => {
       />
       <PrimaryButton
         type="submit"
-        className="button-2 mt-[52px] h-[39px] w-full rounded-full border-primary"
+        className="button-2 mt-[52px] h-[39px] w-full rounded-full border-primary text-white"
       >
         로그인
       </PrimaryButton>
