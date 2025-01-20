@@ -26,7 +26,13 @@ const Hamburger = () => {
           className={`md:hidden ${pathname !== '/' ? 'visible' : 'invisible'}`}
           onClick={isPlayerModalOpen ? togglePlayerModal : handleBack}
         >
-          <Image src={leftArrow} width={24} height={24} alt="leftArrow" />
+          <Image
+            src={leftArrow}
+            width={24}
+            height={24}
+            alt="leftArrow"
+            className={isPlayerModalOpen ? '-rotate-90' : ''}
+          />
         </button>
         <button className="block md:hidden" onClick={toggleMenu}>
           <Image src={hamburger} width={24} height={24} alt="hamburger" />
