@@ -42,7 +42,7 @@ const Top20Item: React.FC<Top20ItemProps> = ({
   return (
     <li
       onClick={() => handlePlayBtn()}
-      className="flex h-16 w-64 flex-shrink-0 items-center space-x-3 rounded-lg p-2 shadow-xl transition-colors"
+      className="flex h-16 w-64 flex-shrink-0 items-center space-x-3 rounded-lg p-2 shadow-[inset_0_4px_4px_rgba(255,255,255,0.25),0_4px_10px_rgba(0,0,0,0.04)] transition-colors"
     >
       <div className="relative flex-shrink-0">
         <Image
