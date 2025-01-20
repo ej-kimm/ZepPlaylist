@@ -27,18 +27,13 @@ const Sidebar = ({ isOpen, toggleMenu }: SidebarProps) => {
 
   return (
     <aside
-      className={`fixed right-0 top-0 z-sidebar h-screen w-full bg-white px-6 pt-[56px] transition duration-300 ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
+      className={`absolute right-0 top-full z-header h-screen w-full bg-white px-6 transition duration-300 ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
     >
-      <div className="fixed right-0 top-0">
-        {/* 임시 닫기 버튼 */}
-        <button onClick={toggleMenu}>X</button>
-      </div>
-
-      <header className="mb-[39px] px-[13px]">
+      <header className="flex h-[140px] items-center justify-center px-[13px]">
         <ProfileHeader toggleMenu={toggleMenu} />
       </header>
 
-      <nav className="mb-14">
+      <nav className="mb-[7px]">
         <h2 className="title-1 mb-4">음악 감상</h2>
         <SidebarMenu />
       </nav>

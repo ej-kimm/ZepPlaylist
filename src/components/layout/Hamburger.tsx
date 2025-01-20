@@ -17,30 +17,31 @@ const Hamburger = () => {
     setIsHamburgerOpen((prev) => !prev)
   }, [])
 
-  const handleBack = () => router.back()
+  const handleBack = () => {
+    isPlayerModalOpen ? togglePlayerModal() : router.back()
+    isHamburgerOpen && toggleMenu()
+  }
 
   return (
-    <>
-      <div className="fixed left-0 top-0 z-header flex h-navBar w-full items-center justify-between bg-white px-6">
-        <button
-          className={`md:hidden ${pathname !== '/' ? 'visible' : 'invisible'}`}
-          onClick={isPlayerModalOpen ? togglePlayerModal : handleBack}
-        >
-          <Image
-            src={leftArrow}
-            width={24}
-            height={24}
-            alt="leftArrow"
-            className={isPlayerModalOpen ? '-rotate-90' : ''}
-          />
-        </button>
-        <button className="block md:hidden" onClick={toggleMenu}>
-          <Image src={hamburger} width={24} height={24} alt="hamburger" />
-        </button>
-      </div>
+    <div className="fixed left-0 top-0 z-header flex h-navBar w-full items-center justify-between bg-white px-6">
+      <button
+        className={`md:hidden ${pathname !== '/' || isHamburgerOpen ? 'visible' : 'invisible'}`}
+        onClick={handleBack}
+      >
+        <Image
+          src={leftArrow}
+          width={24}
+          height={24}
+          alt="leftArrow"
+          className={`${isPlayerModalOpen ? '-rotate-90' : ''} ${isHamburgerOpen ? 'rotate-180' : ''}`}
+        />
+      </button>
+      <button className="block md:hidden" onClick={toggleMenu}>
+        <Image src={hamburger} width={24} height={24} alt="hamburger" />
+      </button>
 
       <Sidebar isOpen={isHamburgerOpen} toggleMenu={toggleMenu} />
-    </>
+    </div>
   )
 }
 
