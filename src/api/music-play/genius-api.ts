@@ -1,5 +1,3 @@
-'use server'
-
 import { Tables } from '@/types/supabase'
 
 const getAccessToken = async (): Promise<string> => {
