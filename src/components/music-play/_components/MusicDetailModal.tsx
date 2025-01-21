@@ -8,7 +8,6 @@ import { Tables } from '@/types/supabase'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import AlbumCover from './AlbumCover'
-import Lyrics from './Lyrics'
 import PlayerControls from './PlayerControls'
 import ProgressBar from './ProgressBar'
 
@@ -87,11 +86,11 @@ export default function MusicDetailModal({
           </button>
         </div>
         {!isFullLyrics && <AlbumCover musicDetail={musicDetail} />}
-        <Lyrics
+        {/* <Lyrics
           lyrics={lyrics}
           isFullLyrics={isFullLyrics}
           onClickLyrics={handleLClickLyrics}
-        />
+        /> */}
         <ProgressBar
           url={url}
           playerState={{ ready, played, duration }}
