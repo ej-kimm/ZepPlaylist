@@ -8,10 +8,10 @@ export async function middleware(request: NextRequest) {
     data: { user },
     error,
   } = await supabase.auth.getUser()
-  const { pathname } = new URL(request.url)
-  if (user?.id && (pathname === '/login' || pathname === '/sign-up')) {
-    return NextResponse.redirect(new URL('/', request.url))
-  }
+  // const { pathname } = new URL(request.url)
+  // if (user?.id && (pathname === '/login' || pathname === '/sign-up')) {
+  //   return NextResponse.redirect(new URL('/', request.url))
+  // }
   if (!user?.id) {
     const loginUrl = new URL('http://localhost:3000/login', request.url)
     if (error) {
@@ -23,5 +23,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/my-page', '/login', 'sign-up'],
+  matcher: ['/my-page'],
 }
