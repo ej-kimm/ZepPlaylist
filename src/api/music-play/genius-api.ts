@@ -112,9 +112,14 @@ const getLyricsUrl = async (
     return lyricsUrl
   } catch (error) {
     if (error instanceof Error) {
-      console.error('An unknown error occurred while fetching lyrics URL.')
-      console.error(error)
-      throw new Error('An unknown error occurred while fetching lyrics URL.')
+      console.error(
+        'An unknown error occurred while fetching lyrics URL.',
+        error,
+      )
+      throw new Error(
+        'An unknown error occurred while fetching lyrics URL.',
+        error,
+      )
     }
     throw new Error('An unknown error occurred while fetching lyrics URL.')
   }
