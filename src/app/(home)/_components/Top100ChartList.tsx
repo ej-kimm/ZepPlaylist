@@ -47,14 +47,20 @@ const Top100ChartList = ({
   const handlePlayBtn = async () => {
     // 데이터 일치화를 위해 ()와 안의 텍스트 제거
 
-    const newMusicName = musicName.replace(/\s*\(.*?\)\s*/g, '')
-    const newArtistiName = artistName.replace(/\s*\(.*?\)\s*/g, '')
+    const newMusicName = musicName.replace(/\s*\(.*?\)\s*/g, '').trim()
+    const newArtistiName = artistName.replace(/\s*\(.*?\)\s*/g, '').trim()
 
     const musicData = await searchSpotifyId(newMusicName, newArtistiName)
+    await handleMoreOptionBtn(
+      musicData!.id,
+      musicData!.title,
+      musicData!.artist,
+    )
 
     await upsertMusic(musicData!)
+
     const songId = musicData!.id
-    await handleMoreOptionBtn('_', musicName, artistName)
+
     if (!isPlayerOpen) setPlayerOpen() // 페이지 방문 후, 첫 곡 재생이면 플레이어바 보여줌
     setTrackIds(songId)
     togglePlay()
