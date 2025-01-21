@@ -28,7 +28,6 @@ type MusicDetailModalProps = {
 export default function MusicDetailModal({
   musicDetail,
   url,
-  lyrics,
   playerState: { played, duration, ready },
   onSeek,
 }: MusicDetailModalProps) {
@@ -50,8 +49,6 @@ export default function MusicDetailModal({
   }
 
   const handleSave = async () => {}
-
-  const handleLClickLyrics = () => setIsFullLyrics((prev) => !prev)
 
   useEffect(() => {
     // 로그인 한 유저
