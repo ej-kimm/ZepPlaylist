@@ -41,6 +41,8 @@ const KeywordCarouselWrapper = ({
     }
   }
 
+  console.log('filteredPlaylists', filteredPlaylists)
+
   return (
     <div>
       <h1 className="title-1 mt-4">플레이리스트</h1>
