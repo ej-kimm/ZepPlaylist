@@ -8,6 +8,7 @@ import { Tables } from '@/types/supabase'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import AlbumCover from './AlbumCover'
+import Lyrics from './Lyrics'
 import PlayerControls from './PlayerControls'
 import ProgressBar from './ProgressBar'
 
@@ -28,6 +29,7 @@ type MusicDetailModalProps = {
 export default function MusicDetailModal({
   musicDetail,
   url,
+  lyrics,
   playerState: { played, duration, ready },
   onSeek,
 }: MusicDetailModalProps) {
@@ -37,7 +39,7 @@ export default function MusicDetailModal({
   const { isPlayerModalOpen } = useMusicPlayerStore()
   const { songLike, isPending, updateLike } = useSongLike({ user_id })
 
-  const [isFullLyrics] = useState<boolean>(false)
+  const [isFullLyrics, setIsFullLyrics] = useState<boolean>(false)
   const [isLiked, setIsLiked] = useState<boolean>(false)
 
   const handleLike = async () => {
@@ -49,6 +51,8 @@ export default function MusicDetailModal({
   }
 
   const handleSave = async () => {}
+
+  const handleLClickLyrics = () => setIsFullLyrics((prev) => !prev)
 
   useEffect(() => {
     // 로그인 한 유저
@@ -83,11 +87,11 @@ export default function MusicDetailModal({
           </button>
         </div>
         {!isFullLyrics && <AlbumCover musicDetail={musicDetail} />}
-        {/* <Lyrics
+        <Lyrics
           lyrics={lyrics}
           isFullLyrics={isFullLyrics}
           onClickLyrics={handleLClickLyrics}
-        /> */}
+        />
         <ProgressBar
           url={url}
           playerState={{ ready, played, duration }}
