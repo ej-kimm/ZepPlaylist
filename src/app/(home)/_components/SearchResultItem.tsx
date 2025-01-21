@@ -1,7 +1,6 @@
 'use client'
 import MoreOptionsButton from '@/components/common/MoreOptionsButton'
 import { usePlaylistMusicUpsert } from '@/hooks/usePlaylistMusicUpsert'
-import usePlaylistOperations from '@/hooks/usePlaylistOperations'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import { userStore } from '@/store/userSlice'
 import Image from 'next/image'
@@ -17,15 +16,17 @@ const SearchResultItem = ({ item }: SearchResultProps) => {
 
   const { upsertMusic } = usePlaylistMusicUpsert(item.album.images[0].url)
 
-  const { playlists, handleMoreOptionBtn } = usePlaylistOperations()
-
   const handlePlayBtn = async (
     songId: string,
     musicName: string,
     artist: string,
   ) => {
-    const musicData = await handleMoreOptionBtn(songId, musicName, artist)
-    await upsertMusic(musicData)
+    const newMusicData = {
+      id: songId,
+      title: musicName,
+      artist: artist,
+    }
+    await upsertMusic(newMusicData)
     if (!isPlayerOpen) setPlayerOpen() // 페이지 방문 후, 첫 곡 재생이면 플레이어바 보여줌
     setTrackIds(songId)
     togglePlay()
@@ -57,10 +58,6 @@ const SearchResultItem = ({ item }: SearchResultProps) => {
         artistName={item.artists[0].name}
         albumCover={item.album.images[0].url}
         user={user}
-        onFetchMusicData={() =>
-          handleMoreOptionBtn(item.id, item.name, item.artists[0].name)
-        }
-        playlists={playlists}
       />
     </li>
   )
