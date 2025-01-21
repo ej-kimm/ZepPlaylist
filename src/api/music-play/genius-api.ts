@@ -1,8 +1,8 @@
 import { Tables } from '@/types/supabase'
 
 const getAccessToken = async (): Promise<string> => {
-  const clientId = process.env.GENIUS_CLIENT_ID
-  const clientSecret = process.env.GENIUS_CLIENT_SECRET
+  const clientId = process.env.NEXT_PUBLIC_GENIUS_CLIENT_ID
+  const clientSecret = process.env.NEXT_PUBLIC_GENIUS_CLIENT_SECRET
 
   if (!clientId || !clientSecret) {
     console.error(
@@ -30,6 +30,7 @@ const getAccessToken = async (): Promise<string> => {
     }
 
     const data = await response.json()
+    console.log('accessToken Data => ', data)
     return data.access_token
   } catch (error) {
     if (error instanceof Error) {
@@ -71,6 +72,7 @@ const getSongId = async ({
     }
 
     const data = await response.json()
+    console.log('SongId Data => ', data)
     const searchResults = data.response.hits
 
     if (searchResults.length === 0) {
@@ -107,6 +109,7 @@ const getLyricsUrl = async (
 
     const songDetails = await response.json()
     const lyricsUrl = songDetails.response.song.url
+    console.log('lyrics URL Data => ', lyricsUrl)
     return lyricsUrl
   } catch (error) {
     if (error instanceof Error) {
@@ -149,14 +152,15 @@ const crawlLyrics = async (lyricsUrl: string): Promise<string> => {
         // .replace(/^<br\s*\/?>|<br\s*\/?>$/g, '') // 맨 처음과 맨 끝의 <br> 태그 제거 맨첫줄 띄울지?
         .replace(/^(<br\s*\/?>)+|(<br\s*\/?>)+$/g, '') // 맨 처음과 맨 끝에 있는 모든 <br> 태그 제거 맨첫줄 안띄울지
         .trim() // 양쪽 공백 제거
+      console.log('crawLyrics => ', cleanedLyrics)
       return cleanedLyrics
     } else {
       throw new Error('Lyrics container not found in the provided HTML.')
     }
   } catch (error) {
     if (error instanceof Error) {
-      console.error('An unknown error occurred while crawling lyrics.')
-      throw new Error('An unknown error occurred while crawling lyrics.')
+      console.error('An unknown error occurred while crawling lyrics.', error)
+      throw new Error('An unknown error occurred while crawling lyrics.', error)
     }
     throw new Error('An unknown error occurred while crawling lyrics.')
   }
