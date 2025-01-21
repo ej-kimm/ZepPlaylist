@@ -183,7 +183,7 @@ export default function PlaylistComponent({
   }
 
   return (
-    <div className="mx-auto h-[812px] max-w-[375px] bg-white">
+    <div className="mx-auto h-full max-w-[375px] bg-white">
       {isLoading ? (
         <p className="mt-6 text-center text-gray-500">데이터 로딩 중...</p>
       ) : isLogin ? (
@@ -194,51 +194,55 @@ export default function PlaylistComponent({
 
           <ul className="mt-4 space-y-4">
             <li
-              className="flex cursor-pointer items-center justify-between rounded-lg border border-gray-200 bg-white px-6 py-3 shadow-sm"
+              className="flex cursor-pointer items-center justify-start space-x-4"
               onClick={() => openModal('add')}
             >
-              <div className="flex items-center space-x-4">
-                <div className="flex h-[44px] w-[44px] items-center justify-center rounded-lg bg-[#DFDFDF]">
-                  <span className="font-pretendard text-lg text-white">+</span>
-                </div>
-                <p className="caption-1 font-pretendard">
-                  새 플레이리스트 만들기
-                </p>
+              <div className="flex h-[44px] w-[44px] items-center justify-center rounded-lg bg-[#DFDFDF]">
+                <span className="font-pretendard text-lg text-white">+</span>
               </div>
+              <p className="caption-1 font-pretendard">
+                새 플레이리스트 만들기
+              </p>
             </li>
 
-            {latestLikedSongCover && (
-              <li
-                className="flex cursor-pointer items-center justify-between rounded-lg border border-gray-200 bg-white px-6 py-3 shadow-sm"
-                onClick={handleLikesClick}
-              >
-                <div className="flex items-center space-x-4">
-                  <div
-                    className="h-[44px] w-[44px] rounded-lg bg-cover bg-center"
-                    style={{ backgroundImage: `url(${latestLikedSongCover})` }}
-                  ></div>
-                  <div>
-                    <p className="caption-1 font-pretendard">
-                      좋아요 표시한 곡
-                    </p>
-                  </div>
-                </div>
-              </li>
-            )}
+            <li
+              className="flex cursor-pointer items-center justify-start space-x-4"
+              onClick={handleLikesClick}
+            >
+              <div
+                className="relative h-[44px] w-[44px] rounded-lg bg-cover bg-center"
+                style={{ backgroundImage: `url(${latestLikedSongCover})` }}
+              ></div>
+              <p className="caption-1 font-pretendard">좋아요 표시한 곡</p>
+            </li>
 
             {playlists.map((playlist) => (
               <li
                 key={playlist.id}
-                className="flex items-center justify-between rounded-lg border border-gray-200 bg-white px-6 py-3 shadow-sm"
+                className="flex items-center justify-between"
                 onClick={() => handlePlaylistClick(playlist.id)}
               >
                 <div className="flex items-center space-x-4">
                   <div
-                    className="h-[44px] w-[44px] rounded-lg bg-cover bg-center"
+                    className="relative h-[44px] w-[44px] rounded-lg bg-cover bg-center"
                     style={{
                       backgroundImage: `url(${playlist.latest_song_cover || '/default-cover.jpg'})`,
                     }}
-                  ></div>
+                  >
+                    {playlist.is_public === false && (
+                      <div className="absolute right-0 top-0 flex h-[13.091px] w-[13.091px] items-center justify-center rounded-full bg-black bg-opacity-40">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="8.727"
+                          height="8.727"
+                          viewBox="0 0 24 24"
+                          fill="white"
+                        >
+                          <path d="M12 1C9.24 1 7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v9c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-9c0-1.1-.9-2-2-2h-1V6c0-2.76-2.24-5-5-5zm-5 8V6c0-2.76 2.24-5 5-5s5 2.24 5 5v3H7zm12 3H5v9h14v-9zm-7 2c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2z" />
+                        </svg>
+                      </div>
+                    )}
+                  </div>
                   <div>
                     <p className="caption-1 font-pretendard">{playlist.name}</p>
                     <p className="text-sm text-gray-500">
