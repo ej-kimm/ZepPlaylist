@@ -70,7 +70,6 @@ export const fetchGlobalChart = async (): Promise<BillboradCharts> => {
 export const fetchSearchTracks = async (searchParams: string) => {
   const token = await fetchSpotifyToken()
 
-  console.log(typeof searchParams)
   try {
     const res = await fetch(
       `https://api.spotify.com/v1/search?q=${searchParams}&type=track&limit=50`,

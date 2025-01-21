@@ -23,7 +23,6 @@ const KeywordCarouselWrapper = ({
   const [selectedKeywords, setSelectedKeywords] = useState<string[]>([])
   const [filteredPlaylists, setFilteredPlaylists] =
     useState<Playlist[]>(allPlaylists)
-  console.log(filteredPlaylists)
 
   const handleToggleKeyword = (keyword: string) => {
     const updatedKeywords = selectedKeywords.includes(keyword)
