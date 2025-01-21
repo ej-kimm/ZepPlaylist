@@ -42,7 +42,7 @@ export default function PlaylistBottomSheet({
       maxWidth="100%"
     >
       <div className="flex w-full flex-col items-start gap-[36px] rounded-t-[36px] bg-white py-10 pb-4">
-        <div className="w-full px-6">
+        <div className="w-full">
           <h2 className="mb-4 text-lg font-bold text-[#4a4a4a]">
             {modalType === 'add' ? '플레이리스트 추가' : '플레이리스트 수정'}
           </h2>
@@ -57,17 +57,17 @@ export default function PlaylistBottomSheet({
             placeholder="플레이리스트 설명"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            className="mb-4 w-full border-b border-gray-300 bg-transparent p-0"
+            className="mb-4 w-full border-b border-gray-300 bg-transparent p-2"
           ></textarea>
         </div>
-        <div className="mb-4 w-full px-6">
+        <div className="mb-4 w-full">
           <p className="caption-1 text-black">키워드</p>
           <KeywordCarousel
             selectedKeywords={selectedKeywords}
             onToggleKeyword={toggleKeyword}
           />
         </div>
-        <div className="flex w-full items-center justify-between px-6">
+        <div className="flex w-full items-center justify-between">
           <p className="caption-1 text-black">공개설정</p>
           <label className="relative inline-flex cursor-pointer items-center">
             <input

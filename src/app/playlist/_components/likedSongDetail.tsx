@@ -65,7 +65,7 @@ export default function LikedSongsPage({
 
   return (
     <div
-      className="mx-auto h-[812px] w-[375px]"
+      className="mx-auto h-full w-full"
       style={{
         display: 'flex',
         flexDirection: 'column',
@@ -76,20 +76,35 @@ export default function LikedSongsPage({
         <h1 className="text-xl font-bold">좋아요 한 플레이리스트</h1>
         <button
           onClick={handlePlayAll}
-          className="relative flex h-12 w-12 items-center justify-center rounded-full bg-purple-500"
+          className="flex items-center justify-center rounded-full"
+          style={{
+            width: '48px',
+            height: '48px',
+            padding: '11px',
+            borderRadius: '24px',
+            background: '#9032E8',
+          }}
         >
-          <Image src={imPlay} alt="전체 재생" width={24} height={24} />
+          <Image
+            src={imPlay}
+            alt="전체 재생"
+            width={24}
+            height={24}
+            style={{ flexShrink: 0 }}
+          />
         </button>
       </header>
       <ul className="space-y-2">
         {likedSongs.map((song, index) => (
           <li
             key={song.id}
-            className="flex items-center justify-between rounded-lg border bg-white shadow-sm"
+            className="flex items-center justify-between"
             style={{
               display: 'flex',
-              padding: '8px 24px',
+              padding: '8px 0px',
               alignItems: 'center',
+              gap: '16px',
+              alignSelf: 'stretch',
             }}
           >
             <div
@@ -118,7 +133,6 @@ export default function LikedSongsPage({
                   setShowDropdown((prev) => (prev === song.id ? null : song.id))
                 }}
                 className="text-xl text-gray-500"
-                style={{ marginLeft: '16px' }}
               >
                 <FaEllipsisH />
               </button>
