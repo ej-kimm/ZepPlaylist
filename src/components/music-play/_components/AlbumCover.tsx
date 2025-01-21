@@ -36,7 +36,7 @@ export default function AlbumCover({ musicDetail }: AlbumCoverProps) {
             width={266}
             height={266}
             className="rounded object-cover"
-            style={{ width: '266px', height: 'auto' }}
+            style={{ width: '266px', height: '266px' }}
           />
         </div>
         <div className="rotate-y-180 absolute left-0 top-0 h-full w-full [backface-visibility:hidden]">
@@ -46,7 +46,7 @@ export default function AlbumCover({ musicDetail }: AlbumCoverProps) {
             width={266}
             height={266}
             className="rounded object-cover blur-[10px]"
-            style={{ width: '266px', height: 'auto' }}
+            style={{ width: '266px', height: '266px' }}
           />
           <div className="absolute left-0 top-0 flex h-full w-full flex-col items-center justify-center gap-6">
             <p className="caption-1 z-10 text-center text-white">{title}</p>
