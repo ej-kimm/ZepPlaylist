@@ -1,5 +1,4 @@
 'use server'
-
 import { Tables } from '@/types/supabase'
 
 const getAccessToken = async (): Promise<string> => {
@@ -112,8 +111,14 @@ const getLyricsUrl = async (
     return lyricsUrl
   } catch (error) {
     if (error instanceof Error) {
-      console.error('An unknown error occurred while fetching lyrics URL.')
-      throw new Error('An unknown error occurred while fetching lyrics URL.')
+      console.error(
+        'An unknown error occurred while fetching lyrics URL.',
+        error,
+      )
+      throw new Error(
+        'An unknown error occurred while fetching lyrics URL.',
+        error,
+      )
     }
     throw new Error('An unknown error occurred while fetching lyrics URL.')
   }
@@ -151,8 +156,8 @@ const crawlLyrics = async (lyricsUrl: string): Promise<string> => {
     }
   } catch (error) {
     if (error instanceof Error) {
-      console.error('An unknown error occurred while crawling lyrics.')
-      throw new Error('An unknown error occurred while crawling lyrics.')
+      console.error('An unknown error occurred while crawling lyrics.', error)
+      throw new Error('An unknown error occurred while crawling lyrics.', error)
     }
     throw new Error('An unknown error occurred while crawling lyrics.')
   }
