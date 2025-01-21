@@ -70,6 +70,7 @@ export const getCommunityComments = async (
 export const getCommunityDetail = async (
   playlistId: string,
   cookies: string,
+  userId: string,
 ) => {
   const supabase = createServerSupabaseClient(cookies)
 
@@ -82,7 +83,7 @@ export const getCommunityDetail = async (
       playlist_like (
         user_id
       ),
-      users:user_id (
+      users(
         profile_image,
         nickname
       )
@@ -96,7 +97,10 @@ export const getCommunityDetail = async (
     throw new Error('플레이리스트 정보를 가져오는 데 실패했습니다.')
   }
 
-  const likeCount = playlistData.playlist_like.length
+  const isLiked = playlistData.playlist_like.some(
+    (like: { user_id: string }) => like.user_id === userId,
+  )
+
   const user = playlistData.users || {
     profile_image: null,
     nickname: 'Anonymous',
@@ -107,12 +111,55 @@ export const getCommunityDetail = async (
 
   return {
     songs,
-    songCount: songs.length,
     comments,
     playlistName: playlistData.name,
     description: playlistData.description,
-    likeCount,
     profileImage: user.profile_image,
     nickname: user.nickname,
+    isLiked,
+  }
+}
+
+export const togglePlaylistLike = async (
+  playlistId: string,
+  userId: string,
+) => {
+  const supabase = createClient<Database>(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+  )
+
+  const { data: existingLike, error: fetchError } = await supabase
+    .from('playlist_like')
+    .select('*')
+    .eq('playlist_id', playlistId)
+    .eq('user_id', userId)
+    .single()
+
+  if (fetchError && fetchError.code !== 'PGRST116') {
+    console.error('Error fetching like:', fetchError.message)
+    throw new Error(fetchError.message)
+  }
+
+  if (existingLike) {
+    const { error: deleteError } = await supabase
+      .from('playlist_like')
+      .delete()
+      .eq('playlist_id', playlistId)
+      .eq('user_id', userId)
+
+    if (deleteError) {
+      console.error('Error removing like:', deleteError.message)
+      throw new Error(deleteError.message)
+    }
+  } else {
+    const { error: insertError } = await supabase
+      .from('playlist_like')
+      .insert({ playlist_id: playlistId, user_id: userId })
+
+    if (insertError) {
+      console.error('Error adding like:', insertError.message)
+      throw new Error(insertError.message)
+    }
   }
 }

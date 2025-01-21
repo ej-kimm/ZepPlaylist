@@ -1,6 +1,7 @@
 'use client'
 import usePlayer from '@/hooks/usePlayer'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
+import { usePathname } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import ReactPlayer from 'react-player'
 import MusicDetailModal from './_components/MusicDetailModal'
@@ -10,6 +11,7 @@ import PlayerSkeleton from './_components/PlayerSkeleton'
 import ProgressBar from './_components/ProgressBar'
 
 const MusicPlayer = () => {
+  const pathname = usePathname()
   const { isPlayerOpen, isPlaying, isPlayerModalOpen, play, stop } =
     useMusicPlayerStore()
   const { musicDetail, url, lyrics, isPending } = usePlayer()
@@ -36,7 +38,13 @@ const MusicPlayer = () => {
     }
   }, [isPlayerOpen, play])
 
-  if (!isPlayerOpen) return null // 초기에 노래를 재생하지 않으면 플레이어바 숨김
+  // TODO : community페이지에선 플레이어바 안보이도록 임시
+  if (
+    !isPlayerOpen ||
+    pathname.startsWith('/community/') ||
+    pathname === '/community'
+  )
+    return null // 초기에 노래를 재생하지 않으면 플레이어바 숨김
   if (!url || isPending) {
     return !isPlayerModalOpen && <PlayerSkeleton />
   }

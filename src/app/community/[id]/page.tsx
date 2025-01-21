@@ -8,14 +8,28 @@ const CommunityDetailPage = async ({
   params: { id: string }
 }): Promise<JSX.Element> => {
   const cookies = headers().get('cookie') || ''
-  const { songs, comments } = await getCommunityDetail(params.id, cookies)
+  const userId = headers().get('user-id') || ''
+  const {
+    songs,
+    comments,
+    playlistName,
+    description,
+    profileImage,
+    nickname,
+    isLiked,
+  } = await getCommunityDetail(params.id, cookies, userId)
 
   return (
     <div>
       <CommentSection
+        nickname={nickname}
+        profileImage={profileImage}
+        description={description}
+        playlistName={playlistName}
         songs={songs}
         comments={comments}
         playlistId={params.id}
+        isLiked={isLiked} // 좋아요 상태 전달
       />
     </div>
   )

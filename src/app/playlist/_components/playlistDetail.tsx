@@ -151,7 +151,7 @@ export default function PlaylistDetailsComponent({
         {songs.map((song) => (
           <li
             key={song.spotify_id}
-            className="relative flex items-center justify-between rounded-lg border bg-white p-4"
+            className="relative flex items-center justify-between bg-white"
           >
             <div className="flex items-center">
               <div
