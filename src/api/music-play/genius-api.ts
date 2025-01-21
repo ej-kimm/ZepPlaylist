@@ -1,51 +1,6 @@
 'use server'
 import { Tables } from '@/types/supabase'
 
-const getAccessToken = async (): Promise<string> => {
-  const clientId = process.env.GENIUS_CLIENT_ID
-  const clientSecret = process.env.GENIUS_CLIENT_SECRET
-
-  if (!clientId || !clientSecret) {
-    console.error(
-      'Environment variables GENIUS_CLIENT_ID or GENIUS_CLIENT_SECRET are missing.',
-    )
-    throw new Error('Missing required environment variables.')
-  }
-
-  try {
-    const response = await fetch('https://api.genius.com/oauth/token', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        Authorization: `Basic ${btoa(`${clientId}:${clientSecret}`)}`,
-      },
-      body: new URLSearchParams({
-        grant_type: 'client_credentials',
-      }),
-    })
-
-    if (!response.ok) {
-      throw new Error(
-        `HTTP Error ${response.status}: Unable to fetch access token.`,
-      )
-    }
-
-    const data = await response.json()
-    return data.access_token
-  } catch (error) {
-    if (error instanceof Error) {
-      console.error(
-        'Unexpected error while fetching access token:',
-        error.message,
-      )
-      throw new Error(
-        `An unexpected error occurred: ${error.message}. Please check the logs.`,
-      )
-    }
-    throw new Error(`An unexpected error occurred: Please check the logs.`)
-  }
-}
-
 const getSongId = async ({
   artist,
   title,
@@ -166,16 +121,17 @@ const crawlLyrics = async (lyricsUrl: string): Promise<string> => {
 export const getSongLyrics = async ({
   artist,
   title,
+  accessToken,
 }: {
   artist: Tables<'music'>['artist']
   title: Tables<'music'>['title']
+  accessToken: string
 }): Promise<string | null> => {
-  const authToken = await getAccessToken()
-  const songId = await getSongId({ artist, title, authToken })
+  const songId = await getSongId({ artist, title, authToken: accessToken })
   if (!songId) {
     return null
   }
-  const lyricsUrl = await getLyricsUrl(songId, authToken)
+  const lyricsUrl = await getLyricsUrl(songId, accessToken)
   const lyrics = await crawlLyrics(lyricsUrl)
 
   return lyrics

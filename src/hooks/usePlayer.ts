@@ -3,6 +3,7 @@ import { fetchMusicDetailByMusicId } from '@/api/music-play/actions'
 import { getSongLyrics } from '@/api/music-play/genius-api'
 import { fetchPreviewUrl } from '@/api/spotifyToken'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
+import { getAccessToken } from '@/utils/geniusToken'
 import { useQuery } from '@tanstack/react-query'
 
 const usePlayer = () => {
@@ -13,17 +14,19 @@ const usePlayer = () => {
   const { data: musicDetail, isPending } = useQuery({
     queryKey: ['music', currentTrackId],
     queryFn: async () => {
-      const [trackUrl, musicDetail] = await Promise.all([
+      const [accessToken, trackUrl, musicDetail] = await Promise.all([
+        getAccessToken(),
         fetchPreviewUrl(currentTrackId),
         fetchMusicDetailByMusicId(currentTrackId),
       ])
 
       // 노래 가사 가져오기
       let lyrics = null
-      if (musicDetail) {
+      if (musicDetail && accessToken) {
         lyrics = await getSongLyrics({
           title: musicDetail.title,
           artist: musicDetail.artist,
+          accessToken,
         })
       }
 
