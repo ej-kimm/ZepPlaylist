@@ -5,7 +5,7 @@ const SearchResult = async ({ searchParams }: { searchParams: string }) => {
   const searchResult = await fetchSearchTracks(searchParams)
   const searchResultList = searchResult!.tracks.items
 
-  console.log('searchResultList', searchResultList)
+  // console.log('searchResultList', searchResultList)
 
   return (
     <div className="mx-auto max-w-3xl">

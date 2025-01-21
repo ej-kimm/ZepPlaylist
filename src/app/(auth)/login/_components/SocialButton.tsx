@@ -36,7 +36,6 @@ const SocialButton = () => {
       }
     },
     onError: (error: AuthError) => {
-      console.log('first', error)
       console.error(error.message)
       alert('에러가 발생하였습니다. 잠시후 다시 시도해주세요')
     },
