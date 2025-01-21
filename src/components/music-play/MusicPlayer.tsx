@@ -3,7 +3,6 @@ import usePlayer from '@/hooks/usePlayer'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import { useEffect, useRef, useState } from 'react'
 import ReactPlayer from 'react-player'
-import MusicDetailModal from './_components/MusicDetailModal'
 import MusicDetails from './_components/MusicDetails'
 import PlayerControls from './_components/PlayerControls'
 import PlayerSkeleton from './_components/PlayerSkeleton'
@@ -12,7 +11,7 @@ import ProgressBar from './_components/ProgressBar'
 const MusicPlayer = () => {
   const { isPlayerOpen, isPlaying, isPlayerModalOpen, play, stop } =
     useMusicPlayerStore()
-  const { musicDetail, url, lyrics, isPending } = usePlayer()
+  const { musicDetail, url, isPending } = usePlayer()
   const [playerState, setPlayerState] = useState({
     ready: false, // onReady에서 영상이 로드된 상태값을 받아 사용
     played: 0, // 현재 재생 중인 시간 (0~0.9999)
@@ -62,13 +61,13 @@ const MusicPlayer = () => {
         <PlayerControls />
       </div>
 
-      <MusicDetailModal
+      {/* <MusicDetailModal
         url={url}
         musicDetail={musicDetail}
         lyrics={lyrics}
         playerState={playerState}
         onSeek={handleSeek}
-      />
+      /> */}
     </section>
   )
 }
