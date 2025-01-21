@@ -37,7 +37,7 @@ export default function MusicDetailModal({
   const { isPlayerModalOpen } = useMusicPlayerStore()
   const { songLike, isPending, updateLike } = useSongLike({ user_id })
 
-  const [isFullLyrics, setIsFullLyrics] = useState<boolean>(false)
+  const [isFullLyrics] = useState<boolean>(false)
   const [isLiked, setIsLiked] = useState<boolean>(false)
 
   const handleLike = async () => {
