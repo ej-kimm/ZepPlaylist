@@ -33,17 +33,18 @@ export default function MusicDetailModal({
   playerState: { played, duration, ready },
   onSeek,
 }: MusicDetailModalProps) {
-  const { title, artist } = musicDetail || {}
   const { user } = userStore()
   const user_id = user?.id || ''
+  const { title, artist } = musicDetail || {}
   const { isPlayerModalOpen } = useMusicPlayerStore()
-  const { songLike, isPending, updateLike } = useSongLike({ user_id })
+  const { songLike, updateLike } = useSongLike({ user_id })
 
   const [isFullLyrics, setIsFullLyrics] = useState<boolean>(false)
   const [isLiked, setIsLiked] = useState<boolean>(false)
 
   const handleLike = async () => {
     if (!user_id) {
+      // TODO : 로그인 하라는 모달창 띄우기
       alert('로그인을 해주세요!')
       return
     }
@@ -71,16 +72,14 @@ export default function MusicDetailModal({
           <p className="caption-1 text-center">{artist}</p>
         </header>
         <div className="flex items-center justify-center gap-[23px]">
-          {!isPending && (
-            <button onClick={handleLike}>
-              <Image
-                src={isLiked ? likeTrue : likeFalse}
-                width={16}
-                height={16}
-                alt={isLiked ? 'likeTrue' : 'likeFalse'}
-              />
-            </button>
-          )}
+          <button onClick={handleLike}>
+            <Image
+              src={isLiked ? likeTrue : likeFalse}
+              width={16}
+              height={16}
+              alt={isLiked ? 'likeTrue' : 'likeFalse'}
+            />
+          </button>
           {/* TODO : 플레이리스트 추가 기능 해야함 */}
           <button onClick={handleSave}>
             <Image src={save} width={16} height={16} alt="save" />
