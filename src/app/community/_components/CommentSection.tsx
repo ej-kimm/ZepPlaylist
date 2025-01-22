@@ -1,6 +1,6 @@
 'use client'
 
-// import { useMusicPlayerStore } from '@/store/useMusicPlayerStore';
+import { useMusicPlayerStore } from '@/store/useMusicPlayerStore';
 import usePlaylistLike from '@/hooks/usePlaylistLike'
 import { supabase } from '@/utils/supabase/client'
 import { useEffect, useState } from 'react'
@@ -49,8 +49,8 @@ export default function CommentSection({
   const [comments, setComments] = useState<Comment[]>(initialComments)
   const [content, setContent] = useState<string>('')
   const [currentUserId, setCurrentUserId] = useState<string | null>(null)
-  // const { setTrackIds, togglePlay, playNextTrack, setPlayerOpen } =
-  //   useMusicPlayerStore();
+  const { setTrackIds, togglePlay, playNextTrack, setPlayerOpen } =
+    useMusicPlayerStore();
 
   // 좋아요 상태 관리 (usePlaylistLike 훅 활용)
   const { toggleLike, isLiked } = usePlaylistLike({
@@ -101,17 +101,17 @@ export default function CommentSection({
     fetchUser()
     fetchCommentsWithProfiles()
 
-    //   if (songs.length > 0) {
-    //     setTrackIds(songs.map((song) => song.spotify_id));
-    //     setPlayerOpen();
-    //     togglePlay();
-    //   }
+      if (songs.length > 0) {
+        setTrackIds(songs.map((song) => song.spotify_id));
+        setPlayerOpen();
+        togglePlay();
+      }
   }, [songs, playlistId])
 
-  // const handleSongClick = () => {
-  //   setTrackIds(songs.map((song) => song.spotify_id));
-  //   playNextTrack();
-  // };
+  const handleSongClick = () => {
+    setTrackIds(songs.map((song) => song.spotify_id));
+    playNextTrack();
+  };
 
   const handleAddComment = async () => {
     if (!currentUserId) {
@@ -169,7 +169,7 @@ export default function CommentSection({
       comments={comments}
       content={content}
       setContent={setContent}
-      // handleSongClick={handleSongClick}
+      handleSongClick={handleSongClick}
       handleAddComment={handleAddComment}
       handleDeleteComment={handleDeleteComment}
       currentUserId={currentUserId}
