@@ -25,10 +25,16 @@ const SocialButton = () => {
     }) => {
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider,
-        options: { redirectTo },
+        options: {
+          redirectTo,
+          queryParams: {
+            access_type: 'offline',
+            prompt: 'select_account',
+          },
+        },
       })
       if (error) throw new Error(error.message)
-      return data ? { ...data } : data
+      return { ...data }
     },
     onSuccess: async (data: Data) => {
       if (data?.url) {
