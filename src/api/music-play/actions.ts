@@ -58,6 +58,23 @@ export const fetchMusicDetailByMusicId = async (
   return musicDetail
 }
 
+export const fetchMusicLyricsByMusicId = async (
+  musicId: Tables<'music'>['spotify_id'],
+): Promise<Tables<'music'>['lyrics'] | null> => {
+  const { data, error } = await supabase
+    .from('music')
+    .select('lyrics')
+    .eq('spotify_id', musicId)
+    .single()
+
+  if (error) {
+    console.error(`Failed to fetch lyrics for musicId: ${musicId}`, error)
+    return null
+  }
+
+  return data?.lyrics || null
+}
+
 // song_like 테이블
 export const isSongLiked = async ({
   music_id,
