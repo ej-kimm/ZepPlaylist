@@ -32,12 +32,13 @@ export async function fetchPlaylistDetails(
       .from('playlist_music')
       .select(
         `music (
-          spotify_id,
-          title,
-          artist,
-          play_time,
-          album_cover
-        )`,
+      spotify_id,
+      title,
+      artist,
+      play_time,
+      album_cover
+    ),
+    created_at`,
       )
       .eq('playlist_id', playlistId)
 
@@ -46,13 +47,20 @@ export async function fetchPlaylistDetails(
       return null
     }
 
-    const songs: Song[] = playlistMusic.map((item) => ({
-      spotify_id: item.music.spotify_id,
-      title: item.music.title || '',
-      artist: item.music.artist || '',
-      play_time: item.music.play_time || 0,
-      album_cover: item.music.album_cover || null, // null 허용
-    }))
+    const songs: Song[] = playlistMusic
+      .map((item) => ({
+        spotify_id: item.music.spotify_id,
+        title: item.music.title || '',
+        artist: item.music.artist || '',
+        play_time: item.music.play_time || 0,
+        album_cover: item.music.album_cover || null,
+        created_at: item.created_at || '',
+      }))
+      .sort(
+        (a, b) =>
+          new Date(b.created_at || '').getTime() -
+          new Date(a.created_at || '').getTime(),
+      )
 
     // 총 재생 시간 계산 및 변환
     const totalPlayTimeMilliseconds = songs.reduce(

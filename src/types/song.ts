@@ -1,5 +1,6 @@
 export type Song = {
   spotify_id: string
+  created_at: string
   title: string
   artist: string
   play_time: number
@@ -14,7 +15,6 @@ export type PlaylistDetails = {
   total_play_time: string
   last_updated: string
   songs: Song[]
-  created_at: string
 }
 
 export type LikedSong = {

@@ -6,7 +6,7 @@ import {
 import imPlay from '@/assets/images/imPlay.svg'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import { PlaylistDetails } from '@/types/song'
-import { differenceInDays } from 'date-fns'
+import { differenceInDays, isToday } from 'date-fns'
 import Image from 'next/image'
 import { useCallback, useEffect, useState } from 'react'
 import { FaEllipsisV, FaRandom } from 'react-icons/fa'
@@ -27,7 +27,16 @@ export default function PlaylistDetailsComponent({
   const loadPlaylistDetails = useCallback(async () => {
     try {
       const data = await fetchPlaylistDetails(params.id)
-      setPlaylistDetails(data)
+      if (data) {
+        const sortedSongs = [...data.songs].sort(
+          (a, b) =>
+            new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
+        )
+        setPlaylistDetails({
+          ...data,
+          songs: sortedSongs,
+        })
+      }
     } catch (error) {
       console.error(
         '플레이리스트 데이터를 가져오는 중 오류가 발생했습니다.',
@@ -52,6 +61,8 @@ export default function PlaylistDetailsComponent({
     last_updated,
     songs,
   } = playlistDetails
+
+  const latestSongCover = songs[0]?.album_cover || '/default-cover.jpg'
 
   // 전체 재생 핸들러
   const handlePlayAll = () => {
@@ -135,9 +146,7 @@ export default function PlaylistDetailsComponent({
       <section className="mt-6 flex flex-col items-center">
         <div
           className="bg-lightgray h-[248px] w-[248px] rounded-lg bg-cover bg-center"
-          style={{
-            backgroundImage: `url(${songs[0]?.album_cover || '/default-cover.jpg'})`,
-          }}
+          style={{ backgroundImage: `url(${latestSongCover})` }}
         ></div>
         <h2 className="mt-4 font-pretendard text-xl">{name}</h2>
         <p className="mt-1 text-gray-500">{description}</p>
@@ -150,8 +159,10 @@ export default function PlaylistDetailsComponent({
             <p>재생시간: {total_play_time}</p>
           </div>
           <p className="mt-1">
-            업데이트: {differenceInDays(new Date(), new Date(last_updated))}일
-            전
+            업데이트:{' '}
+            {isToday(new Date(last_updated))
+              ? '오늘'
+              : `${differenceInDays(new Date(), new Date(last_updated))}일 전`}
           </p>
         </div>
         <button
