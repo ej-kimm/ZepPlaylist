@@ -92,3 +92,26 @@ export const fetchSearchTracks = async (searchParams: string) => {
     throw new Error('An unexpected error occurred')
   }
 }
+
+export const fetchAlbums = async (albumId: string) => {
+  const token = await fetchSpotifyToken()
+
+  try {
+    const res = await fetch(`https://api.spotify.com/v1/albums/${albumId}`, {
+      method: 'GET',
+      headers: {
+        Authorization: 'Bearer ' + token,
+      },
+    })
+    if (!res.ok) {
+      console.error(`API error: ${res.status} ${res.statusText}`)
+      throw new Error(`Failed to fetch data: ${res.status} ${res.statusText}`)
+    }
+    const data: SpotifyApi.SingleAlbumResponse = await res.json()
+
+    return data
+  } catch (error) {
+    console.error('Fetch error:', error)
+    throw new Error('An unexpected error occurred')
+  }
+}
