@@ -3,11 +3,10 @@
 import { PlaylistDetails, Song } from '@/types/song'
 import { createClient } from '@/utils/supabase/server'
 
-function formatPlayTime(milliseconds: number): string {
-  const totalSeconds = Math.floor(milliseconds / 1000)
-  const minutes = Math.floor(totalSeconds / 60)
-  const seconds = totalSeconds % 60
-  return `${minutes}:${seconds.toString().padStart(2, '0')}`
+function formatPlayTime(seconds: number): string {
+  if (!seconds || isNaN(seconds)) return '0분'
+  const minutes = Math.floor(seconds / 60)
+  return `${minutes}분`
 }
 
 export async function fetchPlaylistDetails(
@@ -57,10 +56,10 @@ export async function fetchPlaylistDetails(
 
     // 총 재생 시간 계산 및 변환
     const totalPlayTimeMilliseconds = songs.reduce(
-      (acc, song) => acc + song.play_time,
+      (acc, song) => acc + (song.play_time || 0),
       0,
     )
-    const totalPlayTime = formatPlayTime(totalPlayTimeMilliseconds)
+    const totalPlayTime = formatPlayTime(totalPlayTimeMilliseconds / 1000)
 
     // 마지막 업데이트 일자
     const { data: lastUpdatedData } = await supabase
