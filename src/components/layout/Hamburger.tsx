@@ -62,7 +62,9 @@ const Hamburger = () => {
         />
       </button>
 
-      <h1 className="title-2 flex-1 text-center">{isPathName(pathname)}</h1>
+      <h1 className="title-2 flex-1 text-center">
+        {!isHamburgerOpen && isPathName(pathname)}
+      </h1>
 
       <button className="block md:hidden" onClick={toggleMenu}>
         <Image src={hamburger} width={24} height={24} alt="hamburger" />
