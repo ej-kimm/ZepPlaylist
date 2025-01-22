@@ -49,7 +49,7 @@ export default function CommentSection({
   const [comments, setComments] = useState<Comment[]>(initialComments)
   const [content, setContent] = useState<string>('')
   const [currentUserId, setCurrentUserId] = useState<string | null>(null)
-  // const { setTrackIds, playNextTrack, setPlayerOpen } =
+  // const { setTrackIds, playNextTrack, setPlayerOpen, play } =
   //   useMusicPlayerStore();
 
   // 좋아요 상태 관리 (usePlaylistLike 훅 활용)
@@ -101,15 +101,17 @@ export default function CommentSection({
     fetchUser()
     fetchCommentsWithProfiles()
 
-    //   if (songs.length > 0) {
-    //     setTrackIds(songs.map((song) => song.spotify_id));
-    //     setPlayerOpen();
-    //   }
+    // if (songs.length > 0) {
+    //   setTrackIds(songs.map((song) => song.spotify_id));
+    //   setPlayerOpen();
+    //   play()
+    // }
   }, [songs, playlistId])
 
   // const handleSongClick = () => {
   //   setTrackIds(songs.map((song) => song.spotify_id));
   //   playNextTrack();
+  //   play()
   // };
 
   const handleAddComment = async () => {

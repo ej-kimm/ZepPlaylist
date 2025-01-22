@@ -36,7 +36,8 @@ const Top100ChartList = ({
 
   const { searchSpotifyId } = useSpotifySearch()
 
-  const { isPlayerOpen, setTrackIds, setPlayerOpen } = useMusicPlayerStore()
+  const { isPlayerOpen, setTrackIds, setPlayerOpen, play } =
+    useMusicPlayerStore()
 
   const { upsertMusic } = usePlaylistMusicUpsert(albumCover)
 
@@ -60,6 +61,7 @@ const Top100ChartList = ({
 
     if (!isPlayerOpen) setPlayerOpen()
     setTrackIds(songId)
+    play()
   }
 
   return (
