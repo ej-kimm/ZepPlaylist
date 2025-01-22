@@ -47,7 +47,7 @@ const SearchResultItem = ({ item }: SearchResultProps) => {
         onClick={handlePlay}
       >
         <h3 className="button-2 truncate">{item.name}</h3>
-        <p className="caption-2 truncate">{item.artists[0].name}</p>
+        <p className="caption-2 truncate opacity-60">{item.artists[0].name}</p>
       </div>
       <MoreOptionsButton
         musicName={item.name}
