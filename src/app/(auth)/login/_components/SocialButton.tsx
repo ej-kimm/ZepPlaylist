@@ -81,7 +81,7 @@ const SocialButton = () => {
         />
       </form>
       <Link
-        className="caption-1 flex justify-center opacity-60"
+        className="caption-1 mb-10 flex justify-center opacity-60"
         href={'/sign-up'}
       >
         회원가입
