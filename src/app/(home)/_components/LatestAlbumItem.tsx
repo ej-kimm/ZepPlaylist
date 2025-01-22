@@ -46,6 +46,7 @@ const LatestAlbumItme = ({ album }: Props) => {
         id: item.id,
         title: item.name,
         artist,
+        playTime: item.duration_ms,
       }
     })
 

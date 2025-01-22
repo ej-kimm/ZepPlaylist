@@ -29,7 +29,6 @@ const SearchResultItem = ({ item }: SearchResultProps) => {
       playTime,
     }
 
-    console.log(newMusicData)
     await upsertMusic(newMusicData)
     if (!isPlayerOpen) setPlayerOpen() // 페이지 방문 후, 첫 곡 재생이면 플레이어바 보여줌
     setTrackIds(songId)
