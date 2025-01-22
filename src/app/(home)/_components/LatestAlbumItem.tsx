@@ -10,8 +10,7 @@ type Props = {
 }
 
 const LatestAlbumItme = ({ album }: Props) => {
-  const { isPlayerOpen, setTrackIds, togglePlay, setPlayerOpen } =
-    useMusicPlayerStore()
+  const { isPlayerOpen, setTrackIds, setPlayerOpen } = useMusicPlayerStore()
 
   const fetchAlbums = async (albumId: string) => {
     const token = await fetchSpotifyToken()
@@ -61,7 +60,6 @@ const LatestAlbumItme = ({ album }: Props) => {
     if (!isPlayerOpen) setPlayerOpen() // 페이지 방문 후, 첫 곡 재생이면 플레이어바 보여줌
     // setTrackIds(palyTrackId.map((item) => item)) // 재생할 곡 아이디 넘겨주기
     setTrackIds(palyTrackId)
-    togglePlay()
   }
   return (
     <li

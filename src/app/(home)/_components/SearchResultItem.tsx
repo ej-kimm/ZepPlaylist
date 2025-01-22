@@ -11,8 +11,7 @@ type SearchResultProps = {
 
 const SearchResultItem = ({ item }: SearchResultProps) => {
   const { user } = userStore((state) => state)
-  const { isPlayerOpen, setTrackIds, togglePlay, setPlayerOpen } =
-    useMusicPlayerStore()
+  const { isPlayerOpen, setTrackIds, setPlayerOpen } = useMusicPlayerStore()
 
   const { upsertMusic } = usePlaylistMusicUpsert(item.album.images[0].url)
 
@@ -32,7 +31,6 @@ const SearchResultItem = ({ item }: SearchResultProps) => {
     await upsertMusic(newMusicData)
     if (!isPlayerOpen) setPlayerOpen() // 페이지 방문 후, 첫 곡 재생이면 플레이어바 보여줌
     setTrackIds(songId)
-    togglePlay()
   }
 
   return (
