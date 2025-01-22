@@ -10,7 +10,6 @@ type InputBoxProps<T extends FieldValues> = {
   isTextArea?: boolean
   className?: string
 }
-
 const InputBox = <T extends FieldValues>({
   name,
   type = 'text',
