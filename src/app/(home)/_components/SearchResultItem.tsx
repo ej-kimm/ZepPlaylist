@@ -31,7 +31,7 @@ const SearchResultItem = ({ item }: SearchResultProps) => {
   }
 
   return (
-    <li className="flex items-center space-x-4 rounded-lg py-2 transition-colors">
+    <li className="flex items-center gap-4 rounded-lg py-2 transition-colors">
       <div className="flex-shrink-0 cursor-pointer" onClick={handlePlay}>
         <Image
           src={item.album.images[0].url}

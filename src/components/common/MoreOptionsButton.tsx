@@ -74,60 +74,56 @@ const MoreOptionsButton = ({
         height="50%"
         maxWidth="100%"
       >
-        <div className="">
-          <div className="mx-4 my-5">
-            <h3 className="truncate text-lg font-medium">{musicName}</h3>
-            <p className="truncate text-base text-gray-500">{artistName}</p>
-          </div>
-          <div className="border-t-2 border-gray-300">
-            <h1 className="my-3 text-base">플레이리스트 담기</h1>
+        <div className="mx-4 my-5">
+          <h3 className="title-2 mb-2 truncate font-medium">{musicName}</h3>
+          <p className="body-2 truncate opacity-40">{artistName}</p>
+        </div>
+        <div className="border-t-[1px] border-black border-opacity-60">
+          <h1 className="my-3 text-base">플레이리스트 담기</h1>
 
-            <Link href={'/playlist'}>
-              <div className="relative mx-4 flex items-center space-x-4">
-                <div className="relative h-16 w-16 overflow-hidden rounded-lg">
-                  <Image
-                    src={albumCover}
-                    alt="앨범 커버"
-                    layout="fill"
-                    objectFit="cover"
-                  />
-                </div>
-                <p className="text-sm">새 플레이리스트 만들기</p>
+          <Link href={'/playlist'}>
+            <div className="relative mx-4 flex items-center space-x-4">
+              <div className="relative h-16 w-16 overflow-hidden rounded-lg">
+                <Image
+                  src={albumCover}
+                  alt="앨범 커버"
+                  layout="fill"
+                  objectFit="cover"
+                />
               </div>
-            </Link>
-            {!user && playlists.length > 0 ? (
-              <p className="text-center text-gray-500">로딩 중...</p>
-            ) : (
-              <ul className="mt-4 space-y-2">
-                {playlists.map((playlist) => (
-                  <li
-                    key={playlist.id}
-                    onClick={() => addMusiscInPlayList(playlist.id)}
-                  >
-                    <div className="relative mx-4 flex items-center space-x-4">
-                      <div className="relative h-16 w-16 overflow-hidden rounded-lg">
-                        {playlist.latest_song_cover ? (
-                          <Image
-                            src={playlist.latest_song_cover}
-                            alt="앨범 커버"
-                            layout="fill"
-                            objectFit="cover"
-                          />
-                        ) : (
-                          <div className="flex h-full w-full items-center justify-center bg-gray-200 text-gray-400">
-                            No Cover
-                          </div>
-                        )}
-                      </div>
-                      <div>
-                        <p className="text-sm">{playlist.name} 플레이리스트</p>
-                      </div>
+              <p className="caption-1">새 플레이리스트 만들기</p>
+            </div>
+          </Link>
+          {!user && playlists.length > 0 ? (
+            <p className="text-center text-gray-500">로딩 중...</p>
+          ) : (
+            <ul className="mt-2 space-y-2">
+              {playlists.map((playlist) => (
+                <li
+                  key={playlist.id}
+                  onClick={() => addMusiscInPlayList(playlist.id)}
+                >
+                  <div className="relative mx-4 flex items-center space-x-4">
+                    <div className="relative h-16 w-16 overflow-hidden rounded-lg">
+                      {playlist.latest_song_cover ? (
+                        <Image
+                          src={playlist.latest_song_cover}
+                          alt="앨범 커버"
+                          layout="fill"
+                          objectFit="cover"
+                        />
+                      ) : (
+                        <div className="flex h-full w-full items-center justify-center bg-gray-200 text-gray-400" />
+                      )}
                     </div>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
+                    <div>
+                      <p className="text-sm">{playlist.name} 플레이리스트</p>
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       </BottomSheet>
     </>
