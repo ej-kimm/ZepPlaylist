@@ -55,6 +55,7 @@ export async function GET(request: Request) {
 
     const query = `${artist} ${title}`
 
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     const Genius = require('genius-lyrics')
     const client = new Genius.Client(accessToken)
     const searches = await client.songs.search(query)
