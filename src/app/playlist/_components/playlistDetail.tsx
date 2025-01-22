@@ -165,11 +165,12 @@ export default function PlaylistDetailsComponent({
               : `${differenceInDays(new Date(), new Date(last_updated))}일 전`}
           </p>
         </div>
+        <div className="flex items-center gap-2"></div>
         <button
-          className="relative flex h-14 w-14 items-center justify-center rounded-full bg-gray-300"
+          className="relative flex h-14 w-14 items-center justify-center"
           onClick={handleShufflePlay}
         >
-          <FaRandom className="text-white" size={24} />
+          <FaRandom className="text-black" size={24} />
         </button>
 
         <div className="flex items-center space-x-4">

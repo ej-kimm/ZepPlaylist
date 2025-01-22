@@ -6,7 +6,7 @@ import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import { LikedSong } from '@/types/song'
 import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
-import { FaEllipsisH } from 'react-icons/fa'
+import { FaEllipsisH, FaRandom } from 'react-icons/fa'
 import Swal from 'sweetalert2'
 
 type LikedSongsPageProps = {
@@ -66,6 +66,15 @@ export default function LikedSongsPage({
     play()
   }
 
+  const handleShufflePlay = () => {
+    if (!isPlayerOpen) setPlayerOpen()
+    const shuffledTracks = [
+      ...likedSongs.map((song) => song.music.spotify_id),
+    ].sort(() => Math.random() - 0.5)
+    setTrackIds(shuffledTracks)
+    play()
+  }
+
   return (
     <div
       className="mx-auto h-full w-full"
@@ -76,26 +85,41 @@ export default function LikedSongsPage({
       }}
     >
       <header className="mb-4 flex items-center justify-between">
-        <h1 className="text-xl font-bold">좋아요 한 플레이리스트</h1>
-        <button
-          onClick={handlePlayAll}
-          className="flex items-center justify-center rounded-full"
-          style={{
-            width: '48px',
-            height: '48px',
-            padding: '11px',
-            borderRadius: '24px',
-            background: '#9032E8',
-          }}
-        >
-          <Image
-            src={imPlay}
-            alt="전체 재생"
-            width={24}
-            height={24}
-            style={{ flexShrink: 0 }}
-          />
-        </button>
+        <h1 className="font-pretendard text-xl">좋아요 한 플레이리스트</h1>
+        <div className="flex items-center space-x-4">
+          <button
+            onClick={handleShufflePlay}
+            className="flex items-center justify-center"
+            style={{
+              width: '24px',
+              height: '24px',
+              background: 'none',
+              border: 'none',
+              padding: '0',
+            }}
+          >
+            <FaRandom size={24} color="black" />
+          </button>
+          <button
+            onClick={handlePlayAll}
+            className="flex items-center justify-center rounded-full"
+            style={{
+              width: '48px',
+              height: '48px',
+              padding: '11px',
+              borderRadius: '24px',
+              background: '#9032E8',
+            }}
+          >
+            <Image
+              src={imPlay}
+              alt="전체 재생"
+              width={24}
+              height={24}
+              style={{ flexShrink: 0 }}
+            />
+          </button>
+        </div>
       </header>
       <ul className="space-y-2">
         {likedSongs.map((song, index) => (
