@@ -43,6 +43,7 @@ const MoreOptionsButton = ({
       console.error('Error in handleOpenBottomSheet:', error)
     }
   }
+  const handleCloseBottomSheet = () => setIsBottomSheetOpen(false)
 
   // 특정 플레이리스트 목록을 동작하는 함수
   const addMusiscInPlayList = async (playlistId: string) => {
@@ -68,11 +69,12 @@ const MoreOptionsButton = ({
       <button type="button" onClick={handleOpenBottomSheet}>
         <FiMoreHorizontal fontSize={24} />
       </button>
+
       <BottomSheet
-        isOpen={isBottomSheetOpen}
-        onClose={() => setIsBottomSheetOpen(false)}
         height="50%"
         maxWidth="100%"
+        isOpen={isBottomSheetOpen}
+        onClose={handleCloseBottomSheet}
       >
         <div className="mx-4 my-5">
           <h3 className="title-2 mb-2 truncate font-medium">{musicName}</h3>
