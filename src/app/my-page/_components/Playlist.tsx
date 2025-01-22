@@ -4,7 +4,7 @@ import { useInfiniteQuery } from '@tanstack/react-query'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useInView } from 'react-intersection-observer'
-import { fetchPlay } from './fetchPlay'
+import { fetchUserPlayList } from './fetchUserPlayList'
 const PlayList = () => {
   const { user } = userStore()
   const {
@@ -16,7 +16,7 @@ const PlayList = () => {
     isLoading,
   } = useInfiniteQuery({
     queryKey: ['playlist'],
-    queryFn: ({ pageParam = 0 }) => fetchPlay({ pageParam }),
+    queryFn: ({ pageParam = 0 }) => fetchUserPlayList({ pageParam }),
     getNextPageParam: (lastPage) => lastPage?.nextCursor || undefined,
     getPreviousPageParam: (firstPage) => firstPage?.prevCursor || undefined,
     initialPageParam: 0,

@@ -5,7 +5,7 @@ type Param = {
   pageParam: number
 }
 
-export const fetchPlay = async ({ pageParam = 0 }: Param) => {
+export const fetchUserPlayList = async ({ pageParam = 0 }: Param) => {
   const { data } = await supabase.auth.getUser()
   const { data: playlists, error } = await supabase
     .from('playlists')
