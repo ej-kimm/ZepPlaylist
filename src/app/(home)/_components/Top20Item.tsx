@@ -22,8 +22,7 @@ const Top20Item: React.FC<Top20ItemProps> = ({
 }) => {
   const { searchSpotifyId } = useSpotifySearch()
 
-  const { isPlayerOpen, setTrackIds, togglePlay, setPlayerOpen } =
-    useMusicPlayerStore()
+  const { isPlayerOpen, setTrackIds, setPlayerOpen } = useMusicPlayerStore()
 
   const { upsertMusic } = usePlaylistMusicUpsert(albumCover)
 
@@ -37,7 +36,6 @@ const Top20Item: React.FC<Top20ItemProps> = ({
     const songId = musicData!.id
     if (!isPlayerOpen) setPlayerOpen() // 페이지 방문 후, 첫 곡 재생이면 플레이어바 보여줌
     setTrackIds(songId)
-    togglePlay()
   }
   return (
     <li

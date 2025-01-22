@@ -7,8 +7,8 @@ import { useEffect, useState } from 'react'
 import CommunityDetailUI from './CommunityDetailUI'
 
 type User = {
-  profile_image: string | null; // 사용자의 프로필 이미지
-};
+  profile_image: string | null // 사용자의 프로필 이미지
+}
 
 type Song = {
   spotify_id: string
@@ -49,7 +49,7 @@ export default function CommentSection({
   const [comments, setComments] = useState<Comment[]>(initialComments)
   const [content, setContent] = useState<string>('')
   const [currentUserId, setCurrentUserId] = useState<string | null>(null)
-  // const { setTrackIds, togglePlay, playNextTrack, setPlayerOpen } =
+  // const { setTrackIds, playNextTrack, setPlayerOpen } =
   //   useMusicPlayerStore();
 
   // 좋아요 상태 관리 (usePlaylistLike 훅 활용)
@@ -104,7 +104,6 @@ export default function CommentSection({
     //   if (songs.length > 0) {
     //     setTrackIds(songs.map((song) => song.spotify_id));
     //     setPlayerOpen();
-    //     togglePlay();
     //   }
   }, [songs, playlistId])
 

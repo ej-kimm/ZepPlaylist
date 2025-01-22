@@ -9,13 +9,11 @@ interface SongItemProps {
 }
 
 const LikeSongItem: React.FC<SongItemProps> = ({ item }) => {
-  const { isPlayerOpen, setTrackIds, togglePlay, setPlayerOpen } =
-    useMusicPlayerStore()
+  const { isPlayerOpen, setTrackIds, setPlayerOpen } = useMusicPlayerStore()
 
   const handlePlayBtn = (palyTrackId: string) => {
     if (!isPlayerOpen) setPlayerOpen() // 페이지 방문 후, 첫 곡 재생이면 플레이어바 보여줌
     setTrackIds(palyTrackId)
-    togglePlay()
   }
 
   return (
