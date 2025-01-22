@@ -1,8 +1,11 @@
 'use client'
+import { userStore } from '@/store/userSlice'
 import { useInfiniteQuery } from '@tanstack/react-query'
+import Image from 'next/image'
 import { useInView } from 'react-intersection-observer'
-import { FetchPlay } from './FetchPlay'
+import { fetchPlay } from './fetchPlay'
 const PlayList = () => {
+  const { user } = userStore()
   const {
     data,
     fetchNextPage,
@@ -12,8 +15,8 @@ const PlayList = () => {
     isLoading,
   } = useInfiniteQuery({
     queryKey: ['playlist'],
-    queryFn: ({ pageParam = 0 }) => FetchPlay({ pageParam }),
-    getNextPageParam: (lastPage) => lastPage?.nextCurosr || undefined,
+    queryFn: ({ pageParam = 0 }) => fetchPlay({ pageParam }),
+    getNextPageParam: (lastPage) => lastPage?.nextCursor || undefined,
     getPreviousPageParam: (firstPage) => firstPage?.prevCursor || undefined,
     initialPageParam: 0,
   })
@@ -25,21 +28,35 @@ const PlayList = () => {
       }
     },
   })
-  console.log('first', data)
+
   if (isLoading) return <p>스켈레톤 들어갈거임</p>
-  if (error) return <p>글로벌에러 들어갈거임</p>
+  if (error) return <p>{error.message}</p>
   return (
     <div>
-      <h1>playlist</h1>
       <div>
         {data?.pages.map((page, pageIndex) => {
           return (
             <div key={pageIndex}>
               {page?.playlistsWithCovers.map((p) => {
                 return (
-                  <div key={p.id}>
-                    {p.name}
-                    <h1 className="mt-32">{p.description}</h1>
+                  <div className="flex items-center justify-between">
+                    <Image
+                      className="mb-[21px] ml-4 h-9 w-9"
+                      src={p.latest_song_cover || '/default-cover.jpg'}
+                      height={36}
+                      width={36}
+                      alt="앨범커버 사진"
+                    />
+                    <div
+                      key={p.id}
+                      className="body-2 flex w-[calc(100%-52px)] items-center justify-between"
+                    >
+                      <div>
+                        {p.name}
+                        <h1 className="caption-2">{user?.nickname}</h1>
+                      </div>
+                    </div>
+                    <button>♥</button>
                   </div>
                 )
               })}

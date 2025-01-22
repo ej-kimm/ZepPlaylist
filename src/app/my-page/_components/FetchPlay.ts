@@ -5,7 +5,7 @@ type Param = {
   pageParam: number
 }
 
-export const FetchPlay = async ({ pageParam = 0 }: Param) => {
+export const fetchPlay = async ({ pageParam = 0 }: Param) => {
   const { data } = await supabase.auth.getUser()
   const { data: playlists, error } = await supabase
     .from('playlists')
@@ -18,6 +18,7 @@ export const FetchPlay = async ({ pageParam = 0 }: Param) => {
   if (!playlists) {
     return
   }
+  console.log('=====넘어오나')
   const playlistsWithCovers = await Promise.all(
     playlists.map(async (playlist) => {
       const latestSongCover = await fetchLatestAlbumCover(playlist.id)
@@ -29,11 +30,11 @@ export const FetchPlay = async ({ pageParam = 0 }: Param) => {
   )
 
   const totalPage = playlists?.length || 0
-  const nextCurosr = totalPage === 10 ? pageParam + 1 : undefined
+  const nextCursor = totalPage === 10 ? pageParam + 1 : undefined
   const prevCursor = pageParam > 0 ? pageParam - 1 : undefined
   return {
     playlistsWithCovers,
-    nextCurosr,
+    nextCursor,
     prevCursor,
   }
 }

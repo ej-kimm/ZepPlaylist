@@ -4,7 +4,6 @@ import defaultProfileImg from '@/assets/images/defaultProfileImg.png'
 import { userStore } from '@/store/userSlice'
 import Image from 'next/image'
 import ProfileEdit from './ProfileEdit'
-import PlayList from './PlayList절대지우지마'
 
 const Profile = () => {
   const { user, setUser } = userStore()
@@ -24,7 +23,6 @@ const Profile = () => {
       </div>
       <p className="body-2 ml-4">{user.nickname}</p>
       <ProfileEdit user={user} setUser={setUser} />
-      <PlayList />
     </div>
   )
 }
