@@ -2,6 +2,7 @@
 import { userStore } from '@/store/userSlice'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import { useInView } from 'react-intersection-observer'
 import { fetchPlay } from './fetchPlay'
 const PlayList = () => {
@@ -28,7 +29,7 @@ const PlayList = () => {
       }
     },
   })
-
+  const router = useRouter()
   if (isLoading) return <p>스켈레톤 들어갈거임</p>
   if (error) return <p>{error.message}</p>
   return (
@@ -39,7 +40,13 @@ const PlayList = () => {
             <div key={pageIndex}>
               {page?.playlistsWithCovers.map((p) => {
                 return (
-                  <div className="flex items-center justify-between">
+                  <div
+                    className="flex items-center justify-between"
+                    key={p.id}
+                    onClick={() => {
+                      router.push(`/community/${p.id}`)
+                    }}
+                  >
                     <Image
                       className="mb-[21px] ml-4 h-9 w-9"
                       src={p.latest_song_cover || '/default-cover.jpg'}
@@ -47,10 +54,7 @@ const PlayList = () => {
                       width={36}
                       alt="앨범커버 사진"
                     />
-                    <div
-                      key={p.id}
-                      className="body-2 flex w-[calc(100%-52px)] items-center justify-between"
-                    >
+                    <div className="body-2 flex w-[calc(100%-52px)] items-center justify-between">
                       <div>
                         {p.name}
                         <h1 className="caption-2">{user?.nickname}</h1>
