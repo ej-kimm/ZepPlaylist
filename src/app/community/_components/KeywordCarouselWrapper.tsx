@@ -23,7 +23,6 @@ const KeywordCarouselWrapper = ({
   const [selectedKeywords, setSelectedKeywords] = useState<string[]>([])
   const [filteredPlaylists, setFilteredPlaylists] =
     useState<Playlist[]>(allPlaylists)
-  console.log(filteredPlaylists)
 
   const handleToggleKeyword = (keyword: string) => {
     const updatedKeywords = selectedKeywords.includes(keyword)
@@ -36,7 +35,10 @@ const KeywordCarouselWrapper = ({
       setFilteredPlaylists(allPlaylists)
     } else {
       const keywordFilteredPlaylists = allPlaylists.filter((playlist) =>
-        updatedKeywords.some((key) => playlist.name.includes(key)),
+        updatedKeywords.some(
+          (key) =>
+            playlist.name.toLowerCase().includes(key.toLowerCase()) // 대소문자 무시
+        ),
       )
       setFilteredPlaylists(keywordFilteredPlaylists)
     }
@@ -49,7 +51,19 @@ const KeywordCarouselWrapper = ({
         selectedKeywords={selectedKeywords}
         onToggleKeyword={handleToggleKeyword}
       />
-    </div>
+        {filteredPlaylists.length > 0 ? (
+          <ul>
+            {filteredPlaylists.map((playlist) => (
+              <li key={playlist.id}>
+                <div className="flex items-center gap-4">
+                </div>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>해당 키워드에 해당하는 플레이리스트가 없습니다.</p>
+        )}
+      </div>
   )
 }
 
