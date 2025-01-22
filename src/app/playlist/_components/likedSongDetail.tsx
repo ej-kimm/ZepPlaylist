@@ -16,7 +16,8 @@ type LikedSongsPageProps = {
 export default function LikedSongsPage({
   initialLikedSongs,
 }: LikedSongsPageProps) {
-  const { isPlayerOpen, setTrackIds, setPlayerOpen } = useMusicPlayerStore()
+  const { isPlayerOpen, setTrackIds, setPlayerOpen, play } =
+    useMusicPlayerStore()
   const [likedSongs, setLikedSongs] = useState<LikedSong[]>(initialLikedSongs)
   const [showDropdown, setShowDropdown] = useState<string | null>(null)
   const dropdownRef = useRef<HTMLDivElement | null>(null)
@@ -52,6 +53,7 @@ export default function LikedSongsPage({
     const allTrackIds = likedSongs.map((song) => song.music.spotify_id)
     if (!isPlayerOpen) setPlayerOpen()
     setTrackIds(allTrackIds)
+    play()
   }
 
   // 특정 곡부터
@@ -61,6 +63,7 @@ export default function LikedSongsPage({
       .map((song) => song.music.spotify_id)
     if (!isPlayerOpen) setPlayerOpen()
     setTrackIds(selectedTrackIds)
+    play()
   }
 
   return (

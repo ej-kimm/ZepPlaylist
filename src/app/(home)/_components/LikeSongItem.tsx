@@ -1,4 +1,4 @@
-import play from '@/assets/images/imPlay.svg'
+import playing from '@/assets/images/imPlay.svg'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import type { UserLikedSongDetails } from '@/types/LikedSongs'
 import Image from 'next/image'
@@ -9,11 +9,13 @@ interface SongItemProps {
 }
 
 const LikeSongItem: React.FC<SongItemProps> = ({ item }) => {
-  const { isPlayerOpen, setTrackIds, setPlayerOpen } = useMusicPlayerStore()
+  const { isPlayerOpen, setTrackIds, setPlayerOpen, play } =
+    useMusicPlayerStore()
 
   const handlePlayBtn = (palyTrackId: string) => {
     if (!isPlayerOpen) setPlayerOpen() // 페이지 방문 후, 첫 곡 재생이면 플레이어바 보여줌
     setTrackIds(palyTrackId)
+    play()
   }
 
   return (
@@ -34,7 +36,7 @@ const LikeSongItem: React.FC<SongItemProps> = ({ item }) => {
           </div>
 
           <button className="absolute bottom-1 right-1 transform" type="button">
-            <Image src={play} width={25} height={25} alt={'play'} />
+            <Image src={playing} width={25} height={25} alt={'play'} />
           </button>
         </div>
       </div>

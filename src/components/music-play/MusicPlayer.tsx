@@ -2,7 +2,7 @@
 import usePlayer from '@/hooks/usePlayer'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import { usePathname } from 'next/navigation'
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import ReactPlayer from 'react-player'
 import MusicDetailModal from './_components/MusicDetailModal'
 import MusicDetails from './_components/MusicDetails'
@@ -12,7 +12,7 @@ import ProgressBar from './_components/ProgressBar'
 
 const MusicPlayer = () => {
   const pathname = usePathname()
-  const { isPlayerOpen, isPlaying, isPlayerModalOpen, play, stop } =
+  const { isPlayerOpen, isPlaying, isPlayerModalOpen, stop } =
     useMusicPlayerStore()
   const { musicDetail, url, lyrics, isPending } = usePlayer()
   const [playerState, setPlayerState] = useState({
@@ -32,12 +32,6 @@ const MusicPlayer = () => {
     playerRef.current?.seekTo(value) // 재생 위치 변경
   }
 
-  useEffect(() => {
-    if (isPlayerOpen) {
-      play()
-    }
-  }, [isPlayerOpen, play])
-
   // TODO : community페이지에선 플레이어바 안보이도록 임시
   if (
     !isPlayerOpen ||
@@ -54,7 +48,7 @@ const MusicPlayer = () => {
       <ReactPlayer
         url={url}
         ref={playerRef}
-        playing={isPlaying}
+        playing={playerState.ready ? isPlaying : undefined}
         controls={false}
         width="0"
         height="0"

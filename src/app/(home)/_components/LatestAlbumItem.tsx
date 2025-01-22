@@ -1,6 +1,6 @@
 'use client'
 import { fetchSpotifyToken } from '@/api/spotifyToken'
-import play from '@/assets/images/imPlay.svg'
+import playing from '@/assets/images/imPlay.svg'
 import { usePlaylistMusicUpsert } from '@/hooks/usePlaylistMusicUpsert'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import Image from 'next/image'
@@ -10,7 +10,8 @@ type Props = {
 }
 
 const LatestAlbumItme = ({ album }: Props) => {
-  const { isPlayerOpen, setTrackIds, setPlayerOpen } = useMusicPlayerStore()
+  const { isPlayerOpen, setTrackIds, setPlayerOpen, play } =
+    useMusicPlayerStore()
 
   const fetchAlbums = async (albumId: string) => {
     const token = await fetchSpotifyToken()
@@ -60,6 +61,7 @@ const LatestAlbumItme = ({ album }: Props) => {
     if (!isPlayerOpen) setPlayerOpen() // 페이지 방문 후, 첫 곡 재생이면 플레이어바 보여줌
     // setTrackIds(palyTrackId.map((item) => item)) // 재생할 곡 아이디 넘겨주기
     setTrackIds(palyTrackId)
+    play()
   }
   return (
     <li
@@ -78,7 +80,7 @@ const LatestAlbumItme = ({ album }: Props) => {
             className="h-auto w-full rounded-xl shadow-md"
           />
           <button className="absolute bottom-1 right-1 transform" type="button">
-            <Image src={play} width={25} height={25} alt={'play'} />
+            <Image src={playing} width={25} height={25} alt={'play'} />
           </button>
         </div>
         <h3 className="mt-1 truncate text-sm font-semibold">{album.name}</h3>
