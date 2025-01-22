@@ -20,12 +20,16 @@ const SearchResultItem = ({ item }: SearchResultProps) => {
     songId: string,
     musicName: string,
     artist: string,
+    playTime: number,
   ) => {
     const newMusicData = {
       id: songId,
       title: musicName,
-      artist: artist,
+      artist,
+      playTime,
     }
+
+    console.log(newMusicData)
     await upsertMusic(newMusicData)
     if (!isPlayerOpen) setPlayerOpen() // 페이지 방문 후, 첫 곡 재생이면 플레이어바 보여줌
     setTrackIds(songId)
@@ -34,7 +38,14 @@ const SearchResultItem = ({ item }: SearchResultProps) => {
 
   return (
     <li
-      onClick={() => handlePlayBtn(item.id, item.name, item.artists[0].name)}
+      onClick={() =>
+        handlePlayBtn(
+          item.id,
+          item.name,
+          item.artists[0].name,
+          item.duration_ms,
+        )
+      }
       className="flex items-center space-x-4 rounded-lg py-2 transition-colors"
     >
       <div className="relative flex-shrink-0">

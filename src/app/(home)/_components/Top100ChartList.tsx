@@ -52,6 +52,7 @@ const Top100ChartList = ({
       id: musicData!.id, // 스포티파이로 변환한 아이디
       title: musicData!.title,
       artist: musicData!.artist,
+      playTime: musicData!.playTime,
     }
 
     await upsertMusic(newMusicData)
