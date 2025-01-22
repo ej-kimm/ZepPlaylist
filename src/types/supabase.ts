@@ -53,38 +53,30 @@ export type Database = {
           album_cover: string
           artist: string
           created_at: string
+          lyrics: string | null
           play_time: number
           spotify_id: string
           title: string
-          user_id: string
         }
         Insert: {
           album_cover: string
           artist: string
           created_at?: string
+          lyrics?: string | null
           play_time: number
           spotify_id: string
           title: string
-          user_id?: string
         }
         Update: {
           album_cover?: string
           artist?: string
           created_at?: string
+          lyrics?: string | null
           play_time?: number
           spotify_id?: string
           title?: string
-          user_id?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "liked_music_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       playlist_like: {
         Row: {
@@ -219,7 +211,7 @@ export type Database = {
           {
             foreignKeyName: "song_like_music_id_fkey"
             columns: ["music_id"]
-            isOneToOne: true
+            isOneToOne: false
             referencedRelation: "music"
             referencedColumns: ["spotify_id"]
           },
