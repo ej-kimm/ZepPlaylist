@@ -80,7 +80,7 @@ export default function PlaylistBottomSheet({
           </label>
         </div>
 
-        <div className="mt-4 w-full px-6">
+        <div className="mt-4 w-full">
           <button
             onClick={handleSubmit}
             className="flex w-full items-center justify-center gap-1 rounded-full bg-primary px-[18px] py-[11px] text-white"

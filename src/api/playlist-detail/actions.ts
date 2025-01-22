@@ -3,11 +3,10 @@
 import { PlaylistDetails, Song } from '@/types/song'
 import { createClient } from '@/utils/supabase/server'
 
-function formatPlayTime(milliseconds: number): string {
-  const totalSeconds = Math.floor(milliseconds / 1000)
-  const minutes = Math.floor(totalSeconds / 60)
-  const seconds = totalSeconds % 60
-  return `${minutes}:${seconds.toString().padStart(2, '0')}`
+function formatPlayTime(seconds: number): string {
+  if (!seconds || isNaN(seconds)) return '0분'
+  const minutes = Math.floor(seconds / 60)
+  return `${minutes}분`
 }
 
 export async function fetchPlaylistDetails(
@@ -33,12 +32,13 @@ export async function fetchPlaylistDetails(
       .from('playlist_music')
       .select(
         `music (
-          spotify_id,
-          title,
-          artist,
-          play_time,
-          album_cover
-        )`,
+      spotify_id,
+      title,
+      artist,
+      play_time,
+      album_cover
+    ),
+    created_at`,
       )
       .eq('playlist_id', playlistId)
 
@@ -47,20 +47,27 @@ export async function fetchPlaylistDetails(
       return null
     }
 
-    const songs: Song[] = playlistMusic.map((item) => ({
-      spotify_id: item.music.spotify_id,
-      title: item.music.title || '',
-      artist: item.music.artist || '',
-      play_time: item.music.play_time || 0,
-      album_cover: item.music.album_cover || null, // null 허용
-    }))
+    const songs: Song[] = playlistMusic
+      .map((item) => ({
+        spotify_id: item.music.spotify_id,
+        title: item.music.title || '',
+        artist: item.music.artist || '',
+        play_time: item.music.play_time || 0,
+        album_cover: item.music.album_cover || null,
+        created_at: item.created_at || '',
+      }))
+      .sort(
+        (a, b) =>
+          new Date(b.created_at || '').getTime() -
+          new Date(a.created_at || '').getTime(),
+      )
 
     // 총 재생 시간 계산 및 변환
     const totalPlayTimeMilliseconds = songs.reduce(
-      (acc, song) => acc + song.play_time,
+      (acc, song) => acc + (song.play_time || 0),
       0,
     )
-    const totalPlayTime = formatPlayTime(totalPlayTimeMilliseconds)
+    const totalPlayTime = formatPlayTime(totalPlayTimeMilliseconds / 1000)
 
     // 마지막 업데이트 일자
     const { data: lastUpdatedData } = await supabase

@@ -1,5 +1,6 @@
 export type Song = {
   spotify_id: string
+  created_at: string
   title: string
   artist: string
   play_time: number
