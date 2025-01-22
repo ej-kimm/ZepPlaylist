@@ -36,7 +36,6 @@ const SocialButton = () => {
       }
     },
     onError: (error: AuthError) => {
-      console.log('first', error)
       console.error(error.message)
       alert('에러가 발생하였습니다. 잠시후 다시 시도해주세요')
     },
@@ -48,7 +47,7 @@ const SocialButton = () => {
       spotify: 'http://localhost:3000/api/auth',
       google: 'http://localhost:3000/api/auth',
     }
-
+    //잊지말고 배포했을때 리다이렉트 주소 바꿔주기.
     signInMutation.mutate({
       provider,
       redirectTo: redirect[provider],

@@ -12,7 +12,7 @@ type FormValues = {
 
 export function SearchBar() {
   const searchParams = useSearchParams()
-  const { replace } = useRouter()
+  const router = useRouter()
   const { register, handleSubmit, setValue } = useForm<FormValues>()
 
   const [selectedKeywords, setSelectedKeywords] = useState<string[]>([])
@@ -24,7 +24,7 @@ export function SearchBar() {
     } else {
       params.delete('q')
     }
-    replace(`/search?${params.toString()}`)
+    router.push(`/search?${params.toString()}`)
   }, 300)
 
   const toggleKeyword = (keyword: string) => {

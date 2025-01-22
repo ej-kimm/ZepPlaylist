@@ -1,6 +1,4 @@
 'use client'
-
-import defaultProfileImg from '@/assets/images/defaultProfileImg.png'
 import { PrimaryButton } from '@/components/common'
 import InputBox from '@/components/common/InputBox'
 import { supabase } from '@/utils/supabase/client'
@@ -43,7 +41,9 @@ const SignupForm = () => {
   })
 
   const onSubmit = async (formData: Validator) => {
-    const { error: signUpError } = await supabase.auth.signUp({
+    const defaultProfileImg =
+      'https://hvpvszjjvqaoimyjinuo.supabase.co/storage/v1/object/sign/profile_image/Group%2017%20(1).png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJwcm9maWxlX2ltYWdlL0dyb3VwIDE3ICgxKS5wbmciLCJpYXQiOjE3Mzc0Mjg4OTcsImV4cCI6MTc0MDAyMDg5N30.rP1NO5Q17rqNwbwprtBw65kbhQT8DPIUxdmP4_KsRzo&t=2025-01-21T03%3A08%3A16.544Z'
+    const { data, error: signUpError } = await supabase.auth.signUp({
       email: formData.email,
       password: formData.password,
       options: {
@@ -53,6 +53,8 @@ const SignupForm = () => {
         },
       },
     })
+    // 이미지 url 데이터 url 그대로넣지말고 테이블에 직접 인설트 하기전에 스토리지 서비스이용해서 이미지파일 올려놓고 파일에대한 위치를 받아와서
+    // 다운로드url넣어주면 스토리지 한번 서칭해봐야할듯
     if (signUpError) {
       console.error(signUpError.message)
       Swal.fire({
@@ -62,6 +64,7 @@ const SignupForm = () => {
       return
     }
     Swal.fire('완료', '회원가입 완료!', 'success')
+    console.log('first', data)
     router.push('/login')
   }
 
@@ -91,7 +94,7 @@ const SignupForm = () => {
       <InputBox
         name="passwordCheck"
         type="password"
-        placeholder="비밀번호 확인인"
+        placeholder="비밀번호 확인"
         required={true}
         register={register}
         errorMessage={errors.passwordCheck?.message}
@@ -106,7 +109,7 @@ const SignupForm = () => {
         errorMessage={errors.nickname?.message}
         className="caption-2 mt-6 w-full rounded-lg border-white bg-[#f4f4f4]"
       />
-      <div className="mt-8 flex items-center">
+      <div className="mt-8 flex items-center justify-center">
         <input
           type="checkbox"
           className="mr-2 h-5 w-5 rounded border-gray-300 accent-primary"
@@ -124,3 +127,6 @@ const SignupForm = () => {
 }
 
 export default SignupForm
+
+// 이미지 url 데이터 url 그대로넣지말고 테이블에 직접 인설트 하기전에 스토리지 서비스이용해서 이미지파일 올려놓고 파일에대한 위치를 받아와서
+// 다운로드url넣어주면 스토리지 한번 서칭해봐야할듯

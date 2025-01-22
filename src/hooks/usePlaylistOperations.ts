@@ -1,5 +1,5 @@
 import { fetchPlaylistsWithCovers } from '@/api/playlist/actions'
-import type { MusicData, PlaylistRow } from '@/types/playlist'
+import type { PlaylistRow } from '@/types/playlist'
 import { useState } from 'react'
 
 const usePlaylistOperations = () => {
@@ -14,23 +14,9 @@ const usePlaylistOperations = () => {
     }
   }
 
-  const handleMoreOptionBtn = async (
-    id: string,
-    musicName: string,
-    artistName: string,
-  ): Promise<MusicData> => {
-    getPlayList()
-    const data = {
-      id: id,
-      title: musicName,
-      artist: artistName,
-    }
-
-    return data
-  }
   return {
     playlists,
-    handleMoreOptionBtn,
+    getPlayList,
   }
 }
 export default usePlaylistOperations

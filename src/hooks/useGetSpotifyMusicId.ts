@@ -5,6 +5,7 @@ interface SpotifyTrack {
   id: string
   artist: string
   title: string
+  playTime: number
 }
 
 export const useSpotifySearch = () => {
@@ -57,6 +58,7 @@ export const useSpotifySearch = () => {
             id: item.id,
             artist: item.artists[0].name,
             title: item.name,
+            playTime: item.duration_ms,
           }))
           .find(
             (item) => item.artist === artistName || item.title === musicName,

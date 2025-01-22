@@ -49,6 +49,8 @@ const LoginForm = () => {
       return
     }
     let loginUser = null
+    const { data: img } = await supabase.auth.getUser()
+    console.log('first', img)
     if (userData.user) {
       const { data: fetchuser, error: fetchError } = await supabase
         .from('users')
@@ -60,13 +62,14 @@ const LoginForm = () => {
       }
       loginUser = fetchuser
     }
+    console.log('first', loginUser)
 
     const user: Users | null = loginUser
       ? {
           id: loginUser[0].id,
           email: loginUser[0].email,
           nickname: loginUser[0].nickname,
-          profile_image: loginUser[0].profile_image,
+          profile_image: img.user?.user_metadata.profile_image,
         }
       : null
     setUser(user)
