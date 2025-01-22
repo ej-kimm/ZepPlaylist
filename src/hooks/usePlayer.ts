@@ -1,6 +1,9 @@
 'use client'
-import { fetchMusicDetailByMusicId } from '@/api/music-play/actions'
-import { getSongLyrics } from '@/api/music-play/lyrics-api'
+import {
+  fetchMusicDetailByMusicId,
+  insertMusicLyrics,
+} from '@/api/music-play/actions'
+import { getSongLyrics } from '@/api/music-play/genius-api'
 import { fetchPreviewUrl } from '@/api/spotifyToken'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import { useQuery } from '@tanstack/react-query'
@@ -19,11 +22,25 @@ const usePlayer = () => {
       ])
 
       // 노래 가사 가져오기
+      // let lyrics = null
+      // if (musicDetail) {
+      //   lyrics = await getSongLyrics({
+      //     title: musicDetail.title,
+      //     artist: musicDetail.artist,
+      //   })
+      // }
+
+      // [local에서만 실행] 멜론 TOP100 lyrics 테이블에 넣기
       let lyrics = null
       if (musicDetail) {
         lyrics = await getSongLyrics({
           title: musicDetail.title,
           artist: musicDetail.artist,
+        })
+        if (!lyrics) return
+        await insertMusicLyrics({
+          spotifyId: musicDetail.spotify_id,
+          lyrics,
         })
       }
 

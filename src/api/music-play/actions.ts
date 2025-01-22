@@ -19,6 +19,24 @@ export const fetchMusicId = async (): Promise<
   return musicId.map((item) => item.spotify_id) || []
 }
 
+export const insertMusicLyrics = async ({
+  spotifyId,
+  lyrics,
+}: {
+  spotifyId: Tables<'music'>['spotify_id']
+  lyrics: string
+}): Promise<void> => {
+  const { error } = await supabase
+    .from('music')
+    .update({ lyrics })
+    .eq('spotify_id', spotifyId)
+
+  if (error) {
+    console.error('Failed to update music lyrics:', error)
+    throw new Error('Lyrics 업데이트에 실패했습니다.')
+  }
+}
+
 export const fetchMusicDetailByMusicId = async (
   musicId: Tables<'music'>['spotify_id'],
 ): Promise<Tables<'music'>> => {
