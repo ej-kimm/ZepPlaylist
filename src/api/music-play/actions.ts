@@ -2,23 +2,6 @@ import type { Tables } from '@/types/supabase'
 import { supabase } from '@/utils/supabase/client'
 
 // music 테이블
-
-// TODO : 삭제 할 함수
-export const fetchMusicId = async (): Promise<
-  Tables<'music'>['spotify_id'][]
-> => {
-  const { data: musicId, error } = await supabase
-    .from('music')
-    .select('spotify_id')
-
-  if (error) {
-    console.error('Error fetching music:', error)
-    throw error
-  }
-
-  return musicId.map((item) => item.spotify_id) || []
-}
-
 export const insertMusicLyrics = async ({
   spotifyId,
   lyrics,
