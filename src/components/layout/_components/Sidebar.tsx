@@ -1,3 +1,4 @@
+import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import { userStore } from '@/store/userSlice'
 import { supabase } from '@/utils/supabase/client'
 import Swal from 'sweetalert2'
@@ -11,6 +12,7 @@ type SidebarProps = {
 
 const Sidebar = ({ isOpen, toggleMenu }: SidebarProps) => {
   const { user, setUser } = userStore()
+  const { isPlayerModalOpen, setPlayerClose } = useMusicPlayerStore()
 
   const handleLogOut = async () => {
     const { error } = await supabase.auth.signOut()
@@ -23,6 +25,8 @@ const Sidebar = ({ isOpen, toggleMenu }: SidebarProps) => {
     }
     localStorage.removeItem('user')
     setUser(null)
+    toggleMenu()
+    if (isPlayerModalOpen) setPlayerClose()
   }
 
   return (
