@@ -1,8 +1,8 @@
 'use client'
 import { fetchMusicDetailByMusicId } from '@/api/music-play/actions'
+import { getSongLyrics } from '@/api/music-play/lyrics-api'
 import { fetchPreviewUrl } from '@/api/spotifyToken'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
-import { getSongLyrics } from '@/utils/geniusApi'
 import { useQuery } from '@tanstack/react-query'
 
 const usePlayer = () => {
