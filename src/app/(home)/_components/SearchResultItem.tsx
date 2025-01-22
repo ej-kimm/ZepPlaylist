@@ -16,52 +16,38 @@ const SearchResultItem = ({ item }: SearchResultProps) => {
 
   const { upsertMusic } = usePlaylistMusicUpsert(item.album.images[0].url)
 
-  const handlePlayBtn = async (
-    songId: string,
-    musicName: string,
-    artist: string,
-    playTime: number,
-  ) => {
+  const handlePlay = async () => {
     const newMusicData = {
-      id: songId,
-      title: musicName,
-      artist,
-      playTime,
+      id: item.id,
+      title: item.name,
+      artist: item.artists[0].name,
+      playTime: item.duration_ms,
     }
 
     await upsertMusic(newMusicData)
     if (!isPlayerOpen) setPlayerOpen() // 페이지 방문 후, 첫 곡 재생이면 플레이어바 보여줌
-    setTrackIds(songId)
+    setTrackIds(item.id)
     play()
   }
 
   return (
-    <li
-      onClick={() =>
-        handlePlayBtn(
-          item.id,
-          item.name,
-          item.artists[0].name,
-          item.duration_ms,
-        )
-      }
-      className="flex items-center space-x-4 rounded-lg py-2 transition-colors"
-    >
-      <div className="relative flex-shrink-0">
+    <li className="flex items-center space-x-4 rounded-lg py-2 transition-colors">
+      <div className="flex-shrink-0 cursor-pointer" onClick={handlePlay}>
         <Image
           src={item.album.images[0].url}
           alt={item.album.name}
-          width={50}
-          height={50}
+          width={44}
+          height={44}
           className="rounded-md"
           priority
         />
       </div>
-      <div className="min-w-0 flex-1">
-        <h3 className="truncate text-base font-medium text-gray-900">
-          {item.name}
-        </h3>
-        <p className="truncate text-sm text-gray-500">{item.artists[0].name}</p>
+      <div
+        className="flex min-w-0 flex-1 cursor-pointer flex-col gap-1"
+        onClick={handlePlay}
+      >
+        <h3 className="button-2 truncate">{item.name}</h3>
+        <p className="caption-2 truncate">{item.artists[0].name}</p>
       </div>
       <MoreOptionsButton
         musicName={item.name}
