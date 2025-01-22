@@ -121,6 +121,11 @@ export default function LikedSongsPage({
           </button>
         </div>
       </header>
+
+      <section className="mb-3 mt-0 text-gray-600">
+        <p className="font-pretendard text-sm">곡 수: {likedSongs.length}곡</p>
+      </section>
+
       <ul className="space-y-2">
         {likedSongs.map((song, index) => (
           <li
