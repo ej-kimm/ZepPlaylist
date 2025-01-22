@@ -3,7 +3,6 @@
 import MoreOptionsButton from '@/components/common/MoreOptionsButton'
 import { useSpotifySearch } from '@/hooks/useGetSpotifyMusicId'
 import { usePlaylistMusicUpsert } from '@/hooks/usePlaylistMusicUpsert'
-import usePlaylistOperations from '@/hooks/usePlaylistOperations'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import { userStore } from '@/store/userSlice'
 import Image from 'next/image'
@@ -40,28 +39,27 @@ const Top100ChartList = ({
   const { isPlayerOpen, setTrackIds, togglePlay, setPlayerOpen } =
     useMusicPlayerStore()
 
-  const { playlists, handleMoreOptionBtn } = usePlaylistOperations()
-
   const { upsertMusic } = usePlaylistMusicUpsert(albumCover)
 
   const handlePlayBtn = async () => {
     // 데이터 일치화를 위해 ()와 안의 텍스트 제거
-
     const newMusicName = musicName.replace(/\s*\(.*?\)\s*/g, '').trim()
     const newArtistiName = artistName.replace(/\s*\(.*?\)\s*/g, '').trim()
 
     const musicData = await searchSpotifyId(newMusicName, newArtistiName)
-    await handleMoreOptionBtn(
-      musicData!.id,
-      musicData!.title,
-      musicData!.artist,
-    )
 
-    await upsertMusic(musicData!)
+    const newMusicData = {
+      id: musicData!.id, // 스포티파이로 변환한 아이디
+      title: musicData!.title,
+      artist: musicData!.artist,
+      playTime: musicData!.playTime,
+    }
+
+    await upsertMusic(newMusicData)
 
     const songId = musicData!.id
 
-    if (!isPlayerOpen) setPlayerOpen() // 페이지 방문 후, 첫 곡 재생이면 플레이어바 보여줌
+    if (!isPlayerOpen) setPlayerOpen()
     setTrackIds(songId)
     togglePlay()
   }
@@ -96,8 +94,6 @@ const Top100ChartList = ({
         artistName={artistName}
         albumCover={albumCover}
         user={user}
-        onFetchMusicData={() => handleMoreOptionBtn('_', musicName, artistName)}
-        playlists={playlists}
       />
     </li>
   )
