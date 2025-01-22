@@ -6,6 +6,7 @@ interface MusicData {
   id: string
   title: string
   artist: string
+  playTime: number
 }
 
 export const usePlaylistMusicUpsert = (albumCover: string) => {
@@ -35,7 +36,7 @@ export const usePlaylistMusicUpsert = (albumCover: string) => {
             title: musicData.title,
             artist: musicData.artist,
             album_cover: albumCover,
-            play_time: 0,
+            play_time: musicData.playTime,
             created_at: new Date().toISOString(),
           })
           .select()

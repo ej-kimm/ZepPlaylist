@@ -47,7 +47,7 @@ const SocialButton = () => {
       spotify: 'http://localhost:3000/api/auth',
       google: 'http://localhost:3000/api/auth',
     }
-
+    //잊지말고 배포했을때 리다이렉트 주소 바꿔주기.
     signInMutation.mutate({
       provider,
       redirectTo: redirect[provider],

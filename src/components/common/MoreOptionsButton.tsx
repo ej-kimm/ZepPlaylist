@@ -1,7 +1,8 @@
 'use client'
 
+import { useSpotifySearch } from '@/hooks/useGetSpotifyMusicId'
 import { usePlaylistMusicUpsert } from '@/hooks/usePlaylistMusicUpsert'
-import type { MusicData, PlaylistRow } from '@/types/playlist'
+import usePlaylistOperations from '@/hooks/usePlaylistOperations'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
@@ -13,8 +14,6 @@ type MoreOptionsButtonProps = {
   artistName: string
   albumCover: string
   user: User | null
-  onFetchMusicData: () => Promise<MusicData>
-  playlists: PlaylistRow[]
 }
 
 type User = {
@@ -29,18 +28,17 @@ const MoreOptionsButton = ({
   artistName,
   albumCover,
   user,
-  onFetchMusicData,
-  playlists,
 }: MoreOptionsButtonProps) => {
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false)
-
+  const { playlists, getPlayList } = usePlaylistOperations()
+  const { searchSpotifyId } = useSpotifySearch()
   const { upsertMusic, addMusicToPlaylistTable } =
     usePlaylistMusicUpsert(albumCover)
 
   const handleOpenBottomSheet = async () => {
     setIsBottomSheetOpen(true)
     try {
-      await onFetchMusicData()
+      await getPlayList()
     } catch (error) {
       console.error('Error in handleOpenBottomSheet:', error)
     }
@@ -49,11 +47,13 @@ const MoreOptionsButton = ({
   // 특정 플레이리스트 목록을 동작하는 함수
   const addMusiscInPlayList = async (playlistId: string) => {
     try {
-      // ... 버튼 클릭 시 해당 곡의 data 정보를 가저온다
-      const musicData = await onFetchMusicData()
+      const newMusicName = musicName.replace(/\s*\(.*?\)\s*/g, '').trim()
+      const newArtistiName = artistName.replace(/\s*\(.*?\)\s*/g, '').trim()
+
+      const musicData = await searchSpotifyId(newMusicName, newArtistiName)
 
       // spubase music 테이블에 곡 담아주는 함수 호출
-      const musicId = await upsertMusic(musicData)
+      const musicId = await upsertMusic(musicData!)
 
       // spubase playlist_music 테이블에 곡 담아주는 함수 호출
       await addMusicToPlaylistTable(musicId as string, playlistId)
@@ -121,9 +121,6 @@ const MoreOptionsButton = ({
                       </div>
                       <div>
                         <p className="text-sm">{playlist.name} 플레이리스트</p>
-                        {/* <p className="text-sm text-gray-500">
-                          {playlist.description}
-                        </p> */}
                       </div>
                     </div>
                   </li>

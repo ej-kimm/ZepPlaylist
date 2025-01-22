@@ -38,8 +38,13 @@ export async function updateSession(request: NextRequest) {
   const {
     data: { user },
   } = await supabase.auth.getUser()
-  if (!user) {
-    return
+
+  const { pathname } = new URL(request.url)
+  if (user?.id && (pathname === '/login' || pathname === '/sign-up')) {
+    return NextResponse.redirect(new URL('/', request.url))
+  }
+  if (!user?.id && pathname === '/my-page') {
+    return NextResponse.redirect(new URL('/login', request.url))
   }
 
   return supabaseResponse
