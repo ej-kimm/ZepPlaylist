@@ -13,11 +13,13 @@ export const fetchSpotifyToken = async () => {
       'Content-Type': 'application/x-www-form-urlencoded',
     },
     body: params.toString(),
+    cache: 'no-store',
   })
 
   const { access_token: token } = await res.json()
   return token
 }
+
 export const fetchPreviewUrl = async (trackId: string) => {
   try {
     const res = await fetch(`https://open.spotify.com/embed/track/${trackId}`, {
