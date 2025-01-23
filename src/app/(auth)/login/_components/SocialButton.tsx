@@ -25,10 +25,16 @@ const SocialButton = () => {
     }) => {
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider,
-        options: { redirectTo },
+        options: {
+          redirectTo,
+          queryParams: {
+            access_type: 'offline',
+            prompt: 'select_account',
+          },
+        },
       })
       if (error) throw new Error(error.message)
-      return data ? { ...data } : data
+      return { ...data }
     },
     onSuccess: async (data: Data) => {
       if (data?.url) {
@@ -81,7 +87,7 @@ const SocialButton = () => {
         />
       </form>
       <Link
-        className="caption-1 flex justify-center opacity-60"
+        className="caption-1 mb-10 flex justify-center opacity-60"
         href={'/sign-up'}
       >
         회원가입

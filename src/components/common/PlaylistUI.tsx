@@ -2,15 +2,15 @@
 
 import likeFalse from '@/assets/images/likeFalse.svg'
 import likeTrue from '@/assets/images/likeTrue.svg'
-import Image from 'next/image'
 import type { StaticImageData } from 'next/image'
+import Image from 'next/image'
 
 type PlaylistUIProps = {
   profileImg: string | StaticImageData
   playlistName: string
   nickName: string
   likeCount: number
-  isLiked: boolean
+  isLiked?: boolean
   onLikeToggle: () => void
   onClick?: () => void
 }
@@ -24,10 +24,9 @@ const PlaylistUI = ({
   onLikeToggle,
   onClick,
 }: PlaylistUIProps) => {
-  console.log(likeCount)
   return (
     <div
-      className="flex cursor-pointer items-center justify-between rounded-lg bg-white p-4 shadow mt-4"
+      className="mt-4 flex cursor-pointer items-center justify-between rounded-lg bg-white p-4 shadow"
       onClick={onClick}
     >
       {/* 프로필 이미지 */}

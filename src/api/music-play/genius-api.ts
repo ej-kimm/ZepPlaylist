@@ -4,14 +4,12 @@ import { Tables } from '@/types/supabase'
 const getAccessToken = async (): Promise<string> => {
   const clientId = process.env.GENIUS_CLIENT_ID
   const clientSecret = process.env.GENIUS_CLIENT_SECRET
-
   if (!clientId || !clientSecret) {
     console.error(
       'Environment variables GENIUS_CLIENT_ID or GENIUS_CLIENT_SECRET are missing.',
     )
     throw new Error('Missing required environment variables.')
   }
-
   try {
     const response = await fetch('https://api.genius.com/oauth/token', {
       method: 'POST',
@@ -23,13 +21,11 @@ const getAccessToken = async (): Promise<string> => {
         grant_type: 'client_credentials',
       }),
     })
-
     if (!response.ok) {
       throw new Error(
         `HTTP Error ${response.status}: Unable to fetch access token.`,
       )
     }
-
     const data = await response.json()
     return data.access_token
   } catch (error) {
@@ -45,7 +41,6 @@ const getAccessToken = async (): Promise<string> => {
     throw new Error(`An unexpected error occurred: Please check the logs.`)
   }
 }
-
 const getSongId = async ({
   artist,
   title,
@@ -147,7 +142,6 @@ const crawlLyrics = async (lyricsUrl: string): Promise<string> => {
         .replace(/<(?!br\s*\/?)[^>]+>/g, '') // <br> 태그를 제외한 모든 태그 제거
         .replace(/\[.*?\].*?\n?/g, '') // 대괄호가 포함된 문장 제거
         .replace(/(<br\s*\/?>\s*){3,}/g, '<br><br>') // 연속된 <br> 태그가 3개 이상일 경우 2개로 줄임
-        // .replace(/^<br\s*\/?>|<br\s*\/?>$/g, '') // 맨 처음과 맨 끝의 <br> 태그 제거 맨첫줄 띄울지?
         .replace(/^(<br\s*\/?>)+|(<br\s*\/?>)+$/g, '') // 맨 처음과 맨 끝에 있는 모든 <br> 태그 제거 맨첫줄 안띄울지
         .trim() // 양쪽 공백 제거
       return cleanedLyrics

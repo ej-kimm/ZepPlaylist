@@ -11,28 +11,30 @@ type SearchResultProps = {
 
 const SearchResultItem = ({ item }: SearchResultProps) => {
   const { user } = userStore((state) => state)
-  const { isPlayerOpen, setTrackIds, togglePlay, setPlayerOpen } =
+  const { isPlayerOpen, setTrackIds, setPlayerOpen, play } =
     useMusicPlayerStore()
 
-  const { upsertMusic } = usePlaylistMusicUpsert(item.album.images[0].url)
+  const { upsertMusic } = usePlaylistMusicUpsert()
 
   const handlePlayBtn = async (
     songId: string,
     musicName: string,
     artist: string,
     playTime: number,
+    albumCover: string,
   ) => {
     const newMusicData = {
       id: songId,
       title: musicName,
       artist,
       playTime,
+      albumCover,
     }
 
     await upsertMusic(newMusicData)
     if (!isPlayerOpen) setPlayerOpen() // 페이지 방문 후, 첫 곡 재생이면 플레이어바 보여줌
     setTrackIds(songId)
-    togglePlay()
+    play()
   }
 
   return (
@@ -43,6 +45,7 @@ const SearchResultItem = ({ item }: SearchResultProps) => {
           item.name,
           item.artists[0].name,
           item.duration_ms,
+          item.album.images[0].url,
         )
       }
       className="flex items-center space-x-4 rounded-lg py-2 transition-colors"

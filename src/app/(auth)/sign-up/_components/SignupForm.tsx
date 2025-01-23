@@ -71,7 +71,7 @@ const SignupForm = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="mt-[50px] w-full bg-white"
+      className="mt-[25px] w-full bg-white"
     >
       <InputBox
         name="email"
@@ -109,7 +109,7 @@ const SignupForm = () => {
         errorMessage={errors.nickname?.message}
         className="caption-2 mt-6 w-full rounded-lg border-white bg-[#f4f4f4]"
       />
-      <div className="mt-8 flex items-center justify-center">
+      <div className="mt-4 flex items-center justify-center">
         <input
           type="checkbox"
           className="mr-2 h-5 w-5 rounded border-gray-300 accent-primary"
@@ -118,7 +118,7 @@ const SignupForm = () => {
       </div>
       <PrimaryButton
         type="submit"
-        className="button-2 mt-12 h-[39px] w-full rounded-full border-primary text-white"
+        className="button-2 mt-4 h-[39px] w-full rounded-full border-primary text-white"
       >
         회원가입
       </PrimaryButton>
