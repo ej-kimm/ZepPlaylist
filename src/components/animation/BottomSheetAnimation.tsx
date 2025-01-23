@@ -42,7 +42,7 @@ const BottomSheetAnimation: React.FC<BottomSheetAnimationProps> = ({
             exit={{ opacity: 0 }}
           />
           <motion.div
-            className="z-bottom-sheet fixed bottom-0 left-0 right-0 mx-auto w-full -translate-x-1/2 -translate-y-1/2 rounded-t-[36px] bg-white p-5 shadow-lg"
+            className="z-bottom-sheet fixed bottom-0 left-0 right-0 mx-auto w-full -translate-x-1/2 -translate-y-1/2 rounded-t-[36px] bg-white p-5 pb-0 shadow-lg"
             style={{
               height,
               maxWidth,

@@ -59,42 +59,45 @@ const MusicSaveBottomSheet = ({
         <p className="body-2 truncate opacity-40">{artistName}</p>
       </header>
 
-      <h1 className="my-3 text-base">플레이리스트 담기</h1>
-      <div className="px-4">
-        <Link href="/playlist">
-          <div className="flex items-center gap-2">
-            <div className="h-12 w-12 rounded-lg bg-[#C4C4C4]" />
-            <p className="caption-1">새 플레이리스트 만들기</p>
-          </div>
-        </Link>
+      <div className="flex flex-col">
+        <h1 className="my-3 text-base">플레이리스트 담기</h1>
 
-        {!user && !isPending ? (
-          // TODO : 스켈레톤 UI로 변경하기
-          <p className="text-center text-gray-500">로딩 중...</p>
-        ) : (
-          <ul className="mt-2 space-y-2">
-            {playlists.map((playlist) => (
-              <li
-                key={playlist.id}
-                className="flex items-center gap-2"
-                onClick={() => addMusiscInPlayList(playlist.id)}
-              >
-                {playlist.latest_song_cover ? (
-                  <Image
-                    src={playlist.latest_song_cover}
-                    width={48}
-                    height={48}
-                    alt="앨범 커버"
-                    className="rounded-lg object-cover"
-                  />
-                ) : (
-                  <div className="h-12 w-12 rounded-lg bg-[#C4C4C4]" />
-                )}
-                <p className="caption-1">{playlist.name}</p>
-              </li>
-            ))}
-          </ul>
-        )}
+        <div className="h-full bg-white px-4">
+          <Link href="/playlist">
+            <div className="flex items-center gap-2">
+              <div className="h-12 w-12 rounded-lg bg-[#C4C4C4]" />
+              <p className="caption-1">새 플레이리스트 만들기</p>
+            </div>
+          </Link>
+
+          {!user && !isPending ? (
+            // TODO : 스켈레톤 UI로 변경하기
+            <p className="text-center text-gray-500">로딩 중...</p>
+          ) : (
+            <ul className="scroll-invisible h-full max-h-[calc(50vh-204px)] space-y-2 overflow-y-scroll bg-white py-2">
+              {playlists.map((playlist) => (
+                <li
+                  key={playlist.id}
+                  className="flex items-center gap-2"
+                  onClick={() => addMusiscInPlayList(playlist.id)}
+                >
+                  {playlist.latest_song_cover ? (
+                    <Image
+                      src={playlist.latest_song_cover}
+                      width={48}
+                      height={48}
+                      alt="앨범 커버"
+                      className="rounded-lg object-cover"
+                    />
+                  ) : (
+                    <div className="h-12 w-12 rounded-lg bg-[#C4C4C4]" />
+                  )}
+                  <p className="caption-1">{playlist.name}</p>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       </div>
     </BottomSheet>
   )
