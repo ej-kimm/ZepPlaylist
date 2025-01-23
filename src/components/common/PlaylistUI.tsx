@@ -24,7 +24,6 @@ const PlaylistUI = ({
   onLikeToggle,
   onClick,
 }: PlaylistUIProps) => {
-  console.log('first', likeCount)
   return (
     <div
       className="mt-4 flex cursor-pointer items-center justify-between rounded-lg bg-white p-4 shadow"
