@@ -52,7 +52,14 @@ export default function MusicDetailModal({
     }
     updateLike.mutate({ user_id })
   }
-  const handleSave = () => setIsSaved((prev) => !prev)
+  const handleSave = () => {
+    if (!user_id) {
+      // TODO : 로그인 하라는 모달창 띄우기
+      alert('로그인을 해주세요!')
+      return
+    }
+    setIsSaved((prev) => !prev)
+  }
   const handleClickLyrics = () => setIsFullLyrics((prev) => !prev)
 
   // 로그인 한 유저

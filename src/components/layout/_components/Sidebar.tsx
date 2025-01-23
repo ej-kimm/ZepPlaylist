@@ -1,6 +1,7 @@
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import { userStore } from '@/store/userSlice'
 import { supabase } from '@/utils/supabase/client'
+import { useEffect } from 'react'
 import Swal from 'sweetalert2'
 import ProfileHeader from './ProfileHeader'
 import SidebarMenu from './SidebarMenu'
@@ -28,6 +29,19 @@ const Sidebar = ({ isOpen, toggleMenu }: SidebarProps) => {
     toggleMenu()
     if (isPlayerModalOpen) setPlayerClose()
   }
+
+  // 스크롤 비활성화
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = 'auto'
+    }
+
+    return () => {
+      document.body.style.overflow = 'auto'
+    }
+  }, [isOpen])
 
   return (
     <aside
