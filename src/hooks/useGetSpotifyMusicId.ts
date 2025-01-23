@@ -1,12 +1,6 @@
 import { fetchSpotifyToken } from '@/api/spotifyToken'
+import type { SpotifyTrack } from '@/types/billboradCharts'
 import { useCallback, useState } from 'react'
-
-interface SpotifyTrack {
-  id: string
-  artist: string
-  title: string
-  playTime: number
-}
 
 export const useSpotifySearch = () => {
   const [isLoading, setIsLoading] = useState(false)
@@ -59,6 +53,7 @@ export const useSpotifySearch = () => {
             artist: item.artists[0].name,
             title: item.name,
             playTime: item.duration_ms,
+            albumCover: item.album.images[0].url,
           }))
           .find(
             (item) => item.artist === artistName || item.title === musicName,

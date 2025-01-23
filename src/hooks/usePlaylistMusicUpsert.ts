@@ -1,72 +1,63 @@
+import type { SpotifyTrack } from '@/types/billboradCharts'
 import { supabase } from '@/utils/supabase/client'
 import { useCallback } from 'react'
 import Swal from 'sweetalert2'
 
-interface MusicData {
-  id: string
-  title: string
-  artist: string
-  playTime: number
-}
+export const usePlaylistMusicUpsert = () => {
+  const upsertMusic = useCallback(async (musicData: SpotifyTrack) => {
+    if (!musicData) {
+      console.log('No data returned from onFetchMusicData')
+      return null
+    }
 
-export const usePlaylistMusicUpsert = (albumCover: string) => {
-  const upsertMusic = useCallback(
-    async (musicData: MusicData) => {
-      if (!musicData) {
-        console.log('No data returned from onFetchMusicData')
-        return null
-      }
+    const { data: existingMusic, error: fetchError } = await supabase
+      .from('music')
+      .select('*')
+      .eq('spotify_id', musicData.id)
+      .maybeSingle()
 
-      const { data: existingMusic, error: fetchError } = await supabase
+    if (fetchError && fetchError.code !== 'PGRST116') {
+      console.error('Error fetching music:', fetchError)
+      return null
+    }
+
+    if (!existingMusic) {
+      const { data: insertedMusic, error: insertError } = await supabase
         .from('music')
-        .select('*')
-        .eq('spotify_id', musicData.id)
-        .maybeSingle()
+        .insert({
+          spotify_id: musicData.id,
+          title: musicData.title,
+          artist: musicData.artist,
+          album_cover: musicData.albumCover,
+          play_time: musicData.playTime,
+          created_at: new Date().toISOString(),
+        })
+        .select()
+        .single()
 
-      if (fetchError && fetchError.code !== 'PGRST116') {
-        console.error('Error fetching music:', fetchError)
+      if (insertError) {
+        console.error('Error inserting new music:', insertError)
         return null
       }
 
-      if (!existingMusic) {
-        const { data: insertedMusic, error: insertError } = await supabase
-          .from('music')
-          .insert({
-            spotify_id: musicData.id,
-            title: musicData.title,
-            artist: musicData.artist,
-            album_cover: albumCover,
-            play_time: musicData.playTime,
-            created_at: new Date().toISOString(),
-          })
-          .select()
-          .single()
+      console.log('Insert successful:', insertedMusic)
+      return insertedMusic.spotify_id
+    } else {
+      const { data: updatedMusic, error: updateError } = await supabase
+        .from('music')
+        .update({ created_at: new Date().toISOString() })
+        .eq('spotify_id', musicData.id)
+        .select()
+        .single()
 
-        if (insertError) {
-          console.error('Error inserting new music:', insertError)
-          return null
-        }
-
-        console.log('Insert successful:', insertedMusic)
-        return insertedMusic.spotify_id
-      } else {
-        const { data: updatedMusic, error: updateError } = await supabase
-          .from('music')
-          .update({ created_at: new Date().toISOString() })
-          .eq('spotify_id', musicData.id)
-          .select()
-          .single()
-
-        if (updateError) {
-          console.error('Error updating created_at:', updateError)
-          return null
-        }
-
-        return updatedMusic.spotify_id
+      if (updateError) {
+        console.error('Error updating created_at:', updateError)
+        return null
       }
-    },
-    [albumCover],
-  )
+
+      return updatedMusic.spotify_id
+    }
+  }, [])
 
   const addMusicToPlaylistTable = useCallback(
     async (musicId: string, playlistId: string) => {
