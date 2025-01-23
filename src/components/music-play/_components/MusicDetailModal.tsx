@@ -38,7 +38,7 @@ export default function MusicDetailModal({
   const router = useRouter()
   const { user } = userStore()
   const user_id = user?.id || ''
-  const { title, artist, album_cover } = musicDetail || {}
+  const { title, artist } = musicDetail || {}
   const { isPlayerModalOpen, closePlayerModal, setPlayerClose } =
     useMusicPlayerStore()
   const { songLike, updateLike } = useSongLike({ user_id })
