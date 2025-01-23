@@ -1,7 +1,7 @@
 'use client'
 
 import PlaylistSection from '@/app/community/_components/PlaylistSection'
-import KeywordCarousel from '@/components/common/keywordCarousel'
+import { KeywordCarousel } from '@/components/common'
 import { useState } from 'react'
 
 type Playlist = {

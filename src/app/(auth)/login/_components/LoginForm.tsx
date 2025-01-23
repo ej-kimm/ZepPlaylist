@@ -1,6 +1,5 @@
 'use client'
-import { PrimaryButton } from '@/components/common'
-import InputBox from '@/components/common/InputBox'
+import { InputBox, PrimaryButton } from '@/components/common'
 import { userStore } from '@/store/userSlice'
 import type { Users } from '@/types/auth'
 import { supabase } from '@/utils/supabase/client'
@@ -79,7 +78,7 @@ const LoginForm = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="mx-auto max-w-sm border-b border-black border-opacity-40 sm:p-6"
+      className="sm:p-6 mx-auto max-w-sm border-b border-black border-opacity-40"
     >
       <h2 className="title-1 mt-[72px] text-left">로그인</h2>
       <InputBox

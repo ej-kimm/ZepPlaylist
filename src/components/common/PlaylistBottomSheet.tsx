@@ -1,5 +1,5 @@
 import BottomSheet from './BottomSheet'
-import KeywordCarousel from './keywordCarousel'
+import KeywordCarousel from './KeywordCarousel'
 
 type PlaylistBottomSheetProps = {
   isOpen: boolean
