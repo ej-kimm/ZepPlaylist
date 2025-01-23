@@ -141,7 +141,6 @@ export default function MusicDetailModal({
         handleClose={() => handleUserAction('save')}
         musicName={title || ''}
         artistName={artist || ''}
-        albumCover={album_cover || ''}
       />
     </>
   )
