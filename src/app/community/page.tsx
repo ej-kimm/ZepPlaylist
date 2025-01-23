@@ -5,7 +5,6 @@ import { cookies } from 'next/headers'
 import ClientPopularPlaylistUI from './_components/ClientPopularPlaylistUI'
 import CustomSwiper from './_components/CustomSwiper'
 import KeywordCarouselWrapper from './_components/KeywordCarouselWrapper'
-import PlaylistSection from './_components/PlaylistSection'
 
 const CommunityPage = async (): Promise<JSX.Element> => {
   const supabase = createServerClient(
@@ -61,7 +60,6 @@ const CommunityPage = async (): Promise<JSX.Element> => {
         }))}
       />
       <KeywordCarouselWrapper allPlaylists={allPlaylists} userId={userId} />
-      <PlaylistSection userId={userId} playlists={allPlaylists} />
     </div>
   )
 }

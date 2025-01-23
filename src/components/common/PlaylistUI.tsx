@@ -24,6 +24,7 @@ const PlaylistUI = ({
   onLikeToggle,
   onClick,
 }: PlaylistUIProps) => {
+  console.log(likeCount)
   return (
     <div
       className="flex cursor-pointer items-center justify-between rounded-lg bg-white p-4 shadow mt-4"
@@ -57,7 +58,7 @@ const PlaylistUI = ({
         <button
           className="text-xl"
           onClick={(e) => {
-            e.stopPropagation() // 클릭 이벤트 전파 방지
+            e.stopPropagation()
             onLikeToggle()
           }}
         >

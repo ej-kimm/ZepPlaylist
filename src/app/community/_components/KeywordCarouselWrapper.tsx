@@ -2,14 +2,16 @@
 
 import KeywordCarousel from '@/components/keywords/keywordCarousel'
 import { useState } from 'react'
+import PlaylistSection from '@/app/community/_components/PlaylistSection';
 
 type Playlist = {
   id: string
   name: string
-  likeCount: number
   likedByUser?: boolean
   profile_image: string | null
   nickname: string | null
+  keyword: string
+  likeCount: number
 }
 
 type KeywordCarouselWrapperProps = {
@@ -19,32 +21,28 @@ type KeywordCarouselWrapperProps = {
 
 const KeywordCarouselWrapper = ({
   allPlaylists,
+  userId,
 }: KeywordCarouselWrapperProps) => {
-  const [selectedKeywords, setSelectedKeywords] = useState<string[]>([])
-  const [filteredPlaylists, setFilteredPlaylists] =
-    useState<Playlist[]>(allPlaylists)
+  const [selectedKeywords, setSelectedKeywords] = useState<string[]>([]);
+  const [filteredPlaylists, setFilteredPlaylists] = useState<Playlist[]>(allPlaylists);
 
   const handleToggleKeyword = (keyword: string) => {
     const updatedKeywords = selectedKeywords.includes(keyword)
       ? selectedKeywords.filter((k) => k !== keyword)
-      : [...selectedKeywords, keyword]
+      : [...selectedKeywords, keyword];
 
-    setSelectedKeywords(updatedKeywords)
+    setSelectedKeywords(updatedKeywords);
 
     if (updatedKeywords.length === 0) {
-      setFilteredPlaylists(allPlaylists)
+      setFilteredPlaylists(allPlaylists);
     } else {
-      const keywordFilteredPlaylists = allPlaylists.filter((playlist) =>
-        updatedKeywords.some(
-          (key) =>
-            playlist.name.toLowerCase().includes(key.toLowerCase()) // 대소문자 무시
-        ),
-      )
-      setFilteredPlaylists(keywordFilteredPlaylists)
+      const keywordFilteredPlaylists = allPlaylists.filter((playlist) => {
+        const playlistKeywords = playlist.keyword.split(',').map((k) => k.trim());
+        return updatedKeywords.some((key) => playlistKeywords.includes(key));
+      });
+      setFilteredPlaylists(keywordFilteredPlaylists);
     }
-  }
-
-  console.log('filteredPlaylists', filteredPlaylists)
+  };
 
   return (
     <div>
@@ -53,20 +51,9 @@ const KeywordCarouselWrapper = ({
         selectedKeywords={selectedKeywords}
         onToggleKeyword={handleToggleKeyword}
       />
-        {filteredPlaylists.length > 0 ? (
-          <ul>
-            {filteredPlaylists.map((playlist) => (
-              <li key={playlist.id}>
-                <div className="flex items-center gap-4">
-                </div>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>해당 키워드에 해당하는 플레이리스트가 없습니다.</p>
-        )}
-      </div>
-  )
-}
+      <PlaylistSection userId={userId} playlists={filteredPlaylists} />
+    </div>
+  );
+};
 
-export default KeywordCarouselWrapper
+export default KeywordCarouselWrapper;

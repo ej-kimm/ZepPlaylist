@@ -34,7 +34,7 @@ type CommunityDetailUIProps = {
   comments: Comment[]
   content: string
   setContent: React.Dispatch<React.SetStateAction<string>>
-  handleSongClick: () => void
+  //   handleSongClick: () => void
   handleAddComment: () => Promise<void>
   handleDeleteComment: (commentId: string) => Promise<void>
   currentUserId: string | null
@@ -51,7 +51,7 @@ export default function CommunityDetailUI({
   comments,
   content,
   setContent,
-  handleSongClick,
+  //   handleSongClick,
   handleAddComment,
   handleDeleteComment,
   currentUserId,
@@ -110,7 +110,6 @@ export default function CommunityDetailUI({
               <li
                 key={song.spotify_id}
                 className="flex items-center justify-between py-4"
-                onClick={() => handleSongClick()}
               >
                 <div className="flex items-center">
                   <div className="relative h-12 w-12">
@@ -171,7 +170,7 @@ export default function CommunityDetailUI({
                   {/* 댓글 내용과 삭제 버튼을 묶는 컨테이너 */}
                   <div className="flex flex-1 items-center justify-between">
                     {/* 댓글 내용 */}
-                    <p className="caption-1 mt-2 flex-1">
+                    <p className="caption-1 flex-1text-gray-500 mt-2">
                       {comment.content}
                     </p>
 
