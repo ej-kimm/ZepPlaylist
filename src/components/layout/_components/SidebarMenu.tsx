@@ -56,7 +56,7 @@ const SidebarMenu = ({ toggleMenu }: SidebarMenuProps) => {
   return (
     <ul className="flex flex-col items-start justify-center gap-2">
       {LINKS.map((link) => (
-        <li key={link.text}>
+        <li key={link.text} className="w-full">
           <Link
             href={link.to}
             className="flex h-10 items-center justify-start gap-1"
