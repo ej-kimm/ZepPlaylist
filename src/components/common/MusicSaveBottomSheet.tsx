@@ -5,6 +5,7 @@ import usePlaylistOperations from '@/hooks/usePlaylistOperations'
 import { userStore } from '@/store/userSlice'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useEffect } from 'react'
 import BottomSheet from './BottomSheet'
 
 type MusicSaveBottomSheetProps = {
@@ -46,6 +47,19 @@ const MusicSaveBottomSheet = ({
       throw error
     }
   }
+
+  // 스크롤 비활성화
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = 'auto'
+    }
+
+    return () => {
+      document.body.style.overflow = 'auto'
+    }
+  }, [isOpen])
 
   return (
     <BottomSheet
