@@ -7,7 +7,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import BottomSheet from './BottomSheet'
 
-type MusicSaveSheetProps = {
+type MusicSaveBottomSheetProps = {
   musicName: string
   artistName: string
   albumCover: string
@@ -15,13 +15,13 @@ type MusicSaveSheetProps = {
   handleClose: () => void
 }
 
-const MusicSaveSheet = ({
+const MusicSaveBottomSheet = ({
   musicName,
   artistName,
   albumCover,
   isOpen,
   handleClose,
-}: MusicSaveSheetProps) => {
+}: MusicSaveBottomSheetProps) => {
   const { user } = userStore()
   const { playlists, isPending } = usePlaylistOperations()
   const { searchSpotifyId } = useSpotifySearch()
@@ -100,4 +100,4 @@ const MusicSaveSheet = ({
   )
 }
 
-export default MusicSaveSheet
+export default MusicSaveBottomSheet

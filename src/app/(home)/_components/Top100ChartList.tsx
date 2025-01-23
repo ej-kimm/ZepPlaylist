@@ -1,5 +1,5 @@
 'use client'
-import { MusicSaveSheet } from '@/components/common'
+import { MusicSaveBottomSheet } from '@/components/common'
 import { useSpotifySearch } from '@/hooks/useGetSpotifyMusicId'
 import { usePlaylistMusicUpsert } from '@/hooks/usePlaylistMusicUpsert'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
@@ -91,7 +91,7 @@ const Top100ChartList = ({
         <FiMoreHorizontal fontSize={24} />
       </button>
 
-      <MusicSaveSheet
+      <MusicSaveBottomSheet
         isOpen={isBottomSheetOpen}
         handleClose={handleOpenBottomSheet}
         musicName={musicName}

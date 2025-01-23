@@ -1,7 +1,7 @@
 import likeFalse from '@/assets/images/likeFalse.svg'
 import likeTrue from '@/assets/images/likeTrue.svg'
 import save from '@/assets/images/save.svg'
-import { MusicSaveSheet } from '@/components/common'
+import { MusicSaveBottomSheet } from '@/components/common'
 import useSongLike from '@/hooks/useSongLike'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import { userStore } from '@/store/userSlice'
@@ -98,7 +98,7 @@ export default function MusicDetailModal({
         <PlayerControls />
       </div>
 
-      <MusicSaveSheet
+      <MusicSaveBottomSheet
         isOpen={isSaved}
         handleClose={handleSave}
         musicName={title || ''}

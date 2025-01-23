@@ -1,5 +1,5 @@
 'use client'
-import { MusicSaveSheet } from '@/components/common'
+import { MusicSaveBottomSheet } from '@/components/common'
 import { usePlaylistMusicUpsert } from '@/hooks/usePlaylistMusicUpsert'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import Image from 'next/image'
@@ -55,7 +55,7 @@ const SearchResultItem = ({ item }: SearchResultProps) => {
         <FiMoreHorizontal fontSize={24} />
       </button>
 
-      <MusicSaveSheet
+      <MusicSaveBottomSheet
         isOpen={isBottomSheetOpen}
         handleClose={handleOpenBottomSheet}
         musicName={item.name}
