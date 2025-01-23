@@ -1,6 +1,6 @@
 import { fetchMelonChart } from '@/api/home/actions'
 import type { MelonChartSong } from '@/types/melonCharts'
-import PlayAllBtn from '../_components/MusicChartHeader'
+import MusicChartHeader from '../_components/MusicChartHeader'
 import Top100ChartList from '../_components/Top100ChartList'
 
 export const revalidate = 3600
@@ -30,7 +30,7 @@ const koreaTop100 = async () => {
   }
   return (
     <div className="mx-auto flex w-full max-w-3xl flex-col items-center">
-      <PlayAllBtn
+      <MusicChartHeader
         top100ChartMusic={top100ChartMusic}
         isKoreaChart={newData.isKoreaChart}
       />
