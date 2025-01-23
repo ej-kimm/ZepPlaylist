@@ -11,16 +11,18 @@ import PlayerSkeleton from './_components/PlayerSkeleton'
 import ProgressBar from './_components/ProgressBar'
 
 const MusicPlayer = () => {
-  const pathname = usePathname()
-  const { isPlayerOpen, isPlaying, isPlayerModalOpen, play, stop } =
-    useMusicPlayerStore()
-  const { musicDetail, url, lyrics, isPending } = usePlayer()
+  const playerRef = useRef<ReactPlayer>(null)
   const [playerState, setPlayerState] = useState({
     ready: false, // onReady에서 영상이 로드된 상태값을 받아 사용
     played: 0, // 현재 재생 중인 시간 (0~0.9999)
     duration: 0, // 총 재생 시간
   })
-  const playerRef = useRef<ReactPlayer>(null)
+  const { isPlayerOpen, isPlaying, isPlayerModalOpen, stop } =
+    useMusicPlayerStore()
+  const { musicDetail, url, lyrics, isPending } = usePlayer()
+  const pathname = usePathname()
+  const hidePlayerBar =
+    pathname.startsWith('/community/') || pathname === '/community'
 
   const handleReady = () => setPlayerState({ ...playerState, ready: true })
   const handleDuration = (duration: number) =>
@@ -33,28 +35,23 @@ const MusicPlayer = () => {
   }
 
   useEffect(() => {
-    if (isPlayerOpen) {
-      play()
+    if (hidePlayerBar) {
+      stop() // '/comunity'일 경우 노래 멈추기
     }
-  }, [isPlayerOpen, play])
+  }, [hidePlayerBar])
 
-  // TODO : community페이지에선 플레이어바 안보이도록 임시
-  if (
-    !isPlayerOpen ||
-    pathname.startsWith('/community/') ||
-    pathname === '/community'
-  )
-    return null // 초기에 노래를 재생하지 않으면 플레이어바 숨김
+  if (!isPlayerOpen) return null // 초기에 노래를 재생하지 않으면 플레이어바 숨김
   if (!url || isPending) {
+    // TODO : 스켈레톤 UI 공용으로 로직분리
     return !isPlayerModalOpen && <PlayerSkeleton />
   }
 
   return (
-    <section className="fixed bottom-0 left-0 z-player h-[60px] w-full bg-white shadow-drop">
+    <>
       <ReactPlayer
         url={url}
         ref={playerRef}
-        playing={isPlaying}
+        playing={playerState.ready ? isPlaying : undefined}
         controls={false}
         width="0"
         height="0"
@@ -64,20 +61,28 @@ const MusicPlayer = () => {
         onProgress={handleProgress} // 현재 재생 시간
         onEnded={stop}
       />
-      <div className="flex h-full items-center justify-between px-6">
-        <MusicDetails musicDetail={musicDetail} />
-        <ProgressBar playerState={playerState} onSeek={handleSeek} url={url} />
-        <PlayerControls />
-      </div>
+      {!hidePlayerBar && (
+        <section className="fixed bottom-0 left-0 z-player h-[60px] w-full bg-white shadow-drop">
+          <div className="flex h-full items-center justify-between px-6">
+            <MusicDetails musicDetail={musicDetail} />
+            <ProgressBar
+              playerState={playerState}
+              onSeek={handleSeek}
+              url={url}
+            />
+            <PlayerControls />
+          </div>
 
-      <MusicDetailModal
-        url={url}
-        musicDetail={musicDetail}
-        lyrics={lyrics}
-        playerState={playerState}
-        onSeek={handleSeek}
-      />
-    </section>
+          <MusicDetailModal
+            url={url}
+            musicDetail={musicDetail}
+            lyrics={lyrics}
+            playerState={playerState}
+            onSeek={handleSeek}
+          />
+        </section>
+      )}
+    </>
   )
 }
 

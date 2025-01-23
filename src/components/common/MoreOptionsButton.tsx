@@ -32,8 +32,7 @@ const MoreOptionsButton = ({
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false)
   const { playlists, getPlayList } = usePlaylistOperations()
   const { searchSpotifyId } = useSpotifySearch()
-  const { upsertMusic, addMusicToPlaylistTable } =
-    usePlaylistMusicUpsert(albumCover)
+  const { upsertMusic, addMusicToPlaylistTable } = usePlaylistMusicUpsert()
 
   const handleOpenBottomSheet = async () => {
     setIsBottomSheetOpen(true)

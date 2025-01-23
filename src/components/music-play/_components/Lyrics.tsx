@@ -45,7 +45,11 @@ const Lyrics = ({ lyrics, isFullLyrics, onClickLyrics }: LyricsProps) => {
       ) : (
         <p
           className={`cursor-pointer overflow-y-scroll ${isFullLyrics ? 'lyrics-full caption-2 relative -left-1 h-[250px] text-left leading-[25px]' : 'lyrics-small caption-1 h-full text-center leading-5'}`}
-          dangerouslySetInnerHTML={{ __html: lyrics }}
+          dangerouslySetInnerHTML={{
+            __html: lyrics
+              .replace(/(\n){3,}/g, '\n') // 연속된 \n이 2번 이상 나오면 1번으로 줄이기
+              .replace(/\n/g, '<br />'), // 각 \n을 <br />로 바꾸기
+          }}
           onClick={onClickLyrics}
         />
       )}

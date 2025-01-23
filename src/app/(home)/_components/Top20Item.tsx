@@ -1,4 +1,5 @@
-import play from '@/assets/images/play.svg'
+import pause from '@/assets/images/pause.svg'
+import playing from '@/assets/images/play.svg'
 import { useSpotifySearch } from '@/hooks/useGetSpotifyMusicId'
 import { usePlaylistMusicUpsert } from '@/hooks/usePlaylistMusicUpsert'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
@@ -22,10 +23,10 @@ const Top20Item: React.FC<Top20ItemProps> = ({
 }) => {
   const { searchSpotifyId } = useSpotifySearch()
 
-  const { isPlayerOpen, setTrackIds, togglePlay, setPlayerOpen } =
+  const { isPlayerOpen, setTrackIds, setPlayerOpen, play, isPlaying } =
     useMusicPlayerStore()
 
-  const { upsertMusic } = usePlaylistMusicUpsert(albumCover)
+  const { upsertMusic } = usePlaylistMusicUpsert()
 
   const handlePlayBtn = async () => {
     // 데이터 일치화를 위해 ()와 안의 텍스트 제거
@@ -37,7 +38,7 @@ const Top20Item: React.FC<Top20ItemProps> = ({
     const songId = musicData!.id
     if (!isPlayerOpen) setPlayerOpen() // 페이지 방문 후, 첫 곡 재생이면 플레이어바 보여줌
     setTrackIds(songId)
-    togglePlay()
+    play()
   }
   return (
     <li
@@ -63,7 +64,12 @@ const Top20Item: React.FC<Top20ItemProps> = ({
         <p className="truncate text-xs text-gray-500">{artistName}</p>
       </div>
       <button type="button">
-        <Image src={play} width={25} height={25} alt={'play'} />
+        <Image
+          src={isPlaying ? pause : playing}
+          width={25}
+          height={25}
+          alt={'play'}
+        />
       </button>
     </li>
   )

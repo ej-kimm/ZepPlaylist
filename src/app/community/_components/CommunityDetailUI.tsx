@@ -170,7 +170,7 @@ export default function CommunityDetailUI({
                   {/* 댓글 내용과 삭제 버튼을 묶는 컨테이너 */}
                   <div className="flex flex-1 items-center justify-between">
                     {/* 댓글 내용 */}
-                    <p className="caption-1 mt-2 flex-1 text-white">
+                    <p className="caption-1 flex-1text-gray-500 mt-2">
                       {comment.content}
                     </p>
 

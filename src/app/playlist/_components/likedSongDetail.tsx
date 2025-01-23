@@ -6,7 +6,7 @@ import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import { LikedSong } from '@/types/song'
 import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
-import { FaEllipsisH } from 'react-icons/fa'
+import { FaEllipsisH, FaRandom } from 'react-icons/fa'
 import Swal from 'sweetalert2'
 
 type LikedSongsPageProps = {
@@ -16,7 +16,8 @@ type LikedSongsPageProps = {
 export default function LikedSongsPage({
   initialLikedSongs,
 }: LikedSongsPageProps) {
-  const { isPlayerOpen, setTrackIds, setPlayerOpen } = useMusicPlayerStore()
+  const { isPlayerOpen, setTrackIds, setPlayerOpen, play } =
+    useMusicPlayerStore()
   const [likedSongs, setLikedSongs] = useState<LikedSong[]>(initialLikedSongs)
   const [showDropdown, setShowDropdown] = useState<string | null>(null)
   const dropdownRef = useRef<HTMLDivElement | null>(null)
@@ -52,6 +53,7 @@ export default function LikedSongsPage({
     const allTrackIds = likedSongs.map((song) => song.music.spotify_id)
     if (!isPlayerOpen) setPlayerOpen()
     setTrackIds(allTrackIds)
+    play()
   }
 
   // 특정 곡부터
@@ -61,6 +63,16 @@ export default function LikedSongsPage({
       .map((song) => song.music.spotify_id)
     if (!isPlayerOpen) setPlayerOpen()
     setTrackIds(selectedTrackIds)
+    play()
+  }
+
+  const handleShufflePlay = () => {
+    if (!isPlayerOpen) setPlayerOpen()
+    const shuffledTracks = [
+      ...likedSongs.map((song) => song.music.spotify_id),
+    ].sort(() => Math.random() - 0.5)
+    setTrackIds(shuffledTracks)
+    play()
   }
 
   return (
@@ -73,27 +85,47 @@ export default function LikedSongsPage({
       }}
     >
       <header className="mb-4 flex items-center justify-between">
-        <h1 className="text-xl font-bold">좋아요 한 플레이리스트</h1>
-        <button
-          onClick={handlePlayAll}
-          className="flex items-center justify-center rounded-full"
-          style={{
-            width: '48px',
-            height: '48px',
-            padding: '11px',
-            borderRadius: '24px',
-            background: '#9032E8',
-          }}
-        >
-          <Image
-            src={imPlay}
-            alt="전체 재생"
-            width={24}
-            height={24}
-            style={{ flexShrink: 0 }}
-          />
-        </button>
+        <h1 className="font-pretendard text-xl">좋아요 한 플레이리스트</h1>
+        <div className="flex items-center space-x-4">
+          <button
+            onClick={handleShufflePlay}
+            className="flex items-center justify-center"
+            style={{
+              width: '24px',
+              height: '24px',
+              background: 'none',
+              border: 'none',
+              padding: '0',
+            }}
+          >
+            <FaRandom size={24} color="black" />
+          </button>
+          <button
+            onClick={handlePlayAll}
+            className="flex items-center justify-center rounded-full"
+            style={{
+              width: '48px',
+              height: '48px',
+              padding: '11px',
+              borderRadius: '24px',
+              background: '#9032E8',
+            }}
+          >
+            <Image
+              src={imPlay}
+              alt="전체 재생"
+              width={24}
+              height={24}
+              style={{ flexShrink: 0 }}
+            />
+          </button>
+        </div>
       </header>
+
+      <section className="mb-3 mt-0 text-gray-600">
+        <p className="font-pretendard text-sm">곡 수: {likedSongs.length}곡</p>
+      </section>
+
       <ul className="space-y-2">
         {likedSongs.map((song, index) => (
           <li

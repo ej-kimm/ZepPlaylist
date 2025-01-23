@@ -2,21 +2,22 @@ import type { Tables } from '@/types/supabase'
 import { supabase } from '@/utils/supabase/client'
 
 // music 테이블
-
-// TODO : 삭제 할 함수
-export const fetchMusicId = async (): Promise<
-  Tables<'music'>['spotify_id'][]
-> => {
-  const { data: musicId, error } = await supabase
+export const insertMusicLyrics = async ({
+  spotifyId,
+  lyrics,
+}: {
+  spotifyId: Tables<'music'>['spotify_id']
+  lyrics: string
+}): Promise<void> => {
+  const { error } = await supabase
     .from('music')
-    .select('spotify_id')
+    .update({ lyrics })
+    .eq('spotify_id', spotifyId)
 
   if (error) {
-    console.error('Error fetching music:', error)
-    throw error
+    console.error('Failed to update music lyrics:', error)
+    throw new Error('Lyrics 업데이트에 실패했습니다.')
   }
-
-  return musicId.map((item) => item.spotify_id) || []
 }
 
 export const fetchMusicDetailByMusicId = async (
@@ -38,6 +39,23 @@ export const fetchMusicDetailByMusicId = async (
   }
 
   return musicDetail
+}
+
+export const fetchMusicLyricsByMusicId = async (
+  musicId: Tables<'music'>['spotify_id'],
+): Promise<Tables<'music'>['lyrics'] | null> => {
+  const { data, error } = await supabase
+    .from('music')
+    .select('lyrics')
+    .eq('spotify_id', musicId)
+    .single()
+
+  if (error) {
+    console.error(`Failed to fetch lyrics for musicId: ${musicId}`, error)
+    return null
+  }
+
+  return data?.lyrics || null
 }
 
 // song_like 테이블
