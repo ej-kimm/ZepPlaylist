@@ -14,19 +14,21 @@ const SearchResultItem = ({ item }: SearchResultProps) => {
   const { isPlayerOpen, setTrackIds, setPlayerOpen, play } =
     useMusicPlayerStore()
 
-  const { upsertMusic } = usePlaylistMusicUpsert(item.album.images[0].url)
+  const { upsertMusic } = usePlaylistMusicUpsert()
 
   const handlePlayBtn = async (
     songId: string,
     musicName: string,
     artist: string,
     playTime: number,
+    albumCover: string,
   ) => {
     const newMusicData = {
       id: songId,
       title: musicName,
       artist,
       playTime,
+      albumCover,
     }
 
     await upsertMusic(newMusicData)
@@ -43,6 +45,7 @@ const SearchResultItem = ({ item }: SearchResultProps) => {
           item.name,
           item.artists[0].name,
           item.duration_ms,
+          item.album.images[0].url,
         )
       }
       className="flex items-center space-x-4 rounded-lg py-2 transition-colors"

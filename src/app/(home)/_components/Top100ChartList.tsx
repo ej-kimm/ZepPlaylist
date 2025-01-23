@@ -39,7 +39,7 @@ const Top100ChartList = ({
   const { isPlayerOpen, setTrackIds, setPlayerOpen, play } =
     useMusicPlayerStore()
 
-  const { upsertMusic } = usePlaylistMusicUpsert(albumCover)
+  const { upsertMusic } = usePlaylistMusicUpsert()
 
   const handlePlayBtn = async () => {
     // 데이터 일치화를 위해 ()와 안의 텍스트 제거
@@ -53,6 +53,7 @@ const Top100ChartList = ({
       title: musicData!.title,
       artist: musicData!.artist,
       playTime: musicData!.playTime,
+      albumCover,
     }
 
     await upsertMusic(newMusicData)

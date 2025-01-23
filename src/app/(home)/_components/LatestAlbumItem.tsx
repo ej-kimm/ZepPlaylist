@@ -1,94 +1,96 @@
-'use client'
-import { fetchSpotifyToken } from '@/api/spotifyToken'
-import playing from '@/assets/images/imPlay.svg'
-import { usePlaylistMusicUpsert } from '@/hooks/usePlaylistMusicUpsert'
-import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
+// 'use client'
 import Image from 'next/image'
+import Link from 'next/link'
 
 type Props = {
   album: SpotifyApi.AlbumObjectSimplified
 }
 
 const LatestAlbumItme = ({ album }: Props) => {
-  const { isPlayerOpen, setTrackIds, setPlayerOpen, play } =
-    useMusicPlayerStore()
+  // const { isPlayerOpen, setTrackIds, setPlayerOpen, play } =
+  //   useMusicPlayerStore()
 
-  const fetchAlbums = async (albumId: string) => {
-    const token = await fetchSpotifyToken()
+  // const fetchAlbums = async (albumId: string) => {
+  //   const token = await fetchSpotifyToken()
 
-    try {
-      const res = await fetch(`https://api.spotify.com/v1/albums/${albumId}`, {
-        method: 'GET',
-        headers: {
-          Authorization: 'Bearer ' + token,
-        },
-      })
-      if (!res.ok) {
-        console.error(`API error: ${res.status} ${res.statusText}`)
-        throw new Error(`Failed to fetch data: ${res.status} ${res.statusText}`)
-      }
-      const data: SpotifyApi.SingleAlbumResponse = await res.json()
+  //   try {
+  //     const res = await fetch(`https://api.spotify.com/v1/albums/${albumId}`, {
+  //       method: 'GET',
+  //       headers: {
+  //         Authorization: 'Bearer ' + token,
+  //       },
+  //     })
+  //     if (!res.ok) {
+  //       console.error(`API error: ${res.status} ${res.statusText}`)
+  //       throw new Error(`Failed to fetch data: ${res.status} ${res.statusText}`)
+  //     }
+  //     const data: SpotifyApi.SingleAlbumResponse = await res.json()
 
-      return data
-    } catch (error) {
-      console.error('Fetch error:', error)
-      throw new Error('An unexpected error occurred')
-    }
-  }
-  const { upsertMusic } = usePlaylistMusicUpsert(album.images[0].url)
+  //     return data
+  //   } catch (error) {
+  //     console.error('Fetch error:', error)
+  //     throw new Error('An unexpected error occurred')
+  //   }
+  // }
+  // const { upsertMusic } = usePlaylistMusicUpsert(album.images[0].url)
 
-  const albumTrackItems = async (albumId: string, artist: string) => {
-    const albumData = await fetchAlbums(albumId)
-    const albumTrackList = albumData.tracks.items
+  // const albumTrackItems = async (albumId: string, artist: string) => {
+  //   const albumData = await fetchAlbums(albumId)
+  //   const albumTrackList = albumData.tracks.items
 
-    const MusicData = albumTrackList.map((item) => {
-      return {
-        id: item.id,
-        title: item.name,
-        artist,
-        playTime: item.duration_ms,
-      }
-    })
+  //   const MusicData = albumTrackList.map((item) => {
+  //     return {
+  //       id: item.id,
+  //       title: item.name,
+  //       artist,
+  //       playTime: item.duration_ms,
+  //     }
+  //   })
 
-    MusicData.map(async (item) => await upsertMusic(item))
+  //   MusicData.map(async (item) => await upsertMusic(item))
 
-    const albumTrackItem = albumTrackList.map((item) => item.id)
+  //   const albumTrackItem = albumTrackList.map((item) => item.id)
 
-    handlePlayBtn(albumTrackItem)
-  }
+  //   handlePlayBtn(albumTrackItem)
+  // }
 
-  const handlePlayBtn = async (palyTrackId: string[]) => {
-    if (!isPlayerOpen) setPlayerOpen() // 페이지 방문 후, 첫 곡 재생이면 플레이어바 보여줌
-    // setTrackIds(palyTrackId.map((item) => item)) // 재생할 곡 아이디 넘겨주기
-    setTrackIds(palyTrackId)
-    play()
-  }
+  // const handlePlayBtn = async (palyTrackId: string[]) => {
+  //   if (!isPlayerOpen) setPlayerOpen() // 페이지 방문 후, 첫 곡 재생이면 플레이어바 보여줌
+  //   // setTrackIds(palyTrackId.map((item) => item)) // 재생할 곡 아이디 넘겨주기
+  //   setTrackIds(palyTrackId)
+  //   play()
+  // }
   return (
-    <li
-      key={album.id}
-      className="flex-none"
-      onClick={() => albumTrackItems(album.id, album.artists[0].name)}
-    >
-      <div className="w-28 text-left">
-        <div className="relative">
-          <Image
-            src={album.images[0].url}
-            width={96}
-            height={96}
-            alt={album.name}
-            priority
-            className="h-auto w-full rounded-xl shadow-md"
-          />
-          <button className="absolute bottom-1 right-1 transform" type="button">
-            <Image src={playing} width={25} height={25} alt={'play'} />
-          </button>
+    <Link href={`/latest-album/${album.id}`}>
+      <li
+        key={album.id}
+        className="flex-none"
+        // onClick={() => albumTrackItems(album.id, album.artists[0].name)}
+      >
+        <div className="w-28 text-left">
+          <div className="relative">
+            <Image
+              src={album.images[0].url}
+              width={96}
+              height={96}
+              alt={album.name}
+              priority
+              className="h-auto w-full rounded-xl shadow-md"
+            />
+            {/* <button
+              className="absolute bottom-1 right-1 transform"
+              type="button"
+            >
+              <Image src={playing} width={25} height={25} alt={'play'} />
+            </button> */}
+          </div>
+          <h3 className="mt-1 truncate text-sm font-semibold">{album.name}</h3>
+          <p className="truncate text-xs text-gray-500">
+            {album.artists[0].name}
+          </p>
         </div>
-        <h3 className="mt-1 truncate text-sm font-semibold">{album.name}</h3>
-        <p className="truncate text-xs text-gray-500">
-          {album.artists[0].name}
-        </p>
-      </div>
-    </li>
+      </li>
+    </Link>
   )
 }
 
