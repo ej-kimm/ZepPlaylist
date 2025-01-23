@@ -1,12 +1,13 @@
 import likeFalse from '@/assets/images/likeFalse.svg'
 import likeTrue from '@/assets/images/likeTrue.svg'
 import save from '@/assets/images/save.svg'
-import { MusicSaveBottomSheet } from '@/components/common'
+import { Modal, MusicSaveBottomSheet } from '@/components/common'
 import useSongLike from '@/hooks/useSongLike'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import { userStore } from '@/store/userSlice'
 import { Tables } from '@/types/supabase'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import AlbumCover from './AlbumCover'
 import Lyrics from './Lyrics'
@@ -34,20 +35,22 @@ export default function MusicDetailModal({
   playerState: { played, duration, ready },
   onSeek,
 }: MusicDetailModalProps) {
+  const router = useRouter()
   const { user } = userStore()
   const user_id = user?.id || ''
   const { title, artist, album_cover } = musicDetail || {}
-  const { isPlayerModalOpen } = useMusicPlayerStore()
+  const { isPlayerModalOpen, closePlayerModal, setPlayerClose } =
+    useMusicPlayerStore()
   const { songLike, updateLike } = useSongLike({ user_id })
 
   const [isFullLyrics, setIsFullLyrics] = useState<boolean>(false)
   const [isLiked, setIsLiked] = useState<boolean>(false)
   const [isSaved, setIsSaved] = useState<boolean>(false)
+  const [isOpen, setIsOpen] = useState<boolean>(false)
 
   const handleUserAction = (type: 'like' | 'save') => {
     if (!user_id) {
-      // TODO : 로그인 하라는 모달창 띄우기
-      alert('로그인을 해주세요!')
+      setIsOpen(true)
       return
     }
 
@@ -58,6 +61,16 @@ export default function MusicDetailModal({
     }
   }
   const handleClickLyrics = () => setIsFullLyrics((prev) => !prev)
+  const closeModal = () => setIsOpen(false)
+  const handleCloseAllModals = () => {
+    closePlayerModal()
+    closeModal()
+    setPlayerClose()
+  }
+  const redirectToLogin = () => {
+    handleCloseAllModals()
+    router.push('/login')
+  }
 
   // 로그인 한 유저
   useEffect(() => {
@@ -116,6 +129,12 @@ export default function MusicDetailModal({
           <PlayerControls />
         </div>
       </section>
+
+      <Modal
+        isOpen={isOpen}
+        onConfirm={redirectToLogin}
+        onCancel={closeModal}
+      />
 
       <MusicSaveBottomSheet
         isOpen={isSaved}

@@ -27,7 +27,7 @@ const Modal: React.FC<ModalProps> = ({
         onClick={onCancel}
       >
         <div className="z-50 h-[227px] w-[327px] rounded-[32px] bg-white px-6 pt-[32px]">
-          <h2 className="title-1 text-left">로그인 필요</h2>
+          <h2 className="title-1 mb-2 text-left">로그인 필요</h2>
           <p className="button-1 text-left">로그인 화면으로 이동합니다</p>
           <button
             onClick={onCancel}

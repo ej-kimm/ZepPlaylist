@@ -22,7 +22,9 @@ const MusicPlayer = () => {
   const { musicDetail, url, lyrics, isPending } = usePlayer()
   const pathname = usePathname()
   const hidePlayerBar =
-    pathname.startsWith('/community/') || pathname === '/community'
+    pathname.startsWith('/community/') ||
+    pathname === '/community' ||
+    pathname === '/login'
 
   const handleReady = () => setPlayerState({ ...playerState, ready: true })
   const handleDuration = (duration: number) =>
