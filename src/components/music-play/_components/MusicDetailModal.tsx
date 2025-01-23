@@ -55,12 +55,25 @@ export default function MusicDetailModal({
   const handleSave = () => setIsSaved((prev) => !prev)
   const handleClickLyrics = () => setIsFullLyrics((prev) => !prev)
 
+  // 로그인 한 유저
   useEffect(() => {
-    // 로그인 한 유저
-    if (user_id && songLike !== undefined) {
+    if (songLike !== undefined) {
       setIsLiked(songLike)
     }
-  }, [songLike, user_id])
+  }, [songLike])
+
+  // MusicDetailModal이 열렸을 때 스크롤 비활성화
+  useEffect(() => {
+    if (isPlayerModalOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = 'auto'
+    }
+
+    return () => {
+      document.body.style.overflow = 'auto'
+    }
+  }, [isPlayerModalOpen])
 
   return (
     <>

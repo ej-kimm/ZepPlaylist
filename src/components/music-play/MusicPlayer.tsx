@@ -34,19 +34,6 @@ const MusicPlayer = () => {
     playerRef.current?.seekTo(value) // 재생 위치 변경
   }
 
-  // MusicDetailModal이 열렸을 때 스크롤 비활성화
-  useEffect(() => {
-    if (isPlayerModalOpen) {
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = 'auto'
-    }
-
-    return () => {
-      document.body.style.overflow = 'auto'
-    }
-  }, [isPlayerModalOpen])
-
   // 커뮤니티 페이지일 경우 노래 멈추기
   useEffect(() => {
     if (hidePlayerBar) {
