@@ -44,21 +44,18 @@ export default function MusicDetailModal({
   const [isLiked, setIsLiked] = useState<boolean>(false)
   const [isSaved, setIsSaved] = useState<boolean>(false)
 
-  const handleLike = async () => {
+  const handleUserAction = (type: 'like' | 'save') => {
     if (!user_id) {
       // TODO : 로그인 하라는 모달창 띄우기
       alert('로그인을 해주세요!')
       return
     }
-    updateLike.mutate({ user_id })
-  }
-  const handleSave = () => {
-    if (!user_id) {
-      // TODO : 로그인 하라는 모달창 띄우기
-      alert('로그인을 해주세요!')
-      return
+
+    if (type === 'like') {
+      updateLike.mutate({ user_id })
+    } else if (type === 'save') {
+      setIsSaved((prev) => !prev)
     }
-    setIsSaved((prev) => !prev)
   }
   const handleClickLyrics = () => setIsFullLyrics((prev) => !prev)
 
@@ -93,7 +90,7 @@ export default function MusicDetailModal({
             <p className="caption-1 text-center">{artist}</p>
           </header>
           <div className="flex items-center justify-center gap-[23px]">
-            <button onClick={handleLike}>
+            <button onClick={() => handleUserAction('like')}>
               <Image
                 src={isLiked ? likeTrue : likeFalse}
                 width={16}
@@ -101,7 +98,7 @@ export default function MusicDetailModal({
                 alt={isLiked ? 'likeTrue' : 'likeFalse'}
               />
             </button>
-            <button onClick={handleSave}>
+            <button onClick={() => handleUserAction('save')}>
               <Image src={save} width={16} height={16} alt="save" />
             </button>
           </div>
@@ -122,7 +119,7 @@ export default function MusicDetailModal({
 
       <MusicSaveBottomSheet
         isOpen={isSaved}
-        handleClose={handleSave}
+        handleClose={() => handleUserAction('save')}
         musicName={title || ''}
         artistName={artist || ''}
         albumCover={album_cover || ''}
