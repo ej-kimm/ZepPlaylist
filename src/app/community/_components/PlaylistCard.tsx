@@ -34,7 +34,7 @@ const PlaylistCard = ({ playlist, userId }: PlaylistCardProps) => {
   const handleDivClick = () => {
     router.push(`/community/${playlist.id}`)
   }
-
+console.log('first', playlist.profileImg)
   return (
     <PlaylistUI
       profileImg={playlist.profileImg}
