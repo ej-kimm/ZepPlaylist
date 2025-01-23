@@ -10,7 +10,6 @@ const usePlaylistOperations = () => {
     queryFn: async () => fetchPlaylistsWithCovers(),
     enabled: !!user,
   })
-  console.log(playlists)
 
   return {
     playlists,
