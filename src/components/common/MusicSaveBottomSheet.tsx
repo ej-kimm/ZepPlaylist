@@ -2,6 +2,7 @@
 import { useSpotifySearch } from '@/hooks/useGetSpotifyMusicId'
 import { usePlaylistMusicUpsert } from '@/hooks/usePlaylistMusicUpsert'
 import usePlaylistOperations from '@/hooks/usePlaylistOperations'
+import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import { userStore } from '@/store/userSlice'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -28,6 +29,7 @@ const MusicSaveBottomSheet = ({
   const { searchSpotifyId } = useSpotifySearch()
   const { upsertMusic, addMusicToPlaylistTable } =
     usePlaylistMusicUpsert(albumCover)
+  const { closePlayerModal } = useMusicPlayerStore()
 
   // 특정 플레이리스트 목록을 동작하는 함수
   const addMusiscInPlayList = async (playlistId: string) => {
@@ -42,10 +44,17 @@ const MusicSaveBottomSheet = ({
 
       // spubase playlist_music 테이블에 곡 담아주는 함수 호출
       await addMusicToPlaylistTable(musicId as string, playlistId)
+
+      handleClose()
     } catch (error) {
       console.error('Error in addMusiscInPlayList:', error)
       throw error
     }
+  }
+
+  const handleCloseAllModals = () => {
+    closePlayerModal()
+    handleClose()
   }
 
   // 스크롤 비활성화
@@ -77,7 +86,7 @@ const MusicSaveBottomSheet = ({
         <h1 className="my-3 text-base">플레이리스트 담기</h1>
 
         <div className="h-full bg-white px-4">
-          <Link href="/playlist">
+          <Link href="/playlist" onClick={handleCloseAllModals}>
             <div className="flex items-center gap-2">
               <div className="h-12 w-12 rounded-lg bg-[#C4C4C4]" />
               <p className="caption-1">새 플레이리스트 만들기</p>
