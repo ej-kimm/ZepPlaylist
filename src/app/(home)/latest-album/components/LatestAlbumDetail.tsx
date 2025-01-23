@@ -3,7 +3,6 @@
 import imPlay from '@/assets/images/imPlay.svg'
 import { MusicSaveBottomSheet } from '@/components/common'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
-import { userStore } from '@/store/userSlice'
 import Image from 'next/image'
 import { useState } from 'react'
 import { FiMoreHorizontal } from 'react-icons/fi'
@@ -13,8 +12,6 @@ type LatestAlbumProps = {
 }
 
 const LatestAlbumDetail = ({ albumData }: LatestAlbumProps) => {
-  const { user } = userStore((state) => state)
-
   const { isPlayerOpen, setTrackIds, setPlayerOpen, play } =
     useMusicPlayerStore()
 

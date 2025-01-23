@@ -41,7 +41,7 @@ const MusicPlayer = () => {
     if (hidePlayerBar) {
       stop()
     }
-  }, [hidePlayerBar])
+  }, [hidePlayerBar, stop])
 
   if (!isPlayerOpen) return null // 초기에 노래를 재생하지 않으면 플레이어바 숨김
   if (!url || isPending) {

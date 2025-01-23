@@ -22,7 +22,7 @@ const Top20Item: React.FC<Top20ItemProps> = ({
 }) => {
   const { searchSpotifyId } = useSpotifySearch()
 
-  const { isPlayerOpen, setTrackIds, setPlayerOpen, play, isPlaying } =
+  const { isPlayerOpen, setTrackIds, setPlayerOpen, play } =
     useMusicPlayerStore()
 
   const { upsertMusic } = usePlaylistMusicUpsert()
