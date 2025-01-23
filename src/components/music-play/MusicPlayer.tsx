@@ -65,7 +65,7 @@ const MusicPlayer = () => {
         onEnded={stop}
       />
       {!hidePlayerBar && (
-        <section className="fixed bottom-0 left-0 z-player h-[60px] w-full bg-white shadow-drop">
+        <section className="h-player fixed bottom-0 left-0 z-player w-full bg-white shadow-drop">
           <div className="flex h-full items-center justify-between px-6">
             <MusicDetails musicDetail={musicDetail} />
             <ProgressBar

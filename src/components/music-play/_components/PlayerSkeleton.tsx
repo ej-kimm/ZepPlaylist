@@ -1,6 +1,6 @@
 const PlayerSkeleton = () => {
   return (
-    <section className="z-player shadow-drop fixed bottom-0 left-0 flex h-[60px] w-full bg-white">
+    <section className="h-player fixed bottom-0 left-0 z-player flex w-full bg-white shadow-drop">
       <div className="flex h-full w-full animate-pulse items-center justify-between px-6">
         <div className="flex flex-grow">
           <div className="flex w-full flex-col items-start justify-start gap-1">

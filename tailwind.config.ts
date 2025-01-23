@@ -19,9 +19,11 @@ const config: Config = {
       height: {
         navBar: '56px',
         'navBar-calc': 'calc(100vh - 56px)',
+        player: '60px',
       },
       padding: {
         navBar: '56px',
+        player: '60px',
       },
       spacing: {
         navBar: '56px',
