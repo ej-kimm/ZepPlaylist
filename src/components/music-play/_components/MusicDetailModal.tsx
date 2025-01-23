@@ -63,40 +63,42 @@ export default function MusicDetailModal({
   }, [songLike, user_id])
 
   return (
-    <section
-      className={`fixed bottom-0 left-0 z-player-modal h-navBar-calc w-full bg-white px-6 pb-5 transition-all duration-500 ease-out ${isPlayerModalOpen ? 'translate-y-0' : 'translate-y-full'}`}
-    >
-      <div className="flex h-full flex-col items-center justify-between">
-        <header>
-          <h3 className="title-1 mb-2 text-center">{title}</h3>
-          <p className="caption-1 text-center">{artist}</p>
-        </header>
-        <div className="flex items-center justify-center gap-[23px]">
-          <button onClick={handleLike}>
-            <Image
-              src={isLiked ? likeTrue : likeFalse}
-              width={16}
-              height={16}
-              alt={isLiked ? 'likeTrue' : 'likeFalse'}
-            />
-          </button>
-          <button onClick={handleSave}>
-            <Image src={save} width={16} height={16} alt="save" />
-          </button>
+    <>
+      <section
+        className={`fixed bottom-0 left-0 z-player-modal h-navBar-calc w-full bg-white px-6 pb-5 transition-all duration-500 ease-out ${isPlayerModalOpen ? 'translate-y-0' : 'translate-y-full'}`}
+      >
+        <div className="flex h-full flex-col items-center justify-between">
+          <header>
+            <h3 className="title-1 mb-2 text-center">{title}</h3>
+            <p className="caption-1 text-center">{artist}</p>
+          </header>
+          <div className="flex items-center justify-center gap-[23px]">
+            <button onClick={handleLike}>
+              <Image
+                src={isLiked ? likeTrue : likeFalse}
+                width={16}
+                height={16}
+                alt={isLiked ? 'likeTrue' : 'likeFalse'}
+              />
+            </button>
+            <button onClick={handleSave}>
+              <Image src={save} width={16} height={16} alt="save" />
+            </button>
+          </div>
+          {!isFullLyrics && <AlbumCover musicDetail={musicDetail} />}
+          <Lyrics
+            lyrics={lyrics}
+            isFullLyrics={isFullLyrics}
+            onClickLyrics={handleClickLyrics}
+          />
+          <ProgressBar
+            url={url}
+            playerState={{ ready, played, duration }}
+            onSeek={onSeek}
+          />
+          <PlayerControls />
         </div>
-        {!isFullLyrics && <AlbumCover musicDetail={musicDetail} />}
-        <Lyrics
-          lyrics={lyrics}
-          isFullLyrics={isFullLyrics}
-          onClickLyrics={handleClickLyrics}
-        />
-        <ProgressBar
-          url={url}
-          playerState={{ ready, played, duration }}
-          onSeek={onSeek}
-        />
-        <PlayerControls />
-      </div>
+      </section>
 
       <MusicSaveBottomSheet
         isOpen={isSaved}
@@ -105,6 +107,6 @@ export default function MusicDetailModal({
         artistName={artist || ''}
         albumCover={album_cover || ''}
       />
-    </section>
+    </>
   )
 }

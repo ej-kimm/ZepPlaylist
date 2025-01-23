@@ -35,14 +35,14 @@ const BottomSheetAnimation: React.FC<BottomSheetAnimationProps> = ({
       {isOpen && (
         <>
           <motion.div
-            className="fixed inset-0 z-50 bg-black bg-opacity-50"
+            className="z-bottom-sheet fixed inset-0 bg-black bg-opacity-50"
             onClick={onClose}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           />
           <motion.div
-            className="fixed bottom-0 left-0 right-0 z-50 mx-auto w-full -translate-x-1/2 -translate-y-1/2 rounded-t-[36px] bg-white p-5 shadow-lg"
+            className="z-bottom-sheet fixed bottom-0 left-0 right-0 mx-auto w-full -translate-x-1/2 -translate-y-1/2 rounded-t-[36px] bg-white p-5 shadow-lg"
             style={{
               height,
               maxWidth,

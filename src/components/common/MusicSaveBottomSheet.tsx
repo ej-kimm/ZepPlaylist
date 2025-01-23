@@ -90,7 +90,7 @@ const MusicSaveBottomSheet = ({
                 ) : (
                   <div className="h-12 w-12 rounded-lg bg-[#C4C4C4]" />
                 )}
-                <p className="caption-1">{playlist.name} 플레이리스트</p>
+                <p className="caption-1">{playlist.name}</p>
               </li>
             ))}
           </ul>
