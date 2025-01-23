@@ -30,7 +30,10 @@ const koreaTop100 = async () => {
   }
   return (
     <div className="mx-auto flex w-full max-w-3xl flex-col items-center">
-      <PlayAllBtn top100ChartMusic={top100ChartMusic} />
+      <PlayAllBtn
+        top100ChartMusic={top100ChartMusic}
+        isKoreaChart={newData.isKoreaChart}
+      />
       <ul className="w-full space-y-2">
         {newData.list.map((chart, index) => (
           <Top100ChartList
