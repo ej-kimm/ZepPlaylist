@@ -23,6 +23,9 @@ const config: Config = {
       padding: {
         navBar: '56px',
       },
+      spacing: {
+        navBar: '56px',
+      },
       boxShadow: {
         drop: '0px -4px 4px rgba(0, 0, 0, 0.04)',
       },

@@ -45,7 +45,7 @@ const Sidebar = ({ isOpen, toggleMenu }: SidebarProps) => {
 
   return (
     <aside
-      className={`z-sidebar absolute right-0 top-full h-screen w-full bg-white px-6 transition duration-300 ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
+      className={`z-sidebar top-navBar fixed right-0 h-screen w-full bg-white px-6 transition duration-300 ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
     >
       <header className="flex h-[140px] items-center justify-center px-[13px]">
         <ProfileHeader toggleMenu={toggleMenu} />
