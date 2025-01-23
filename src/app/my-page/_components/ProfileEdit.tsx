@@ -88,7 +88,7 @@ const ProfileEdit = ({ user, setUser }: User) => {
       <BottomSheet
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
-        height="50%"
+        height="auto"
         maxWidth="100%"
       >
         <h1 className="title-1 mt-10 text-left">프로필 수정</h1>
@@ -142,7 +142,7 @@ const ProfileEdit = ({ user, setUser }: User) => {
       <BottomSheet
         isOpen={isOpenPassword}
         onClose={() => setIsOpenPassword(false)}
-        height="40%"
+        height="auto"
         maxWidth="100%"
       >
         <PasswordChange setIsOpenPassword={setIsOpenPassword} />
