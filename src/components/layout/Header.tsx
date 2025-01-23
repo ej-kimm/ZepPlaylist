@@ -59,7 +59,7 @@ const Header = () => {
             width={24}
             height={24}
             alt="leftArrow"
-            className={`${isPlayerModalOpen ? '-rotate-90' : ''} ${isHamburgerOpen ? 'rotate-180' : ''}`}
+            className={`${isPlayerModalOpen ? '-rotate-90' : ''}`}
           />
         </button>
 

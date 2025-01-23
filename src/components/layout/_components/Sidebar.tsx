@@ -51,7 +51,7 @@ const Sidebar = ({ isOpen, toggleMenu }: SidebarProps) => {
         <ProfileHeader toggleMenu={toggleMenu} />
       </header>
 
-      <nav className="mb-[7px]">
+      <nav className="mb-5">
         <h2 className="title-1 mb-4">음악 감상</h2>
         <SidebarMenu toggleMenu={toggleMenu} />
       </nav>
