@@ -1,6 +1,7 @@
 import likeFalse from '@/assets/images/likeFalse.svg'
 import likeTrue from '@/assets/images/likeTrue.svg'
 import save from '@/assets/images/save.svg'
+import { MusicSaveSheet } from '@/components/common'
 import useSongLike from '@/hooks/useSongLike'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import { userStore } from '@/store/userSlice'
@@ -35,12 +36,13 @@ export default function MusicDetailModal({
 }: MusicDetailModalProps) {
   const { user } = userStore()
   const user_id = user?.id || ''
-  const { title, artist } = musicDetail || {}
+  const { title, artist, album_cover } = musicDetail || {}
   const { isPlayerModalOpen } = useMusicPlayerStore()
   const { songLike, updateLike } = useSongLike({ user_id })
 
   const [isFullLyrics, setIsFullLyrics] = useState<boolean>(false)
   const [isLiked, setIsLiked] = useState<boolean>(false)
+  const [isSaved, setIsSaved] = useState<boolean>(false)
 
   const handleLike = async () => {
     if (!user_id) {
@@ -50,10 +52,8 @@ export default function MusicDetailModal({
     }
     updateLike.mutate({ user_id })
   }
-
-  const handleSave = async () => {}
-
-  const handleLClickLyrics = () => setIsFullLyrics((prev) => !prev)
+  const handleSave = () => setIsSaved((prev) => !prev)
+  const handleClickLyrics = () => setIsFullLyrics((prev) => !prev)
 
   useEffect(() => {
     // 로그인 한 유저
@@ -80,7 +80,6 @@ export default function MusicDetailModal({
               alt={isLiked ? 'likeTrue' : 'likeFalse'}
             />
           </button>
-          {/* TODO : 플레이리스트 추가 기능 해야함 */}
           <button onClick={handleSave}>
             <Image src={save} width={16} height={16} alt="save" />
           </button>
@@ -89,7 +88,7 @@ export default function MusicDetailModal({
         <Lyrics
           lyrics={lyrics}
           isFullLyrics={isFullLyrics}
-          onClickLyrics={handleLClickLyrics}
+          onClickLyrics={handleClickLyrics}
         />
         <ProgressBar
           url={url}
@@ -98,6 +97,14 @@ export default function MusicDetailModal({
         />
         <PlayerControls />
       </div>
+
+      <MusicSaveSheet
+        isOpen={isSaved}
+        handleClose={handleSave}
+        musicName={title || ''}
+        artistName={artist || ''}
+        albumCover={album_cover || ''}
+      />
     </section>
   )
 }

@@ -1,11 +1,11 @@
 'use client'
-
-import MoreOptionsButton from '@/components/common/MoreOptionsButton'
+import { MusicSaveSheet } from '@/components/common'
 import { useSpotifySearch } from '@/hooks/useGetSpotifyMusicId'
 import { usePlaylistMusicUpsert } from '@/hooks/usePlaylistMusicUpsert'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
-import { userStore } from '@/store/userSlice'
 import Image from 'next/image'
+import { useState } from 'react'
+import { FiMoreHorizontal } from 'react-icons/fi'
 
 type KoreanChart = {
   isKoreaChart: true
@@ -31,15 +31,11 @@ const Top100ChartList = ({
   albumCover,
   index,
 }: Chart) => {
-  // 유저정보 가져오기
-  const { user } = userStore((state) => state)
-
   const { searchSpotifyId } = useSpotifySearch()
-
   const { isPlayerOpen, setTrackIds, setPlayerOpen, play } =
     useMusicPlayerStore()
-
   const { upsertMusic } = usePlaylistMusicUpsert(albumCover)
+  const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false)
 
   const handlePlayBtn = async () => {
     // 데이터 일치화를 위해 ()와 안의 텍스트 제거
@@ -63,6 +59,7 @@ const Top100ChartList = ({
     setTrackIds(songId)
     play()
   }
+  const handleOpenBottomSheet = () => setIsBottomSheetOpen((prev) => !prev)
 
   return (
     <li className="flex flex-row items-center transition-shadow">
@@ -89,11 +86,17 @@ const Top100ChartList = ({
           <p className="truncate text-xs text-gray-500">{artistName}</p>
         </div>
       </div>
-      <MoreOptionsButton
+
+      <button type="button" onClick={handleOpenBottomSheet}>
+        <FiMoreHorizontal fontSize={24} />
+      </button>
+
+      <MusicSaveSheet
+        isOpen={isBottomSheetOpen}
+        handleClose={handleOpenBottomSheet}
         musicName={musicName}
         artistName={artistName}
         albumCover={albumCover}
-        user={user}
       />
     </li>
   )

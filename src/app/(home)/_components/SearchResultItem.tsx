@@ -1,20 +1,20 @@
 'use client'
-import MoreOptionsButton from '@/components/common/MoreOptionsButton'
+import { MusicSaveSheet } from '@/components/common'
 import { usePlaylistMusicUpsert } from '@/hooks/usePlaylistMusicUpsert'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
-import { userStore } from '@/store/userSlice'
 import Image from 'next/image'
+import { useState } from 'react'
+import { FiMoreHorizontal } from 'react-icons/fi'
 
 type SearchResultProps = {
   item: SpotifyApi.TrackObjectFull
 }
 
 const SearchResultItem = ({ item }: SearchResultProps) => {
-  const { user } = userStore((state) => state)
   const { isPlayerOpen, setTrackIds, setPlayerOpen, play } =
     useMusicPlayerStore()
-
   const { upsertMusic } = usePlaylistMusicUpsert(item.album.images[0].url)
+  const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false)
 
   const handlePlay = async () => {
     const newMusicData = {
@@ -29,6 +29,7 @@ const SearchResultItem = ({ item }: SearchResultProps) => {
     setTrackIds(item.id)
     play()
   }
+  const handleOpenBottomSheet = () => setIsBottomSheetOpen((prev) => !prev)
 
   return (
     <li className="flex items-center gap-4 rounded-lg py-2 transition-colors">
@@ -49,11 +50,17 @@ const SearchResultItem = ({ item }: SearchResultProps) => {
         <h3 className="button-2 truncate">{item.name}</h3>
         <p className="caption-2 truncate opacity-60">{item.artists[0].name}</p>
       </div>
-      <MoreOptionsButton
+
+      <button type="button" onClick={handleOpenBottomSheet}>
+        <FiMoreHorizontal fontSize={24} />
+      </button>
+
+      <MusicSaveSheet
+        isOpen={isBottomSheetOpen}
+        handleClose={handleOpenBottomSheet}
         musicName={item.name}
         artistName={item.artists[0].name}
         albumCover={item.album.images[0].url}
-        user={user}
       />
     </li>
   )
