@@ -15,7 +15,7 @@ const CustomSwiper: React.FC<CustomSwiperProps> = ({ items }) => {
       modules={[Autoplay]}
       autoplay={{ delay: 5000, disableOnInteraction: false }}
       breakpoints={{
-        280: { slidesPerView: 1.9, spaceBetween: 8 },
+        280: { slidesPerView: 1.5, spaceBetween: 8 },
         380: { slidesPerView: 2.1, spaceBetween: 12 },
         460: { slidesPerView: 2.5, spaceBetween: 16 },
         540: { slidesPerView: 3, spaceBetween: 20 },

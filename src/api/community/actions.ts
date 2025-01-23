@@ -44,6 +44,7 @@ export async function getPlaylists(userId: string, keywords: string[] = []) {
         )
       `,
       )
+      .eq('playlists.is_public', true)
       .order('created_at', { ascending: false })
 
     if (keywords.length > 0) {
@@ -80,6 +81,16 @@ export async function getPlaylists(userId: string, keywords: string[] = []) {
       Record<string, GroupedPlaylist>
     >((acc, item) => {
       const playlistId = item.playlist_id
+
+      if (!playlistId) {
+        console.error('Missing playlist_id:', item)
+        return acc
+      }
+
+      if (!item.playlists?.is_public) {
+        console.error('Non-public playlist included:', item)
+        return acc
+      }
 
       if (!acc[playlistId]) {
         const user = users?.find((u) => u.id === item.playlists?.user_id)
@@ -168,15 +179,18 @@ export async function updatePlaylistLike({
         .delete()
         .eq('playlist_id', playlist_id)
         .eq('user_id', user_id)
+        .select('*') // 삭제된 데이터를 반환
 
       if (deleteError) {
         console.error('Error removing like:', deleteError)
         throw new Error(deleteError.message)
       }
     } else {
+      // 좋아요 추가
       const { error: insertError } = await supabase
         .from('playlist_like')
         .insert({ playlist_id, user_id })
+        .select('*') // 추가된 데이터를 반환
 
       if (insertError) {
         console.error('Error adding like:', insertError)
@@ -188,3 +202,23 @@ export async function updatePlaylistLike({
     throw new Error('Unexpected error occurred while updating playlist like.')
   }
 }
+
+export async function fetchPlaylistLikeCount(playlist_id: string) {
+  try {
+    const { count, error } = await supabase
+      .from('playlist_like')
+      .select('id', { count: 'exact' })
+      .eq('playlist_id', playlist_id)
+      
+    if (error) {
+      console.error('Error fetching like count:', error)
+      throw new Error(error.message)
+    }
+
+    return count || 0
+  } catch (error) {
+    console.error('Unexpected error fetching like count:', error)
+    throw new Error('Unexpected error occurred while fetching like count.')
+  }
+}
+
