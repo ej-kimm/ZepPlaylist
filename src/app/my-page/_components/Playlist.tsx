@@ -75,6 +75,7 @@ const PlayList = () => {
               {page?.playlistsWithCovers.map((p, index) => {
                 return (
                   <PlaylistUI
+                    key={p.id}
                     profileImg={user.profile_image!}
                     playlistName={p.name}
                     nickName={user.nickname}
