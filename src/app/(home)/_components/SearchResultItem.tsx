@@ -14,7 +14,7 @@ const SearchResultItem = ({ item }: SearchResultProps) => {
   const { isPlayerOpen, setTrackIds, setPlayerOpen, play } =
     useMusicPlayerStore()
   const { upsertMusic } = usePlaylistMusicUpsert()
-  const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false)
+  const [isBottomSheetOpen, setIsBottomSheetOpen] = useState<boolean>(false)
 
   const handlePlayBtn = async (
     songId: string,

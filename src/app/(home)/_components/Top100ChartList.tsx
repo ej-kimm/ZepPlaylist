@@ -35,7 +35,7 @@ const Top100ChartList = ({
   const { isPlayerOpen, setTrackIds, setPlayerOpen, play } =
     useMusicPlayerStore()
   const { upsertMusic } = usePlaylistMusicUpsert()
-  const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false)
+  const [isBottomSheetOpen, setIsBottomSheetOpen] = useState<boolean>(false)
 
   const handlePlayBtn = async () => {
     // 데이터 일치화를 위해 ()와 안의 텍스트 제거

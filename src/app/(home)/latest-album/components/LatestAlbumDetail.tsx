@@ -1,10 +1,12 @@
 'use client'
 
 import imPlay from '@/assets/images/imPlay.svg'
-import MoreOptionsButton from '@/components/common/MoreOptionsButton'
+import { MusicSaveBottomSheet } from '@/components/common'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import { userStore } from '@/store/userSlice'
 import Image from 'next/image'
+import { useState } from 'react'
+import { FiMoreHorizontal } from 'react-icons/fi'
 
 type LatestAlbumProps = {
   albumData: SpotifyApi.SingleAlbumResponse
@@ -17,6 +19,8 @@ const LatestAlbumDetail = ({ albumData }: LatestAlbumProps) => {
     useMusicPlayerStore()
 
   const albumTrackData = albumData.tracks.items
+
+  const [isBottomSheetOpen, setIsBottomSheetOpen] = useState<boolean>(false)
 
   const formatTime = (milliseconds: number): string => {
     const totalSeconds = Math.floor(milliseconds / 1000)
@@ -36,6 +40,8 @@ const LatestAlbumDetail = ({ albumData }: LatestAlbumProps) => {
     setTrackIds(albumAllTrackIds)
     play()
   }
+
+  const handleOpenBottomSheet = () => setIsBottomSheetOpen((prev) => !prev)
 
   return (
     <div>
@@ -107,11 +113,16 @@ const LatestAlbumDetail = ({ albumData }: LatestAlbumProps) => {
                 {item.artists[0].name}
               </p>
             </div>
-            <MoreOptionsButton
+
+            <button type="button" onClick={handleOpenBottomSheet}>
+              <FiMoreHorizontal fontSize={24} />
+            </button>
+
+            <MusicSaveBottomSheet
               musicName={item.name}
               artistName={item.artists[0].name}
-              albumCover={albumData.images[0].url}
-              user={user}
+              isOpen={isBottomSheetOpen}
+              handleClose={handleOpenBottomSheet}
             />
           </li>
         ))}

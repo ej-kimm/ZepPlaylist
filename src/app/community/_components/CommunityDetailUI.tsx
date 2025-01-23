@@ -5,7 +5,6 @@ import defaultProfileImg from '@/assets/images/defaultProfileImg.png'
 import likeFalse from '@/assets/images/likeFalse.svg'
 import likeTrue from '@/assets/images/likeTrue.svg'
 import moreButton from '@/assets/images/moreButton.svg'
-import BottomSheet from '@/components/common/BottomSheet'
 import Image from 'next/image'
 import { useState } from 'react'
 import { TbTrash } from 'react-icons/tb'
@@ -58,7 +57,7 @@ export default function CommunityDetailUI({
   isLiked,
   onLikeToggle,
 }: CommunityDetailUIProps) {
-  const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false)
+  const [isBottomSheetOpen, setIsBottomSheetOpen] = useState<boolean>(false)
   const [selectedSong, setSelectedSong] = useState<Song | null>(null)
 
   const handleMoreButtonClick = (song: Song) => {
@@ -221,7 +220,7 @@ export default function CommunityDetailUI({
       </div>
 
       {/* 바텀시트 */}
-      <BottomSheet
+      {/* <BottomSheet
         isOpen={isBottomSheetOpen}
         onClose={() => setIsBottomSheetOpen(false)}
         height="50%"
@@ -237,7 +236,7 @@ export default function CommunityDetailUI({
             <div className="mt-4"></div>
           </div>
         )}
-      </BottomSheet>
+      </BottomSheet> */}
     </div>
   )
 }
