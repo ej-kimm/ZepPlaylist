@@ -16,6 +16,10 @@ const Sidebar = ({ isOpen, toggleMenu }: SidebarProps) => {
   const { isPlayerModalOpen, setPlayerClose } = useMusicPlayerStore()
 
   const handleLogOut = async () => {
+    const provider = localStorage.getItem('social')
+    if (provider) {
+      window.location.href = ''
+    }
     const { error } = await supabase.auth.signOut()
     if (error) {
       console.error(error.message)
@@ -24,7 +28,6 @@ const Sidebar = ({ isOpen, toggleMenu }: SidebarProps) => {
         text: '로그아웃중 에러가 발생했습니다. 다시시도해주세요',
       })
     }
-    localStorage.removeItem('user')
     setUser(null)
     toggleMenu()
     if (isPlayerModalOpen) setPlayerClose()
