@@ -1,22 +1,20 @@
 import { fetchPlaylistsWithCovers } from '@/api/playlist/actions'
+import { userStore } from '@/store/userSlice'
 import type { PlaylistRow } from '@/types/playlist'
-import { useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
 
 const usePlaylistOperations = () => {
-  const [playlists, setPlaylists] = useState<PlaylistRow[]>([])
-
-  const getPlayList = async () => {
-    try {
-      const data = await fetchPlaylistsWithCovers()
-      setPlaylists(data)
-    } catch (error) {
-      console.error('Error fetching playlists:', error)
-    }
-  }
+  const { user } = userStore()
+  const { data: playlists = [], isPending } = useQuery<PlaylistRow[]>({
+    queryKey: ['playlists', user?.id],
+    queryFn: async () => fetchPlaylistsWithCovers(),
+    enabled: !!user,
+  })
 
   return {
     playlists,
-    getPlayList,
+    isPending,
   }
 }
+
 export default usePlaylistOperations

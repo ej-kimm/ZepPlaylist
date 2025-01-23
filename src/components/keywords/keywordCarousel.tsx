@@ -12,7 +12,7 @@ type KeywordCarouselProps = {
   selectedKeywords: string[]
   onToggleKeyword: (keyword: string) => void
 }
-
+ 
 export default function KeywordCarousel({
   selectedKeywords,
   onToggleKeyword,

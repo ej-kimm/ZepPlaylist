@@ -57,7 +57,7 @@ const PlaylistUI = ({
         <button
           className="text-xl"
           onClick={(e) => {
-            e.stopPropagation() // 클릭 이벤트 전파 방지
+            e.stopPropagation()
             onLikeToggle()
           }}
         >

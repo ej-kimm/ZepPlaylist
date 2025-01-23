@@ -10,7 +10,10 @@ const MusicDetails = ({ musicDetail }: MusicDetailsProps) => {
   const { togglePlayerModal } = useMusicPlayerStore()
 
   return (
-    <div className="flex flex-grow cursor-pointer" onClick={togglePlayerModal}>
+    <div
+      className="flex flex-grow cursor-pointer overflow-hidden"
+      onClick={togglePlayerModal}
+    >
       <Image
         // TODO : 웹버전 src default 커버 설정하기
         className="hidden"
@@ -19,9 +22,9 @@ const MusicDetails = ({ musicDetail }: MusicDetailsProps) => {
         width={40}
         height={40}
       />
-      <div className="flex flex-col gap-[2px]">
-        <h3 className="body-2">{musicDetail?.title}</h3>
-        <p className="caption-2">{musicDetail?.artist}</p>
+      <div className="flex w-full flex-col gap-[2px]">
+        <h3 className="body-2 truncate">{musicDetail?.title}</h3>
+        <p className="caption-2 truncate">{musicDetail?.artist}</p>
       </div>
     </div>
   )

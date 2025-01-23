@@ -103,23 +103,3 @@ export const updateSongLike = async ({
     if (insertError) throw new Error(insertError.message)
   }
 }
-
-// playlist_music, playlist 테이블
-// TODO : 담기 기능 추가 작업 필요
-export const isSongSaved = async ({
-  music_id,
-  user_id,
-}: {
-  music_id: Tables<'song_like'>['music_id']
-  user_id: Tables<'song_like'>['user_id']
-}) => {
-  const { data: playlist_music, error } = await supabase
-    .from('playlist_music')
-    .select('playlists(id)')
-    .eq('music_id', music_id)
-    .eq('playlists.user_id', user_id)
-
-  if (error) throw new Error(error.message)
-  console.log(playlist_music)
-  return playlist_music[0].playlists.id
-}

@@ -1,5 +1,7 @@
+import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import { userStore } from '@/store/userSlice'
 import { supabase } from '@/utils/supabase/client'
+import { useEffect } from 'react'
 import Swal from 'sweetalert2'
 import ProfileHeader from './ProfileHeader'
 import SidebarMenu from './SidebarMenu'
@@ -11,6 +13,7 @@ type SidebarProps = {
 
 const Sidebar = ({ isOpen, toggleMenu }: SidebarProps) => {
   const { user, setUser } = userStore()
+  const { isPlayerModalOpen, setPlayerClose } = useMusicPlayerStore()
 
   const handleLogOut = async () => {
     const provider = localStorage.getItem('social')
@@ -26,17 +29,32 @@ const Sidebar = ({ isOpen, toggleMenu }: SidebarProps) => {
       })
     }
     setUser(null)
+    toggleMenu()
+    if (isPlayerModalOpen) setPlayerClose()
   }
+
+  // 스크롤 비활성화
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = 'auto'
+    }
+
+    return () => {
+      document.body.style.overflow = 'auto'
+    }
+  }, [isOpen])
 
   return (
     <aside
-      className={`absolute right-0 top-full z-header h-screen w-full bg-white px-6 transition duration-300 ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
+      className={`z-sidebar top-navBar fixed right-0 h-screen w-full bg-white px-6 transition duration-300 ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
     >
       <header className="flex h-[140px] items-center justify-center px-[13px]">
         <ProfileHeader toggleMenu={toggleMenu} />
       </header>
 
-      <nav className="mb-[7px]">
+      <nav className="mb-5">
         <h2 className="title-1 mb-4">음악 감상</h2>
         <SidebarMenu toggleMenu={toggleMenu} />
       </nav>
