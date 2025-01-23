@@ -7,5 +7,12 @@ export type BillboradSong = {
   title: string
   artist: string
   cover: string
-  // position: [Object]
+}
+
+export type SpotifyTrack = {
+  id: string
+  artist: string
+  title: string
+  playTime: number
+  albumCover: string
 }

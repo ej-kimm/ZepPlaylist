@@ -34,7 +34,7 @@ const Top100ChartList = ({
   const { searchSpotifyId } = useSpotifySearch()
   const { isPlayerOpen, setTrackIds, setPlayerOpen, play } =
     useMusicPlayerStore()
-  const { upsertMusic } = usePlaylistMusicUpsert(albumCover)
+  const { upsertMusic } = usePlaylistMusicUpsert()
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false)
 
   const handlePlayBtn = async () => {
@@ -49,6 +49,7 @@ const Top100ChartList = ({
       title: musicData!.title,
       artist: musicData!.artist,
       playTime: musicData!.playTime,
+      albumCover,
     }
 
     await upsertMusic(newMusicData)
@@ -96,7 +97,6 @@ const Top100ChartList = ({
         handleClose={handleOpenBottomSheet}
         musicName={musicName}
         artistName={artistName}
-        albumCover={albumCover}
       />
     </li>
   )

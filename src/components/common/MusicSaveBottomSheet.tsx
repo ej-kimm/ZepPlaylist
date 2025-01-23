@@ -12,7 +12,6 @@ import BottomSheet from './BottomSheet'
 type MusicSaveBottomSheetProps = {
   musicName: string
   artistName: string
-  albumCover: string
   isOpen: boolean
   handleClose: () => void
 }
@@ -20,15 +19,13 @@ type MusicSaveBottomSheetProps = {
 const MusicSaveBottomSheet = ({
   musicName,
   artistName,
-  albumCover,
   isOpen,
   handleClose,
 }: MusicSaveBottomSheetProps) => {
   const { user } = userStore()
   const { playlists, isPending } = usePlaylistOperations()
   const { searchSpotifyId } = useSpotifySearch()
-  const { upsertMusic, addMusicToPlaylistTable } =
-    usePlaylistMusicUpsert(albumCover)
+  const { upsertMusic, addMusicToPlaylistTable } = usePlaylistMusicUpsert()
   const { closePlayerModal } = useMusicPlayerStore()
 
   // 특정 플레이리스트 목록을 동작하는 함수

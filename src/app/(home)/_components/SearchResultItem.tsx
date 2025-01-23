@@ -13,15 +13,22 @@ type SearchResultProps = {
 const SearchResultItem = ({ item }: SearchResultProps) => {
   const { isPlayerOpen, setTrackIds, setPlayerOpen, play } =
     useMusicPlayerStore()
-  const { upsertMusic } = usePlaylistMusicUpsert(item.album.images[0].url)
+  const { upsertMusic } = usePlaylistMusicUpsert()
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false)
 
-  const handlePlay = async () => {
+  const handlePlayBtn = async (
+    songId: string,
+    musicName: string,
+    artist: string,
+    playTime: number,
+    albumCover: string,
+  ) => {
     const newMusicData = {
-      id: item.id,
-      title: item.name,
-      artist: item.artists[0].name,
-      playTime: item.duration_ms,
+      id: songId,
+      title: musicName,
+      artist,
+      playTime,
+      albumCover,
     }
 
     await upsertMusic(newMusicData)
@@ -33,7 +40,18 @@ const SearchResultItem = ({ item }: SearchResultProps) => {
 
   return (
     <li className="flex items-center gap-4 rounded-lg py-2 transition-colors">
-      <div className="flex-shrink-0 cursor-pointer" onClick={handlePlay}>
+      <div
+        className="flex-shrink-0 cursor-pointer"
+        onClick={() =>
+          handlePlayBtn(
+            item.id,
+            item.name,
+            item.artists[0].name,
+            item.duration_ms,
+            item.album.images[0].url,
+          )
+        }
+      >
         <Image
           src={item.album.images[0].url}
           alt={item.album.name}
@@ -45,7 +63,15 @@ const SearchResultItem = ({ item }: SearchResultProps) => {
       </div>
       <div
         className="flex min-w-0 flex-1 cursor-pointer flex-col gap-1"
-        onClick={handlePlay}
+        onClick={() =>
+          handlePlayBtn(
+            item.id,
+            item.name,
+            item.artists[0].name,
+            item.duration_ms,
+            item.album.images[0].url,
+          )
+        }
       >
         <h3 className="button-2 truncate">{item.name}</h3>
         <p className="caption-2 truncate opacity-60">{item.artists[0].name}</p>
@@ -60,7 +86,6 @@ const SearchResultItem = ({ item }: SearchResultProps) => {
         handleClose={handleOpenBottomSheet}
         musicName={item.name}
         artistName={item.artists[0].name}
-        albumCover={item.album.images[0].url}
       />
     </li>
   )
