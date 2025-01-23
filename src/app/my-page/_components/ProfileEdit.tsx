@@ -1,13 +1,13 @@
 'use client'
 
 import { updateProfile } from '@/api/my-page/actions'
-import { PrimaryButton } from '@/components/common'
+import { PasswordEditBottomSheet, PrimaryButton } from '@/components/common'
 import BottomSheet from '@/components/common/BottomSheet'
 import type { User } from '@/types/auth'
 import Image from 'next/image'
 import { useRef, useState } from 'react'
 import Swal from 'sweetalert2'
-import PasswordChange from './PasswordChange'
+
 const ProfileEdit = ({ user, setUser }: User) => {
   const [isOpen, setIsOpen] = useState(false) // 그냥 바텀시트
   const [isOpenPassword, setIsOpenPassword] = useState(false) // 비밀번호 변경 바텀시트
@@ -75,6 +75,9 @@ const ProfileEdit = ({ user, setUser }: User) => {
   const handleNickname = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEitNickname(e.target.value)
   }
+
+  const handlePasswordBottomSheet = () => setIsOpenPassword((prev) => !prev)
+
   return (
     <div className="ml-auto">
       <button
@@ -139,14 +142,10 @@ const ProfileEdit = ({ user, setUser }: User) => {
           </PrimaryButton>
         </div>
       </BottomSheet>
-      <BottomSheet
+      <PasswordEditBottomSheet
         isOpen={isOpenPassword}
-        onClose={() => setIsOpenPassword(false)}
-        height="auto"
-        maxWidth="100%"
-      >
-        <PasswordChange setIsOpenPassword={setIsOpenPassword} />
-      </BottomSheet>
+        handleClose={handlePasswordBottomSheet}
+      />
     </div>
   )
 }
