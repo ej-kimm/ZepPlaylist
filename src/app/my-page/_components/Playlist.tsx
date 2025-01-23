@@ -1,14 +1,23 @@
 'use client'
-import { getPlaylists } from '@/api/community/actions'
+import { toggleLike } from '@/api/my-page/actions'
+import PlaylistUI from '@/components/common/PlaylistUI'
 import { userStore } from '@/store/userSlice'
-import { useInfiniteQuery } from '@tanstack/react-query'
-import Image from 'next/image'
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 import { useInView } from 'react-intersection-observer'
+import { fetchUserLikePlaylist } from './fetchUserLikePlaylist'
 import { fetchUserPlayList } from './fetchUserPlayList'
 const PlayList = () => {
   const { user } = userStore()
   const router = useRouter()
+  const queryClient = useQueryClient()
+  const [isLiked, setIsLiked] = useState<{ [playlistId: string]: boolean }>({})
   const {
     data,
     fetchNextPage,
@@ -31,43 +40,53 @@ const PlayList = () => {
       }
     },
   })
-
+  const { data: likedPlaylist } = useQuery({
+    queryKey: ['playlists', user?.id],
+    queryFn: () => fetchUserLikePlaylist(),
+  })
+  console.log('============================', likedPlaylist)
+  const { mutate: toggleLike1 } = useMutation({
+    mutationFn: toggleLike,
+    onSuccess: (_, variables) => {
+      setIsLiked((prev) => ({
+        ...prev,
+        [variables.user_id]: !prev[variables.user_id],
+      }))
+      queryClient.invalidateQueries({
+        queryKey: ['playlists', user!.id],
+      })
+    },
+  })
+  const likeCount2 = likedPlaylist?.playlistLikeId
+  console.log('first', likeCount2)
   if (isLoading) return <p>Loading...</p>
   if (error) return <p>에러가 발생하였습니다!</p>
-  const a = getPlaylists(user!.id)
-  console.log('first', a)
-  console.log('first', data)
-  // ui 만 쓰고 컴포넌트가 받는 프롭스 
+  if (!user) return
+  if (!likeCount2) return
+  const likeLength = likeCount2.map((p) => p!.length || 0)
+  console.log('aaaaaaaaaaaaaa', likeLength)
+
   return (
     <div>
       <div>
         {data?.pages.map((page, pageIndex) => {
           return (
             <div key={pageIndex}>
-              {page?.playlistsWithCovers.map((p) => {
+              {page?.playlistsWithCovers.map((p, index) => {
                 return (
-                  <div
-                    className="flex items-center justify-between"
-                    key={p.id}
+                  <PlaylistUI
+                    profileImg={user.profile_image!}
+                    playlistName={p.name}
+                    nickName={user.nickname}
+                    isLiked={isLiked[p.id] ?? false}
                     onClick={() => {
                       router.push(`/community/${p.id}`)
                     }}
-                  >
-                    <Image
-                      className="mb-[21px] ml-4 h-9 w-9"
-                      src={p.latest_song_cover || '/default-cover.jpg'}
-                      height={36}
-                      width={36}
-                      alt="앨범커버 사진"
-                    />
-                    <div className="body-2 flex w-[calc(100%-52px)] items-center justify-between">
-                      <div>
-                        {p.name}
-                        <h1 className="caption-2">{user?.nickname}</h1>
-                      </div>
-                    </div>
-                    <button>♥</button>
-                  </div>
+                    likeCount={likeLength[index]}
+                    onLikeToggle={() => {
+                      toggleLike1({ playlist_id: p.id, user_id: user.id })
+                    }}
+                  />
                 )
               })}
             </div>
@@ -80,27 +99,3 @@ const PlayList = () => {
 }
 
 export default PlayList
-
-
-                  // <div
-                  //   className="flex items-center justify-between"
-                  //   key={p.id}
-                  //   onClick={() => {
-                  //     router.push(`/community/${p.id}`)
-                  //   }}
-                  // >
-                  //   <Image
-                  //     className="mb-[21px] ml-4 h-9 w-9"
-                  //     src={p.latest_song_cover || '/default-cover.jpg'}
-                  //     height={36}
-                  //     width={36}
-                  //     alt="앨범커버 사진"
-                  //   />
-                  //   <div className="body-2 flex w-[calc(100%-52px)] items-center justify-between">
-                  //     <div>
-                  //       {p.name}
-                  //       <h1 className="caption-2">{user?.nickname}</h1>
-                  //     </div>
-                  //   </div>
-                  //   <button>♥</button>
-                  // </div>
