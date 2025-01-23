@@ -1,8 +1,8 @@
 'use client'
 
-import KeywordCarousel from '@/components/keywords/keywordCarousel'
+import PlaylistSection from '@/app/community/_components/PlaylistSection'
+import KeywordCarousel from '@/components/common/keywordCarousel'
 import { useState } from 'react'
-import PlaylistSection from '@/app/community/_components/PlaylistSection';
 
 type Playlist = {
   id: string
@@ -23,26 +23,29 @@ const KeywordCarouselWrapper = ({
   allPlaylists,
   userId,
 }: KeywordCarouselWrapperProps) => {
-  const [selectedKeywords, setSelectedKeywords] = useState<string[]>([]);
-  const [filteredPlaylists, setFilteredPlaylists] = useState<Playlist[]>(allPlaylists);
+  const [selectedKeywords, setSelectedKeywords] = useState<string[]>([])
+  const [filteredPlaylists, setFilteredPlaylists] =
+    useState<Playlist[]>(allPlaylists)
 
   const handleToggleKeyword = (keyword: string) => {
     const updatedKeywords = selectedKeywords.includes(keyword)
       ? selectedKeywords.filter((k) => k !== keyword)
-      : [...selectedKeywords, keyword];
+      : [...selectedKeywords, keyword]
 
-    setSelectedKeywords(updatedKeywords);
+    setSelectedKeywords(updatedKeywords)
 
     if (updatedKeywords.length === 0) {
-      setFilteredPlaylists(allPlaylists);
+      setFilteredPlaylists(allPlaylists)
     } else {
       const keywordFilteredPlaylists = allPlaylists.filter((playlist) => {
-        const playlistKeywords = playlist.keyword.split(',').map((k) => k.trim());
-        return updatedKeywords.some((key) => playlistKeywords.includes(key));
-      });
-      setFilteredPlaylists(keywordFilteredPlaylists);
+        const playlistKeywords = playlist.keyword
+          .split(',')
+          .map((k) => k.trim())
+        return updatedKeywords.some((key) => playlistKeywords.includes(key))
+      })
+      setFilteredPlaylists(keywordFilteredPlaylists)
     }
-  };
+  }
 
   return (
     <div>
@@ -53,7 +56,7 @@ const KeywordCarouselWrapper = ({
       />
       <PlaylistSection userId={userId} playlists={filteredPlaylists} />
     </div>
-  );
-};
+  )
+}
 
-export default KeywordCarouselWrapper;
+export default KeywordCarouselWrapper

@@ -1,6 +1,6 @@
 'use client'
 
-import KeywordCarousel from '@/components/keywords/keywordCarousel'
+import KeywordCarousel from '@/components/common/keywordCarousel'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
