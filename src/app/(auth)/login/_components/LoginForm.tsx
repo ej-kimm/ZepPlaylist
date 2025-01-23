@@ -79,7 +79,7 @@ const LoginForm = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="mx-auto max-w-sm border-b border-black border-opacity-40 pb-[36px] sm:p-6"
+      className="mx-auto max-w-sm border-b border-black border-opacity-40 sm:p-6"
     >
       <h2 className="title-1 mt-[72px] text-left">로그인</h2>
       <InputBox
@@ -89,7 +89,7 @@ const LoginForm = () => {
         required
         errorMessage={errors.email?.message}
         register={register}
-        className="caption-2 mt-10 w-full rounded-lg border-white bg-[#f4f4f4]"
+        className="caption-2 mt-8 w-full rounded-lg border-white bg-[#f4f4f4]"
       />
       <InputBox
         name="password"
@@ -97,11 +97,11 @@ const LoginForm = () => {
         placeholder="비밀번호"
         required
         register={register}
-        className="caption-2 mt-10 w-full rounded-lg border-white bg-[#f4f4f4]"
+        className="caption-2 mt-8 w-full rounded-lg border-white bg-[#f4f4f4]"
       />
       <PrimaryButton
         type="submit"
-        className="button-2 mt-[52px] h-[39px] w-full rounded-full border-primary text-white"
+        className="button-2 mb-12 mt-8 h-[39px] w-full rounded-full border-primary text-white"
       >
         로그인
       </PrimaryButton>

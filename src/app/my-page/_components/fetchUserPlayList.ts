@@ -18,7 +18,6 @@ export const fetchUserPlayList = async ({ pageParam = 0 }: Param) => {
   if (!playlists) {
     return
   }
-  console.log('=====넘어오나')
   const playlistsWithCovers = await Promise.all(
     playlists.map(async (playlist) => {
       const latestSongCover = await fetchLatestAlbumCover(playlist.id)
