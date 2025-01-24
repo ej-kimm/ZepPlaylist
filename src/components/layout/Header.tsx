@@ -1,6 +1,7 @@
 'use client'
 import hamburger from '@/assets/images/hamburger.svg'
 import leftArrow from '@/assets/images/leftArrow.svg'
+import logo from '@/assets/images/logo.svg'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
@@ -54,6 +55,12 @@ const Header = () => {
   return (
     <>
       <div className="fixed left-0 top-0 z-header flex h-navBar w-full items-center justify-between bg-white px-6">
+        {pathname === '/' && !isHamburgerOpen && !isPlayerModalOpen && (
+          <button type="button">
+            <Image src={logo} width={128} height={30} alt="logo" />
+          </button>
+        )}
+
         <button
           className={`md:hidden ${pathname === '/' && !isPlayerModalOpen ? 'invisible' : 'visible'}`}
           onClick={handleBack}
@@ -71,7 +78,7 @@ const Header = () => {
           {!isHamburgerOpen && isPathName(pathname)}
         </h1>
 
-        <button className="block md:hidden" onClick={toggleMenu}>
+        <button className="md:hidden block" onClick={toggleMenu}>
           <Image src={hamburger} width={24} height={24} alt="hamburger" />
         </button>
       </div>
