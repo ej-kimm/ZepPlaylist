@@ -44,11 +44,7 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(new URL('/', request.url))
   }
 
-  if (!user?.id && pathname.startsWith('/playlist')) {
-    return NextResponse.redirect(new URL('/login', request.url))
-  }
-
-  if (!user?.id && pathname === '/my-page') {
+  if (!user?.id && (pathname === '/my-page' || pathname === '/playlist')) {
     return NextResponse.redirect(new URL('/login', request.url))
   }
 

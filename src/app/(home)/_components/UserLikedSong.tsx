@@ -1,8 +1,10 @@
 'use client'
 
+import likeTrue from '@/assets/images/likeTrue.svg'
 import { userStore } from '@/store/userSlice'
 import type { UserLikedSongDetails } from '@/types/LikedSongs'
 import { supabase } from '@/utils/supabase/client'
+import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import LikeSongItem from './LikeSongItem'
 
@@ -49,6 +51,7 @@ const UserLikedSong = () => {
     fetchSongLikesAndMusic()
   }, [user])
 
+  console.log(!matchedMusicInfo)
   return (
     <div>
       {!user ? (
@@ -56,11 +59,18 @@ const UserLikedSong = () => {
       ) : (
         <div className="w-full">
           <h2 className="title-2 mb-[23px]">내가 좋아요 한 곡</h2>
-          <ul className="scroll-invisible mb-14 flex space-x-4 overflow-x-auto">
-            {matchedMusicInfo.map((item) => (
-              <LikeSongItem item={item} key={item.id} />
-            ))}
-          </ul>
+          {matchedMusicInfo.length === 0 ? (
+            <div className="flex">
+              좋아하는 곡을 담아 주세요...
+              <Image src={likeTrue} alt="Like Button" width={16} height={16} />
+            </div>
+          ) : (
+            <ul className="scroll-invisible mb-14 flex space-x-4 overflow-x-auto">
+              {matchedMusicInfo.map((item) => (
+                <LikeSongItem item={item} key={item.id} />
+              ))}
+            </ul>
+          )}
         </div>
       )}
     </div>

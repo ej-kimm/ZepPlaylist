@@ -58,7 +58,7 @@ export const PasswordChange = ({ setIsOpenPassword }: PasswordChangeProps) => {
         register={register}
         errorMessage={errors.newPassword?.message}
         required={true}
-        className="caption-2 mb-3 w-full rounded-lg border-white bg-[#f4f4f4]"
+        className="caption-2 mb-3 w-full rounded-lg border-white bg-[#f4f4f4] text-[16px]"
       />
       <InputBox
         name="passwordCheck"
@@ -67,11 +67,11 @@ export const PasswordChange = ({ setIsOpenPassword }: PasswordChangeProps) => {
         register={register}
         errorMessage={errors.passwordCheck?.message}
         required={true}
-        className="caption-2 mb-9 w-full rounded-lg border-white bg-[#f4f4f4]"
+        className="caption-2 mb-9 w-full rounded-lg border-white bg-[#f4f4f4] text-[16px]"
       />
       <PrimaryButton
         type="submit"
-        className="button-2 h-[39px] w-full rounded-full text-white"
+        className="h-[39px]"
         onClick={() => {
           setIsOpenPassword(false)
         }}

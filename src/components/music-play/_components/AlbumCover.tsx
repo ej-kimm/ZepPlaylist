@@ -1,4 +1,5 @@
 'use client'
+import { Skeleton } from '@/components/common'
 import useAlbumCover from '@/hooks/useAlbumCover'
 import { Tables } from '@/types/supabase'
 import Image from 'next/image'
@@ -17,7 +18,7 @@ export default function AlbumCover({ musicDetail }: AlbumCoverProps) {
     setIsFlipped((prev) => !prev)
   }
 
-  if (isPending) return <>Loading...</>
+  if (isPending) return <Skeleton width="266px" height="266px" />
 
   return (
     <div

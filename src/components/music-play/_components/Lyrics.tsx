@@ -20,7 +20,7 @@ const Lyrics = ({ lyrics, isFullLyrics, onClickLyrics }: LyricsProps) => {
         <div className="mb-1 flex gap-1">
           <UnderLineButton
             onClick={handleMenuLyrics}
-            className={`button-2 ${
+            className={`${
               !isTranslation
                 ? 'border-primary'
                 : 'border-transparent text-opacity-60'
@@ -30,7 +30,7 @@ const Lyrics = ({ lyrics, isFullLyrics, onClickLyrics }: LyricsProps) => {
           </UnderLineButton>
           <UnderLineButton
             onClick={handleMenuTranslation}
-            className={`button-2 ${
+            className={`${
               isTranslation
                 ? 'border-primary'
                 : 'border-transparent text-opacity-60'

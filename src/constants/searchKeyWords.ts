@@ -1,0 +1,15 @@
+export const searchKeywords = [
+  { emoji: '✈️', label: '여행' },
+  { emoji: '🏀', label: '운동' },
+  { emoji: '☕', label: '카페' },
+  { emoji: '🛌', label: '수면' },
+  { emoji: '🚗', label: '드라이브' },
+  { emoji: '💼', label: '출퇴근길' },
+  { emoji: '📚', label: '공부' },
+  { emoji: '🎻', label: '클래식' },
+  { emoji: '😑', label: '편안한' },
+  { emoji: '🎉', label: '신나는' },
+  { emoji: '😊', label: '행복한' },
+  { emoji: '😢', label: '슬픈' },
+  { emoji: '🚶‍♂️', label: '산책' },
+]

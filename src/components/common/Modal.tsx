@@ -1,49 +1,73 @@
 import React from 'react'
+import ModalAnimation from '../animation/ModalAnimation'
+import { PrimaryButton, SecondaryButton } from './Button'
 
 interface ModalProps {
   isOpen: boolean
-  confirmText?: string
-  cancelText?: string
+  title: string
+  content: string
+  type?: 'single' | 'vertical' | 'horizontal'
   onConfirm: () => void
   onCancel: () => void
 }
 
 const Modal: React.FC<ModalProps> = ({
   isOpen,
-  confirmText = '확인',
-  cancelText = '취소',
+  title,
+  content,
+  type = 'single',
   onConfirm,
   onCancel,
 }) => {
   if (!isOpen) return null
-  // 성훈님한테 총 크기 어떻게 지정하는지 물어보기
-  // z인덱스 , 랠러티브브
+
+  const renderButtons = () => {
+    switch (type) {
+      case 'single': // 확인 버튼만 있음
+        return (
+          <PrimaryButton onClick={onConfirm} className="block h-[39px]">
+            확인
+          </PrimaryButton>
+        )
+      case 'vertical': // 확인/취소 버튼이 세로로 배치됨
+        return (
+          <div className="flex flex-col gap-4">
+            {onCancel && (
+              <SecondaryButton onClick={onCancel} className="block h-[39px]">
+                취소
+              </SecondaryButton>
+            )}
+            <PrimaryButton onClick={onConfirm} className="block h-[39px]">
+              확인
+            </PrimaryButton>
+          </div>
+        )
+      case 'horizontal': // 확인/취소 버튼이 가로로 배치됨
+        return (
+          <div className="flex w-full justify-between gap-2">
+            {onCancel && (
+              <SecondaryButton onClick={onCancel} className="h-[39px] w-full">
+                취소
+              </SecondaryButton>
+            )}
+            <PrimaryButton onClick={onConfirm} className="h-[39px] w-full">
+              확인
+            </PrimaryButton>
+          </div>
+        )
+      default:
+        return null
+    }
+  }
 
   return (
-    <>
-      <div className="fixed left-0 top-0 z-40 h-full w-full flex-col bg-black opacity-50"></div>
-      <div
-        className="fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center"
-        onClick={onCancel}
-      >
-        <div className="z-50 h-[227px] w-[327px] rounded-[32px] bg-white px-6 pt-[32px]">
-          <h2 className="title-1 mb-2 text-left">로그인 필요</h2>
-          <p className="button-1 text-left">로그인 화면으로 이동합니다</p>
-          <button
-            onClick={onCancel}
-            className="button-2 mb-[17px] mt-[16px] block h-[39px] w-full rounded-full bg-secondary bg-opacity-10 text-secondary"
-          >
-            {cancelText}
-          </button>
-          <button
-            onClick={onConfirm}
-            className="button-2 block h-[39px] w-full rounded-full bg-primary text-white"
-          >
-            {confirmText}
-          </button>
-        </div>
+    <ModalAnimation isOpen={isOpen} onClose={onCancel}>
+      <div className={`${type === 'horizontal' ? 'mb-6' : 'mb-4'}`}>
+        <h2 className="title-1 mb-2 text-left">{title}</h2>
+        <p className="button-1 text-left">{content}</p>
       </div>
-    </>
+      {renderButtons()}
+    </ModalAnimation>
   )
 }
 
