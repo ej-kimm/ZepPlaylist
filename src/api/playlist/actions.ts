@@ -7,17 +7,14 @@ import { createClient } from '@/utils/supabase/server'
 export async function getUser() {
   const supabase = createClient()
 
-  const {
-    data: { user },
-    error,
-  } = await supabase.auth.getUser()
+  const { data, error } = await supabase.auth.getUser()
 
-  if (error) {
-    console.error('사용자 정보 가져오기 오류:', error)
-    throw new Error('사용자 정보를 가져오는 중 문제가 발생했습니다.')
+  if (error || !data?.user) {
+    console.warn('Supabase 세션이 존재하지 않음. 로그인 필요.')
+    return null //오류를 던지지않고 널을 반환하면...되나?
   }
 
-  return user
+  return data.user
 }
 
 // 플리 가져오기

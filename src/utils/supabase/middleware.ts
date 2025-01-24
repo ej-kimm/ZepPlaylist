@@ -40,6 +40,7 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser()
   const { pathname } = request.nextUrl
+  
   if (user) {
     if (pathname === '/login' || pathname === '/sign-up') {
       const url = request.nextUrl.clone()
@@ -53,5 +54,6 @@ export async function updateSession(request: NextRequest) {
       return NextResponse.redirect(url)
     }
   }
+  
   return supabaseResponse
 }
