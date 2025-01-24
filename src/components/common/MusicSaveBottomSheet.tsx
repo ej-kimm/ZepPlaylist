@@ -8,6 +8,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect } from 'react'
 import BottomSheet from './BottomSheet'
+import Skeleton from './Skeleton'
 
 type MusicSaveBottomSheetProps = {
   musicName: string
@@ -90,9 +91,16 @@ const MusicSaveBottomSheet = ({
             </div>
           </Link>
 
-          {!user && !isPending ? (
-            // TODO : 스켈레톤 UI로 변경하기
-            <p className="text-center text-gray-500">로딩 중...</p>
+          {!user && isPending ? (
+            <div className="flex items-center gap-2">
+              <Skeleton
+                width="48px"
+                height="48px"
+                borderRadius="8px"
+                className="flex-shrink-0"
+              />
+              <Skeleton height="16px" className="flex-grow" />
+            </div>
           ) : (
             <ul className="scroll-invisible h-full max-h-[calc(50vh-204px)] space-y-2 overflow-y-scroll bg-white">
               {playlists.map((playlist) => (

@@ -1,5 +1,5 @@
 import { fetchPlaylists } from '@/api/playlist/actions'
-import PlaylistComponent from '@/app/playlist/_components/playlist'
+import PlaylistComponent from './_components/playlist'
 
 export default async function PlaylistPage() {
   const playlists = await fetchPlaylists()

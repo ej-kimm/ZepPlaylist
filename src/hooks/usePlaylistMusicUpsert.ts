@@ -40,7 +40,7 @@ export const usePlaylistMusicUpsert = () => {
         return null
       }
 
-      console.log('Insert successful:', insertedMusic)
+      // console.log('Insert successful:', insertedMusic)
       return insertedMusic.spotify_id
     } else {
       const { data: updatedMusic, error: updateError } = await supabase

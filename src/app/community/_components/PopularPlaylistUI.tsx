@@ -51,7 +51,7 @@ const PopularPlaylistUI = ({
             width: '92px',
             height: '92px',
             top: '4px',
-            left: '24px',
+            left: '20px',
           }}
         >
           <Image

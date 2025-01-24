@@ -86,7 +86,7 @@ export default function LikedSongsPage({
     >
       <header className="mb-4 flex items-center justify-between">
         <h1 className="font-pretendard text-xl">좋아요 한 플레이리스트</h1>
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-6">
           <button
             onClick={handleShufflePlay}
             className="flex items-center justify-center"
@@ -100,6 +100,7 @@ export default function LikedSongsPage({
           >
             <FaRandom size={24} color="black" />
           </button>
+
           <button
             onClick={handlePlayAll}
             className="flex items-center justify-center rounded-full"
@@ -125,7 +126,6 @@ export default function LikedSongsPage({
       <section className="mb-3 mt-0 text-gray-600">
         <p className="font-pretendard text-sm">곡 수: {likedSongs.length}곡</p>
       </section>
-
       <ul className="space-y-2">
         {likedSongs.map((song, index) => (
           <li

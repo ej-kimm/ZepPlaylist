@@ -5,8 +5,11 @@ import defaultProfileImg from '@/assets/images/defaultProfileImg.png'
 import likeFalse from '@/assets/images/likeFalse.svg'
 import likeTrue from '@/assets/images/likeTrue.svg'
 import moreButton from '@/assets/images/moreButton.svg'
+import MusicSaveBottomSheet from '@/components/common/MusicSaveBottomSheet'
 import Image from 'next/image'
+import { useState } from 'react'
 import { TbTrash } from 'react-icons/tb'
+import CommentDeleteModal from './CommentDeleteModal'
 
 type Song = {
   spotify_id: string
@@ -32,7 +35,7 @@ type CommunityDetailUIProps = {
   comments: Comment[]
   content: string
   setContent: React.Dispatch<React.SetStateAction<string>>
-  //   handleSongClick: () => void
+  handleSongClick: () => void
   handleAddComment: () => Promise<void>
   handleDeleteComment: (commentId: string) => Promise<void>
   currentUserId: string | null
@@ -49,13 +52,38 @@ export default function CommunityDetailUI({
   comments,
   content,
   setContent,
-  //   handleSongClick,
+  handleSongClick,
   handleAddComment,
   handleDeleteComment,
   currentUserId,
   isLiked,
   onLikeToggle,
 }: CommunityDetailUIProps) {
+  const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false)
+  const [selectedSong, setSelectedSong] = useState<Song | null>(null)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [selectedCommentId, setSelectedCommentId] = useState<string | null>(
+    null,
+  )
+
+  const openDeleteModal = (commentId: string) => {
+    setSelectedCommentId(commentId)
+    setIsModalOpen(true)
+  }
+
+  const confirmDeleteComment = async () => {
+    if (selectedCommentId) {
+      await handleDeleteComment(selectedCommentId)
+      setSelectedCommentId(null)
+      setIsModalOpen(false)
+    }
+  }
+
+  const handleMoreButtonClick = (song: Song) => {
+    setSelectedSong(song)
+    setIsBottomSheetOpen(true)
+  }
+
   return (
     <div>
       {/* 상단 정보 */}
@@ -100,6 +128,7 @@ export default function CommunityDetailUI({
               <li
                 key={song.spotify_id}
                 className="flex items-center justify-between py-4"
+                onClick={() => handleSongClick()}
               >
                 <div className="flex items-center">
                   <div className="relative h-12 w-12">
@@ -116,7 +145,13 @@ export default function CommunityDetailUI({
                     <p className="text-xs text-gray-500">{song.artist}</p>
                   </div>
                 </div>
-                <button className="h-6 w-6">
+                <button
+                  className="h-6 w-6"
+                  onClick={(e) => {
+                    e.stopPropagation() // 부모 클릭 이벤트 방지
+                    handleMoreButtonClick(song)
+                  }}
+                >
                   <Image
                     src={moreButton}
                     alt="More Options"
@@ -143,7 +178,6 @@ export default function CommunityDetailUI({
                   key={comment.id}
                   className="flex items-start space-x-4 pb-4"
                 >
-                  {/* 댓글 작성자의 프로필 이미지 */}
                   <div className="flex-shrink-0 rounded-full">
                     <Image
                       src={comment.profileImage || defaultProfileImg}
@@ -153,18 +187,13 @@ export default function CommunityDetailUI({
                       className="object-cover"
                     />
                   </div>
-
-                  {/* 댓글 내용과 삭제 버튼을 묶는 컨테이너 */}
                   <div className="flex flex-1 items-center justify-between">
-                    {/* 댓글 내용 */}
                     <p className="caption-1 flex-1text-gray-500 mt-2">
                       {comment.content}
                     </p>
-
-                    {/* 삭제 버튼 */}
                     {currentUserId === comment.user_id && (
                       <button
-                        onClick={() => handleDeleteComment(comment.id)}
+                        onClick={() => openDeleteModal(comment.id)}
                         className="flex h-6 w-6 items-center justify-center text-gray-500"
                       >
                         <TbTrash size={20} />
@@ -180,7 +209,7 @@ export default function CommunityDetailUI({
           <div className="flex items-center rounded-t-md border-t p-2">
             <input
               type="text"
-              className="h-8 flex-1 rounded border border-gray-300 px-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="h-8 flex-1 rounded border border-gray-300 px-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-base"
               placeholder="댓글을 입력하세요..."
               value={content}
               onChange={(e) => setContent(e.target.value)}
@@ -206,25 +235,21 @@ export default function CommunityDetailUI({
           </div>
         </div>
       </div>
+      <CommentDeleteModal
+        isOpen={isModalOpen}
+        onConfirm={confirmDeleteComment}
+        onCancel={() => setIsModalOpen(false)}
+      />
 
-      {/* 바텀시트 */}
-      {/* <BottomSheet
-        isOpen={isBottomSheetOpen}
-        onClose={() => setIsBottomSheetOpen(false)}
-        height="50%"
-      >
-        {selectedSong && (
-          <div className="p-4">
-            <h3 className="truncate text-lg font-medium">
-              {selectedSong.title}
-            </h3>
-            <p className="truncate text-base text-gray-500">
-              {selectedSong.artist}
-            </p>
-            <div className="mt-4"></div>
-          </div>
-        )}
-      </BottomSheet> */}
+      {/* MusicSaveBottomSheet */}
+      {selectedSong && (
+        <MusicSaveBottomSheet
+          musicName={selectedSong.title}
+          artistName={selectedSong.artist}
+          isOpen={isBottomSheetOpen}
+          handleClose={() => setIsBottomSheetOpen(false)}
+        />
+      )}
     </div>
   )
 }

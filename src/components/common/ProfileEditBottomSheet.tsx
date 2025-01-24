@@ -134,7 +134,7 @@ const ProfileEditBottomSheet = ({
         </button>
         <PrimaryButton
           type="button"
-          className="button-2 mt-9 h-[39px] w-full rounded-full text-white"
+          className="mt-9 h-[39px]"
           onClick={updatedNickname}
         >
           확인
