@@ -13,6 +13,7 @@ import { useState } from 'react'
 import { useInView } from 'react-intersection-observer'
 import { fetchUserLikePlaylist } from './fetchUserLikePlaylist'
 import { fetchUserPlayList } from './fetchUserPlayList'
+import MyPageSkeleton from './MyPageSkeleton'
 const PlayList = () => {
   const { user } = userStore()
   const router = useRouter()
@@ -78,40 +79,39 @@ const PlayList = () => {
 
   const likeCount2 = likedPlaylist?.playlistLikeId
   console.log('first', likeCount2)
-  if (isLoading) return <p>Loading...</p>
+  if (isLoading)
+    return Array.from({
+      length: 6,
+    }).map((_, index) => <MyPageSkeleton key={index} />)
   if (error) return <p>에러가 발생하였습니다!</p>
   if (!user) return
   if (!likeCount2) return
   const likeLength = likeCount2.map((p) => p!.length || 0)
-  console.log('aaaaaaaaaaaaaa', likeLength)
-  //바텀시트 랑 프로필이미지 이상한거나옴
   return (
-    <div>
+    <div className="h-full w-full overflow-hidden bg-slate-500">
       <div>
         {data?.pages.map((page, pageIndex) => {
           return (
             <div key={pageIndex}>
-              {page?.playlistsWithCovers.map((p, index) => {
-                return (
-                  <PlaylistUI
-                    key={p.id}
-                    profileImg={
-                      user.profile_image ||
-                      '/_next/static/media/defaultProfileImg.caab3de8.png'
-                    }
-                    playlistName={p.name}
-                    nickName={user.nickname}
-                    isLiked={isLiked[p.id] ?? false}
-                    onClick={() => {
-                      router.push(`/community/${p.id}`)
-                    }}
-                    likeCount={likeLength[index]}
-                    onLikeToggle={() => {
-                      toggleLike1({ playlist_id: p.id, user_id: user.id })
-                    }}
-                  />
-                )
-              })}
+              {page?.playlistsWithCovers.map((p, index) => (
+                <PlaylistUI
+                  key={p.id}
+                  profileImg={
+                    user.profile_image ||
+                    '/_next/static/media/defaultProfileImg.caab3de8.png'
+                  }
+                  playlistName={p.name}
+                  nickName={user.nickname}
+                  isLiked={isLiked[p.id] ?? false}
+                  onClick={() => {
+                    router.push(`/community/${p.id}`)
+                  }}
+                  likeCount={likeLength[index]}
+                  onLikeToggle={() => {
+                    toggleLike1({ playlist_id: p.id, user_id: user.id })
+                  }}
+                />
+              ))}
             </div>
           )
         })}

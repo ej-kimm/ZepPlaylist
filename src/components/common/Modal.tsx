@@ -16,9 +16,6 @@ const Modal: React.FC<ModalProps> = ({
   onCancel,
 }) => {
   if (!isOpen) return null
-  // 성훈님한테 총 크기 어떻게 지정하는지 물어보기
-  // z인덱스 , 랠러티브브
-
   return (
     <>
       <div className="fixed left-0 top-0 z-40 h-full w-full flex-col bg-black opacity-50"></div>

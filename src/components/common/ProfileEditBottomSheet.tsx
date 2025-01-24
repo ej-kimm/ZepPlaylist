@@ -1,4 +1,5 @@
 import { updateProfile } from '@/api/my-page/actions'
+import defaultProfileImg from '@/assets/images/defaultProfileImg.png'
 import { userStore } from '@/store/userSlice'
 import Image from 'next/image'
 import { useRef, useState } from 'react'
@@ -19,7 +20,7 @@ const ProfileEditBottomSheet = ({
 }: ProfileEditBottomSheetProps) => {
   const { user, setUser } = userStore()
   const [editNickname, setEitNickname] = useState(user!.nickname || '')
-  const [profileImage, setProfileImage] = useState(user!.profile_image)
+  const [profileImage, setProfileImage] = useState(user!.profile_image )
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const handleImgClick = () => {
@@ -102,7 +103,7 @@ const ProfileEditBottomSheet = ({
             <Image
               width={64}
               height={64}
-              src={profileImage!}
+              src={profileImage! || defaultProfileImg}
               alt="프로필 이미지"
               className="h-16 w-16 rounded-full"
               onClick={handleImgClick}

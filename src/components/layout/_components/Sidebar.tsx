@@ -16,10 +16,6 @@ const Sidebar = ({ isOpen, toggleMenu }: SidebarProps) => {
   const { isPlayerModalOpen, setPlayerClose } = useMusicPlayerStore()
 
   const handleLogOut = async () => {
-    const provider = localStorage.getItem('social')
-    if (provider) {
-      window.location.href = ''
-    }
     const { error } = await supabase.auth.signOut()
     if (error) {
       console.error(error.message)
@@ -48,7 +44,7 @@ const Sidebar = ({ isOpen, toggleMenu }: SidebarProps) => {
 
   return (
     <aside
-      className={`z-sidebar top-navBar fixed right-0 h-screen w-full bg-white px-6 transition duration-300 ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
+      className={`fixed right-0 top-navBar z-sidebar h-screen w-full bg-white px-6 transition duration-300 ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
     >
       <header className="flex h-[140px] items-center justify-center px-[13px]">
         <ProfileHeader toggleMenu={toggleMenu} />
