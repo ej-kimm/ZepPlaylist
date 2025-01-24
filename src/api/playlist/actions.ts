@@ -18,11 +18,11 @@ export async function getUser() {
 }
 
 // 플리 가져오기
-export async function fetchPlaylists(): Promise<PlaylistRow[]> {
+export async function fetchPlaylists(): Promise<PlaylistRow[] | null> {
   const user = await getUser()
 
   if (!user?.id) {
-    throw new Error('로그인된 사용자 ID를 확인할 수 없습니다.')
+    return null
   }
 
   const supabase = createClient()
@@ -77,7 +77,7 @@ export async function fetchPlaylistsWithCovers(): Promise<PlaylistRow[]> {
 
   // 각 플레이리스트에 최신 음악 커버 보여주기
   const playlistsWithCovers = await Promise.all(
-    playlists.map(async (playlist) => {
+    playlists!.map(async (playlist) => {
       const latestSongCover = await fetchLatestAlbumCover(playlist.id)
       return {
         ...playlist,
