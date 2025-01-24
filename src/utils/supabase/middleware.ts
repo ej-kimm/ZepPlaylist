@@ -3,7 +3,6 @@ import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
 export async function updateSession(request: NextRequest) {
-  console.log('업데이트새션', updateSession)
   let supabaseResponse = NextResponse.next({
     request,
   })
@@ -54,6 +53,6 @@ export async function updateSession(request: NextRequest) {
       return NextResponse.redirect(url)
     }
   }
-  
+
   return supabaseResponse
 }
