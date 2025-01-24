@@ -192,8 +192,9 @@ export default function CommentSection({
       />
       <Modal
         isOpen={isLoginModalOpen}
-        confirmText="로그인"
-        cancelText="취소"
+        title="로그인 필요" 
+        content="좋아요를 누르려면 로그인이 필요합니다." 
+        type="horizontal"
         onConfirm={handleConfirmLogin}
         onCancel={() => setIsLoginModalOpen(false)}
       />
