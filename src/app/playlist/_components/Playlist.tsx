@@ -18,9 +18,7 @@ type PlaylistComponentProps = {
   initialPlaylists: PlaylistRow[]
 }
 
-export default function PlaylistComponent({
-  initialPlaylists,
-}: PlaylistComponentProps) {
+export default function Playlist({ initialPlaylists }: PlaylistComponentProps) {
   const { user } = userStore()
   const router = useRouter()
 
