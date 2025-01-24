@@ -179,18 +179,17 @@ export async function updatePlaylistLike({
         .delete()
         .eq('playlist_id', playlist_id)
         .eq('user_id', user_id)
-        .select('*') // 삭제된 데이터를 반환
+        .select('*')
 
       if (deleteError) {
         console.error('Error removing like:', deleteError)
         throw new Error(deleteError.message)
       }
     } else {
-      // 좋아요 추가
       const { error: insertError } = await supabase
         .from('playlist_like')
         .insert({ playlist_id, user_id })
-        .select('*') // 추가된 데이터를 반환
+        .select('*')
 
       if (insertError) {
         console.error('Error adding like:', insertError)
@@ -209,7 +208,7 @@ export async function fetchPlaylistLikeCount(playlist_id: string) {
       .from('playlist_like')
       .select('id', { count: 'exact' })
       .eq('playlist_id', playlist_id)
-      
+
     if (error) {
       console.error('Error fetching like count:', error)
       throw new Error(error.message)
@@ -221,4 +220,3 @@ export async function fetchPlaylistLikeCount(playlist_id: string) {
     throw new Error('Unexpected error occurred while fetching like count.')
   }
 }
-

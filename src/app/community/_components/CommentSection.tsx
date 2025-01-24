@@ -1,13 +1,13 @@
 'use client'
 
-// import { useMusicPlayerStore } from '@/store/useMusicPlayerStore';
 import usePlaylistLike from '@/hooks/usePlaylistLike'
+import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import { supabase } from '@/utils/supabase/client'
 import { useEffect, useState } from 'react'
 import CommunityDetailUI from './CommunityDetailUI'
 
 type User = {
-  profile_image: string | null // 사용자의 프로필 이미지
+  profile_image: string | null
 }
 
 type Song = {
@@ -23,7 +23,7 @@ type Comment = {
   created_at: string
   user_id: string
   content: string
-  profile_image?: string | null // profile_image 추가
+  profile_image?: string | null
 }
 
 type Props = {
@@ -34,7 +34,7 @@ type Props = {
   profileImage: string | null
   description: string | null
   playlistName: string
-  isLiked: boolean // 좋아요 상태
+  isLiked: boolean
 }
 
 export default function CommentSection({
@@ -49,13 +49,12 @@ export default function CommentSection({
   const [comments, setComments] = useState<Comment[]>(initialComments)
   const [content, setContent] = useState<string>('')
   const [currentUserId, setCurrentUserId] = useState<string | null>(null)
-  // const { setTrackIds, playNextTrack, setPlayerOpen, play } =
-  //   useMusicPlayerStore();
+  const { setTrackIds, playNextTrack, setPlayerOpen, play } =
+    useMusicPlayerStore()
 
-  // 좋아요 상태 관리 (usePlaylistLike 훅 활용)
   const { toggleLike, isLiked } = usePlaylistLike({
-    user_id: currentUserId || '', // 사용자 ID
-    playlist_id: playlistId, // 플레이리스트 ID
+    user_id: currentUserId || '',
+    playlist_id: playlistId, 
   })
 
   useEffect(() => {
@@ -101,18 +100,18 @@ export default function CommentSection({
     fetchUser()
     fetchCommentsWithProfiles()
 
-    // if (songs.length > 0) {
-    //   setTrackIds(songs.map((song) => song.spotify_id));
-    //   setPlayerOpen();
-    //   play()
-    // }
-  }, [songs, playlistId])
+    if (songs.length > 0) {
+      setTrackIds(songs.map((song) => song.spotify_id))
+      setPlayerOpen()
+      play()
+    }
+  }, [songs, playlistId, play, setPlayerOpen, setTrackIds])
 
-  // const handleSongClick = () => {
-  //   setTrackIds(songs.map((song) => song.spotify_id));
-  //   playNextTrack();
-  //   play()
-  // };
+  const handleSongClick = () => {
+    setTrackIds(songs.map((song) => song.spotify_id))
+    playNextTrack()
+    play()
+  }
 
   const handleAddComment = async () => {
     if (!currentUserId) {
@@ -152,7 +151,6 @@ export default function CommentSection({
     setComments((prev) => prev.filter((comment) => comment.id !== commentId))
   }
 
-  // toggleLike을 감싸서 Promise<void>를 반환
   const handleToggleLike = async () => {
     return new Promise<void>((resolve) => {
       toggleLike()
@@ -170,12 +168,12 @@ export default function CommentSection({
       comments={comments}
       content={content}
       setContent={setContent}
-      // handleSongClick={handleSongClick}
+      handleSongClick={handleSongClick}
       handleAddComment={handleAddComment}
       handleDeleteComment={handleDeleteComment}
       currentUserId={currentUserId}
       isLiked={isLiked}
-      onLikeToggle={handleToggleLike} // 감싸진 함수 전달
+      onLikeToggle={handleToggleLike}
     />
   )
 }

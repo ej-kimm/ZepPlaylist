@@ -38,6 +38,8 @@ const Header = () => {
         return '빌보드 TOP 100'
       case pathname === '/playlist' || '/playlist/likes':
         return '플레이리스트'
+      case pathname === '/community':
+        return '커뮤니티'
       case pathname.startsWith('/community/') || '/community':
         return '커뮤니티'
       case pathname === '/my-page':
