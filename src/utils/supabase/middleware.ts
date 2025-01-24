@@ -47,7 +47,8 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(new URL('/login', request.url))
   }
 
-  if (!user && pathname === '/playlist') {
+  if (!user && request.nextUrl.pathname.startsWith('/playlist')) {
+    console.log('============ 미들웨어임')
     return NextResponse.redirect(new URL('/login', request.url))
   }
 
