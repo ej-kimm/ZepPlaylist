@@ -11,7 +11,7 @@ export async function getUser() {
 
   if (error || !data?.user) {
     console.warn('Supabase 세션이 존재하지 않음. 로그인 필요.')
-    return null //오류를 던지지않고 널을 반환하면...되나?
+    return null
   }
 
   return data.user
