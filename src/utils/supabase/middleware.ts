@@ -44,12 +44,8 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(new URL('/', request.url))
   }
 
-  if (!user && pathname === '/my-page') {
+  if (!user && (pathname === '/my-page' || pathname === '/playlist')) {
     return NextResponse.redirect(new URL('/login', request.url))
-  }
-
-  if (!user && pathname === '/playlist') {
-    return NextResponse.redirect(new URL('/', request.url))
   }
 
   return supabaseResponse
