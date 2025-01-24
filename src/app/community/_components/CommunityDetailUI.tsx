@@ -5,6 +5,7 @@ import defaultProfileImg from '@/assets/images/defaultProfileImg.png'
 import likeFalse from '@/assets/images/likeFalse.svg'
 import likeTrue from '@/assets/images/likeTrue.svg'
 import moreButton from '@/assets/images/moreButton.svg'
+// import BottomSheet from '@/components/common/BottomSheet'
 import Image from 'next/image'
 import { TbTrash } from 'react-icons/tb'
 
@@ -119,7 +120,7 @@ export default function CommunityDetailUI({
                 </div>
                 <button
                   className="h-6 w-6"
-                  onClick={() => handleMoreButtonClick(song)}
+                  // onClick={() => handleMoreButtonClick(song)}
                 >
                   <Image
                     src={moreButton}
