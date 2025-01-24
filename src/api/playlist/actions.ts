@@ -77,6 +77,7 @@ export async function fetchLatestAlbumCover(
 
 export async function fetchPlaylistsWithCovers(): Promise<PlaylistRow[]> {
   const playlists = await fetchPlaylists()
+  console.log('플레이리스트 데이터:', playlists)
 
   // 각 플레이리스트에 최신 음악 커버 보여주기
   const playlistsWithCovers = await Promise.all(

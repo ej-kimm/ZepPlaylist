@@ -1,7 +1,7 @@
 // src/app/playlist/likes/page.tsx
 
 import { fetchLikedSongs } from '@/api/like-music/actions'
-import LikedSongsPage from '@/app/playlist/_components/likedSongDetail'
+import LikedSongsPage from '@/app/playlist/_components/LikedSongDetail'
 
 export const metadata = {
   title: '좋아요 리스트 - Music Streaming App',
