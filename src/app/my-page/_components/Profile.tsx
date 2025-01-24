@@ -3,14 +3,11 @@
 import defaultProfileImg from '@/assets/images/defaultProfileImg.png'
 import { userStore } from '@/store/userSlice'
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
 import ProfileEdit from './ProfileEdit'
 
 const Profile = () => {
-  const router = useRouter()
   const { user } = userStore()
   if (!user) {
-    // router.push('/login')
     return
   }
   return (

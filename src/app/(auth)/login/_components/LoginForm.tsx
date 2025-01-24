@@ -48,7 +48,6 @@ const LoginForm = () => {
       return
     }
     let loginUser = null
-    const { data: img } = await supabase.auth.getUser()
     if (userData.user) {
       const { data: fetchuser, error: fetchError } = await supabase
         .from('users')

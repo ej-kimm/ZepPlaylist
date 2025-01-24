@@ -42,7 +42,7 @@ const SignupForm = () => {
   const onSubmit = async (formData: Validator) => {
     const defaultProfileImg =
       'https://hvpvszjjvqaoimyjinuo.supabase.co/storage/v1/object/sign/profile_image/Group%2017%20(1).png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJwcm9maWxlX2ltYWdlL0dyb3VwIDE3ICgxKS5wbmciLCJpYXQiOjE3Mzc0Mjg4OTcsImV4cCI6MTc0MDAyMDg5N30.rP1NO5Q17rqNwbwprtBw65kbhQT8DPIUxdmP4_KsRzo&t=2025-01-21T03%3A08%3A16.544Z'
-    const { data, error: signUpError } = await supabase.auth.signUp({
+    const { error: signUpError } = await supabase.auth.signUp({
       email: formData.email,
       password: formData.password,
       options: {

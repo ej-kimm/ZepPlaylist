@@ -45,7 +45,7 @@ const PlayList = () => {
     queryKey: ['myPagePlaylists', user?.id],
     queryFn: () => fetchUserLikePlaylist(),
   })
-
+  console.log('first', isLiked)
   const { mutate: toggleLike1 } = useMutation({
     // const playlist_id =
     mutationFn: toggleLike,
@@ -67,9 +67,9 @@ const PlayList = () => {
     //   })
     // },
     onSuccess: (_, variables) => {
-      setIsLiked((prev) => ({
-        ...prev,
-        [variables.user_id]: !prev[variables.user_id],
+      setIsLiked((isLiked) => ({
+        ...isLiked,
+        [variables.user_id]: !isLiked[variables.user_id],
       }))
       queryClient.invalidateQueries({
         queryKey: ['myPagePlaylists', user!.id],
