@@ -21,7 +21,7 @@ type PlaylistComponentProps = {
 export default function PlaylistComponent({
   initialPlaylists,
 }: PlaylistComponentProps) {
-  const { user, isLogin } = userStore()
+  const { user } = userStore()
   const router = useRouter()
 
   const [playlists, setPlaylists] = useState<PlaylistRow[]>(initialPlaylists)
@@ -41,7 +41,7 @@ export default function PlaylistComponent({
 
   // 데이터 로드
   useEffect(() => {
-    if (!isLogin || !user) return
+    if (!user) return
 
     const loadPlaylistsAndLikedCover = async () => {
       setIsLoading(true)
@@ -60,11 +60,11 @@ export default function PlaylistComponent({
     }
 
     loadPlaylistsAndLikedCover()
-  }, [isLogin, user])
+  }, [user])
 
   // 새로운 플리 추가
   const handleAddPlaylist = async () => {
-    if (!isLogin || !user) {
+    if (!user) {
       Swal.fire('오류', '로그인이 필요합니다.', 'error')
       return
     }
@@ -89,7 +89,7 @@ export default function PlaylistComponent({
 
   // 플리 수정
   const handleEditPlaylist = async () => {
-    if (!selectedPlaylist || !isLogin || !user) {
+    if (!selectedPlaylist || !user) {
       Swal.fire('오류', '로그인이 필요합니다.', 'error')
       return
     }
@@ -186,7 +186,7 @@ export default function PlaylistComponent({
     <div className="mx-auto h-full max-w-[375px] bg-white">
       {isLoading ? (
         <p className="mt-6 text-center text-gray-500">데이터 로딩 중...</p>
-      ) : isLogin ? (
+      ) : user ? (
         <>
           <h2 className="title-2 flex h-[40px] items-center justify-start font-pretendard">
             내가 만든 플레이리스트
