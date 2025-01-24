@@ -20,6 +20,8 @@ type PlaylistComponentProps = {
 
 export default function Playlist({ initialPlaylists }: PlaylistComponentProps) {
   const { user } = userStore()
+  console.log('first', user)
+  console.log('젤상단================')
   const router = useRouter()
 
   const [playlists, setPlaylists] = useState<PlaylistRow[]>(initialPlaylists)
@@ -39,6 +41,7 @@ export default function Playlist({ initialPlaylists }: PlaylistComponentProps) {
 
   // 데이터 로드
   useEffect(() => {
+    console.log('유즈이펙트안')
     if (!user) return
 
     const loadPlaylistsAndLikedCover = async () => {
