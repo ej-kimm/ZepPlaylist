@@ -1,6 +1,5 @@
 'use server'
 
-import { userStore } from '@/store/userSlice'
 import type { TablesInsert } from '@/types/supabase'
 import { createClient } from '@/utils/supabase/server'
 type UserInsert = TablesInsert<'users'>
@@ -26,16 +25,15 @@ export const updateProfile = async (
 }
 
 export const getPlaylists = async () => {
-  // const { data: user, error: userError } = await supabase.auth.getUser()
-  const { user } = userStore()
-  // if (userError) {
-  //   console.error(userError.message)
-  //   return
-  // }
+  const { data: user, error: userError } = await supabase.auth.getUser()
+  if (userError) {
+    console.error(userError.message)
+    return
+  }
   const { data: playlists, error } = await supabase
     .from('playlists')
     .select(`*, playlist_like(*), playlist_music(* , music(*)) `)
-    .eq('user_id', user!.id)
+    .eq('user_id', user.user!.id)
   if (error) {
     console.error('error', error)
     throw error.message
