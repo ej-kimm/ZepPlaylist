@@ -13,7 +13,7 @@ const useSongLike = ({ user_id }: useSongLikeProps) => {
     (state) => state.trackIds[state.currentTrackIndex],
   )
 
-  const { data: songLike, isPending } = useQuery({
+  const { data: songLike } = useQuery({
     queryKey: ['song_like', user_id, currentTrackId],
     queryFn: () => isSongLiked({ user_id, music_id: currentTrackId }),
     enabled: !!user_id && !!currentTrackId,
@@ -49,7 +49,7 @@ const useSongLike = ({ user_id }: useSongLikeProps) => {
     },
   })
 
-  return { songLike, isPending, updateLike }
+  return { songLike, updateLike }
 }
 
 export default useSongLike

@@ -7,7 +7,7 @@ import {
   fetchPlaylistsWithCovers,
   updatePlaylist,
 } from '@/api/playlist/actions'
-import PlaylistBottomSheet from '@/app/playlist/_components/playlistBottomSheet'
+import { PlaylistBottomSheet } from '@/components/common'
 import { userStore } from '@/store/userSlice'
 import { PlaylistRow } from '@/types/playlist'
 import { useRouter } from 'next/navigation'

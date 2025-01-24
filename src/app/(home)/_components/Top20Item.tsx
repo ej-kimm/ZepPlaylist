@@ -1,4 +1,3 @@
-import pause from '@/assets/images/pause.svg'
 import playing from '@/assets/images/play.svg'
 import { useSpotifySearch } from '@/hooks/useGetSpotifyMusicId'
 import { usePlaylistMusicUpsert } from '@/hooks/usePlaylistMusicUpsert'
@@ -23,7 +22,7 @@ const Top20Item: React.FC<Top20ItemProps> = ({
 }) => {
   const { searchSpotifyId } = useSpotifySearch()
 
-  const { isPlayerOpen, setTrackIds, setPlayerOpen, play, isPlaying } =
+  const { isPlayerOpen, setTrackIds, setPlayerOpen, play } =
     useMusicPlayerStore()
 
   const { upsertMusic } = usePlaylistMusicUpsert()
@@ -65,7 +64,8 @@ const Top20Item: React.FC<Top20ItemProps> = ({
       </div>
       <button type="button">
         <Image
-          src={isPlaying ? pause : playing}
+          // src={isPlaying ? pause : playing}
+          src={playing}
           width={25}
           height={25}
           alt={'play'}

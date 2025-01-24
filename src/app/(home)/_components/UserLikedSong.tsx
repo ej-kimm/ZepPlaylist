@@ -55,8 +55,8 @@ const UserLikedSong = () => {
         <></>
       ) : (
         <div className="w-full">
-          <h2 className="title-2 my-3">내가 좋아요 한 곡</h2>
-          <ul className="mb-14 flex space-x-4 overflow-x-auto">
+          <h2 className="title-2 mb-[23px]">내가 좋아요 한 곡</h2>
+          <ul className="scroll-invisible mb-14 flex space-x-4 overflow-x-auto">
             {matchedMusicInfo.map((item) => (
               <LikeSongItem item={item} key={item.id} />
             ))}

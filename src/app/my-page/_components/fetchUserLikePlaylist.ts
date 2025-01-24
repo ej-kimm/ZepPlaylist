@@ -16,11 +16,13 @@ export const fetchUserLikePlaylist = async () => {
   const likePlayListPromises = playlists.map(async (p) => {
     const { data: playlistLike, error: likeError } = await supabase
       .from('playlist_like')
-      .select('playlist_id')
+      .select(`playlist_id`)
       .eq('playlist_id', p.id)
+
+    // 새로운 필드 or 또는
     if (likeError) return
     return playlistLike
   })
   const playlistLikeId = await Promise.all(likePlayListPromises)
-  return { playlistLikeId, playlists }
+  return { playlistLikeId }
 }

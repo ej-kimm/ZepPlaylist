@@ -1,6 +1,6 @@
 'use client'
 import { toggleLike } from '@/api/my-page/actions'
-import PlaylistUI from '@/components/common/PlaylistUI'
+import { PlaylistUI } from '@/components/common'
 import { userStore } from '@/store/userSlice'
 import {
   useInfiniteQuery,
@@ -41,7 +41,7 @@ const PlayList = () => {
     },
   })
   const { data: likedPlaylist } = useQuery({
-    queryKey: ['playlists', user?.id],
+    queryKey: ['myPagePlaylists', user?.id],
     queryFn: () => fetchUserLikePlaylist(),
   })
   console.log('============================', likedPlaylist)
@@ -53,7 +53,7 @@ const PlayList = () => {
         [variables.user_id]: !prev[variables.user_id],
       }))
       queryClient.invalidateQueries({
-        queryKey: ['playlists', user!.id],
+        queryKey: ['myPagePlaylists', user!.id],
       })
     },
   })
@@ -65,7 +65,7 @@ const PlayList = () => {
   if (!likeCount2) return
   const likeLength = likeCount2.map((p) => p!.length || 0)
   console.log('aaaaaaaaaaaaaa', likeLength)
-
+  //바텀시트 랑 프로필이미지 이상한거나옴
   return (
     <div>
       <div>
@@ -76,7 +76,10 @@ const PlayList = () => {
                 return (
                   <PlaylistUI
                     key={p.id}
-                    profileImg={user.profile_image!}
+                    profileImg={
+                      user.profile_image ||
+                      '/_next/static/media/defaultProfileImg.caab3de8.png'
+                    }
                     playlistName={p.name}
                     nickName={user.nickname}
                     isLiked={isLiked[p.id] ?? false}

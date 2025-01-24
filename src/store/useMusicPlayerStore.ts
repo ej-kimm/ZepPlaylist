@@ -8,6 +8,7 @@ type PlayerState = {
   isPlaying: boolean
   isPlayerModalOpen: boolean
   setPlayerOpen: () => void
+  setPlayerClose: () => void
   setTrackIds: (
     trackIds: Tables<'music'>['spotify_id'] | Tables<'music'>['spotify_id'][],
   ) => void
@@ -27,6 +28,7 @@ export const useMusicPlayerStore = create<PlayerState>()((set) => ({
   isPlaying: false, // 현재 재생중인지 여부
   isPlayerModalOpen: false,
   setPlayerOpen: () => set(() => ({ isPlayerOpen: true })),
+  setPlayerClose: () => set(() => ({ isPlayerOpen: false })),
   setTrackIds: (
     trackId: Tables<'music'>['spotify_id'] | Tables<'music'>['spotify_id'][],
   ) =>

@@ -1,6 +1,6 @@
 'use client'
 
-import PlaylistUI from '@/components/common/PlaylistUI'
+import { PlaylistUI } from '@/components/common'
 import usePlaylistLike from '@/hooks/usePlaylistLike'
 import type { StaticImageData } from 'next/image'
 import { useRouter } from 'next/navigation'
@@ -34,7 +34,7 @@ const PlaylistCard = ({ playlist, userId }: PlaylistCardProps) => {
   const handleDivClick = () => {
     router.push(`/community/${playlist.id}`)
   }
-
+  console.log('first', playlist.profileImg)
   return (
     <PlaylistUI
       profileImg={playlist.profileImg}

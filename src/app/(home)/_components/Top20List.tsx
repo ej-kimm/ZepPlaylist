@@ -22,7 +22,7 @@ const Top20List: React.FC<Top20ListProps> = ({
     : billboardTop20ChartList
 
   return (
-    <div className="mb-10">
+    <div className="mb-5">
       <div className="mb-4 mt-5 flex justify-between">
         <div className="flex items-center justify-start">
           <h1

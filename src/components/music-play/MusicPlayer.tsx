@@ -22,7 +22,9 @@ const MusicPlayer = () => {
   const { musicDetail, url, lyrics, isPending } = usePlayer()
   const pathname = usePathname()
   const hidePlayerBar =
-    pathname.startsWith('/community/') || pathname === '/community'
+    pathname.startsWith('/community/') ||
+    pathname === '/community' ||
+    pathname === '/login'
 
   const handleReady = () => setPlayerState({ ...playerState, ready: true })
   const handleDuration = (duration: number) =>
@@ -34,15 +36,15 @@ const MusicPlayer = () => {
     playerRef.current?.seekTo(value) // 재생 위치 변경
   }
 
+  // 커뮤니티 페이지일 경우 노래 멈추기
   useEffect(() => {
     if (hidePlayerBar) {
-      stop() // '/comunity'일 경우 노래 멈추기
+      stop()
     }
-  }, [hidePlayerBar])
+  }, [hidePlayerBar, stop])
 
   if (!isPlayerOpen) return null // 초기에 노래를 재생하지 않으면 플레이어바 숨김
   if (!url || isPending) {
-    // TODO : 스켈레톤 UI 공용으로 로직분리
     return !isPlayerModalOpen && <PlayerSkeleton />
   }
 
@@ -62,7 +64,7 @@ const MusicPlayer = () => {
         onEnded={stop}
       />
       {!hidePlayerBar && (
-        <section className="fixed bottom-0 left-0 z-player h-[60px] w-full bg-white shadow-drop">
+        <section className="fixed bottom-0 left-0 z-player h-player w-full bg-white shadow-drop">
           <div className="flex h-full items-center justify-between px-6">
             <MusicDetails musicDetail={musicDetail} />
             <ProgressBar
