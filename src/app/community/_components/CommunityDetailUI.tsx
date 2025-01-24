@@ -265,8 +265,8 @@ export default function CommunityDetailUI({
       <Modal
         isOpen={isLoginModalOpen}
         title="로그인 필요"
-        content="좋아요를 누르려면 로그인이 필요합니다."
-        type="horizontal"
+        content="댓글을 작성하려면 로그인이 필요합니다."
+        type="vertical"
         onConfirm={handleConfirmLogin}
         onCancel={() => setIsLoginModalOpen(false)}
       />
