@@ -11,7 +11,6 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { TbTrash } from 'react-icons/tb'
-import CommentDeleteModal from './CommentDeleteModal'
 
 type Song = {
   spotify_id: string
@@ -63,7 +62,7 @@ export default function CommunityDetailUI({
 }: CommunityDetailUIProps) {
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false)
   const [selectedSong, setSelectedSong] = useState<Song | null>(null)
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const [selectedCommentId, setSelectedCommentId] = useState<string | null>(
     null,
   )
@@ -81,14 +80,14 @@ export default function CommunityDetailUI({
 
   const openDeleteModal = (commentId: string) => {
     setSelectedCommentId(commentId)
-    setIsModalOpen(true)
+    setIsDeleteModalOpen(true)
   }
 
   const confirmDeleteComment = async () => {
     if (selectedCommentId) {
       await handleDeleteComment(selectedCommentId)
       setSelectedCommentId(null)
-      setIsModalOpen(false)
+      setIsDeleteModalOpen(false)
     }
   }
 
@@ -252,11 +251,17 @@ export default function CommunityDetailUI({
           </div>
         </div>
       </div>
-      <CommentDeleteModal
-        isOpen={isModalOpen}
+
+      {/* 댓글 삭제 모달 */}
+      <Modal
+        isOpen={isDeleteModalOpen}
+        title="댓글 삭제"
+        content="작성한 댓글을 삭제하시겠습니까?"
+        type="horizontal"
         onConfirm={confirmDeleteComment}
-        onCancel={() => setIsModalOpen(false)}
+        onCancel={() => setIsDeleteModalOpen(false)}
       />
+
       <Modal
         isOpen={isLoginModalOpen}
         title="로그인 필요"
