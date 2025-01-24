@@ -1,8 +1,10 @@
 'use client'
 
+import { Modal } from '@/components/common'
 import usePlaylistLike from '@/hooks/usePlaylistLike'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import { supabase } from '@/utils/supabase/client'
+import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import CommunityDetailUI from './CommunityDetailUI'
 
@@ -49,13 +51,16 @@ export default function CommentSection({
   const [comments, setComments] = useState<Comment[]>(initialComments)
   const [content, setContent] = useState<string>('')
   const [currentUserId, setCurrentUserId] = useState<string | null>(null)
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
+
   const { setTrackIds, playNextTrack, setPlayerOpen, play } =
     useMusicPlayerStore()
-
   const { toggleLike, isLiked } = usePlaylistLike({
     user_id: currentUserId || '',
-    playlist_id: playlistId, 
+    playlist_id: playlistId,
   })
+
+  const router = useRouter()
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -152,28 +157,46 @@ export default function CommentSection({
   }
 
   const handleToggleLike = async () => {
+    if (!currentUserId) {
+      setIsLoginModalOpen(true)
+      return
+    }
+
     return new Promise<void>((resolve) => {
       toggleLike()
       resolve()
     })
   }
 
+  const handleConfirmLogin = () => {
+    router.push('/login')
+  }
+
   return (
-    <CommunityDetailUI
-      nickname={nickname}
-      profileImage={profileImage}
-      description={description}
-      playlistName={playlistName}
-      songs={songs}
-      comments={comments}
-      content={content}
-      setContent={setContent}
-      handleSongClick={handleSongClick}
-      handleAddComment={handleAddComment}
-      handleDeleteComment={handleDeleteComment}
-      currentUserId={currentUserId}
-      isLiked={isLiked}
-      onLikeToggle={handleToggleLike}
-    />
+    <>
+      <CommunityDetailUI
+        nickname={nickname}
+        profileImage={profileImage}
+        description={description}
+        playlistName={playlistName}
+        songs={songs}
+        comments={comments}
+        content={content}
+        setContent={setContent}
+        handleSongClick={handleSongClick}
+        handleAddComment={handleAddComment}
+        handleDeleteComment={handleDeleteComment}
+        currentUserId={currentUserId}
+        isLiked={isLiked}
+        onLikeToggle={handleToggleLike}
+      />
+      <Modal
+        isOpen={isLoginModalOpen}
+        confirmText="로그인"
+        cancelText="취소"
+        onConfirm={handleConfirmLogin}
+        onCancel={() => setIsLoginModalOpen(false)}
+      />
+    </>
   )
 }
