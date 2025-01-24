@@ -115,10 +115,7 @@ const SignupForm = () => {
         />
         <span className="caption-1">서비스 정책 이용약관</span>
       </div>
-      <PrimaryButton
-        type="submit"
-        className="button-2 mt-4 h-[39px] w-full rounded-full border-primary text-white"
-      >
+      <PrimaryButton type="submit" className="mt-4 h-[39px]">
         회원가입
       </PrimaryButton>
     </form>
