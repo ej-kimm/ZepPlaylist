@@ -1,10 +1,6 @@
 'use client'
 
 import clock from '@/assets/images/clock.svg'
-import whitePlay from '@/assets/images/whitePlay.svg'
-import { useSpotifySearch } from '@/hooks/useGetSpotifyMusicId'
-import { usePlaylistMusicUpsert } from '@/hooks/usePlaylistMusicUpsert'
-import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -21,40 +17,42 @@ type MusicChartHeaderProps = {
 // 한시간에 한번만 api호출하여 데이터를 적재하여 사용하면 호출 비용을 줄일 수 있다.
 // https://www.junetein.com/blog/Next-js-cron-job
 const MusicChartHeader = ({
-  top100ChartMusic,
+  // top100ChartMusic,
   isKoreaChart,
 }: MusicChartHeaderProps) => {
-  const { isPlayerOpen, setTrackIds, setPlayerOpen, play } =
-    useMusicPlayerStore()
+  // const { isPlayerOpen, setTrackIds, setPlayerOpen, play } =
+  //   useMusicPlayerStore()
 
-  const { searchSpotifyId } = useSpotifySearch()
+  // const { searchSpotifyId } = useSpotifySearch()
 
-  const { upsertMusic } = usePlaylistMusicUpsert()
+  // const { upsertMusic } = usePlaylistMusicUpsert()
+
+  // const handlePlayAll = () => {
+  //   // 재생버튼을 눌렀을떄는 테이블의 데이터로 사용
+  //   const musicData = top100ChartMusic.map(async (item) => {
+  //     const spotifyData = await searchSpotifyId(item.songName, item.artistName)
+  //     return spotifyData
+  //   })
+
+  //   Promise.all(musicData)
+  //     .then((resolvedData) => {
+  //       return resolvedData
+  //         .filter((data) => !!data)
+  //         .map((newMusicData) => {
+  //           upsertMusic(newMusicData)
+  //           return newMusicData.id
+  //         })
+  //     })
+  //     .then((ids) => {
+  //       if (!isPlayerOpen) setPlayerOpen()
+  //       setTrackIds(ids)
+  //       play()
+  //     })
+  // }
 
   const currentDate = new Date()
   const currentHour = currentDate.getHours()
 
-  const handlePlayAll = () => {
-    const musicData = top100ChartMusic.map(async (item) => {
-      const data = await searchSpotifyId(item.songName, item.artistName)
-      return data
-    })
-
-    Promise.all(musicData)
-      .then((resolvedData) => {
-        return resolvedData
-          .filter((data) => !!data)
-          .map((newMusicData) => {
-            upsertMusic(newMusicData)
-            return newMusicData.id
-          })
-      })
-      .then((ids) => {
-        if (!isPlayerOpen) setPlayerOpen()
-        setTrackIds(ids)
-        play()
-      })
-  }
   return (
     <>
       <div className="flex items-center gap-3.5 self-stretch py-[10px]">
@@ -74,13 +72,13 @@ const MusicChartHeader = ({
         </Link>
       </div>
       <div className="mb-3 mt-4 flex items-center justify-between self-stretch">
-        <button
+        {/* <button
           onClick={handlePlayAll}
           className="flex w-[65px] items-center gap-1"
         >
           <Image src={whitePlay} alt="전체 재생" width={16} height={16} />
           <p className="text-xs font-normal">전체 재생</p>
-        </button>
+        </button> */}
         <div className="mb-3 flex w-[104px] items-center gap-1">
           <Image
             src={clock}

@@ -63,42 +63,40 @@ const LatestAlbumDetail = ({ albumData }: LatestAlbumProps) => {
           />
         </div>
       </div>
-      <div className="mt-[280px]">
-        <div className="mb-4 flex flex-col items-start">
-          <div className="items-between flex w-[105%] flex-row justify-between">
-            <div className="mb-4">
-              <p className="text-#1B1B1B text-lg font-semibold">
-                {albumData.name}
-              </p>
-              <p className="text-#1B1B1B text-xs font-normal">
-                {albumData.artists[0].name}
-              </p>
-            </div>
-            <button
-              onClick={handlePlayAll}
-              className="flex items-center justify-center rounded-full"
-              style={{
-                width: '48px',
-                height: '48px',
-                padding: '11px',
-                borderRadius: '24px',
-                background: '#9032E8',
-              }}
-            >
-              <Image
-                src={imPlay}
-                alt="전체 재생"
-                width={24}
-                height={24}
-                style={{ flexShrink: 0 }}
-              />
-            </button>
+      <div className="mb-4 mt-[280px] flex flex-col items-start">
+        <div className="items-between flex w-[100%] flex-row justify-between">
+          <div className="mb-4">
+            <p className="text-#1B1B1B text-lg font-semibold">
+              {albumData.name}
+            </p>
+            <p className="text-#1B1B1B text-xs font-normal">
+              {albumData.artists[0].name}
+            </p>
           </div>
-          <div className="text-#4A4A4A flex items-center justify-center space-x-1 text-[12px] font-normal">
-            <p>곡 수:{albumData.total_tracks}</p>
-            <p>재생 시간: {formatTime(totalPlayTimeMilliseconds)}</p>
-            <p>발매일자: {albumData.release_date}</p>
-          </div>
+          <button
+            onClick={handlePlayAll}
+            className="flex items-center justify-center rounded-full"
+            style={{
+              width: '48px',
+              height: '48px',
+              padding: '11px',
+              borderRadius: '24px',
+              background: '#9032E8',
+            }}
+          >
+            <Image
+              src={imPlay}
+              alt="전체 재생"
+              width={24}
+              height={24}
+              style={{ flexShrink: 0 }}
+            />
+          </button>
+        </div>
+        <div className="text-#4A4A4A flex items-center justify-center space-x-1 text-[12px] font-normal">
+          <p>곡 수:{albumData.total_tracks}</p>
+          <p>재생 시간: {formatTime(totalPlayTimeMilliseconds)}</p>
+          <p>발매일자: {albumData.release_date}</p>
         </div>
       </div>
       <ul className="space-y-2">

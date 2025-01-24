@@ -1,10 +1,10 @@
 'use client'
 
-import { KeywordCarousel } from '@/components/common'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useDebouncedCallback } from 'use-debounce'
+import SearchKeywordCarousel from './SearchKeywordCarousel'
 
 type FormValues = {
   search: string
@@ -88,7 +88,7 @@ export function SearchBar() {
         </form>
       </div>
       <div>
-        <KeywordCarousel
+        <SearchKeywordCarousel
           selectedKeywords={selectedKeywords}
           onToggleKeyword={toggleKeyword}
         />
