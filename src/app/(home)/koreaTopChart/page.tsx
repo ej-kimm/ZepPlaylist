@@ -1,7 +1,7 @@
 import { fetchMelonChart } from '@/api/home/actions'
 import type { MelonChartSong } from '@/types/melonCharts'
+import MusicChartHeader from '../_components/MusicChartHeader'
 import Top100ChartList from '../_components/Top100ChartList'
-import PlayAllBtn from '../_components/playAllBtn'
 
 export const revalidate = 3600
 
@@ -29,23 +29,23 @@ const koreaTop100 = async () => {
     list: koreaTop100ChartList,
   }
   return (
-    <div>
-      <PlayAllBtn top100ChartMusic={top100ChartMusic} />
-      <div className="flex items-center justify-start"></div>
-      <div className="mx-auto flex w-full max-w-3xl flex-col items-center">
-        <ul className="w-full space-y-2">
-          {newData.list.map((chart, index) => (
-            <Top100ChartList
-              key={chart.SONGID}
-              isKoreaChart={newData.isKoreaChart}
-              musicName={chart.SONGNAME}
-              artistName={chart.ARTISTLIST[0].ARTISTNAME}
-              albumCover={chart.ALBUMIMG}
-              index={index}
-            />
-          ))}
-        </ul>
-      </div>
+    <div className="mx-auto flex w-full max-w-3xl flex-col items-center">
+      <MusicChartHeader
+        top100ChartMusic={top100ChartMusic}
+        isKoreaChart={newData.isKoreaChart}
+      />
+      <ul className="w-full space-y-2">
+        {newData.list.map((chart, index) => (
+          <Top100ChartList
+            key={chart.SONGID}
+            isKoreaChart={newData.isKoreaChart}
+            musicName={chart.SONGNAME}
+            artistName={chart.ARTISTLIST[0].ARTISTNAME}
+            albumCover={chart.ALBUMIMG}
+            index={index}
+          />
+        ))}
+      </ul>
     </div>
   )
 }
