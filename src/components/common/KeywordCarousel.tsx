@@ -1,22 +1,20 @@
 'use client'
 
-import { Autoplay } from 'swiper/modules'
-import { Swiper, SwiperSlide } from 'swiper/react'
-
+import { availableKeywords } from '@/constants/keywords'
 import 'swiper/css'
 import 'swiper/css/pagination'
-
-import { availableKeywords } from '@/constants/keywords'
+import { Autoplay } from 'swiper/modules'
+import { Swiper, SwiperSlide } from 'swiper/react'
 
 type KeywordCarouselProps = {
   selectedKeywords: string[]
   onToggleKeyword: (keyword: string) => void
 }
- 
-export default function KeywordCarousel({
+
+const KeywordCarousel = ({
   selectedKeywords,
   onToggleKeyword,
-}: KeywordCarouselProps) {
+}: KeywordCarouselProps) => {
   return (
     <div className="mt-4 w-full">
       <Swiper
@@ -51,3 +49,5 @@ export default function KeywordCarousel({
     </div>
   )
 }
+
+export default KeywordCarousel

@@ -1,7 +1,5 @@
-'use client'
-
-import BottomSheet from '@/components/common/BottomSheet'
-import KeywordCarousel from '@/components/keywords/keywordCarousel'
+import BottomSheet from './BottomSheet'
+import KeywordCarousel from './KeywordCarousel'
 
 type PlaylistBottomSheetProps = {
   isOpen: boolean
@@ -18,7 +16,7 @@ type PlaylistBottomSheetProps = {
   handleSubmit: () => void
 }
 
-export default function PlaylistBottomSheet({
+const PlaylistBottomSheet = ({
   isOpen,
   onClose,
   modalType,
@@ -31,7 +29,7 @@ export default function PlaylistBottomSheet({
   setIsPublic,
   toggleKeyword,
   handleSubmit,
-}: PlaylistBottomSheetProps) {
+}: PlaylistBottomSheetProps) => {
   if (!modalType) return null
 
   return (
@@ -92,3 +90,5 @@ export default function PlaylistBottomSheet({
     </BottomSheet>
   )
 }
+
+export default PlaylistBottomSheet
