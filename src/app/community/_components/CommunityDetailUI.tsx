@@ -5,8 +5,10 @@ import defaultProfileImg from '@/assets/images/defaultProfileImg.png'
 import likeFalse from '@/assets/images/likeFalse.svg'
 import likeTrue from '@/assets/images/likeTrue.svg'
 import moreButton from '@/assets/images/moreButton.svg'
+import { Modal } from '@/components/common'
 import MusicSaveBottomSheet from '@/components/common/MusicSaveBottomSheet'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { TbTrash } from 'react-icons/tb'
 import CommentDeleteModal from './CommentDeleteModal'
@@ -65,6 +67,17 @@ export default function CommunityDetailUI({
   const [selectedCommentId, setSelectedCommentId] = useState<string | null>(
     null,
   )
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
+
+  const router = useRouter()
+
+  const handleAddCommentWithRedirect = async () => {
+    if (!currentUserId) {
+      setIsLoginModalOpen(true)
+      return
+    }
+    await handleAddComment()
+  }
 
   const openDeleteModal = (commentId: string) => {
     setSelectedCommentId(commentId)
@@ -82,6 +95,10 @@ export default function CommunityDetailUI({
   const handleMoreButtonClick = (song: Song) => {
     setSelectedSong(song)
     setIsBottomSheetOpen(true)
+  }
+
+  const handleConfirmLogin = () => {
+    router.push('/login')
   }
 
   return (
@@ -148,7 +165,7 @@ export default function CommunityDetailUI({
                 <button
                   className="h-6 w-6"
                   onClick={(e) => {
-                    e.stopPropagation() // 부모 클릭 이벤트 방지
+                    e.stopPropagation()
                     handleMoreButtonClick(song)
                   }}
                 >
@@ -209,19 +226,19 @@ export default function CommunityDetailUI({
           <div className="flex items-center rounded-t-md border-t p-2">
             <input
               type="text"
-              className="h-8 flex-1 rounded border border-gray-300 px-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-base"
+              className="h-8 flex-1 rounded border border-gray-300 px-2 text-base focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="댓글을 입력하세요..."
               value={content}
               onChange={(e) => setContent(e.target.value)}
               onKeyDown={(e) => {
                 if (e.key === 'Enter' && content.trim().length > 0) {
-                  handleAddComment()
+                  handleAddCommentWithRedirect()
                 }
               }}
             />
             {content.trim().length > 0 && (
               <button
-                onClick={handleAddComment}
+                onClick={handleAddCommentWithRedirect}
                 className="ml-2 flex h-8 w-8 items-center justify-center"
               >
                 <Image
@@ -239,6 +256,13 @@ export default function CommunityDetailUI({
         isOpen={isModalOpen}
         onConfirm={confirmDeleteComment}
         onCancel={() => setIsModalOpen(false)}
+      />
+      <Modal
+        isOpen={isLoginModalOpen}
+        confirmText="로그인"
+        cancelText="취소"
+        onConfirm={handleConfirmLogin}
+        onCancel={() => setIsLoginModalOpen(false)}
       />
 
       {/* MusicSaveBottomSheet */}
