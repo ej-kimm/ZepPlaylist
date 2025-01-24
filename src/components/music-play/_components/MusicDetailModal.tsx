@@ -134,7 +134,7 @@ export default function MusicDetailModal({
         isOpen={isOpen}
         title="로그인 필요"
         content="로그인 화면으로 이동합니다"
-        isCancelButton={true}
+        type="vertical"
         onConfirm={redirectToLogin}
         onCancel={closeModal}
       />
