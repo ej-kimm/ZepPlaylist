@@ -2,6 +2,7 @@
 
 import imPlay from '@/assets/images/imPlay.svg'
 import { MusicSaveBottomSheet } from '@/components/common'
+import { usePlaylistMusicUpsert } from '@/hooks/usePlaylistMusicUpsert'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import Image from 'next/image'
 import { useState } from 'react'
@@ -14,6 +15,8 @@ type LatestAlbumProps = {
 const LatestAlbumDetail = ({ albumData }: LatestAlbumProps) => {
   const { isPlayerOpen, setTrackIds, setPlayerOpen, play } =
     useMusicPlayerStore()
+
+  const { upsertMusic } = usePlaylistMusicUpsert()
 
   const albumTrackData = albumData.tracks.items
 
@@ -30,9 +33,20 @@ const LatestAlbumDetail = ({ albumData }: LatestAlbumProps) => {
     (total, item) => total + item.duration_ms,
     0,
   )
-
   const handlePlayAll = () => {
+    const musicData = albumTrackData.map((song) => {
+      return {
+        id: song.id,
+        title: song.name,
+        artist: song.artists[0].name,
+        albumCover: albumData.images[0].url,
+        playTime: song.duration_ms,
+      }
+    })
+    musicData.map(async (item) => await upsertMusic(item))
+
     const albumAllTrackIds = albumTrackData.map((song) => song.id)
+
     if (!isPlayerOpen) setPlayerOpen()
     setTrackIds(albumAllTrackIds)
     play()
