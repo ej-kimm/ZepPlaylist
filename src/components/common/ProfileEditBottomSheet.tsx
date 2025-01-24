@@ -20,7 +20,7 @@ const ProfileEditBottomSheet = ({
 }: ProfileEditBottomSheetProps) => {
   const { user, setUser } = userStore()
   const [editNickname, setEitNickname] = useState(user!.nickname || '')
-  const [profileImage, setProfileImage] = useState(user!.profile_image )
+  const [profileImage, setProfileImage] = useState(user!.profile_image)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const handleImgClick = () => {
@@ -124,7 +124,7 @@ const ProfileEditBottomSheet = ({
           type="text"
           value={editNickname}
           onChange={handleNickname}
-          className="caption-2 h-9 w-full rounded-lg border border-white bg-[#f4f4f4] pl-2"
+          className="caption-2 h-9 w-full rounded-lg border border-white bg-[#f4f4f4] pl-2 text-[16px]"
         />
         <button
           className="caption-1 mt-5 w-full text-left"

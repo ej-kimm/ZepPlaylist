@@ -10,7 +10,7 @@ const Profile = () => {
   const router = useRouter()
   const { user } = userStore()
   if (!user) {
-    router.push('/login')
+    // router.push('/login')
     return
   }
   return (

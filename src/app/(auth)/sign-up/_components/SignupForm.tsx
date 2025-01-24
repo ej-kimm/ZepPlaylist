@@ -52,6 +52,7 @@ const SignupForm = () => {
         },
       },
     })
+
     // 이미지 url 데이터 url 그대로넣지말고 테이블에 직접 인설트 하기전에 스토리지 서비스이용해서 이미지파일 올려놓고 파일에대한 위치를 받아와서
     // 다운로드url넣어주면 스토리지 한번 서칭해봐야할듯
     if (signUpError) {
@@ -62,8 +63,11 @@ const SignupForm = () => {
       })
       return
     }
+    const { error: signOutError } = await supabase.auth.signOut()
+    if (signOutError) {
+      console.error(signOutError.message)
+    }
     Swal.fire('완료', '회원가입 완료!', 'success')
-    console.log('first', data)
     router.push('/login')
   }
 
@@ -79,7 +83,7 @@ const SignupForm = () => {
         required={true}
         errorMessage={errors.email?.message}
         register={register}
-        className="caption-2 w-full rounded-lg border-white bg-[#f4f4f4]"
+        className="caption-2 w-full rounded-lg border-white bg-[#f4f4f4] text-[16px]"
       />
       <InputBox
         name="password"
@@ -88,7 +92,7 @@ const SignupForm = () => {
         required={true}
         register={register}
         errorMessage={errors.password?.message}
-        className="caption-2 mt-6 w-full rounded-lg border-white bg-[#f4f4f4]"
+        className="caption-2 mt-6 w-full rounded-lg border-white bg-[#f4f4f4] text-[16px]"
       />
       <InputBox
         name="passwordCheck"
@@ -97,7 +101,7 @@ const SignupForm = () => {
         required={true}
         register={register}
         errorMessage={errors.passwordCheck?.message}
-        className="caption-2 mt-6 w-full rounded-lg border-white bg-[#f4f4f4]"
+        className="caption-2 mt-6 w-full rounded-lg border-white bg-[#f4f4f4] text-[16px]"
       />
       <InputBox
         name="nickname"
@@ -106,7 +110,7 @@ const SignupForm = () => {
         required={true}
         register={register}
         errorMessage={errors.nickname?.message}
-        className="caption-2 mt-6 w-full rounded-lg border-white bg-[#f4f4f4]"
+        className="caption-2 mt-6 w-full rounded-lg border-white bg-[#f4f4f4] text-[16px]"
       />
       <div className="mt-4 flex items-center justify-center">
         <input

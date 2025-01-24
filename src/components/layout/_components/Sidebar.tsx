@@ -25,6 +25,7 @@ const Sidebar = ({ isOpen, toggleMenu }: SidebarProps) => {
       })
     }
     setUser(null)
+    window.location.reload()
     toggleMenu()
     if (isPlayerModalOpen) setPlayerClose()
   }

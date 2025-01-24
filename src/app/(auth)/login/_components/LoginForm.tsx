@@ -49,7 +49,6 @@ const LoginForm = () => {
     }
     let loginUser = null
     const { data: img } = await supabase.auth.getUser()
-    console.log('first', img)
     if (userData.user) {
       const { data: fetchuser, error: fetchError } = await supabase
         .from('users')
@@ -87,7 +86,7 @@ const LoginForm = () => {
         required
         errorMessage={errors.email?.message}
         register={register}
-        className="caption-2 mt-8 w-full rounded-lg border-white bg-[#f4f4f4]"
+        className="caption-2 mt-8 w-full rounded-lg border-white bg-[#f4f4f4] text-[16px]"
       />
       <InputBox
         name="password"
@@ -95,7 +94,7 @@ const LoginForm = () => {
         placeholder="비밀번호"
         required
         register={register}
-        className="caption-2 mt-8 w-full rounded-lg border-white bg-[#f4f4f4]"
+        className="caption-2 mt-8 w-full rounded-lg border-white bg-[#f4f4f4] text-[16px]"
       />
       <PrimaryButton
         type="submit"
