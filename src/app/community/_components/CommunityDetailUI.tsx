@@ -34,7 +34,7 @@ type CommunityDetailUIProps = {
   comments: Comment[]
   content: string
   setContent: React.Dispatch<React.SetStateAction<string>>
-  //   handleSongClick: () => void
+  handleSongClick: () => void
   handleAddComment: () => Promise<void>
   handleDeleteComment: (commentId: string) => Promise<void>
   currentUserId: string | null
@@ -51,7 +51,7 @@ export default function CommunityDetailUI({
   comments,
   content,
   setContent,
-  //   handleSongClick,
+  handleSongClick,
   handleAddComment,
   handleDeleteComment,
   currentUserId,
@@ -110,6 +110,7 @@ export default function CommunityDetailUI({
               <li
                 key={song.spotify_id}
                 className="flex items-center justify-between py-4"
+                onClick={() => handleSongClick()}
               >
                 <div className="flex items-center">
                   <div className="relative h-12 w-12">
@@ -128,7 +129,10 @@ export default function CommunityDetailUI({
                 </div>
                 <button
                   className="h-6 w-6"
-                  onClick={() => handleMoreButtonClick(song)}
+                  onClick={(e) => {
+                    handleMoreButtonClick(song)
+                    e.stopPropagation()
+                  }}
                 >
                   <Image
                     src={moreButton}
