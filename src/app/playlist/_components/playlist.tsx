@@ -175,7 +175,6 @@ export default function PlaylistComponent({
 
   // 플리 핸들러
   const handlePlaylistClick = (playlistId: string) => {
-    console.log('playlistId', playlistId)
     router.push(`/playlist/${playlistId}`)
   }
 
