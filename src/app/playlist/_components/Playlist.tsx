@@ -47,10 +47,11 @@ export default function Playlist({ initialPlaylists }: PlaylistComponentProps) {
   // 데이터 로드
   useEffect(() => {
     if (!user) return
-
+    
     const loadPlaylistsAndLikedCover = async () => {
       setIsLoading(true)
       try {
+        if (!user) return
         const cover = await fetchLatestLikedSongCover(user.id)
         setLatestLikedSongCover(cover)
 

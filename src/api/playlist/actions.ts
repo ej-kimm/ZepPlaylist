@@ -24,9 +24,7 @@ export async function fetchPlaylists(): Promise<PlaylistRow[] | null> {
   if (!user?.id) {
     return null
   }
-
   const supabase = createClient()
-
   try {
     const { data, error } = await supabase
       .from('playlists')
