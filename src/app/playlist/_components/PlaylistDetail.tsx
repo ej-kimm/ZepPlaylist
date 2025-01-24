@@ -1,4 +1,5 @@
 'use client'
+
 import {
   deleteSongFromPlaylist,
   fetchPlaylistDetails,
@@ -173,7 +174,7 @@ export default function PlaylistDetailsComponent({
           <FaRandom className="text-black" size={24} />
         </button>
 
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-2">
           <button
             className="relative flex h-14 w-14 items-center justify-center rounded-full bg-secondary"
             onClick={handlePlayAll}
