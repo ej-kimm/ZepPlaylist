@@ -53,7 +53,6 @@ export async function fetchLikedSongs() {
   }
 }
 
-
 export async function removeLikedSong(likeId: string) {
   const supabase = createClient()
   const user = await getUser()

@@ -64,7 +64,7 @@ const Modal: React.FC<ModalProps> = ({
     <ModalAnimation isOpen={isOpen} onClose={onCancel}>
       <div className={`${type === 'horizontal' ? 'mb-6' : 'mb-4'}`}>
         <h2 className="title-1 mb-2 text-left">{title}</h2>
-        <p className="button-1 text-left">{content}</p>
+        <p className="button-1 text-left text-[#4A4A4A]">{content}</p>
       </div>
       {renderButtons()}
     </ModalAnimation>

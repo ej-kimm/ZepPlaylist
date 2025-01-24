@@ -19,10 +19,15 @@ type PlaylistComponentProps = {
 }
 
 export default function Playlist({ initialPlaylists }: PlaylistComponentProps) {
-  const { user } = userStore()
-  console.log('first', user)
-  console.log('젤상단================')
+  const { user, isLogin } = userStore()
   const router = useRouter()
+  console.log('user', user)
+  useEffect(() => {
+    if (!user) {
+      Swal.fire('오류', '로그인이 필요합니다.', 'error')
+      router.replace('/login')
+    }
+  }, [user, router, isLogin])
 
   const [playlists, setPlaylists] = useState<PlaylistRow[]>(initialPlaylists)
   const [latestLikedSongCover, setLatestLikedSongCover] = useState<
@@ -41,12 +46,12 @@ export default function Playlist({ initialPlaylists }: PlaylistComponentProps) {
 
   // 데이터 로드
   useEffect(() => {
-    console.log('유즈이펙트안')
     if (!user) return
 
     const loadPlaylistsAndLikedCover = async () => {
       setIsLoading(true)
       try {
+        if (!user) return
         const cover = await fetchLatestLikedSongCover(user.id)
         setLatestLikedSongCover(cover)
 
@@ -217,7 +222,7 @@ export default function Playlist({ initialPlaylists }: PlaylistComponentProps) {
               <p className="caption-1 font-pretendard">좋아요 표시한 곡</p>
             </li>
 
-            {playlists.map((playlist) => (
+            {playlists?.map((playlist) => (
               <li
                 key={playlist.id}
                 className="flex items-center justify-between"
