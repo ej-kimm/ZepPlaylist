@@ -14,7 +14,28 @@ export const PrimaryButton: React.FC<ButtonProps> = ({
   className,
 }) => {
   return (
-    <button type={type} onClick={onClick} className={`bg-primary ${className}`}>
+    <button
+      type={type}
+      onClick={onClick}
+      className={`button-2 w-full rounded-full bg-primary text-white ${className}`}
+    >
+      {children}
+    </button>
+  )
+}
+
+export const SecondaryButton: React.FC<ButtonProps> = ({
+  type = 'button',
+  onClick,
+  children,
+  className,
+}) => {
+  return (
+    <button
+      type={type}
+      onClick={onClick}
+      className={`button-2 w-full rounded-full bg-secondary bg-opacity-10 text-secondary ${className}`}
+    >
       {children}
     </button>
   )
@@ -29,7 +50,7 @@ export const UnderLineButton: React.FC<ButtonProps> = ({
   return (
     <button
       type={type}
-      className={`border-b-2 border-primary p-[10px] ${className}`}
+      className={`button-2 border-b-2 border-primary p-[10px] ${className}`}
       onClick={onClick}
     >
       {children}
