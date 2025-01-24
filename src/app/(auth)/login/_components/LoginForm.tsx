@@ -98,10 +98,7 @@ const LoginForm = () => {
         register={register}
         className="caption-2 mt-8 w-full rounded-lg border-white bg-[#f4f4f4]"
       />
-      <PrimaryButton
-        type="submit"
-        className="button-2 mb-12 mt-8 h-[39px] w-full rounded-full border-primary text-white"
-      >
+      <PrimaryButton type="submit" className="mb-12 mt-8 h-[39px]">
         로그인
       </PrimaryButton>
     </form>

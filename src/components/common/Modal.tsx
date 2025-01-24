@@ -1,18 +1,21 @@
 import React from 'react'
 import ModalAnimation from '../animation/ModalAnimation'
+import { PrimaryButton, SecondaryButton } from './Button'
 
 interface ModalProps {
   isOpen: boolean
-  confirmText?: string
-  cancelText?: string
+  title: string
+  content: string
+  isCancelButton?: boolean
   onConfirm: () => void
   onCancel: () => void
 }
 
 const Modal: React.FC<ModalProps> = ({
   isOpen,
-  confirmText = '확인',
-  cancelText = '취소',
+  title,
+  content,
+  isCancelButton = false,
   onConfirm,
   onCancel,
 }) => {
@@ -20,20 +23,20 @@ const Modal: React.FC<ModalProps> = ({
 
   return (
     <ModalAnimation isOpen={isOpen} onClose={onCancel}>
-      <h2 className="title-1 mb-2 text-left">로그인 필요</h2>
-      <p className="button-1 text-left">로그인 화면으로 이동합니다</p>
-      <button
-        onClick={onCancel}
-        className="button-2 mb-[17px] mt-[16px] block h-[39px] w-full rounded-full bg-secondary bg-opacity-10 text-secondary"
-      >
-        {cancelText}
-      </button>
-      <button
-        onClick={onConfirm}
-        className="button-2 block h-[39px] w-full rounded-full bg-primary text-white"
-      >
-        {confirmText}
-      </button>
+      <div className="mb-4">
+        <h2 className="title-1 mb-2 text-left">{title}</h2>
+        <p className="button-1 text-left">{content}</p>
+      </div>
+      <div className="flex flex-col gap-4">
+        {isCancelButton && (
+          <SecondaryButton onClick={onCancel} className="block h-[39px]">
+            취소
+          </SecondaryButton>
+        )}
+        <PrimaryButton onClick={onConfirm} className="block h-[39px]">
+          확인
+        </PrimaryButton>
+      </div>
     </ModalAnimation>
   )
 }
