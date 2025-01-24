@@ -1,4 +1,4 @@
-import PlaylistDetailsComponent from '@/app/playlist/_components/playlistDetail'
+import PlaylistDetailsComponent from '@/app/playlist/_components/PlaylistDetail'
 
 export const metadata = {
   title: '플레이리스트 세부 정보 - Music Streaming App',
