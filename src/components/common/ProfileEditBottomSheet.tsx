@@ -1,4 +1,5 @@
 import { updateProfile } from '@/api/my-page/actions'
+import defaultProfileImg from '@/assets/images/defaultProfileImg.png'
 import { userStore } from '@/store/userSlice'
 import Image from 'next/image'
 import { useRef, useState } from 'react'
@@ -102,7 +103,7 @@ const ProfileEditBottomSheet = ({
             <Image
               width={64}
               height={64}
-              src={profileImage!}
+              src={profileImage! || defaultProfileImg}
               alt="프로필 이미지"
               className="h-16 w-16 rounded-full"
               onClick={handleImgClick}
@@ -123,7 +124,7 @@ const ProfileEditBottomSheet = ({
           type="text"
           value={editNickname}
           onChange={handleNickname}
-          className="caption-2 h-9 w-full rounded-lg border border-white bg-[#f4f4f4] pl-2"
+          className="caption-2 h-9 w-full rounded-lg border border-white bg-[#f4f4f4] pl-2 text-[16px]"
         />
         <button
           className="caption-1 mt-5 w-full text-left"

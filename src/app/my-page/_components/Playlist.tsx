@@ -13,6 +13,7 @@ import { useState } from 'react'
 import { useInView } from 'react-intersection-observer'
 import { fetchUserLikePlaylist } from './fetchUserLikePlaylist'
 import { fetchUserPlayList } from './fetchUserPlayList'
+import MyPageSkeleton from './MyPageSkeleton'
 const PlayList = () => {
   const { user } = userStore()
   const router = useRouter()
@@ -44,35 +45,60 @@ const PlayList = () => {
     queryKey: ['myPagePlaylists', user?.id],
     queryFn: () => fetchUserLikePlaylist(),
   })
-  console.log('============================', likedPlaylist)
+  console.log('first', isLiked)
   const { mutate: toggleLike1 } = useMutation({
+    // const playlist_id =
     mutationFn: toggleLike,
+    // onMutate: async () => {
+    //   const queryKey = ['myPagePlaylists', user?.id]
+    //   await queryClient.cancelQueries({ queryKey })
+    //   const prevLike = queryClient.getQueryData<boolean>(queryKey)
+    //   queryClient.setQueryData(queryKey, (prev: boolean) => !prev)
+    //   return { prevLike }
+    // },
+    // onError: (err, variables, context) => {
+    //   // 에러 발생 시 이전 데이터 복원
+    //   queryClient.setQueryData(['myPagePlaylists', user?.id], context?.prevLike)
+    // },
+    // onSettled: () => {
+    //   // 서버 요청 이후 데이터 동기화
+    //   queryClient.invalidateQueries({
+    //     queryKey: ['myPagePlaylists', user?.id],
+    //   })
+    // },
     onSuccess: (_, variables) => {
-      setIsLiked((prev) => ({
-        ...prev,
-        [variables.user_id]: !prev[variables.user_id],
+      setIsLiked((isLiked) => ({
+        ...isLiked,
+        [variables.user_id]: !isLiked[variables.user_id],
       }))
       queryClient.invalidateQueries({
         queryKey: ['myPagePlaylists', user!.id],
       })
     },
   })
-  const likeCount2 = likedPlaylist?.playlistLikeId
-  console.log('first', likeCount2)
-  if (isLoading) return <p>Loading...</p>
+  const likeCounts = likedPlaylist?.playlists?.map(
+    (playlist) => playlist.playlist_like.length,
+  )
+  // const a = likedPlaylist?.playlists?.map((p) => p.playlist_like)
+  // const b = a?.map((p) => p.map((b) => b.user_id))
+
+  // console.log('b', b)
+  // console.log('a', a)
+  if (isLoading)
+    return Array.from({
+      length: 6,
+    }).map((_, index) => <MyPageSkeleton key={index} />)
   if (error) return <p>에러가 발생하였습니다!</p>
   if (!user) return
-  if (!likeCount2) return
-  const likeLength = likeCount2.map((p) => p!.length || 0)
-  console.log('aaaaaaaaaaaaaa', likeLength)
-  //바텀시트 랑 프로필이미지 이상한거나옴
+  if (!likeCounts) return
   return (
-    <div>
+    <div className="h-full w-full overflow-hidden">
       <div>
         {data?.pages.map((page, pageIndex) => {
           return (
             <div key={pageIndex}>
               {page?.playlistsWithCovers.map((p, index) => {
+                // const liked = isLiked[p.user_id] ?? false
                 return (
                   <PlaylistUI
                     key={p.id}
@@ -82,12 +108,16 @@ const PlayList = () => {
                     }
                     playlistName={p.name}
                     nickName={user.nickname}
-                    isLiked={isLiked[p.id] ?? false}
+                    // isLiked={liked}
                     onClick={() => {
                       router.push(`/community/${p.id}`)
                     }}
-                    likeCount={likeLength[index]}
+                    likeCount={likeCounts[index] || 0}
                     onLikeToggle={() => {
+                      // setIsLiked((prev) => ({
+                      //   ...prev,
+                      //   [p.id]: !liked,
+                      // }))
                       toggleLike1({ playlist_id: p.id, user_id: user.id })
                     }}
                   />
