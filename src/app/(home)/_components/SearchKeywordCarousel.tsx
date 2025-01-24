@@ -16,7 +16,7 @@ const SearchKeywordCarousel = ({
   onToggleKeyword,
 }: KeywordCarouselProps) => {
   return (
-    <div className="mt-4 w-full">
+    <div className="mt-4 flex w-full items-center">
       <Swiper
         spaceBetween={8}
         slidesPerView="auto"
