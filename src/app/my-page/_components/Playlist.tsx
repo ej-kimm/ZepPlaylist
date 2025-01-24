@@ -97,7 +97,7 @@ const PlayList = () => {
         {data?.pages.map((page, pageIndex) => {
           return (
             <div key={pageIndex}>
-              {page?.playlistsWithCovers.map((p, index) => {
+              {page?.playlists.map((p, index) => {
                 // const liked = isLiked[p.user_id] ?? false
                 return (
                   <PlaylistUI

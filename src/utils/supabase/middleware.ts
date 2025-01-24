@@ -3,7 +3,6 @@ import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
 export async function updateSession(request: NextRequest) {
-  console.log('업데이트새션', updateSession)
   let supabaseResponse = NextResponse.next({
     request,
   })
@@ -40,6 +39,7 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser()
   const { pathname } = request.nextUrl
+  console.log('===================', pathname)
   if (user) {
     if (pathname === '/login' || pathname === '/sign-up') {
       const url = request.nextUrl.clone()
