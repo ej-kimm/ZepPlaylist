@@ -1,6 +1,5 @@
 'use client'
 
-// import { useMusicPlayerStore } from '@/store/useMusicPlayerStore';
 import usePlaylistLike from '@/hooks/usePlaylistLike'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import { supabase } from '@/utils/supabase/client'
@@ -8,7 +7,7 @@ import { useEffect, useState } from 'react'
 import CommunityDetailUI from './CommunityDetailUI'
 
 type User = {
-  profile_image: string | null // 사용자의 프로필 이미지
+  profile_image: string | null
 }
 
 type Song = {
@@ -24,7 +23,7 @@ type Comment = {
   created_at: string
   user_id: string
   content: string
-  profile_image?: string | null // profile_image 추가
+  profile_image?: string | null
 }
 
 type Props = {
@@ -35,7 +34,7 @@ type Props = {
   profileImage: string | null
   description: string | null
   playlistName: string
-  isLiked: boolean // 좋아요 상태
+  isLiked: boolean
 }
 
 export default function CommentSection({
@@ -53,10 +52,9 @@ export default function CommentSection({
   const { setTrackIds, playNextTrack, setPlayerOpen, play } =
     useMusicPlayerStore()
 
-  // 좋아요 상태 관리 (usePlaylistLike 훅 활용)
   const { toggleLike, isLiked } = usePlaylistLike({
-    user_id: currentUserId || '', // 사용자 ID
-    playlist_id: playlistId, // 플레이리스트 ID
+    user_id: currentUserId || '',
+    playlist_id: playlistId, 
   })
 
   useEffect(() => {
@@ -175,7 +173,7 @@ export default function CommentSection({
       handleDeleteComment={handleDeleteComment}
       currentUserId={currentUserId}
       isLiked={isLiked}
-      onLikeToggle={handleToggleLike} // 감싸진 함수 전달
+      onLikeToggle={handleToggleLike}
     />
   )
 }
