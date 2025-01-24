@@ -209,7 +209,7 @@ export default function CommunityDetailUI({
           <div className="flex items-center rounded-t-md border-t p-2">
             <input
               type="text"
-              className="h-8 flex-1 rounded border border-gray-300 px-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="h-8 flex-1 rounded border border-gray-300 px-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-base"
               placeholder="댓글을 입력하세요..."
               value={content}
               onChange={(e) => setContent(e.target.value)}
