@@ -3,6 +3,7 @@ import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
 export async function updateSession(request: NextRequest) {
+  console.log('업데이트새션', updateSession)
   let supabaseResponse = NextResponse.next({
     request,
   })
@@ -38,19 +39,19 @@ export async function updateSession(request: NextRequest) {
   const {
     data: { user },
   } = await supabase.auth.getUser()
-
-  const { pathname } = new URL(request.url)
-  if (user && (pathname === '/login' || pathname === '/sign-up')) {
-    return NextResponse.redirect(new URL('/', request.url))
+  const { pathname } = request.nextUrl
+  if (user) {
+    if (pathname === '/login' || pathname === '/sign-up') {
+      const url = request.nextUrl.clone()
+      url.pathname = '/'
+      return NextResponse.redirect(url)
+    }
+  } else {
+    if (pathname === '/my-page' || pathname === '/playlist') {
+      const url = request.nextUrl.clone()
+      url.pathname = '/login'
+      return NextResponse.redirect(url)
+    }
   }
-  if (!user && pathname === '/my-page') {
-    return NextResponse.redirect(new URL('/login', request.url))
-  }
-
-  if (!user && request.nextUrl.pathname.startsWith('/playlist')) {
-    console.log('============ 미들웨어임')
-    return NextResponse.redirect(new URL('/login', request.url))
-  }
-
   return supabaseResponse
 }
