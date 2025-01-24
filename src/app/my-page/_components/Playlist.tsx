@@ -46,17 +46,36 @@ const PlayList = () => {
   })
   console.log('============================', likedPlaylist)
   const { mutate: toggleLike1 } = useMutation({
+    // const playlist_id =
     mutationFn: toggleLike,
-    onSuccess: (_, variables) => {
-      setIsLiked((prev) => ({
-        ...prev,
-        [variables.user_id]: !prev[variables.user_id],
-      }))
+    onMutate: async () => {
+      const queryKey = ['myPagePlaylists', user?.id]
+      await queryClient.cancelQueries({ queryKey })
+      const prevLike = queryClient.getQueryData<boolean>(queryKey)
+      queryClient.setQueryData(queryKey, (prev: boolean) => !prev)
+      return { prevLike }
+    },
+    onError: (err, variables, context) => {
+      // 에러 발생 시 이전 데이터 복원
+      queryClient.setQueryData(['myPagePlaylists', user?.id], context?.prevLike)
+    },
+    onSettled: () => {
+      // 서버 요청 이후 데이터 동기화
       queryClient.invalidateQueries({
-        queryKey: ['myPagePlaylists', user!.id],
+        queryKey: ['myPagePlaylists', user?.id],
       })
     },
+    // onSuccess: (_, variables) => {
+    //   setIsLiked((prev) => ({
+    //     ...prev,
+    //     [variables.user_id]: !prev[variables.user_id],
+    //   }))
+    //   queryClient.invalidateQueries({
+    //     queryKey: ['myPagePlaylists', user!.id],
+    //   })
+    // },
   })
+
   const likeCount2 = likedPlaylist?.playlistLikeId
   console.log('first', likeCount2)
   if (isLoading) return <p>Loading...</p>
