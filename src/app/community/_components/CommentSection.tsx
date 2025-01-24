@@ -52,6 +52,7 @@ export default function CommentSection({
   const [currentUserId, setCurrentUserId] = useState<string | null>(null)
   const { setTrackIds, playNextTrack, setPlayerOpen, play } =
     useMusicPlayerStore()
+  
 
   // 좋아요 상태 관리 (usePlaylistLike 훅 활용)
   const { toggleLike, isLiked } = usePlaylistLike({
@@ -153,7 +154,6 @@ export default function CommentSection({
     setComments((prev) => prev.filter((comment) => comment.id !== commentId))
   }
 
-  // toggleLike을 감싸서 Promise<void>를 반환
   const handleToggleLike = async () => {
     return new Promise<void>((resolve) => {
       toggleLike()

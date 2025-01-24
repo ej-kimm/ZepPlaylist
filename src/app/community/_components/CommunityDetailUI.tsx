@@ -5,9 +5,11 @@ import defaultProfileImg from '@/assets/images/defaultProfileImg.png'
 import likeFalse from '@/assets/images/likeFalse.svg'
 import likeTrue from '@/assets/images/likeTrue.svg'
 import moreButton from '@/assets/images/moreButton.svg'
-// import BottomSheet from '@/components/common/BottomSheet'
+import MusicSaveBottomSheet from '@/components/common/MusicSaveBottomSheet'
 import Image from 'next/image'
+import { useState } from 'react'
 import { TbTrash } from 'react-icons/tb'
+import CommentDeleteModal from './CommentDeleteModal'
 
 type Song = {
   spotify_id: string
@@ -57,6 +59,31 @@ export default function CommunityDetailUI({
   isLiked,
   onLikeToggle,
 }: CommunityDetailUIProps) {
+  const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false)
+  const [selectedSong, setSelectedSong] = useState<Song | null>(null)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [selectedCommentId, setSelectedCommentId] = useState<string | null>(
+    null,
+  )
+
+  const openDeleteModal = (commentId: string) => {
+    setSelectedCommentId(commentId)
+    setIsModalOpen(true)
+  }
+
+  const confirmDeleteComment = async () => {
+    if (selectedCommentId) {
+      await handleDeleteComment(selectedCommentId)
+      setSelectedCommentId(null)
+      setIsModalOpen(false)
+    }
+  }
+
+  const handleMoreButtonClick = (song: Song) => {
+    setSelectedSong(song)
+    setIsBottomSheetOpen(true)
+  }
+
   return (
     <div>
       {/* 상단 정보 */}
@@ -120,7 +147,10 @@ export default function CommunityDetailUI({
                 </div>
                 <button
                   className="h-6 w-6"
-                  // onClick={() => handleMoreButtonClick(song)}
+                  onClick={(e) => {
+                    e.stopPropagation() // 부모 클릭 이벤트 방지
+                    handleMoreButtonClick(song)
+                  }}
                 >
                   <Image
                     src={moreButton}
@@ -148,7 +178,6 @@ export default function CommunityDetailUI({
                   key={comment.id}
                   className="flex items-start space-x-4 pb-4"
                 >
-                  {/* 댓글 작성자의 프로필 이미지 */}
                   <div className="flex-shrink-0 rounded-full">
                     <Image
                       src={comment.profileImage || defaultProfileImg}
@@ -158,18 +187,13 @@ export default function CommunityDetailUI({
                       className="object-cover"
                     />
                   </div>
-
-                  {/* 댓글 내용과 삭제 버튼을 묶는 컨테이너 */}
                   <div className="flex flex-1 items-center justify-between">
-                    {/* 댓글 내용 */}
                     <p className="caption-1 flex-1text-gray-500 mt-2">
                       {comment.content}
                     </p>
-
-                    {/* 삭제 버튼 */}
                     {currentUserId === comment.user_id && (
                       <button
-                        onClick={() => handleDeleteComment(comment.id)}
+                        onClick={() => openDeleteModal(comment.id)}
                         className="flex h-6 w-6 items-center justify-center text-gray-500"
                       >
                         <TbTrash size={20} />
@@ -211,25 +235,21 @@ export default function CommunityDetailUI({
           </div>
         </div>
       </div>
+      <CommentDeleteModal
+        isOpen={isModalOpen}
+        onConfirm={confirmDeleteComment}
+        onCancel={() => setIsModalOpen(false)}
+      />
 
-      {/* 바텀시트 */}
-      {/* <BottomSheet
-        isOpen={isBottomSheetOpen}
-        onClose={() => setIsBottomSheetOpen(false)}
-        height="50%"
-      >
-        {selectedSong && (
-          <div className="p-4">
-            <h3 className="truncate text-lg font-medium">
-              {selectedSong.title}
-            </h3>
-            <p className="truncate text-base text-gray-500">
-              {selectedSong.artist}
-            </p>
-            <div className="mt-4"></div>
-          </div>
-        )}
-      </BottomSheet> */}
+      {/* MusicSaveBottomSheet */}
+      {selectedSong && (
+        <MusicSaveBottomSheet
+          musicName={selectedSong.title}
+          artistName={selectedSong.artist}
+          isOpen={isBottomSheetOpen}
+          handleClose={() => setIsBottomSheetOpen(false)}
+        />
+      )}
     </div>
   )
 }
