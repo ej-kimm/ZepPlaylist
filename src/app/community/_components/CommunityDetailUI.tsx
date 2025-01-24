@@ -5,11 +5,12 @@ import defaultProfileImg from '@/assets/images/defaultProfileImg.png'
 import likeFalse from '@/assets/images/likeFalse.svg'
 import likeTrue from '@/assets/images/likeTrue.svg'
 import moreButton from '@/assets/images/moreButton.svg'
+import { Modal } from '@/components/common'
 import MusicSaveBottomSheet from '@/components/common/MusicSaveBottomSheet'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { TbTrash } from 'react-icons/tb'
-import CommentDeleteModal from './CommentDeleteModal'
 
 type Song = {
   spotify_id: string
@@ -61,27 +62,42 @@ export default function CommunityDetailUI({
 }: CommunityDetailUIProps) {
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false)
   const [selectedSong, setSelectedSong] = useState<Song | null>(null)
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const [selectedCommentId, setSelectedCommentId] = useState<string | null>(
     null,
   )
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
+
+  const router = useRouter()
+
+  const handleAddCommentWithRedirect = async () => {
+    if (!currentUserId) {
+      setIsLoginModalOpen(true)
+      return
+    }
+    await handleAddComment()
+  }
 
   const openDeleteModal = (commentId: string) => {
     setSelectedCommentId(commentId)
-    setIsModalOpen(true)
+    setIsDeleteModalOpen(true)
   }
 
   const confirmDeleteComment = async () => {
     if (selectedCommentId) {
       await handleDeleteComment(selectedCommentId)
       setSelectedCommentId(null)
-      setIsModalOpen(false)
+      setIsDeleteModalOpen(false)
     }
   }
 
   const handleMoreButtonClick = (song: Song) => {
     setSelectedSong(song)
     setIsBottomSheetOpen(true)
+  }
+
+  const handleConfirmLogin = () => {
+    router.push('/login')
   }
 
   return (
@@ -148,7 +164,7 @@ export default function CommunityDetailUI({
                 <button
                   className="h-6 w-6"
                   onClick={(e) => {
-                    e.stopPropagation() // 부모 클릭 이벤트 방지
+                    e.stopPropagation()
                     handleMoreButtonClick(song)
                   }}
                 >
@@ -209,19 +225,19 @@ export default function CommunityDetailUI({
           <div className="flex items-center rounded-t-md border-t p-2">
             <input
               type="text"
-              className="h-8 flex-1 rounded border border-gray-300 px-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-base"
+              className="h-8 flex-1 rounded border border-gray-300 px-2 text-base focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="댓글을 입력하세요..."
               value={content}
               onChange={(e) => setContent(e.target.value)}
               onKeyDown={(e) => {
                 if (e.key === 'Enter' && content.trim().length > 0) {
-                  handleAddComment()
+                  handleAddCommentWithRedirect()
                 }
               }}
             />
             {content.trim().length > 0 && (
               <button
-                onClick={handleAddComment}
+                onClick={handleAddCommentWithRedirect}
                 className="ml-2 flex h-8 w-8 items-center justify-center"
               >
                 <Image
@@ -235,13 +251,26 @@ export default function CommunityDetailUI({
           </div>
         </div>
       </div>
-      <CommentDeleteModal
-        isOpen={isModalOpen}
+
+      {/* 댓글 삭제 모달 */}
+      <Modal
+        isOpen={isDeleteModalOpen}
+        title="댓글 삭제"
+        content="작성한 댓글을 삭제하시겠습니까?"
+        type="horizontal"
         onConfirm={confirmDeleteComment}
-        onCancel={() => setIsModalOpen(false)}
+        onCancel={() => setIsDeleteModalOpen(false)}
       />
 
-      {/* MusicSaveBottomSheet */}
+      <Modal
+        isOpen={isLoginModalOpen}
+        title="로그인 필요"
+        content="좋아요를 누르려면 로그인이 필요합니다."
+        type="horizontal"
+        onConfirm={handleConfirmLogin}
+        onCancel={() => setIsLoginModalOpen(false)}
+      />
+
       {selectedSong && (
         <MusicSaveBottomSheet
           musicName={selectedSong.title}
