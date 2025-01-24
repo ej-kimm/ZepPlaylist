@@ -6,7 +6,7 @@ import Image from 'next/image'
 import ProfileEdit from './ProfileEdit'
 
 const Profile = () => {
-  const { user, setUser } = userStore()
+  const { user } = userStore()
   if (!user) {
     return
   }
@@ -22,7 +22,7 @@ const Profile = () => {
         />
       </div>
       <p className="body-2 ml-4">{user.nickname}</p>
-      <ProfileEdit user={user} setUser={setUser} />
+      <ProfileEdit />
     </div>
   )
 }

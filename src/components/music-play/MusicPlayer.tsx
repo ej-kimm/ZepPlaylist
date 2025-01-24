@@ -45,7 +45,6 @@ const MusicPlayer = () => {
 
   if (!isPlayerOpen) return null // 초기에 노래를 재생하지 않으면 플레이어바 숨김
   if (!url || isPending) {
-    // TODO : 스켈레톤 UI 공용으로 로직분리
     return !isPlayerModalOpen && <PlayerSkeleton />
   }
 
@@ -65,7 +64,7 @@ const MusicPlayer = () => {
         onEnded={stop}
       />
       {!hidePlayerBar && (
-        <section className="h-player fixed bottom-0 left-0 z-player w-full bg-white shadow-drop">
+        <section className="fixed bottom-0 left-0 z-player h-player w-full bg-white shadow-drop">
           <div className="flex h-full items-center justify-between px-6">
             <MusicDetails musicDetail={musicDetail} />
             <ProgressBar

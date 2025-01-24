@@ -1,6 +1,6 @@
 'use client'
 import { toggleLike } from '@/api/my-page/actions'
-import PlaylistUI from '@/components/common/PlaylistUI'
+import { PlaylistUI } from '@/components/common'
 import { userStore } from '@/store/userSlice'
 import {
   useInfiniteQuery,

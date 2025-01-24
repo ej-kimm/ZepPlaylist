@@ -1,6 +1,5 @@
 'use client'
-import { PrimaryButton } from '@/components/common'
-import InputBox from '@/components/common/InputBox'
+import { InputBox, PrimaryButton } from '@/components/common'
 import { supabase } from '@/utils/supabase/client'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
