@@ -1,6 +1,7 @@
 'use server'
 
 import { PlaylistInsert, PlaylistRow, PlaylistUpdate } from '@/types/playlist'
+import { supabase } from '@/utils/supabase/client'
 import { createClient } from '@/utils/supabase/server'
 
 // 유저 정보 가져오기
@@ -27,8 +28,6 @@ export async function fetchPlaylists(): Promise<PlaylistRow[]> {
   if (!user?.id) {
     throw new Error('로그인된 사용자 ID를 확인할 수 없습니다.')
   }
-
-  const supabase = createClient()
 
   try {
     const { data, error } = await supabase
