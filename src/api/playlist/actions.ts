@@ -1,5 +1,6 @@
 'use server'
 
+import { userStore } from '@/store/userSlice'
 import { PlaylistInsert, PlaylistRow, PlaylistUpdate } from '@/types/playlist'
 import { createClient } from '@/utils/supabase/server'
 
@@ -22,7 +23,8 @@ export async function getUser() {
 
 // 플리 가져오기
 export async function fetchPlaylists(): Promise<PlaylistRow[]> {
-  const user = await getUser()
+  // const user = await getUser()
+  const { user } = userStore()
 
   if (!user?.id) {
     throw new Error('로그인된 사용자 ID를 확인할 수 없습니다.')
@@ -96,7 +98,8 @@ export async function fetchPlaylistsWithCovers(): Promise<PlaylistRow[]> {
 export async function addPlaylist(
   playlistData: PlaylistInsert,
 ): Promise<{ success: boolean }> {
-  const user = await getUser()
+  // const user = await getUser()
+  const { user } = userStore()
 
   if (!user?.id) {
     throw new Error('로그인된 사용자 ID가 필요합니다.')
@@ -124,7 +127,8 @@ export async function updatePlaylist(
   playlistId: string,
   updatedData: PlaylistUpdate,
 ): Promise<{ success: boolean }> {
-  const user = await getUser()
+  // const user = await getUser()
+  const { user } = userStore()
   if (!user?.id) {
     throw new Error('로그인된 사용자 ID가 필요합니다.')
   }
@@ -205,7 +209,8 @@ export async function fetchLatestLikedSongCover(userId: string) {
 export async function deletePlaylist(
   playlistId: string,
 ): Promise<{ success: boolean }> {
-  const user = await getUser()
+  // const user = await getUser()
+  const { user } = userStore()
 
   if (!user?.id) {
     throw new Error('로그인된 사용자 ID를 확인할 수 없습니다.')

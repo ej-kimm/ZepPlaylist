@@ -1,11 +1,13 @@
+import { userStore } from '@/store/userSlice'
 import { supabase } from '@/utils/supabase/client'
 
 export const fetchUserLikePlaylist = async () => {
-  const { data } = await supabase.auth.getUser()
+  // const { data } = await supabase.auth.getUser()
+  const { user } = userStore()
   const { data: playlists, error } = await supabase
     .from('playlists')
     .select(`*,playlist_like(*)`)
-    .eq('user_id', data.user!.id)
+    .eq('user_id', user!.id)
   // 내가 작성한 플레이리스트만 꺼내오기
   if (error) {
     console.log(error.message)

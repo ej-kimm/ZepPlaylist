@@ -1,4 +1,5 @@
 import { fetchLatestAlbumCover } from '@/api/playlist/actions'
+import { userStore } from '@/store/userSlice'
 import { supabase } from '@/utils/supabase/client'
 
 type Param = {
@@ -6,11 +7,12 @@ type Param = {
 }
 
 export const fetchUserPlayList = async ({ pageParam = 0 }: Param) => {
-  const { data } = await supabase.auth.getUser()
+  // const { data } = await supabase.auth.getUser()
+  const { user } = userStore()
   const { data: playlists, error } = await supabase
     .from('playlists')
     .select('*')
-    .eq('user_id', data.user!.id)
+    .eq('user_id', user!.id)
     .range(pageParam * 10, (pageParam + 1) * 10 - 1)
   if (error) {
     console.error(error.message)

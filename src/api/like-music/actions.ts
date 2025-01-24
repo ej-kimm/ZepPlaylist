@@ -1,5 +1,6 @@
 'use server'
 
+import { userStore } from '@/store/userSlice'
 import { createClient } from '@/utils/supabase/server'
 
 export async function getUser() {
@@ -20,7 +21,8 @@ export async function getUser() {
 
 export async function fetchLikedSongs() {
   const supabase = createClient()
-  const user = await getUser()
+  // const user = await getUser()
+  const { user } = userStore()
 
   if (!user?.id) {
     throw new Error('로그인된 사용자 정보를 확인할 수 없습니다.')
@@ -53,10 +55,10 @@ export async function fetchLikedSongs() {
   }
 }
 
-
 export async function removeLikedSong(likeId: string) {
   const supabase = createClient()
-  const user = await getUser()
+  // const user = await getUser()
+  const { user } = userStore()
 
   if (!user?.id) {
     throw new Error('로그인된 사용자 정보를 확인할 수 없습니다.')
