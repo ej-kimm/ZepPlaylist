@@ -43,6 +43,11 @@ export async function updateSession(request: NextRequest) {
   if (user?.id && (pathname === '/login' || pathname === '/sign-up')) {
     return NextResponse.redirect(new URL('/', request.url))
   }
+
+  if (!user?.id && pathname.startsWith('/playlist')) {
+    return NextResponse.redirect(new URL('/login', request.url))
+  }
+
   if (!user?.id && pathname === '/my-page') {
     return NextResponse.redirect(new URL('/login', request.url))
   }
