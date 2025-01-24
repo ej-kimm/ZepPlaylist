@@ -2,10 +2,10 @@
 
 // import { useMusicPlayerStore } from '@/store/useMusicPlayerStore';
 import usePlaylistLike from '@/hooks/usePlaylistLike'
+import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import { supabase } from '@/utils/supabase/client'
 import { useEffect, useState } from 'react'
 import CommunityDetailUI from './CommunityDetailUI'
-import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 
 type User = {
   profile_image: string | null // 사용자의 프로필 이미지
@@ -52,7 +52,6 @@ export default function CommentSection({
   const [currentUserId, setCurrentUserId] = useState<string | null>(null)
   const { setTrackIds, playNextTrack, setPlayerOpen, play } =
     useMusicPlayerStore()
-  
 
   // 좋아요 상태 관리 (usePlaylistLike 훅 활용)
   const { toggleLike, isLiked } = usePlaylistLike({

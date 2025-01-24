@@ -49,7 +49,6 @@ const CommentDeleteModal: React.FC<CommentDeleteModalProps> = ({
       </div>
     </>
   )
-  
 }
 
 export default CommentDeleteModal
