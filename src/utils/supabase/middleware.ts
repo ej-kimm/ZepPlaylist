@@ -48,7 +48,7 @@ export async function updateSession(request: NextRequest) {
       return NextResponse.redirect(url)
     }
   } else {
-    if (pathname === '/my-page' || pathname === '/playlist') {
+    if (pathname === '/my-page') {
       const url = request.nextUrl.clone()
       url.pathname = '/login'
       return NextResponse.redirect(url)

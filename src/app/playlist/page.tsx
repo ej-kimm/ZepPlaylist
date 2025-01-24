@@ -6,7 +6,7 @@ export default async function PlaylistPage() {
 
   return (
     <div>
-      <Playlist initialPlaylists={playlists} />
+      <Playlist initialPlaylists={playlists!} />
     </div>
   )
 }
