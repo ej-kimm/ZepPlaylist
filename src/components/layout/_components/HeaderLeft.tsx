@@ -2,6 +2,7 @@
 import leftArrow from '@/assets/images/leftArrow.svg'
 import logo from '@/assets/images/logo.svg'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
+import { clsx } from 'clsx'
 import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
 
@@ -37,7 +38,10 @@ const HeaderLeft = ({ isHamburgerOpen, toggleMenu }: HeaderLeftProps) => {
       )}
 
       <button
-        className={`desktop:hidden ${pathname === '/' && !isPlayerModalOpen ? 'invisible' : 'visible'}`}
+        className={clsx('desktop:hidden', {
+          invisible: pathname === '/' && !isPlayerModalOpen,
+          visible: !(pathname === '/' && !isPlayerModalOpen),
+        })}
         onClick={handleBack}
       >
         <Image
@@ -45,7 +49,7 @@ const HeaderLeft = ({ isHamburgerOpen, toggleMenu }: HeaderLeftProps) => {
           width={24}
           height={24}
           alt="leftArrow"
-          className={`${isPlayerModalOpen ? '-rotate-90' : ''}`}
+          className={clsx({ '-rotate-90': isPlayerModalOpen })}
         />
       </button>
     </>

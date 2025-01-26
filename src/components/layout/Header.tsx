@@ -1,4 +1,5 @@
 'use client'
+import { clsx } from 'clsx'
 import { usePathname } from 'next/navigation'
 import { useCallback, useState } from 'react'
 import HeaderLeft from './_components/HeaderLeft'
@@ -36,15 +37,20 @@ const Header = () => {
 
   return (
     <>
-      <div className="fixed left-0 top-0 z-header flex h-navBar w-full items-center justify-between bg-white px-6">
+      <header
+        className={clsx(
+          'fixed left-0 top-0 z-header flex h-navBar w-full items-center justify-between bg-white px-6',
+          'desktop:h-navBar-desktop desktop:px-0',
+        )}
+      >
         <HeaderLeft isHamburgerOpen={isHamburgerOpen} toggleMenu={toggleMenu} />
 
-        <h1 className="title-2 flex-1 text-center desktop:hidden">
+        <h1 className={clsx('title-2 flex-1 text-center', 'desktop:hidden')}>
           {!isHamburgerOpen && isPathName(pathname)}
         </h1>
 
         <HeaderRight toggleMenu={toggleMenu} />
-      </div>
+      </header>
 
       <Sidebar isOpen={isHamburgerOpen} toggleMenu={toggleMenu} />
     </>
