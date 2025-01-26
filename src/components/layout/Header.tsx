@@ -1,35 +1,17 @@
 'use client'
-import hamburger from '@/assets/images/hamburger.svg'
-import leftArrow from '@/assets/images/leftArrow.svg'
-import logo from '@/assets/images/logo.svg'
-import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
-import Image from 'next/image'
-import { usePathname, useRouter } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 import { useCallback, useState } from 'react'
+import HeaderLeft from './_components/HeaderLeft'
+import HeaderRight from './_components/HeaderRight'
 import Sidebar from './_components/Sidebar'
 
 const Header = () => {
-  const router = useRouter()
   const pathname = usePathname()
-  const { isPlayerModalOpen, togglePlayerModal } = useMusicPlayerStore()
   const [isHamburgerOpen, setIsHamburgerOpen] = useState<boolean>(false)
 
   const toggleMenu = useCallback(() => {
     setIsHamburgerOpen((prev) => !prev)
   }, [])
-
-  const handleBack = () => {
-    if (isHamburgerOpen) {
-      toggleMenu()
-      return
-    }
-
-    if (isPlayerModalOpen) {
-      togglePlayerModal()
-    } else {
-      router.back()
-    }
-  }
 
   const isPathName = (pathname: string) => {
     switch (true) {
@@ -55,32 +37,13 @@ const Header = () => {
   return (
     <>
       <div className="fixed left-0 top-0 z-header flex h-navBar w-full items-center justify-between bg-white px-6">
-        {pathname === '/' && !isHamburgerOpen && !isPlayerModalOpen && (
-          <button type="button">
-            <Image src={logo} width={128} height={30} alt="logo" />
-          </button>
-        )}
+        <HeaderLeft isHamburgerOpen={isHamburgerOpen} toggleMenu={toggleMenu} />
 
-        <button
-          className={`md:hidden ${pathname === '/' && !isPlayerModalOpen ? 'invisible' : 'visible'}`}
-          onClick={handleBack}
-        >
-          <Image
-            src={leftArrow}
-            width={24}
-            height={24}
-            alt="leftArrow"
-            className={`${isPlayerModalOpen ? '-rotate-90' : ''}`}
-          />
-        </button>
-
-        <h1 className="title-2 flex-1 text-center">
+        <h1 className="title-2 flex-1 text-center desktop:hidden">
           {!isHamburgerOpen && isPathName(pathname)}
         </h1>
 
-        <button className="md:hidden block" onClick={toggleMenu}>
-          <Image src={hamburger} width={24} height={24} alt="hamburger" />
-        </button>
+        <HeaderRight toggleMenu={toggleMenu} />
       </div>
 
       <Sidebar isOpen={isHamburgerOpen} toggleMenu={toggleMenu} />
