@@ -1,5 +1,6 @@
 'use client'
 
+import clsx from 'clsx'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
@@ -57,7 +58,7 @@ export function SearchBar() {
 
   return (
     <>
-      <div className="max-auto relative mr-6">
+      <div className={clsx('relative mr-6', 'desktop:mr-0')}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <input
             id="search-input"

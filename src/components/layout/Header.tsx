@@ -1,5 +1,5 @@
 'use client'
-import { clsx } from 'clsx'
+import clsx from 'clsx'
 import { usePathname } from 'next/navigation'
 import { useCallback, useState } from 'react'
 import HeaderLeft from './_components/HeaderLeft'
@@ -39,8 +39,8 @@ const Header = () => {
     <>
       <header
         className={clsx(
-          'fixed left-0 top-0 z-header flex h-navBar w-full items-center justify-between bg-white px-6',
-          'desktop:h-navBar-desktop desktop:px-0',
+          'fixed left-0 top-0 z-header mx-auto flex h-navBar w-full items-center justify-between bg-white px-6',
+          'desktop:h-navBar-desktop desktop:relative desktop:max-w-[1200px] desktop:px-[30px]',
         )}
       >
         <HeaderLeft isHamburgerOpen={isHamburgerOpen} toggleMenu={toggleMenu} />

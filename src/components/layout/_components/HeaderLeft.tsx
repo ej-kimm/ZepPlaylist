@@ -16,6 +16,7 @@ const HeaderLeft = ({ isHamburgerOpen, toggleMenu }: HeaderLeftProps) => {
   const pathname = usePathname()
   const { isPlayerModalOpen, togglePlayerModal } = useMusicPlayerStore()
 
+  const handleBackHome = () => router.push('/')
   const handleBack = () => {
     if (isHamburgerOpen) {
       toggleMenu()
@@ -31,8 +32,18 @@ const HeaderLeft = ({ isHamburgerOpen, toggleMenu }: HeaderLeftProps) => {
 
   return (
     <>
+      {/* Desktop에서는 항상 로고 표시 */}
+      <button
+        type="button"
+        className="hidden desktop:block"
+        onClick={handleBackHome}
+      >
+        <Image src={logo} width={128} height={30} alt="logo" />
+      </button>
+
+      {/* 모바일에서는 pathname 조건에 따라 로고 표시 */}
       {pathname === '/' && !isHamburgerOpen && !isPlayerModalOpen && (
-        <button type="button">
+        <button type="button" className="desktop:hidden">
           <Image src={logo} width={128} height={30} alt="logo" />
         </button>
       )}
@@ -49,7 +60,7 @@ const HeaderLeft = ({ isHamburgerOpen, toggleMenu }: HeaderLeftProps) => {
           width={24}
           height={24}
           alt="leftArrow"
-          className={clsx({ '-rotate-90': isPlayerModalOpen })}
+          className={clsx(isPlayerModalOpen && '-rotate-90')}
         />
       </button>
     </>
