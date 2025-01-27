@@ -1,7 +1,8 @@
 'use client'
+import BackgroundHome from '@/assets/images/BackgroundHome.svg'
 import clsx from 'clsx'
 import { usePathname } from 'next/navigation'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import HeaderLeft from './_components/HeaderLeft'
 import HeaderRight from './_components/HeaderRight'
 import Sidebar from './_components/Sidebar'
@@ -9,6 +10,8 @@ import Sidebar from './_components/Sidebar'
 const Header = () => {
   const pathname = usePathname()
   const [isHamburgerOpen, setIsHamburgerOpen] = useState<boolean>(false)
+  const [navbarColor, setNavbarColor] = useState<string>('bg-transparent')
+  const isHomePage = pathname === '/'
 
   const toggleMenu = useCallback(() => {
     setIsHamburgerOpen((prev) => !prev)
@@ -35,12 +38,32 @@ const Header = () => {
     }
   }
 
+  const handleScroll = useCallback(() => {
+    const backgroundImageHeight = 406 // 배경 이미지 높이
+    if (window.scrollY > backgroundImageHeight) {
+      setNavbarColor('bg-white')
+    } else {
+      setNavbarColor('bg-transparent')
+    }
+  }, [])
+
+  useEffect(() => {
+    if (isHomePage) {
+      window.addEventListener('scroll', handleScroll)
+    }
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [handleScroll])
+
   return (
     <>
       <header
         className={clsx(
-          'fixed left-0 top-0 z-header mx-auto flex h-navBar w-full items-center justify-between bg-white px-6',
-          'desktop:h-navBar-desktop desktop:relative desktop:max-w-[1200px] desktop:px-[30px]',
+          'fixed left-0 top-0 z-header flex h-navBar w-full items-center justify-between bg-white px-6',
+          'desktop:h-navBar-desktop desktop:left-1/2 desktop:max-w-[1200px] desktop:-translate-x-1/2 desktop:transform desktop:px-[30px]',
+          isHomePage ? 'desktop:' + navbarColor : 'bg-white',
         )}
       >
         <HeaderLeft isHamburgerOpen={isHamburgerOpen} toggleMenu={toggleMenu} />
@@ -52,6 +75,17 @@ const Header = () => {
         <HeaderRight toggleMenu={toggleMenu} />
       </header>
 
+      {isHomePage && (
+        <div
+          className="absolute left-0 top-0 -z-10 h-[406px] w-full"
+          style={{
+            backgroundImage: `url(${BackgroundHome.src})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+          }}
+        />
+      )}
       <Sidebar isOpen={isHamburgerOpen} toggleMenu={toggleMenu} />
     </>
   )
