@@ -1,5 +1,5 @@
 'use client'
-import testBg from '@/assets/images/testBg.jpg'
+import BackgroundHome from '@/assets/images/BackgroundHome.svg'
 import clsx from 'clsx'
 import { usePathname } from 'next/navigation'
 import { useCallback, useEffect, useState } from 'react'
@@ -61,7 +61,7 @@ const Header = () => {
     <>
       <header
         className={clsx(
-          'fixed left-0 top-0 z-header flex h-navBar w-full items-center justify-between bg-white px-6 transition-colors duration-300',
+          'fixed left-0 top-0 z-header flex h-navBar w-full items-center justify-between bg-white px-6',
           'desktop:h-navBar-desktop desktop:left-1/2 desktop:max-w-[1200px] desktop:-translate-x-1/2 desktop:transform desktop:px-[30px]',
           isHomePage ? 'desktop:' + navbarColor : 'bg-white',
         )}
@@ -79,9 +79,10 @@ const Header = () => {
         <div
           className="absolute left-0 top-0 -z-10 h-[406px] w-full"
           style={{
-            backgroundImage: `url(${testBg.src})`, // TODO : 이미지 변경 필요
+            backgroundImage: `url(${BackgroundHome.src})`, // TODO : 이미지 변경 필요
             backgroundSize: 'cover',
             backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
           }}
         />
       )}
