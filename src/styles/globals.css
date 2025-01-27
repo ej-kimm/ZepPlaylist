@@ -20,6 +20,14 @@
     letter-spacing: 0em;
   }
 
+  .title-3 {
+    @apply text-black;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: 0em;
+  }
+
   .headline-1 {
     @apply text-black;
     font-size: 24px;
@@ -55,6 +63,22 @@
   .caption-2 {
     @apply text-black;
     font-size: 12px;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 0em;
+  }
+
+  .caption-3 {
+    @apply text-black;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 0em;
+  }
+
+  .caption-4 {
+    @apply text-black;
+    font-size: 16px;
     font-weight: 400;
     line-height: normal;
     letter-spacing: 0em;
