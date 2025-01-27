@@ -90,3 +90,49 @@ export const deleteLike = async ({ playlist_id, user_id }: Parameter) => {
   }
   return { succes: true }
 }
+
+export const playlistLiked = async ({
+  playlist_id,
+  user_id,
+}: {
+  playlist_id: string
+  user_id: string
+}) => {
+  const supabase = createClient()
+  const { data, error } = await supabase
+    .from('playlist_like')
+    .select('*')
+    .eq('user_id', user_id)
+    .eq('id', playlist_id)
+
+  if (error) {
+    console.error(error.message)
+    return false
+  }
+  console.log('좋아요테이블', data)
+  return data.length > 0
+}
+
+export const updatePlaylistLike = async ({
+  playlist_id,
+  user_id,
+}: {
+  playlist_id: string
+  user_id: string
+}) => {
+  const isLiked = await playlistLiked({ playlist_id, user_id })
+
+  if (isLiked) {
+    const { error } = await supabase
+      .from('playlist_like')
+      .delete()
+      .eq('user_id', user_id)
+      .eq('playlist_id', playlist_id)
+    if (error) throw new Error(error.message)
+  } else {
+    const { error: insertError } = await supabase
+      .from('playlist_like')
+      .insert({ user_id, playlist_id })
+    if (insertError) throw new Error(insertError.message)
+  }
+}

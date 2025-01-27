@@ -68,7 +68,7 @@ const SignupForm = () => {
       console.error(signOutError.message)
     }
     Swal.fire('완료', '회원가입 완료!', 'success')
-    router.push('/login')
+    router.replace('/login')
   }
 
   return (

@@ -69,7 +69,7 @@ const LoginForm = () => {
         }
       : null
     setUser(user)
-    router.push('/')
+    router.replace('/')
   }
 
   return (
