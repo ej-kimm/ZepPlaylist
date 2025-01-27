@@ -11,7 +11,8 @@ type LyricsProps = {
 
 const Lyrics = ({ lyrics, isFullLyrics, onClickLyrics }: LyricsProps) => {
   const [isTranslation, setIsTranslation] = useState<boolean>(false)
-  const { translatedLyrics, isPending } = useLyricsTranslation(lyrics)
+  // const { translatedLyrics, isPending } = useLyricsTranslation(lyrics)
+  const { translatedLyrics, isPending } = useLyricsTranslation()
 
   const displayLyrics = isTranslation
     ? isPending

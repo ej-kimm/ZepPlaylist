@@ -1,4 +1,5 @@
-export const useLyricsTranslation = (lyrics: string) => {
+export const useLyricsTranslation = () => {
+  // export const useLyricsTranslation = (lyrics: string) => {
   // const { data: translatedLyrics, isPending } = useQuery({
   //   queryKey: ['translate'],
   //   queryFn: () =>
