@@ -55,7 +55,9 @@ const Navbar = () => {
         <Link
           key={index}
           href={link.to}
-          className={clsx('button-2 px-[10px] py-2 text-[#636363]')}
+          className={clsx(
+            'button-2 whitespace-nowrap px-[10px] py-2 text-[#636363]',
+          )}
         >
           {link.text}
         </Link>
@@ -65,7 +67,9 @@ const Navbar = () => {
       {user && (
         <Link
           href="/my-page"
-          className={clsx('button-2 px-[10px] py-2 text-[#636363]')}
+          className={clsx(
+            'button-2 whitespace-nowrap px-[10px] py-2 text-[#636363]',
+          )}
         >
           My Page
         </Link>
@@ -75,14 +79,18 @@ const Navbar = () => {
       {user ? (
         <button
           onClick={handleLogOut}
-          className={clsx('button-2 px-[10px] py-2 text-[#636363]')}
+          className={clsx(
+            'button-2 whitespace-nowrap px-[10px] py-2 text-[#636363]',
+          )}
         >
           Log Out
         </button>
       ) : (
         <button
           onClick={handleLogIn}
-          className={clsx('button-2 px-[10px] py-2 text-[#636363]')}
+          className={clsx(
+            'button-2 whitespace-nowrap px-[10px] py-2 text-[#636363]',
+          )}
         >
           Log In
         </button>
