@@ -24,7 +24,6 @@ const MusicPlayer = () => {
 
   const hidePlayerBar =
     pathname === '/login' || pathname.startsWith('/community/')
-  const stopMusicOnly = pathname === '/community'
 
   const handleReady = () => setPlayerState({ ...playerState, ready: true })
   const handleDuration = (duration: number) =>
@@ -38,10 +37,10 @@ const MusicPlayer = () => {
 
   // 경로에 따른 동작
   useEffect(() => {
-    if (hidePlayerBar || stopMusicOnly) {
+    if (hidePlayerBar) {
       stop()
     }
-  }, [hidePlayerBar, stopMusicOnly, stop])
+  }, [hidePlayerBar, stop])
 
   if (!isPlayerOpen) return null // 초기에 노래를 재생하지 않으면 플레이어바 숨김
   if (!url || isPending) {
