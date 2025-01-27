@@ -21,10 +21,10 @@ const MusicPlayer = () => {
     useMusicPlayerStore()
   const { musicDetail, url, lyrics, isPending } = usePlayer()
   const pathname = usePathname()
+
   const hidePlayerBar =
-    pathname.startsWith('/community/') ||
-    pathname === '/community' ||
-    pathname === '/login'
+    pathname === '/login' || pathname.startsWith('/community/')
+  const stopMusicOnly = pathname === '/community'
 
   const handleReady = () => setPlayerState({ ...playerState, ready: true })
   const handleDuration = (duration: number) =>
@@ -36,15 +36,16 @@ const MusicPlayer = () => {
     playerRef.current?.seekTo(value) // 재생 위치 변경
   }
 
-  // 커뮤니티 페이지일 경우 노래 멈추기
+  // 경로에 따른 동작
   useEffect(() => {
-    if (hidePlayerBar) {
+    if (hidePlayerBar || stopMusicOnly) {
       stop()
     }
-  }, [hidePlayerBar, stop])
+  }, [hidePlayerBar, stopMusicOnly, stop])
 
   if (!isPlayerOpen) return null // 초기에 노래를 재생하지 않으면 플레이어바 숨김
   if (!url || isPending) {
+    if (pathname.startsWith('/community/')) return null
     return !isPlayerModalOpen && <PlayerSkeleton />
   }
 
