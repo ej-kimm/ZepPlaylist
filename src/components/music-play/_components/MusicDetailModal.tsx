@@ -46,7 +46,7 @@ export default function MusicDetailModal({
   const [isFullLyrics, setIsFullLyrics] = useState<boolean>(false)
   const [isLiked, setIsLiked] = useState<boolean>(false)
   const [isSaved, setIsSaved] = useState<boolean>(false)
-  const [isOpen, setIsOpen] = useState<boolean>(false)
+  const [isOpen, setIsOpen] = useState<boolean>(false) // 로그인 모달창 open
 
   const handleUserAction = (type: 'like' | 'save') => {
     if (!user_id) {

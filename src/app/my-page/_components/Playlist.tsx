@@ -46,7 +46,7 @@ const PlayList = () => {
     queryFn: () => fetchUserLikePlaylist(),
   })
   console.log('first', isLiked)
-  const { mutate: toggleLike1 } = useMutation({
+  const { mutate: likedToggle } = useMutation({
     // const playlist_id =
     mutationFn: toggleLike,
     // onMutate: async () => {
@@ -97,7 +97,7 @@ const PlayList = () => {
         {data?.pages.map((page, pageIndex) => {
           return (
             <div key={pageIndex}>
-              {page?.playlistsWithCovers.map((p, index) => {
+              {page?.playlists.map((p, index) => {
                 // const liked = isLiked[p.user_id] ?? false
                 return (
                   <PlaylistUI
@@ -118,7 +118,7 @@ const PlayList = () => {
                       //   ...prev,
                       //   [p.id]: !liked,
                       // }))
-                      toggleLike1({ playlist_id: p.id, user_id: user.id })
+                      likedToggle({ playlist_id: p.id, user_id: user.id })
                     }}
                   />
                 )
