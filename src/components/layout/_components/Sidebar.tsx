@@ -1,6 +1,7 @@
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import { userStore } from '@/store/userSlice'
 import { supabase } from '@/utils/supabase/client'
+import clsx from 'clsx'
 import { useEffect } from 'react'
 import Swal from 'sweetalert2'
 import ProfileHeader from './ProfileHeader'
@@ -45,7 +46,10 @@ const Sidebar = ({ isOpen, toggleMenu }: SidebarProps) => {
 
   return (
     <aside
-      className={`fixed right-0 top-navBar z-sidebar h-screen w-full bg-white px-6 transition duration-300 ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
+      className={clsx(
+        'fixed right-0 top-navBar z-sidebar h-screen w-full bg-white px-6 transition duration-300',
+        isOpen ? 'translate-x-0' : 'translate-x-full',
+      )}
     >
       <header className="flex h-[140px] items-center justify-center px-[13px]">
         <ProfileHeader toggleMenu={toggleMenu} />

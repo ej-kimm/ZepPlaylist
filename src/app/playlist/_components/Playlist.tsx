@@ -25,7 +25,7 @@ export default function Playlist({ initialPlaylists }: PlaylistComponentProps) {
   useEffect(() => {
     if (!user) {
       Swal.fire('오류', '로그인이 필요합니다.', 'error')
-      router.push('/login')
+      router.replace('/login')
     }
   }, [user, router, isLogin])
 
@@ -47,7 +47,7 @@ export default function Playlist({ initialPlaylists }: PlaylistComponentProps) {
   // 데이터 로드
   useEffect(() => {
     if (!user) return
-    
+
     const loadPlaylistsAndLikedCover = async () => {
       setIsLoading(true)
       try {
