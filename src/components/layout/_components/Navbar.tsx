@@ -48,7 +48,6 @@ const Navbar = () => {
     if (isPlayerModalOpen) setPlayerClose()
   }
 
-  // TODO : pb 설정, 로그인한 유저마다 메뉴 다르게 보이기
   return (
     <nav className={clsx('hidden gap-9', 'desktop:flex')}>
       {/* 일반 링크 */}
