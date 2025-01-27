@@ -63,7 +63,7 @@ export function SearchBar() {
 
   return (
     <>
-      <div className={clsx('relative mr-6', 'desktop:mr-0')}>
+      <div className={clsx('relative', 'desktop:mr-0')}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <input
             id="search-input"
