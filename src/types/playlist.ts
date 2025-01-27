@@ -1,6 +1,5 @@
 export type PlaylistRow = {
   id: string
-  created_at: string
   name: string
   description: string | null
   is_public: boolean
