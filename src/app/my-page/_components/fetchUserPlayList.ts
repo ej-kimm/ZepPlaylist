@@ -8,7 +8,7 @@ export const fetchUserPlayList = async ({ pageParam = 0 }: Param) => {
   const { data } = await supabase.auth.getUser()
   const { data: playlists, error } = await supabase
     .from('playlists')
-    .select('*')
+    .select(`*,playlist_like!left(user_id)`)
     .eq('user_id', data.user!.id)
     .range(pageParam * 10, (pageParam + 1) * 10 - 1)
   if (error) {
@@ -17,7 +17,6 @@ export const fetchUserPlayList = async ({ pageParam = 0 }: Param) => {
   if (!playlists) {
     return
   }
-
   const totalPage = playlists?.length || 0
   const nextCursor = totalPage === 10 ? pageParam + 1 : undefined
   const prevCursor = pageParam > 0 ? pageParam - 1 : undefined
