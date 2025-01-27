@@ -31,11 +31,9 @@ const MusicSaveBottomSheet = ({
 
   // 특정 플레이리스트 목록을 동작하는 함수
   const addMusiscInPlayList = async (playlistId: string) => {
+    console.log(musicName, artistName)
     try {
-      const newMusicName = musicName.replace(/\s*\(.*?\)\s*/g, '').trim()
-      const newArtistiName = artistName.replace(/\s*\(.*?\)\s*/g, '').trim()
-
-      const musicData = await searchSpotifyId(newMusicName, newArtistiName)
+      const musicData = await searchSpotifyId(musicName, artistName)
 
       // spubase music 테이블에 곡 담아주는 함수 호출
       const musicId = await upsertMusic(musicData!)
