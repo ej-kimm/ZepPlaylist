@@ -24,8 +24,8 @@ export default function Playlist({ initialPlaylists }: PlaylistComponentProps) {
   console.log('user', user)
   useEffect(() => {
     if (!user) {
-      Swal.fire('오류', '로그인이 필요합니다.', 'error')
       router.replace('/login')
+      Swal.fire('오류', '로그인이 필요합니다.', 'error')
     }
   }, [user, router, isLogin])
 
