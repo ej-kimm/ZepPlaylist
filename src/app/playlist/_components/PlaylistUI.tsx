@@ -60,7 +60,6 @@ export default function PlaylistList({
             onClick={(e) => {
               e.stopPropagation()
               handlePlaylistClick(playlist.id)
-              console.log('클릭된 플레이리스트 ID:', playlist.id)
             }}
           >
             <div className="flex items-center space-x-4">
@@ -102,14 +101,20 @@ export default function PlaylistList({
               {showDropdown === playlist.id && (
                 <div className="absolute right-0 mt-2 w-24 rounded-lg bg-white shadow-lg">
                   <button
-                    onClick={() => openModal('edit', playlist)}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      openModal('edit', playlist)
+                    }}
                     className="block w-full px-4 py-2 text-left text-sm hover:bg-gray-100"
                   >
                     수정
                   </button>
                   <button
                     className="block w-full px-4 py-2 text-left text-sm text-red-500 hover:bg-gray-100"
-                    onClick={() => handleDeletePlaylist(playlist.id)}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      handleDeletePlaylist(playlist.id)
+                    }}
                   >
                     삭제
                   </button>
