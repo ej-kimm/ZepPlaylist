@@ -159,7 +159,8 @@ export default function PlaylistDetailsComponent({
             <p>곡 수: {song_count}곡</p>
             <p>재생시간: {total_play_time}</p>
           </div>
-          <p className="mt-1">
+          <p className="mt-1 font-pretendard">
+            업데이트 날:{' '}
             {last_updated
               ? isToday(new Date(last_updated))
                 ? '오늘'

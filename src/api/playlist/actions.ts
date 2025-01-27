@@ -72,14 +72,14 @@ export async function fetchLatestAlbumCover(
 
 export async function fetchPlaylistsWithCovers(): Promise<PlaylistRow[]> {
   const playlists = await fetchPlaylists()
+  if (!playlists || playlists.length === 0) return []
 
-  // 각 플레이리스트에 최신 음악 커버 보여주기
   const playlistsWithCovers = await Promise.all(
-    playlists!.map(async (playlist) => {
+    playlists.map(async (playlist) => {
       const latestSongCover = await fetchLatestAlbumCover(playlist.id)
       return {
         ...playlist,
-        latest_song_cover: latestSongCover,
+        latest_song_cover: latestSongCover || '/default-cover.jpg',
       }
     }),
   )
