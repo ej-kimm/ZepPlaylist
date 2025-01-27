@@ -1,24 +1,24 @@
 'use client'
-import { toggleLike } from '@/api/my-page/actions'
+import { updatePlaylistLike } from '@/api/my-page/actions'
 import { PlaylistUI } from '@/components/common'
 import { userStore } from '@/store/userSlice'
+import type { OldData } from '@/types/playlistLike'
 import {
   useInfiniteQuery,
   useMutation,
   useQueryClient,
 } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
 import { useInView } from 'react-intersection-observer'
 import { fetchUserPlayList } from './fetchUserPlayList'
 import MyPageSkeleton from './MyPageSkeleton'
+
 const PlayList = () => {
   const { user } = userStore()
   const router = useRouter()
   const queryClient = useQueryClient()
-  const [isLiked, setIsLiked] = useState<{ [playlistId: string]: boolean }>({})
   const {
-    data,
+    data: playlists,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
@@ -39,18 +39,47 @@ const PlayList = () => {
       }
     },
   })
-  console.log('first', isLiked)
-  const { mutate: likedToggle } = useMutation({
-    mutationFn: toggleLike,
-
-    onSuccess: (_, variables) => {
-      setIsLiked((isLiked) => ({
-        ...isLiked,
-        [variables.user_id]: !isLiked[variables.user_id],
-      }))
-      queryClient.invalidateQueries({
-        queryKey: ['myPagePlaylists', user!.id],
+  const toggleLike = useMutation({
+    mutationFn: updatePlaylistLike,
+    onMutate: async (newLikeData: { playlist_id: string; user_id: string }) => {
+      await queryClient.cancelQueries({ queryKey: ['playlist'] })
+      const prevPlaylists = queryClient.getQueryData<OldData>(['playlist'])
+      queryClient.setQueryData(['playlist'], (prevData: OldData) => {
+        if (!prevData) return prevData
+        return {
+          ...prevData,
+          pages: prevData.pages.map((page) => ({
+            ...page,
+            playlists: page.playlists.map((item) => {
+              if (item.id === newLikeData.playlist_id) {
+                return {
+                  ...item,
+                  playlist_like: item.playlist_like.some(
+                    (like) => like.user_id === newLikeData.user_id,
+                  )
+                    ? item.playlist_like.filter(
+                        (like) => like.user_id !== newLikeData.user_id,
+                      ) // 좋아요 취소
+                    : [...item.playlist_like, { user_id: newLikeData.user_id }],
+                }
+              }
+              return item
+            }),
+          })),
+        }
       })
+      return { prevPlaylists }
+    },
+    onError: (err, newLikeData, context) => {
+      if (context?.prevPlaylists) {
+        queryClient.setQueryData(['playlist'], context.prevPlaylists)
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['playlist'] })
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ['playlist'] })
     },
   })
   if (isLoading)
@@ -59,11 +88,10 @@ const PlayList = () => {
     }).map((_, index) => <MyPageSkeleton key={index} />)
   if (error) return <p>에러가 발생하였습니다!</p>
   if (!user) return
-  console.log('first', data)
   return (
     <div className="h-full w-full overflow-hidden">
       <div>
-        {data?.pages.map((page, pageIndex) => {
+        {playlists?.pages.map((page, pageIndex) => {
           return (
             <div key={pageIndex}>
               {page?.playlists.map((p, index) => {
@@ -71,6 +99,7 @@ const PlayList = () => {
                   (like) => like.user_id === p.user_id,
                 )
                 const likeCount = p.playlist_like.length
+                // 데이터리소스가 많이 낭비됨
                 return (
                   <PlaylistUI
                     key={p.id}
@@ -86,9 +115,10 @@ const PlayList = () => {
                     }}
                     likeCount={likeCount}
                     onLikeToggle={() => {
-                      //   [p.id]: !liked,
-                      // }))
-                      likedToggle({ playlist_id: p.id, user_id: user.id })
+                      toggleLike.mutate({
+                        playlist_id: p.id,
+                        user_id: user.id,
+                      })
                     }}
                   />
                 )
