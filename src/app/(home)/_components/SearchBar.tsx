@@ -4,6 +4,7 @@ import clsx from 'clsx'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import Swal from 'sweetalert2'
 import { useDebouncedCallback } from 'use-debounce'
 import SearchKeywordCarousel from './SearchKeywordCarousel'
 
@@ -20,12 +21,16 @@ export function SearchBar() {
 
   const performSearch = useDebouncedCallback((searchTerm: string) => {
     const params = new URLSearchParams(searchParams.toString())
-    if (searchTerm) {
-      params.set('q', searchTerm)
+
+    if (searchTerm.trim() === '') {
+      console.log('Empty search term')
+      Swal.fire('검색', '검색어를 입력해주세요 !! ', 'warning')
+    } else if (searchTerm.trim().length < 2) {
+      Swal.fire('검색', '검색어는 2글자 이상이어야 합니다.', 'warning')
     } else {
-      params.delete('q')
+      params.set('q', searchTerm.trim())
+      router.push(`/search?${params.toString()}`)
     }
-    router.push(`/search?${params.toString()}`)
   }, 300)
 
   const toggleKeyword = (keyword: string) => {
