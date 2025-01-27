@@ -79,7 +79,7 @@ const Header = () => {
         <div
           className="absolute left-0 top-0 -z-10 h-[406px] w-full"
           style={{
-            backgroundImage: `url(${BackgroundHome.src})`, // TODO : 이미지 변경 필요
+            backgroundImage: `url(${BackgroundHome.src})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
