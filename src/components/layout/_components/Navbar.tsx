@@ -36,8 +36,9 @@ const Navbar = () => {
   // TODO : pb 설정, 로그인한 유저마다 메뉴 다르게 보이기
   return (
     <nav className={clsx('hidden gap-9', 'desktop:flex')}>
-      {LINKS.map((link) => (
+      {LINKS.map((link, index) => (
         <Link
+          key={index}
           href={link.to}
           className={clsx('button-2 px-[10px] py-2 text-[#636363]')}
         >
