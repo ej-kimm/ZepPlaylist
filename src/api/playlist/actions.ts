@@ -11,7 +11,7 @@ export async function getUser() {
 
   if (error || !data?.user) {
     console.warn('Supabase 세션이 존재하지 않음. 로그인 필요.')
-    return null //오류를 던지지않고 널을 반환하면...되나?
+    return null
   }
 
   return data.user
@@ -72,14 +72,14 @@ export async function fetchLatestAlbumCover(
 
 export async function fetchPlaylistsWithCovers(): Promise<PlaylistRow[]> {
   const playlists = await fetchPlaylists()
+  if (!playlists || playlists.length === 0) return []
 
-  // 각 플레이리스트에 최신 음악 커버 보여주기
   const playlistsWithCovers = await Promise.all(
-    playlists!.map(async (playlist) => {
+    playlists.map(async (playlist) => {
       const latestSongCover = await fetchLatestAlbumCover(playlist.id)
       return {
         ...playlist,
-        latest_song_cover: latestSongCover,
+        latest_song_cover: latestSongCover || '/default-cover.jpg',
       }
     }),
   )
