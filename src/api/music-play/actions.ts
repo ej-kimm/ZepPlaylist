@@ -1,5 +1,6 @@
+'use server'
 import type { Tables } from '@/types/supabase'
-import { supabase } from '@/utils/supabase/client'
+import { createClient } from '@/utils/supabase/server'
 
 // music 테이블
 export const insertMusicLyrics = async ({
@@ -9,6 +10,7 @@ export const insertMusicLyrics = async ({
   spotifyId: Tables<'music'>['spotify_id']
   lyrics: string
 }): Promise<void> => {
+  const supabase = createClient()
   const { error } = await supabase
     .from('music')
     .update({ lyrics })
@@ -23,6 +25,7 @@ export const insertMusicLyrics = async ({
 export const fetchMusicDetailByMusicId = async (
   musicId: Tables<'music'>['spotify_id'],
 ): Promise<Tables<'music'>> => {
+  const supabase = createClient()
   const { data: musicDetail, error } = await supabase
     .from('music')
     .select('*')
@@ -44,6 +47,7 @@ export const fetchMusicDetailByMusicId = async (
 export const fetchMusicLyricsByMusicId = async (
   musicId: Tables<'music'>['spotify_id'],
 ): Promise<Tables<'music'>['lyrics'] | null> => {
+  const supabase = createClient()
   const { data, error } = await supabase
     .from('music')
     .select('lyrics')
@@ -66,6 +70,7 @@ export const isSongLiked = async ({
   music_id: Tables<'song_like'>['music_id']
   user_id: Tables<'song_like'>['user_id']
 }) => {
+  const supabase = createClient()
   const { data, error } = await supabase
     .from('song_like')
     .select('music_id')
@@ -83,6 +88,7 @@ export const updateSongLike = async ({
   music_id: Tables<'song_like'>['music_id']
   user_id: Tables<'song_like'>['user_id']
 }): Promise<void> => {
+  const supabase = createClient()
   const isLiked = await isSongLiked({ music_id, user_id })
 
   // 좋아요가 이미 있으면 삭제

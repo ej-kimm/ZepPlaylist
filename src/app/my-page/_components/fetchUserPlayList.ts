@@ -1,4 +1,3 @@
-import { fetchLatestAlbumCover } from '@/api/playlist/actions'
 import { supabase } from '@/utils/supabase/client'
 
 type Param = {
@@ -18,21 +17,12 @@ export const fetchUserPlayList = async ({ pageParam = 0 }: Param) => {
   if (!playlists) {
     return
   }
-  const playlistsWithCovers = await Promise.all(
-    playlists.map(async (playlist) => {
-      const latestSongCover = await fetchLatestAlbumCover(playlist.id)
-      return {
-        ...playlist,
-        latest_song_cover: latestSongCover,
-      }
-    }),
-  )
 
   const totalPage = playlists?.length || 0
   const nextCursor = totalPage === 10 ? pageParam + 1 : undefined
   const prevCursor = pageParam > 0 ? pageParam - 1 : undefined
   return {
-    playlistsWithCovers,
+    playlists,
     nextCursor,
     prevCursor,
   }

@@ -1,9 +1,10 @@
 'use client'
 
-import { PlaylistUI } from '@/components/common'
+import { Modal, PlaylistUI } from '@/components/common'
 import usePlaylistLike from '@/hooks/usePlaylistLike'
 import type { StaticImageData } from 'next/image'
 import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 
 export type PlaylistCardProps = {
   playlist: {
@@ -14,18 +15,25 @@ export type PlaylistCardProps = {
     profileImg: string | StaticImageData
     nickName: string
   }
-  userId: string
+  userId: string | null
 }
 
 const PlaylistCard = ({ playlist, userId }: PlaylistCardProps) => {
   const router = useRouter()
 
   const { toggleLike, isLiked, isPending } = usePlaylistLike({
-    user_id: userId,
+    user_id: userId || '',
     playlist_id: playlist.id,
   })
 
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
+
   const handleLikeToggle = () => {
+    if (!userId) {
+      setIsLoginModalOpen(true)
+      return
+    }
+
     if (!isPending) {
       toggleLike()
     }
@@ -35,16 +43,30 @@ const PlaylistCard = ({ playlist, userId }: PlaylistCardProps) => {
     router.push(`/community/${playlist.id}`)
   }
 
+  const handleConfirmLogin = () => {
+    router.push('/login')
+  }
+
   return (
-    <PlaylistUI
-      profileImg={playlist.profileImg}
-      playlistName={playlist.name}
-      nickName={playlist.nickName}
-      likeCount={playlist.likeCount + (isLiked ? 1 : 0)}
-      isLiked={isLiked}
-      onLikeToggle={handleLikeToggle}
-      onClick={handleDivClick}
-    />
+    <>
+      <PlaylistUI
+        profileImg={playlist.profileImg}
+        playlistName={playlist.name}
+        nickName={playlist.nickName}
+        likeCount={playlist.likeCount + (isLiked ? 1 : 0)}
+        isLiked={isLiked}
+        onLikeToggle={handleLikeToggle}
+        onClick={handleDivClick}
+      />
+      <Modal
+        isOpen={isLoginModalOpen}
+        title="로그인 필요"
+        content="좋아요를 누르려면 로그인이 필요합니다."
+        type="horizontal"
+        onConfirm={handleConfirmLogin}
+        onCancel={() => setIsLoginModalOpen(false)}
+      />
+    </>
   )
 }
 

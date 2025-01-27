@@ -19,21 +19,10 @@ const CommunityPage = async (): Promise<JSX.Element> => {
 
   const { data: session } = await supabase.auth.getSession()
 
-  if (!session || !session.session?.user) {
-    console.error('유저 정보를 가져오는 데 실패했습니다.')
-    return (
-      <div>
-        <h1 className="text-2xl font-bold text-red-500">
-          로그인된 사용자가 없습니다. 다시 로그인해주세요.
-        </h1>
-      </div>
-    )
-  }
+  const userId = session?.session?.user?.id ?? null
 
-  const userId = session.session.user.id
-
-  const allPlaylists = await getPlaylists(userId)
-  const popularPlaylists = await getPopularPlaylists(userId)
+  const allPlaylists = await getPlaylists(userId ?? '')
+  const popularPlaylists = await getPopularPlaylists(userId ?? '')
 
   return (
     <div>
@@ -54,12 +43,15 @@ const CommunityPage = async (): Promise<JSX.Element> => {
                     ? playlist.nickname
                     : 'Anonymous',
               }}
-              userId={userId}
+              userId={userId ?? ''}
             />
           ),
         }))}
       />
-      <KeywordCarouselWrapper allPlaylists={allPlaylists} userId={userId} />
+      <KeywordCarouselWrapper
+        allPlaylists={allPlaylists}
+        userId={userId ?? ''}
+      />
     </div>
   )
 }
