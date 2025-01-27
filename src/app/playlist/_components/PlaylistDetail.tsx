@@ -160,10 +160,11 @@ export default function PlaylistDetailsComponent({
             <p>재생시간: {total_play_time}</p>
           </div>
           <p className="mt-1">
-            업데이트:{' '}
-            {isToday(new Date(last_updated))
-              ? '오늘'
-              : `${differenceInDays(new Date(), new Date(last_updated))}일 전`}
+            {last_updated
+              ? isToday(new Date(last_updated))
+                ? '오늘'
+                : `${differenceInDays(new Date(), new Date(last_updated))}일 전`
+              : '업데이트 없음'}
           </p>
         </div>
         <div className="flex items-center gap-2"></div>
