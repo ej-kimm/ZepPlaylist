@@ -2,6 +2,7 @@ import likeFalse from '@/assets/images/likeFalse.svg'
 import likeTrue from '@/assets/images/likeTrue.svg'
 import save from '@/assets/images/save.svg'
 import { Modal, MusicSaveBottomSheet } from '@/components/common'
+import useScrollLock from '@/hooks/useScrollLock'
 import useSongLike from '@/hooks/useSongLike'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import { userStore } from '@/store/userSlice'
@@ -42,6 +43,7 @@ export default function MusicDetailModal({
   const { isPlayerModalOpen, closePlayerModal, setPlayerClose } =
     useMusicPlayerStore()
   const { songLike, updateLike } = useSongLike({ user_id })
+  useScrollLock(isPlayerModalOpen)
 
   const [isFullLyrics, setIsFullLyrics] = useState<boolean>(false)
   const [isLiked, setIsLiked] = useState<boolean>(false)
@@ -78,19 +80,6 @@ export default function MusicDetailModal({
       setIsLiked(songLike)
     }
   }, [songLike])
-
-  // MusicDetailModal이 열렸을 때 스크롤 비활성화
-  useEffect(() => {
-    if (isPlayerModalOpen) {
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = 'auto'
-    }
-
-    return () => {
-      document.body.style.overflow = 'auto'
-    }
-  }, [isPlayerModalOpen])
 
   return (
     <>
