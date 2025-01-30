@@ -24,6 +24,7 @@ const config: Config = {
       },
       padding: {
         navBar: '56px',
+        'navBar-desktop': '66px',
         player: '60px',
       },
       spacing: {

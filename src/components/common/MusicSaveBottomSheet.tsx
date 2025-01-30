@@ -84,7 +84,9 @@ const MusicSaveBottomSheet = ({
         <div className="n h-full bg-white px-4">
           <Link href="/playlist" onClick={handleCloseAllModals}>
             <div className="mb-2 flex items-center gap-2">
-              <div className="h-12 w-12 rounded-lg bg-[#C4C4C4]" />
+              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[#C4C4C4]">
+                <span className="font-pretendard text-lg text-white">+</span>
+              </div>
               <p className="caption-1">새 플레이리스트 만들기</p>
             </div>
           </Link>

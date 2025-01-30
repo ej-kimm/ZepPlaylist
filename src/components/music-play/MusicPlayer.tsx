@@ -7,6 +7,7 @@ import ReactPlayer from 'react-player'
 import MusicDetailModal from './_components/MusicDetailModal'
 import MusicDetails from './_components/MusicDetails'
 import PlayerControls from './_components/PlayerControls'
+import PlayerModalSkeleton from './_components/PlayerModalSkeleton'
 import PlayerSkeleton from './_components/PlayerSkeleton'
 import ProgressBar from './_components/ProgressBar'
 
@@ -45,7 +46,7 @@ const MusicPlayer = () => {
   if (!isPlayerOpen) return null // 초기에 노래를 재생하지 않으면 플레이어바 숨김
   if (!url || isPending) {
     if (pathname.startsWith('/community/')) return null
-    return !isPlayerModalOpen && <PlayerSkeleton />
+    return isPlayerModalOpen ? <PlayerModalSkeleton /> : <PlayerSkeleton />
   }
 
   return (

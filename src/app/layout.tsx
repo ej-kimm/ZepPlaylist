@@ -29,8 +29,6 @@ export default function RootLayout({
         <QueryProvider>
           <Header />
           <MainContainer>{children}</MainContainer>
-          {/* Footer 잠시 주석처리 */}
-          {/* <Footer /> */}
           <MusicPlayer />
         </QueryProvider>
       </body>

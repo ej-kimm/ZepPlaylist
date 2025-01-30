@@ -1,7 +1,7 @@
 'use client'
 
 import clsx from 'clsx'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import Swal from 'sweetalert2'
@@ -15,6 +15,8 @@ type FormValues = {
 export function SearchBar() {
   const searchParams = useSearchParams()
   const router = useRouter()
+  const pathname = usePathname()
+  const isHomePage = pathname === '/'
   const { register, handleSubmit, setValue } = useForm<FormValues>()
 
   const [selectedKeywords, setSelectedKeywords] = useState<string[]>([])
@@ -63,7 +65,7 @@ export function SearchBar() {
 
   return (
     <>
-      <div className={clsx('relative', 'desktop:mr-0')}>
+      <div className={clsx('relative mr-6', 'desktop:mr-0')}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <input
             id="search-input"

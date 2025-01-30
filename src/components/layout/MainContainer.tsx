@@ -19,7 +19,7 @@ export default function MainContainer({ children }: MainContainerProps) {
     <main
       className={clsx(
         'mx-auto h-full w-full bg-white px-6 pt-navBar',
-        'desktop:p-0',
+        'desktop:pt-navBar-desktop desktop:bg-transparent desktop:p-0',
         isHomePage ? 'pr-0 desktop:max-w-[1186px]' : 'desktop:max-w-[1200px]',
         isPlayerOpen ? 'pb-player' : '',
       )}
