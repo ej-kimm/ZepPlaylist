@@ -4,7 +4,7 @@ import { userStore } from '@/store/userSlice'
 import { supabase } from '@/utils/supabase/client'
 import clsx from 'clsx'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import Swal from 'sweetalert2'
 
 const LINKS = [
@@ -28,6 +28,7 @@ const LINKS = [
 
 const Navbar = () => {
   const router = useRouter()
+  const pathname = usePathname()
   const { user, setUser } = userStore()
   const { isPlayerModalOpen, setPlayerClose } = useMusicPlayerStore()
 
@@ -56,7 +57,10 @@ const Navbar = () => {
           key={index}
           href={link.to}
           className={clsx(
-            'button-2 whitespace-nowrap px-[10px] py-2 text-[#636363]',
+            'button-2 relative whitespace-nowrap px-[10px] py-2 text-[#636363] transition-colors',
+            pathname === link.to ? 'text-primary' : 'hover:text-primary',
+            'after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-0 after:bg-primary after:transition-all after:duration-300',
+            pathname === link.to && 'after:w-full',
           )}
         >
           {link.text}
@@ -68,7 +72,10 @@ const Navbar = () => {
         <Link
           href="/my-page"
           className={clsx(
-            'button-2 whitespace-nowrap px-[10px] py-2 text-[#636363]',
+            'button-2 relative whitespace-nowrap px-[10px] py-2 text-[#636363] transition-colors',
+            pathname === '/my-page' ? 'text-primary' : 'hover:text-primary',
+            'after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-0 after:bg-primary after:transition-all after:duration-300',
+            pathname === '/my-page' && 'after:w-full',
           )}
         >
           My Page
@@ -76,25 +83,14 @@ const Navbar = () => {
       )}
 
       {/* 로그인/로그아웃 버튼 분리 */}
-      {user ? (
-        <button
-          onClick={handleLogOut}
-          className={clsx(
-            'button-2 whitespace-nowrap px-[10px] py-2 text-[#636363]',
-          )}
-        >
-          Log Out
-        </button>
-      ) : (
-        <button
-          onClick={handleLogIn}
-          className={clsx(
-            'button-2 whitespace-nowrap px-[10px] py-2 text-[#636363]',
-          )}
-        >
-          Log In
-        </button>
-      )}
+      <button
+        onClick={user ? handleLogOut : handleLogIn}
+        className={clsx(
+          'button-2 whitespace-nowrap px-[10px] py-2 text-[#636363]',
+        )}
+      >
+        {user ? 'Log Out' : 'Log In'}
+      </button>
     </nav>
   )
 }
