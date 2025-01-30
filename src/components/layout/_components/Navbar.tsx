@@ -86,7 +86,7 @@ const Navbar = () => {
       <button
         onClick={user ? handleLogOut : handleLogIn}
         className={clsx(
-          'button-2 whitespace-nowrap px-[10px] py-2 text-[#636363]',
+          'button-2 relative whitespace-nowrap px-[10px] py-2 text-[#636363] transition-colors hover:text-primary',
         )}
       >
         {user ? 'Log Out' : 'Log In'}
