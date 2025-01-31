@@ -37,10 +37,11 @@ const Top100ChartList = ({
   const { upsertMusic } = usePlaylistMusicUpsert()
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState<boolean>(false)
 
+  const newMusicName = musicName.replace(/\s*\(.*?\)\s*/g, '').trim()
+  const newArtistiName = artistName.replace(/\s*\(.*?\)\s*/g, '').trim()
+
   const handlePlayBtn = async () => {
     // 데이터 일치화를 위해 ()와 안의 텍스트 제거
-    const newMusicName = musicName.replace(/\s*\(.*?\)\s*/g, '').trim()
-    const newArtistiName = artistName.replace(/\s*\(.*?\)\s*/g, '').trim()
 
     const musicData = await searchSpotifyId(newMusicName, newArtistiName)
 
@@ -95,8 +96,8 @@ const Top100ChartList = ({
       <MusicSaveBottomSheet
         isOpen={isBottomSheetOpen}
         handleClose={handleOpenBottomSheet}
-        musicName={musicName}
-        artistName={artistName}
+        musicName={newMusicName}
+        artistName={newArtistiName}
       />
     </li>
   )
