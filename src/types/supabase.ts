@@ -9,6 +9,33 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      billboard_chart: {
+        Row: {
+          album_cover: string
+          artist: string
+          created_at: string
+          play_time: number
+          spotify_id: string
+          title: string
+        }
+        Insert: {
+          album_cover: string
+          artist: string
+          created_at?: string
+          play_time: number
+          spotify_id: string
+          title: string
+        }
+        Update: {
+          album_cover?: string
+          artist?: string
+          created_at?: string
+          play_time?: number
+          spotify_id?: string
+          title?: string
+        }
+        Relationships: []
+      }
       comments: {
         Row: {
           content: string
@@ -47,6 +74,33 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      korean_chart: {
+        Row: {
+          album_cover: string
+          artist: string
+          created_at: string
+          play_time: number
+          spotify_id: string
+          title: string
+        }
+        Insert: {
+          album_cover: string
+          artist: string
+          created_at?: string
+          play_time: number
+          spotify_id: string
+          title: string
+        }
+        Update: {
+          album_cover?: string
+          artist?: string
+          created_at?: string
+          play_time?: number
+          spotify_id?: string
+          title?: string
+        }
+        Relationships: []
       }
       music: {
         Row: {

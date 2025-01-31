@@ -2,6 +2,7 @@ import { supabase } from '@/utils/supabase/client'
 import { Suspense } from 'react'
 import Charts from './_components/Charts'
 import LatestAlbums from './_components/LatestAlbums'
+import PopularPlayList from './_components/PopularPlayList'
 import { SearchBar } from './_components/SearchBar'
 import UserLikedSong from './_components/UserLikedSong'
 export default async function Home() {
@@ -21,6 +22,7 @@ export default async function Home() {
       <LatestAlbums />
       <Charts />
       <UserLikedSong />
+      <PopularPlayList />
     </>
   )
 }

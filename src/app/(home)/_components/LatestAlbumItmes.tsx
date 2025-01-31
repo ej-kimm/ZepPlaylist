@@ -16,7 +16,7 @@ function LatestAlbumItmes({ latestAlbumList }: LatestAlbumProps) {
         spaceBetween={14}
         slidesPerView="auto"
         autoplay={{ delay: 10000 }}
-        loop={true}
+        loop={false}
         modules={[Autoplay]}
         // breakpoints={{
         //   280: { slidesPerView: 1.5, spaceBetween: 8 },
