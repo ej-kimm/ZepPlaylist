@@ -79,15 +79,15 @@ const MusicChartHeader = ({
           <Image src={whitePlay} alt="전체 재생" width={16} height={16} />
           <p className="text-xs font-normal">전체 재생</p>
         </button> */}
-        <div className="mb-3 flex w-[104px] items-center gap-1">
+        <div className="mb-3 flex w-[150px] items-center gap-1">
           <Image
             src={clock}
-            alt="현재시각"
+            alt="업데이트 시간"
             width={16}
             height={16}
             style={{ flexShrink: 0 }}
           />
-          <p className="text-xs">현재 시각 {currentHour}:00 </p>
+          <p className="text-xs">업데이트 시간 {currentHour}:00 </p>
         </div>
       </div>
     </>
