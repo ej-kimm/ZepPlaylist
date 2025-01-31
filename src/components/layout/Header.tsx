@@ -1,6 +1,5 @@
 'use client'
 import BackgroundHome from '@/assets/images/BackgroundHome.svg'
-import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import clsx from 'clsx'
 import { usePathname } from 'next/navigation'
 import { useCallback, useEffect, useState } from 'react'
@@ -10,7 +9,6 @@ import Sidebar from './_components/Sidebar'
 
 const Header = () => {
   const pathname = usePathname()
-  const { isPlayerModalOpen } = useMusicPlayerStore()
   const [isHamburgerOpen, setIsHamburgerOpen] = useState<boolean>(false)
   const [navbarColor, setNavbarColor] = useState<string>('bg-transparent')
   const isHomePage = pathname === '/'
@@ -64,7 +62,7 @@ const Header = () => {
       <header
         className={clsx(
           'fixed left-0 top-0 z-header flex h-navBar w-full items-center justify-between bg-white px-6',
-          'desktop:h-navBar-desktop desktop:left-1/2 desktop:max-w-[1200px] desktop:-translate-x-1/2 desktop:transform desktop:px-[30px]',
+          'desktop:left-1/2 desktop:h-navBar-desktop desktop:max-w-[1200px] desktop:-translate-x-1/2 desktop:transform desktop:px-[30px]',
           isHomePage ? 'desktop:' + navbarColor : 'bg-white',
         )}
       >
