@@ -2,6 +2,7 @@
 import { Skeleton } from '@/components/common'
 import useAlbumCover from '@/hooks/useAlbumCover'
 import { Tables } from '@/types/supabase'
+import clsx from 'clsx'
 import Image from 'next/image'
 import { useState } from 'react'
 
@@ -22,7 +23,10 @@ export default function AlbumCover({ musicDetail }: AlbumCoverProps) {
 
   return (
     <div
-      className="group h-[266px] w-[266px] [perspective:1000px]"
+      className={clsx(
+        'group h-[266px] w-[266px] [perspective:1000px]',
+        'desktop:h-[433px] desktop:w-[433px]',
+      )}
       onClick={handleFlip}
     >
       <div
@@ -34,32 +38,70 @@ export default function AlbumCover({ musicDetail }: AlbumCoverProps) {
           <Image
             src={album_cover || '/No cover'}
             alt={title || 'No Title'}
-            width={266}
-            height={266}
-            className="rounded object-cover"
-            style={{ width: '266px', height: '266px' }}
+            width={433}
+            height={433}
+            className={clsx(
+              'h-[266px] w-[266px] rounded object-cover',
+              'desktop:h-[433px] desktop:w-[433px] desktop:rounded-lg',
+            )}
           />
         </div>
         <div className="rotate-y-180 absolute left-0 top-0 h-full w-full [backface-visibility:hidden]">
           <Image
             src={album_cover || '/No cover'}
             alt={title || 'No Title'}
-            width={266}
-            height={266}
-            className="rounded object-cover blur-[10px]"
-            style={{ width: '266px', height: '266px' }}
+            width={433}
+            height={433}
+            className={clsx(
+              'h-[266px] w-[266px] rounded object-cover blur-[10px]',
+              'desktop:h-[433px] desktop:w-[433px] desktop:rounded-lg desktop:blur-[18px]',
+            )}
           />
-          <div className="absolute left-0 top-0 flex h-full w-full flex-col items-center justify-center gap-6">
-            <p className="caption-1 z-10 text-center text-white">{title}</p>
-            <p className="caption-1 z-10 text-center text-white">{artist}</p>
-            <p className="caption-1 z-10 text-center text-white">
+          <div
+            className={clsx(
+              'absolute left-0 top-0 flex h-full w-full flex-col items-center justify-center gap-6',
+              'desktop:gap-[34px]',
+            )}
+          >
+            <p
+              className={clsx(
+                'caption-1 z-10 text-center text-white',
+                'desktop:text-[26px]',
+              )}
+            >
+              {title}
+            </p>
+            <p
+              className={clsx(
+                'caption-1 z-10 text-center text-white',
+                'desktop:text-[26px]',
+              )}
+            >
+              {artist}
+            </p>
+            <p
+              className={clsx(
+                'caption-1 z-10 text-center text-white',
+                'desktop:text-[26px]',
+              )}
+            >
               {album?.releaseDate}
             </p>
-            <p className="caption-1 z-10 text-center text-white">
+            <p
+              className={clsx(
+                'caption-1 z-10 text-center text-white',
+                'desktop:text-[26px]',
+              )}
+            >
               {album?.albumName}
             </p>
             {genre.genres[0] && (
-              <p className="caption-1 z-10 text-center text-white">
+              <p
+                className={clsx(
+                  'caption-1 z-10 text-center text-white',
+                  'desktop:text-[26px]',
+                )}
+              >
                 {genre.genres[0]}
               </p>
             )}

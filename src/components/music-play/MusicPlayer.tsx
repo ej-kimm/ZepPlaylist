@@ -1,9 +1,11 @@
 'use client'
 import usePlayer from '@/hooks/usePlayer'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
+import clsx from 'clsx'
 import { usePathname } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import ReactPlayer from 'react-player'
+import ActionButtons from './_components/ActionButtons'
 import MusicDetailModal from './_components/MusicDetailModal'
 import MusicDetails from './_components/MusicDetails'
 import PlayerControls from './_components/PlayerControls'
@@ -17,6 +19,7 @@ const MusicPlayer = () => {
     ready: false, // onReady에서 영상이 로드된 상태값을 받아 사용
     played: 0, // 현재 재생 중인 시간 (0~0.9999)
     duration: 0, // 총 재생 시간
+    volume: 0.3, // 노래 볼륨
   })
   const { isPlayerOpen, isPlaying, isPlayerModalOpen, stop } =
     useMusicPlayerStore()
@@ -35,6 +38,8 @@ const MusicPlayer = () => {
     setPlayerState({ ...playerState, played: value }) // 클릭한 재생 위치로 업데이트
     playerRef.current?.seekTo(value) // 재생 위치 변경
   }
+  const handleVolumeChange = (volume: number) =>
+    setPlayerState({ ...playerState, volume })
 
   // 경로에 따른 동작
   useEffect(() => {
@@ -58,22 +63,39 @@ const MusicPlayer = () => {
         controls={false}
         width="0"
         height="0"
-        volume={0.3} // TODO : 임시로 볼륨 조절
+        volume={playerState.volume}
         onReady={handleReady} // 영상 준비 완료 상태
         onDuration={handleDuration} // 총 재생 시간
         onProgress={handleProgress} // 현재 재생 시간
         onEnded={stop}
       />
       {!hidePlayerBar && (
-        <section className="fixed bottom-0 left-0 z-player h-player w-full bg-white shadow-drop">
+        <section
+          className={clsx(
+            'fixed bottom-0 left-0 z-player h-player w-full bg-white shadow-drop',
+            'desktop:h-navBar-desktop',
+          )}
+        >
           <div className="flex h-full items-center justify-between px-6">
             <MusicDetails musicDetail={musicDetail} />
-            <ProgressBar
-              playerState={playerState}
-              onSeek={handleSeek}
-              url={url}
+            <div
+              className={clsx(
+                'desktop:absolute desktop:left-1/2 desktop:top-1/2 desktop:w-[546px] desktop:-translate-x-1/2 desktop:-translate-y-1/2 desktop:bg-white',
+              )}
+            >
+              <PlayerControls />
+              <ProgressBar
+                playerState={playerState}
+                onSeek={handleSeek}
+                url={url}
+              />
+            </div>
+            <ActionButtons
+              musicName={musicDetail?.title}
+              artistName={musicDetail?.artist}
+              volumeLevel={playerState.volume}
+              onVolumeChange={handleVolumeChange}
             />
-            <PlayerControls />
           </div>
 
           <MusicDetailModal
