@@ -46,7 +46,7 @@ export async function GET() {
         )
         .select('*')
 
-    if (insertBillboardChart!) {
+    if (insertBillboardChartError) {
       console.error('Error inserting data:', insertBillboardChartError)
     } else {
       console.log('Data inserted successfully:', insertBillboardChart)
