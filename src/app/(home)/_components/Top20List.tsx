@@ -6,6 +6,9 @@ import Link from 'next/link'
 import { useState } from 'react'
 import Top20Item from './Top20Item'
 
+import rightArrow from '@/assets/images/rightArrow.svg'
+import Image from 'next/image'
+
 type Top20ListProps = {
   koreaTop20ChartList: MelonChartSong[]
   billboardTop20ChartList: BillboardSong[]
@@ -44,6 +47,7 @@ const Top20List: React.FC<Top20ListProps> = ({
           className="mr-6 flex justify-end text-sm"
         >
           더보기
+          <Image src={rightArrow} height={16} width={16} alt=">" />
         </Link>
       </div>
       <ul className="scroll-invisible grid auto-cols-auto grid-flow-col grid-rows-4 gap-2 overflow-x-auto">
