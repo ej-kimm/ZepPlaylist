@@ -1,7 +1,7 @@
 'use client'
 
 import clsx from 'clsx'
-import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import Swal from 'sweetalert2'
@@ -15,7 +15,7 @@ type FormValues = {
 export function SearchBar() {
   const searchParams = useSearchParams()
   const router = useRouter()
-  const pathname = usePathname()
+  // const pathname = usePathname()
   // const isHomePage = pathname === '/'
   const { register, handleSubmit, setValue } = useForm<FormValues>()
 
