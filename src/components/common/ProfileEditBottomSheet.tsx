@@ -109,7 +109,7 @@ const ProfileEditBottomSheet = ({
           type="text"
           value={editNickname}
           onChange={handleNickname}
-          className="caption-2 h-9 w-full rounded-lg border border-white bg-[#f4f4f4] pl-2 text-[16px]"
+          className="caption-2 h-9 w-full rounded-lg border border-white bg-[#f4f4f4] pl-2 text-[16px] cursor-text"
         />
         <button
           className="caption-1 mt-5 w-full text-left"
