@@ -16,7 +16,7 @@ export function SearchBar() {
   const searchParams = useSearchParams()
   const router = useRouter()
   const pathname = usePathname()
-  const isHomePage = pathname === '/'
+  // const isHomePage = pathname === '/'
   const { register, handleSubmit, setValue } = useForm<FormValues>()
 
   const [selectedKeywords, setSelectedKeywords] = useState<string[]>([])
