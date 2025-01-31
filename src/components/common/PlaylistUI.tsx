@@ -4,6 +4,7 @@ import likeFalse from '@/assets/images/likeFalse.svg'
 import likeTrue from '@/assets/images/likeTrue.svg'
 import type { StaticImageData } from 'next/image'
 import Image from 'next/image'
+import { useState } from 'react'
 
 type PlaylistUIProps = {
   profileImg: string | StaticImageData
@@ -24,6 +25,7 @@ const PlaylistUI = ({
   onLikeToggle,
   onClick,
 }: PlaylistUIProps) => {
+  const [isClicked, setIsClicked] = useState(isLiked)
   return (
     <div
       className="mt-4 flex cursor-pointer items-center justify-between rounded-lg bg-white p-4 shadow"
@@ -58,12 +60,13 @@ const PlaylistUI = ({
           className="text-xl"
           onClick={(e) => {
             e.stopPropagation()
+            setIsClicked(!isClicked)
             onLikeToggle()
           }}
         >
           <Image
-            src={isLiked ? likeTrue : likeFalse}
-            alt={isLiked ? 'Liked' : 'Not Liked'}
+            src={isClicked ? likeTrue : likeFalse}
+            alt={isClicked ? 'Liked' : 'Not Liked'}
             width={16}
             height={16}
           />
