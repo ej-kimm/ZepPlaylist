@@ -40,7 +40,7 @@ const PlayList = () => {
         {playlists?.pages.map((page, pageIndex) => {
           return (
             <div key={pageIndex}>
-              {page?.playlists.map((p, index) => {
+              {page?.playlists.map((p) => {
                 const isLiked = p.playlist_like.some(
                   (like) => like.user_id === p.user_id,
                 )

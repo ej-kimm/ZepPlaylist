@@ -7,10 +7,11 @@ type Param = {
 
 export const fetchUserPlayList = async ({ pageParam = 0 }: Param) => {
   const { user } = userStore.getState()
+  if (!user) return
   const { data: playlists, error } = await supabase
     .from('playlists')
     .select(`*,playlist_like!left(user_id)`)
-    .eq('user_id', user?.id!)
+    .eq('user_id', user.id!)
     .range(pageParam * 10, (pageParam + 1) * 10 - 1)
   if (error) {
     console.error(error.message)
