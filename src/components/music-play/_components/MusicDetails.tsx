@@ -12,7 +12,10 @@ const MusicDetails = ({ musicDetail }: MusicDetailsProps) => {
 
   return (
     <div
-      className="flex flex-grow cursor-pointer items-center overflow-hidden"
+      className={clsx(
+        'flex flex-grow cursor-pointer items-center overflow-hidden',
+        'desktop:flex-grow-0',
+      )}
       onClick={togglePlayerModal}
     >
       {musicDetail?.album_cover ? (

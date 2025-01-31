@@ -126,6 +126,16 @@
   .lyrics-full {
     -webkit-line-clamp: 10;
   }
+}
+
+@layer utilities {
+  .scroll-invisible::-webkit-scrollbar {
+    display: none;
+  }
+
+  .rotate-y-180 {
+    transform: rotateY(180deg);
+  }
 
   .range-slider {
     @apply bg-secondary-opacity;
@@ -152,14 +162,33 @@
       border-radius: 15px;
     }
   }
-}
 
-@layer utilities {
-  .scroll-invisible::-webkit-scrollbar {
-    display: none;
-  }
+  .volume-slider {
+    @apply bg-secondary-opacity;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    writing-mode: vertical-lr;
+    direction: rtl;
+    vertical-align: bottom;
 
-  .rotate-y-180 {
-    transform: rotateY(180deg);
+    width: 4px;
+    height: 100%;
+    border-radius: 15px;
+
+    &::-webkit-slider-thumb {
+      @apply bg-primary;
+      -webkit-appearance: none;
+      width: 2px;
+      height: 2px;
+      border-radius: 15px;
+    }
+
+    &::-moz-range-thumb {
+      @apply bg-primary;
+      width: 2px;
+      height: 2px;
+      border-radius: 15px;
+    }
   }
 }
