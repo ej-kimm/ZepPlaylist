@@ -48,6 +48,7 @@ export async function GET() {
 
     return NextResponse.json({ data: insertMelonChart }, { status: 200 })
   } catch (error) {
+    console.error('An error occurred:', error)
     return NextResponse.json(
       { error: 'Internal Server Error' },
       { status: 500 },

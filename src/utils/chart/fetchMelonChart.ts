@@ -26,6 +26,6 @@ export const fetchAndCleanMelonChart = async () => {
 
     return cleanedMelonChart
   } catch (error) {
-    console.error('Error fetching Melon chart:')
+    console.error('Error fetching Melon chart: ', error)
   }
 }
