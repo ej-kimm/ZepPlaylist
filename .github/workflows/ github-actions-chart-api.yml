@@ -8,5 +8,5 @@ jobs:
     steps:
       - name: call Meion Chart API
         run: curl -X GET "https://zep-playlist.vercel.app/api/koreanChart"
-      # - name: call Billborard Chart API
-      #   run: curl -X GET "https://zep-playlist.vercel.app/api/billboradChart"
+      - name: call Billborard Chart API
+        run: curl -X GET "https://zep-playlist.vercel.app/api/billboardChart"
