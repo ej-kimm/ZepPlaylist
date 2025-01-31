@@ -1,21 +1,27 @@
-// app/api/korean-chart/route.ts
+// app/api/billboard-chart/route.ts
 
-import { fetchAndCleanMelonChart } from '@/utils/chart/fetchMelonChart'
+import { fetchBillboradChart } from '@/utils/chart/fetchBillboradChart'
 import { getSpotifyTrackData } from '@/utils/chart/getSpotifyTrackId'
 import { getSpotifyToken } from '@/utils/spotifyToken/getToken'
 import { supabase } from '@/utils/supabase/client'
 import { NextResponse } from 'next/server'
 
-// export const revalidate = 3600
-
 export async function GET() {
   try {
     const token = await getSpotifyToken()
 
-    const cleanedMelonChart = await fetchAndCleanMelonChart()
+    const billboardChart = await fetchBillboradChart()
+
+    const cleanedBillboradChart = billboardChart.map((item) => {
+      return {
+        songName: item.title.replace(/\s*\(.*?\)\s*/g, '').trim(),
+        artistName: item.artist.replace(/\s*\(.*?\)\s*/g, '').trim(),
+        albumCover: item.cover,
+      }
+    })
 
     const resolvedMusicData = await Promise.all(
-      cleanedMelonChart!.map(
+      cleanedBillboradChart!.map(
         async (item) =>
           await getSpotifyTrackData(token, item.songName, item.artistName),
       ),
@@ -25,9 +31,9 @@ export async function GET() {
       (item) => item !== undefined,
     )
 
-    const { data: insertMelonChart, error: insertMelonChartError } =
+    const { data: insertBillboradChart, error: insertBillboradChartError } =
       await supabase
-        .from('korean_chart')
+        .from('billboard_chart')
         .insert(
           validMusicData.map((item) => ({
             spotify_id: item.id,
@@ -40,13 +46,16 @@ export async function GET() {
         )
         .select('*')
 
-    if (insertMelonChartError) {
-      console.error('Error inserting data:', insertMelonChartError)
+    // const insertedBillboradChart = await test()
+    console.log(insertBillboradChart)
+
+    if (insertBillboradChart!) {
+      console.error('Error inserting data:', insertBillboradChartError)
     } else {
-      console.log('Data inserted successfully:', insertMelonChart)
+      console.log('Data inserted successfully:', insertBillboradChart)
     }
 
-    return NextResponse.json({ data: insertMelonChart }, { status: 200 })
+    return NextResponse.json({ data: insertBillboradChart }, { status: 200 })
   } catch (error) {
     return NextResponse.json(
       { error: 'Internal Server Error' },
