@@ -12,7 +12,6 @@ export default async function Home() {
   } = await supabase.auth.getUser()
   console.log('세션', data)
   console.log('유저', user)
-  // 카카오 프사때매 임시로 찍어놈 ,
   return (
     <>
       {/* TODO : Suspense 바꾸기.... */}
