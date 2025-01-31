@@ -1,8 +1,8 @@
+import useScrollLock from '@/hooks/useScrollLock'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import { userStore } from '@/store/userSlice'
 import { supabase } from '@/utils/supabase/client'
 import clsx from 'clsx'
-import { useEffect } from 'react'
 import Swal from 'sweetalert2'
 import ProfileHeader from './ProfileHeader'
 import SidebarMenu from './SidebarMenu'
@@ -15,6 +15,7 @@ type SidebarProps = {
 const Sidebar = ({ isOpen, toggleMenu }: SidebarProps) => {
   const { user, setUser } = userStore()
   const { isPlayerModalOpen, setPlayerClose } = useMusicPlayerStore()
+  useScrollLock(isOpen)
 
   const handleLogOut = async () => {
     const { error } = await supabase.auth.signOut()
@@ -30,19 +31,6 @@ const Sidebar = ({ isOpen, toggleMenu }: SidebarProps) => {
     toggleMenu()
     if (isPlayerModalOpen) setPlayerClose()
   }
-
-  // 스크롤 비활성화
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = 'auto'
-    }
-
-    return () => {
-      document.body.style.overflow = 'auto'
-    }
-  }, [isOpen])
 
   return (
     <aside

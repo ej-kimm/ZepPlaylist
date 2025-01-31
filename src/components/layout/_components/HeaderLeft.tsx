@@ -39,7 +39,7 @@ const HeaderLeft = ({ isHamburgerOpen, toggleMenu }: HeaderLeftProps) => {
       {/* Desktop에서는 항상 로고 표시 */}
       <button
         type="button"
-        className="desktop:block hidden"
+        className="hidden min-h-[30px] min-w-[128px] desktop:block"
         onClick={handleBackHome}
       >
         <Image src={logo} width={128} height={30} alt="logo" />

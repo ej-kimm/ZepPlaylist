@@ -1,6 +1,7 @@
 'use client'
 
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
+import clsx from 'clsx'
 
 type PlayerState = {
   ready: boolean
@@ -34,7 +35,11 @@ const ProgressBar = ({
 
   return (
     <div
-      className={`flex w-full flex-col gap-1 ${isPlayerModalOpen ? 'block' : 'hidden'}`}
+      className={clsx(
+        'flex w-full flex-col gap-1',
+        'desktop:flex',
+        isPlayerModalOpen ? 'block desktop:hidden' : 'hidden',
+      )}
     >
       <div className="flex justify-between">
         <time className="text-[8px] font-normal leading-none tracking-normal opacity-60">
@@ -45,7 +50,10 @@ const ProgressBar = ({
         </time>
       </div>
       <input
-        className="range-slider"
+        className={clsx(
+          'range-slider',
+          !isPlayerModalOpen && 'desktop:mx-auto desktop:w-[327px]',
+        )}
         type="range"
         min="0"
         max="0.999999"

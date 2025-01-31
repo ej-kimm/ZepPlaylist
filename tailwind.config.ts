@@ -18,14 +18,17 @@ const config: Config = {
       },
       height: {
         navBar: '56px',
-        'navBar-desktop': '66px',
         'navBar-calc': 'calc(100vh - 56px)',
+        'navBar-desktop': '66px',
+        'navBar-desktop-calc': 'calc(100vh - 66px - 66px)',
         player: '60px',
+        'player-desktop': '72px',
       },
       padding: {
         navBar: '56px',
         'navBar-desktop': '66px',
         player: '60px',
+        'player-desktop': '72px',
       },
       spacing: {
         navBar: '56px',

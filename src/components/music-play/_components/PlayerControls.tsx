@@ -25,7 +25,11 @@ const PlayerControls = () => {
 
   return (
     <div
-      className={`flex shrink-0 items-center justify-end py-2 ${isPlayerModalOpen ? 'gap-10' : 'gap-2'}`}
+      className={clsx(
+        'flex shrink-0 items-center justify-end py-2',
+        'desktop:mb-[10px] desktop:w-full desktop:justify-center desktop:gap-[60px] desktop:py-0',
+        isPlayerModalOpen ? 'gap-10 desktop:hidden' : 'gap-2',
+      )}
     >
       <button type="button" onClick={playPreviousTrack} disabled={isFirstTrack}>
         <Image
@@ -55,7 +59,7 @@ const PlayerControls = () => {
       </button>
       {/* TODO : playlist 기능 만들어야함 */}
       {!isPlayerModalOpen && (
-        <button type="button" onClick={playNextTrack}>
+        <button type="button" className={clsx('desktop:hidden')}>
           <Image
             src={playlist}
             width={ICON_SIZE}
