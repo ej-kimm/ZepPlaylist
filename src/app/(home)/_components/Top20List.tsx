@@ -1,6 +1,6 @@
 'use client'
 
-import type { BillboradSong } from '@/types/billboradCharts'
+import type { BillboardSong } from '@/types/billboradCharts'
 import type { MelonChartSong } from '@/types/melonCharts'
 import Link from 'next/link'
 import { useState } from 'react'
@@ -8,7 +8,7 @@ import Top20Item from './Top20Item'
 
 type Top20ListProps = {
   koreaTop20ChartList: MelonChartSong[]
-  billboardTop20ChartList: BillboradSong[]
+  billboardTop20ChartList: BillboardSong[]
 }
 
 const Top20List: React.FC<Top20ListProps> = ({
@@ -17,7 +17,7 @@ const Top20List: React.FC<Top20ListProps> = ({
 }) => {
   const [isKoreaChart, setIsKoreaChart] = useState(true)
 
-  const chartList: Array<MelonChartSong | BillboradSong> = isKoreaChart
+  const chartList: Array<MelonChartSong | BillboardSong> = isKoreaChart
     ? koreaTop20ChartList
     : billboardTop20ChartList
 
@@ -52,24 +52,24 @@ const Top20List: React.FC<Top20ListProps> = ({
             key={
               isKoreaChart
                 ? (chart as MelonChartSong).SONGID
-                : (chart as BillboradSong).rank
+                : (chart as BillboardSong).rank
             }
             chart={chart}
             index={index}
             musicName={
               isKoreaChart
                 ? (chart as MelonChartSong).SONGNAME
-                : (chart as BillboradSong).title
+                : (chart as BillboardSong).title
             }
             artistName={
               isKoreaChart
                 ? (chart as MelonChartSong).ARTISTLIST[0].ARTISTNAME
-                : (chart as BillboradSong).artist
+                : (chart as BillboardSong).artist
             }
             albumCover={
               isKoreaChart
                 ? (chart as MelonChartSong).ALBUMIMG
-                : (chart as BillboradSong).cover
+                : (chart as BillboardSong).cover
             }
           />
         ))}
