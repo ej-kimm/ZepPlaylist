@@ -2,12 +2,12 @@ import playing from '@/assets/images/play.svg'
 import { useSpotifySearch } from '@/hooks/useGetSpotifyMusicId'
 import { usePlaylistMusicUpsert } from '@/hooks/usePlaylistMusicUpsert'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
-import type { BillboradSong } from '@/types/billboradCharts'
+import type { BillboardSong } from '@/types/billboradCharts'
 import type { MelonChartSong } from '@/types/melonCharts'
 import Image from 'next/image'
 
 type Top20ItemProps = {
-  chart: MelonChartSong | BillboradSong
+  chart: MelonChartSong | BillboardSong
   index: number
   musicName: string
   artistName: string

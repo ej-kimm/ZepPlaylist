@@ -1,5 +1,6 @@
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import { Tables } from '@/types/supabase'
+import clsx from 'clsx'
 import Image from 'next/image'
 
 type MusicDetailsProps = {
@@ -11,20 +12,36 @@ const MusicDetails = ({ musicDetail }: MusicDetailsProps) => {
 
   return (
     <div
-      className="flex flex-grow cursor-pointer overflow-hidden"
+      className={clsx(
+        'flex flex-grow cursor-pointer items-center overflow-hidden',
+        'desktop:flex-grow-0',
+      )}
       onClick={togglePlayerModal}
     >
-      <Image
-        // TODO : 웹버전 src default 커버 설정하기
-        className="hidden"
-        src={musicDetail?.album_cover || '/No cover'}
-        alt={musicDetail?.title || 'No Title'}
-        width={40}
-        height={40}
-      />
-      <div className="flex w-full flex-col gap-[2px]">
-        <h3 className="body-2 truncate">{musicDetail?.title}</h3>
-        <p className="caption-2 truncate">{musicDetail?.artist}</p>
+      {musicDetail?.album_cover ? (
+        <Image
+          className={clsx('mr-3 hidden rounded-lg', 'desktop:block')}
+          src={musicDetail.album_cover}
+          alt={musicDetail?.title || 'No Title'}
+          width={56}
+          height={56}
+        />
+      ) : (
+        <div
+          className={clsx(
+            'mr-3 hidden h-[56px] w-[56px] rounded-lg bg-[#D9D9D9]',
+            'desktop:block',
+          )}
+        />
+      )}
+
+      <div className={clsx('flex w-full flex-col gap-[2px]', 'desktop:gap-1')}>
+        <h3 className={clsx('body-2 truncate', 'desktop:title-2')}>
+          {musicDetail?.title}
+        </h3>
+        <p className={clsx('caption-2 truncate', 'desktop:caption-1')}>
+          {musicDetail?.artist}
+        </p>
       </div>
     </div>
   )

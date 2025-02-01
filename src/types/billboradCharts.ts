@@ -1,8 +1,8 @@
-export type BillboradCharts = {
-  songs: BillboradSong[]
+export type BillboardCharts = {
+  songs: BillboardSong[]
 }
 
-export type BillboradSong = {
+export type BillboardSong = {
   rank: number
   title: string
   artist: string
