@@ -5,10 +5,11 @@ import { PrimaryButton, SecondaryButton } from './Button'
 interface ModalProps {
   isOpen: boolean
   title: string
-  content: string
-  type?: 'single' | 'vertical' | 'horizontal'
-  onConfirm: () => void
+  content: string | JSX.Element
+  type?: 'single' | 'vertical' | 'horizontal' | 'none'
+  onConfirm?: () => void
   onCancel: () => void
+  className?: string
 }
 
 const Modal: React.FC<ModalProps> = ({
@@ -18,6 +19,7 @@ const Modal: React.FC<ModalProps> = ({
   type = 'single',
   onConfirm,
   onCancel,
+  className,
 }) => {
   if (!isOpen) return null
 
@@ -55,6 +57,8 @@ const Modal: React.FC<ModalProps> = ({
             </PrimaryButton>
           </div>
         )
+      case 'none':
+        return null
       default:
         return null
     }

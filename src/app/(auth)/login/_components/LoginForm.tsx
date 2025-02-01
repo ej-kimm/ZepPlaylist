@@ -4,6 +4,7 @@ import { userStore } from '@/store/userSlice'
 import type { Users } from '@/types/auth'
 import { supabase } from '@/utils/supabase/client'
 import { zodResolver } from '@hookform/resolvers/zod'
+import clsx from 'clsx'
 import { useRouter } from 'next/navigation'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import Swal from 'sweetalert2'
@@ -75,9 +76,19 @@ const LoginForm = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="sm:p-6 mx-auto max-w-sm border-b border-black border-opacity-40"
+      className={clsx(
+        'sm:p-6 mx-auto max-w-sm border-b border-black border-opacity-40',
+        'desktop:ml-[340px] desktop:w-full desktop:border-none',
+      )}
     >
-      <h2 className="title-1 mt-[72px] text-left">로그인</h2>
+      <h2
+        className={clsx(
+          'title-1 mt-[72px] text-left',
+          'desktop:mb-[68px] desktop:mt-[160px] desktop:text-left',
+        )}
+      >
+        로그인
+      </h2>
       <InputBox
         name="email"
         type="email"
@@ -93,9 +104,15 @@ const LoginForm = () => {
         placeholder="비밀번호"
         required
         register={register}
-        className="caption-2 mt-8 w-full rounded-lg border-white bg-[#f4f4f4] text-[16px]"
+        className={clsx(
+          'caption-2 mt-8 w-full rounded-lg border-white bg-[#f4f4f4] text-[16px]',
+          'desktop:mb-[74px]',
+        )}
       />
-      <PrimaryButton type="submit" className="mb-12 mt-8 h-[39px]">
+      <PrimaryButton
+        type="submit"
+        className={clsx('mb-12 mt-8 h-[39px]', 'desktop:mb-10')}
+      >
         로그인
       </PrimaryButton>
     </form>

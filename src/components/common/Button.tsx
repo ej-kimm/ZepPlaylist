@@ -17,7 +17,7 @@ export const PrimaryButton: React.FC<ButtonProps> = ({
     <button
       type={type}
       onClick={onClick}
-      className={`button-2 w-full rounded-full bg-primary text-white ${className}`}
+      className={`button-2 w-full rounded-full bg-primary text-white desktop:w-[532px] ${className}`}
     >
       {children}
     </button>

@@ -20,7 +20,7 @@ const InputBox = <T extends FieldValues>({
   isTextArea = false,
   className = '',
 }: InputBoxProps<T>) => {
-  const inputClass = `w-full rounded-lg border p-3 focus:outline-none focus:ring-2 cursor-text ${
+  const inputClass = `w-full rounded-lg border p-3 focus:outline-none focus:ring-2 cursor-text desktop:w-[532px] desktop:mb-[52px] ${
     errorMessage
       ? 'border-red-500 focus:ring-red-500'
       : 'border-gray-300 focus:ring-purple-500'
