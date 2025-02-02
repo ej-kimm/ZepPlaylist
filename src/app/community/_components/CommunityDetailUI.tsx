@@ -1,5 +1,7 @@
 'use client'
 
+import ChevronDownXL from '@/assets/images/Chevron_Down_XL.svg'
+import ChevronUpXL from '@/assets/images/Chevron_Up_XL.svg'
 import commentSubmitButton from '@/assets/images/commentSubmit.svg'
 import defaultProfileImg from '@/assets/images/defaultProfileImg.png'
 import likeFalse from '@/assets/images/likeFalse.svg'
@@ -66,6 +68,7 @@ export default function CommunityDetailUI({
   const [selectedCommentId, setSelectedCommentId] = useState<string | null>(
     null,
   )
+  const [isCommentVisible, setIsCommentVisible] = useState(true)
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
 
   const router = useRouter()
@@ -98,6 +101,10 @@ export default function CommunityDetailUI({
 
   const handleConfirmLogin = () => {
     router.push('/login')
+  }
+
+  const toggleCommentVisibility = () => {
+    setIsCommentVisible((prev) => !prev)
   }
 
   return (
@@ -183,72 +190,102 @@ export default function CommunityDetailUI({
         </ul>
       </div>
 
-      {/* 댓글 섹션 */}
-      <div className="fixed bottom-0 left-0 right-0 z-10 h-[240px] w-full bg-gradient-to-t from-black/50 via-gray-800/30 to-white/10 shadow-lg backdrop-blur-md">
-        <div className="flex h-full flex-col">
-          {/* 댓글 목록 */}
-          <div className="flex-1 overflow-y-auto p-4">
-            <ul className="space-y-4">
-              {comments.map((comment) => (
-                <li
-                  key={comment.id}
-                  className="flex items-start space-x-4 pb-4"
-                >
-                  <div className="flex-shrink-0 rounded-full">
-                    <Image
-                      src={comment.profileImage || defaultProfileImg}
-                      alt="작성자 프로필 이미지"
-                      width={32}
-                      height={32}
-                      className="object-cover"
-                    />
-                  </div>
-                  <div className="flex flex-1 items-center justify-between">
-                    <p className="caption-1 flex-1text-gray-500 mt-2">
-                      {comment.content}
-                    </p>
-                    {currentUserId === comment.user_id && (
-                      <button
-                        onClick={() => openDeleteModal(comment.id)}
-                        className="flex h-6 w-6 items-center justify-center text-gray-500"
-                      >
-                        <TbTrash size={20} />
-                      </button>
-                    )}
-                  </div>
-                </li>
-              ))}
-            </ul>
+      {/* 댓글 목록 섹션 */}
+      {isCommentVisible && (
+        <div className="fixed bottom-16 left-0 right-0 z-10 h-[240px] w-full overflow-y-auto bg-gradient-to-t from-black/50 via-gray-800/30 to-white/10 p-4 shadow-lg backdrop-blur-md">
+          {/* 댓글 숨기기 버튼 (우측 상단) */}
+          <div className="relative h-8 w-full">
+            <button
+              onClick={toggleCommentVisibility}
+              className="absolute right-3 top-1 flex h-8 w-8 items-center justify-center"
+            >
+              <Image
+                src={ChevronDownXL}
+                alt="Hide Comments"
+                width={24}
+                height={24}
+              />
+            </button>
           </div>
+          <ul className="space-y-4 pt-4">
+            {comments.map((comment) => (
+              <li key={comment.id} className="flex items-start space-x-4 pb-4">
+                <div className="flex-shrink-0 rounded-full">
+                  <Image
+                    src={comment.profileImage || defaultProfileImg}
+                    alt="작성자 프로필 이미지"
+                    width={32}
+                    height={32}
+                    className="object-cover"
+                  />
+                </div>
+                <div className="flex flex-1 items-center justify-between">
+                  <p className="caption-1 flex-1text-gray-500 mt-2">
+                    {comment.content}
+                  </p>
+                  {currentUserId === comment.user_id && (
+                    <button
+                      onClick={() => openDeleteModal(comment.id)}
+                      className="mr-4 flex h-6 w-6 items-center justify-center text-gray-500"
+                    >
+                      <TbTrash size={20} />
+                    </button>
+                  )}
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
-          {/* 댓글 입력 */}
-          <div className="flex items-center rounded-t-md border-t p-2">
-            <input
-              type="text"
-              className="h-8 flex-1 rounded border border-gray-300 px-2 text-base focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="댓글을 입력하세요..."
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' && content.trim().length > 0) {
-                  handleAddCommentWithRedirect()
-                }
-              }}
-            />
-            {content.trim().length > 0 && (
-              <button
-                onClick={handleAddCommentWithRedirect}
-                className="ml-2 flex h-8 w-8 items-center justify-center"
-              >
-                <Image
-                  src={commentSubmitButton}
-                  alt="Submit Comment"
-                  width={36}
-                  height={36}
-                />
-              </button>
-            )}
-          </div>
+      {/* 댓글 입력 섹션 */}
+      <div
+        className={`fixed bottom-0 left-0 right-0 z-10 h-16 w-full transition-all duration-300 ${
+          isCommentVisible ? 'bg-white/50 backdrop-blur-md' : 'bg-white'
+        } shadow-lg`}
+      >
+        <div className="flex items-center gap-2 p-2">
+          <input
+            type="text"
+            className="md:min-w-[120px] h-9 min-w-[50px] flex-1 rounded-full border border-gray-200 px-4 text-sm focus:outline-none"
+            placeholder="댓글을 입력해주세요!"
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && content.trim().length > 0) {
+                handleAddCommentWithRedirect()
+              }
+            }}
+            disabled={!isCommentVisible} // 댓글 숨김 상태에서 입력창 비활성화
+          />
+          {content.trim().length > 0 && (
+            <button
+              onClick={handleAddCommentWithRedirect}
+              className="ml-2 flex h-8 w-8 flex-shrink-0 items-center justify-center"
+              disabled={!isCommentVisible} // 댓글 숨김 상태에서 제출 버튼 비활성화
+            >
+              <Image
+                src={commentSubmitButton}
+                alt="Submit Comment"
+                width={36}
+                height={36}
+              />
+            </button>
+          )}
+          {/* 댓글 보이기 버튼 (댓글 숨김 상태일 때만 표시) */}
+          {!isCommentVisible && (
+            <button
+              onClick={toggleCommentVisibility}
+              className="ml-1 flex h-8 w-8 items-center justify-center"
+            >
+              <Image
+                src={ChevronUpXL}
+                alt="Show Comments"
+                width={24}
+                height={24}
+              />
+            </button>
+          )}
         </div>
       </div>
 
