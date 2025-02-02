@@ -2,6 +2,7 @@
 
 import type { BillboardCharts } from '@/types/billboradCharts'
 import type { melonCharts } from '@/types/melonCharts'
+import { supabase } from '@/utils/supabase/client'
 import { fetchSpotifyToken } from '../spotifyToken'
 
 export const fetchNewReleases = async () => {
@@ -140,4 +141,28 @@ export const fetchAlbums = async (albumId: string) => {
     console.error('Fetch error:', error)
     throw new Error('An unexpected error occurred')
   }
+}
+
+export const fetchKoreanChart = async () => {
+  const { data: koreanChart, error: koreanChartError } = await supabase
+    .from('korean_chart')
+    .select('*')
+
+  if (koreanChartError) {
+    console.error('Error geting data:', koreanChartError)
+  }
+
+  return koreanChart
+}
+
+export const fetchBillboardChart = async () => {
+  const { data: billboardChart, error: billboardChartError } = await supabase
+    .from('billboard_chart')
+    .select('*')
+
+  if (billboardChart) {
+    console.error('Error geting data:', billboardChartError)
+  }
+
+  return billboardChart
 }

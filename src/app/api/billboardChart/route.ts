@@ -44,7 +44,7 @@ export async function GET() {
             created_at: new Date().toISOString(),
           })),
           {
-            onConflict: 'spotify_id', // 충돌 감지 기준 컬럼
+            onConflict: 'spotify_id', // 중복 감지 기준 컬럼
             ignoreDuplicates: false, // true: 건너뛰기, false: 업데이트
           },
         )
