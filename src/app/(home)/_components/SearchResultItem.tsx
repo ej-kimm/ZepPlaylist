@@ -14,10 +14,10 @@ type SearchResultProps = {
   searchResultArtists: SpotifyApi.ArtistObjectFull[]
 }
 
-type SearchHistoryItem = {
-  query: string
-  expirationDate: number
-}
+// type SearchHistoryItem = {
+//   query: string
+//   expirationDate: number
+// }
 
 const SearchResultItem = ({
   searchParams,
