@@ -93,6 +93,32 @@ export const fetchSearchTracks = async (searchParams: string) => {
   }
 }
 
+export const fetchSearchArtist = async (searchParams: string) => {
+  const token = await fetchSpotifyToken()
+
+  try {
+    const res = await fetch(
+      `https://api.spotify.com/v1/search?q=${searchParams}&type=artist&limit=1`,
+      {
+        method: 'GET',
+        headers: {
+          Authorization: 'Bearer ' + token,
+        },
+      },
+    )
+    if (!res.ok) {
+      console.error(`API error: ${res.status} ${res.statusText}`)
+      throw new Error(`Failed to fetch data: ${res.status} ${res.statusText}`)
+    }
+    const data: SpotifyApi.ArtistSearchResponse = await res.json()
+
+    return data
+  } catch (error) {
+    console.error('Fetch error:', error)
+    throw new Error('An unexpected error occurred')
+  }
+}
+
 export const fetchAlbums = async (albumId: string) => {
   const token = await fetchSpotifyToken()
 

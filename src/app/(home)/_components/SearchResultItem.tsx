@@ -1,4 +1,5 @@
 'use client'
+
 import { MusicSaveBottomSheet } from '@/components/common'
 import { usePlaylistMusicUpsert } from '@/hooks/usePlaylistMusicUpsert'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
@@ -7,10 +8,16 @@ import { useState } from 'react'
 import { FiMoreHorizontal } from 'react-icons/fi'
 
 type SearchResultProps = {
-  item: SpotifyApi.TrackObjectFull
+  searchParams: string
+  searchResultList: SpotifyApi.TrackObjectFull[]
+  searchResultArtists: SpotifyApi.ArtistObjectFull[]
 }
 
-const SearchResultItem = ({ item }: SearchResultProps) => {
+const SearchResultItem = ({
+  searchParams,
+  searchResultList,
+  searchResultArtists,
+}: SearchResultProps) => {
   const { isPlayerOpen, setTrackIds, setPlayerOpen, play } =
     useMusicPlayerStore()
   const { upsertMusic } = usePlaylistMusicUpsert()
@@ -33,61 +40,93 @@ const SearchResultItem = ({ item }: SearchResultProps) => {
 
     await upsertMusic(newMusicData)
     if (!isPlayerOpen) setPlayerOpen() // 페이지 방문 후, 첫 곡 재생이면 플레이어바 보여줌
-    setTrackIds(item.id)
+    setTrackIds(songId)
     play()
   }
+
   const handleOpenBottomSheet = () => setIsBottomSheetOpen((prev) => !prev)
 
+  console.log(searchResultArtists)
+
   return (
-    <li className="flex items-center gap-4 rounded-lg py-2 transition-colors">
-      <div
-        className="flex-shrink-0 cursor-pointer"
-        onClick={() =>
-          handlePlayBtn(
-            item.id,
-            item.name,
-            item.artists[0].name,
-            item.duration_ms,
-            item.album.images[0].url,
-          )
-        }
-      >
-        <Image
-          src={item.album.images[0].url}
-          alt={item.album.name}
-          width={44}
-          height={44}
-          className="rounded-md"
-          priority
-        />
-      </div>
-      <div
-        className="flex min-w-0 flex-1 cursor-pointer flex-col gap-1"
-        onClick={() =>
-          handlePlayBtn(
-            item.id,
-            item.name,
-            item.artists[0].name,
-            item.duration_ms,
-            item.album.images[0].url,
-          )
-        }
-      >
-        <h3 className="button-2 truncate">{item.name}</h3>
-        <p className="caption-2 truncate opacity-60">{item.artists[0].name}</p>
-      </div>
+    <>
+      <div className="mx-auto flex max-w-3xl flex-col gap-5">
+        <h1 className="title-1 mb-3 pt-5">{searchParams} 검색 결과</h1>
 
-      <button type="button" onClick={handleOpenBottomSheet}>
-        <FiMoreHorizontal fontSize={24} />
-      </button>
+        <div>
+          <h2 className="title-2 flex pb-6 font-bold">가수</h2>
+          <div className="flex flex-col gap-2">
+            <Image
+              src={searchResultArtists[0].images[0].url}
+              alt={searchResultArtists[0].name}
+              width={80}
+              height={80}
+              className="rounded-full"
+              priority
+            />
+            <p className="caption-1">{searchResultArtists[0].name}</p>
+          </div>
+        </div>
+        <div>
+          <h2 className="title-2 mt-3">곡</h2>
+          <ul>
+            {searchResultList.map((item) => (
+              <li className="flex items-center gap-4 rounded-lg py-2 transition-colors">
+                <div
+                  className="flex-shrink-0 cursor-pointer"
+                  onClick={() =>
+                    handlePlayBtn(
+                      item.id,
+                      item.name,
+                      item.artists[0].name,
+                      item.duration_ms,
+                      item.album.images[0].url,
+                    )
+                  }
+                >
+                  <Image
+                    src={item.album.images[0].url}
+                    alt={item.album.name}
+                    width={44}
+                    height={44}
+                    className="rounded-md"
+                    priority
+                  />
+                </div>
+                <div
+                  className="flex min-w-0 flex-1 cursor-pointer flex-col gap-1"
+                  onClick={() =>
+                    handlePlayBtn(
+                      item.id,
+                      item.name,
+                      item.artists[0].name,
+                      item.duration_ms,
+                      item.album.images[0].url,
+                    )
+                  }
+                >
+                  <h3 className="button-2 truncate">{item.name}</h3>
+                  <p className="caption-2 truncate opacity-60">
+                    {item.artists[0].name}
+                  </p>
+                </div>
 
-      <MusicSaveBottomSheet
-        isOpen={isBottomSheetOpen}
-        handleClose={handleOpenBottomSheet}
-        musicName={item.name}
-        artistName={item.artists[0].name}
-      />
-    </li>
+                <button type="button" onClick={handleOpenBottomSheet}>
+                  <FiMoreHorizontal fontSize={24} />
+                </button>
+
+                <MusicSaveBottomSheet
+                  isOpen={isBottomSheetOpen}
+                  handleClose={handleOpenBottomSheet}
+                  musicName={item.name}
+                  artistName={item.artists[0].name}
+                />
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </>
   )
 }
 
