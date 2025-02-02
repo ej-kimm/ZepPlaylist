@@ -1,6 +1,6 @@
 'use sever'
 
-import type { BillboradCharts } from '@/types/billboradCharts'
+import type { BillboardCharts } from '@/types/billboradCharts'
 import type { melonCharts } from '@/types/melonCharts'
 import { fetchSpotifyToken } from '../spotifyToken'
 
@@ -46,13 +46,13 @@ export const fetchMelonChart = async () => {
   }
 }
 
-export const fetchGlobalChart = async (): Promise<BillboradCharts> => {
+export const fetchGlobalChart = async (): Promise<BillboardCharts> => {
   try {
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     const { getChart } = await require('billboard-top-100')
 
     return new Promise((resolve, reject) => {
-      getChart((err: Error, chart: BillboradCharts) => {
+      getChart((err: Error, chart: BillboardCharts) => {
         if (err) {
           console.error(err)
           reject(err)

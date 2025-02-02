@@ -90,3 +90,65 @@ export const deleteLike = async ({ playlist_id, user_id }: Parameter) => {
   }
   return { succes: true }
 }
+
+export const playlistLiked = async ({
+  user_id,
+  playlist_id,
+}: {
+  user_id: string
+  playlist_id: string
+}) => {
+  const supabase = createClient()
+  const { data, error } = await supabase
+    .from('playlist_like')
+    .select('*')
+    .eq('user_id', user_id)
+    .eq('playlist_id', playlist_id)
+
+  if (error) {
+    console.error(error.message)
+    return false
+  }
+  return data.length > 0
+}
+
+export const updatePlaylistLike = async ({
+  playlist_id,
+  user_id,
+}: {
+  playlist_id: string
+  user_id: string
+}) => {
+  const isLiked = await playlistLiked({ user_id, playlist_id })
+  if (isLiked) {
+    const { error } = await supabase
+      .from('playlist_like')
+      .delete()
+      .eq('user_id', user_id)
+      .eq('playlist_id', playlist_id)
+    if (error) throw new Error(error.message)
+  } else {
+    const { error: insertError } = await supabase
+      .from('playlist_like')
+      .insert({ playlist_id, user_id })
+    if (insertError) throw new Error(insertError.message)
+  }
+}
+
+export const playlistLikedCount = async ({
+  playlist_id,
+}: {
+  playlist_id: string
+}) => {
+  const supabase = createClient()
+  const { data, error } = await supabase
+    .from('playlist_like')
+    .select('*')
+    .eq('playlist_id', playlist_id)
+
+  if (error) {
+    console.error(error.message)
+    return false
+  }
+  return data.length
+}

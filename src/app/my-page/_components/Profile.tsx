@@ -7,6 +7,7 @@ import ProfileEdit from './ProfileEdit'
 
 const Profile = () => {
   const { user } = userStore()
+  
   if (!user) {
     return
   }

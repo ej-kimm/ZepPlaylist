@@ -1,5 +1,5 @@
 import { fetchGlobalChart } from '@/api/home/actions'
-import type { BillboradSong } from '@/types/billboradCharts'
+import type { BillboardSong } from '@/types/billboradCharts'
 import MusicChartHeader from '../_components/MusicChartHeader'
 import Top100ChartList from '../_components/Top100ChartList'
 
@@ -19,7 +19,7 @@ const billboardTop100 = async () => {
 
   const newData: {
     isKoreaChart: false
-    list: BillboradSong[]
+    list: BillboardSong[]
   } = {
     isKoreaChart: false,
     list: billboardTop100ChartList,

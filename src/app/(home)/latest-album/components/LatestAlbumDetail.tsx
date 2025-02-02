@@ -54,6 +54,29 @@ const LatestAlbumDetail = ({ albumData }: LatestAlbumProps) => {
 
   const handleOpenBottomSheet = () => setIsBottomSheetOpen((prev) => !prev)
 
+  const handlePlayBtn = async (
+    id: string,
+    musicName: string,
+    artist: string,
+    playTime: number,
+  ) => {
+    // 데이터 일치화를 위해 ()와 안의 텍스트 제거
+
+    const newMusicData = {
+      id: id, // 스포티파이로 변환한 아이디
+      title: musicName,
+      artist: artist,
+      playTime: playTime,
+      albumCover: albumData.images[0].url,
+    }
+
+    await upsertMusic(newMusicData)
+
+    if (!isPlayerOpen) setPlayerOpen()
+    setTrackIds(id)
+    play()
+  }
+
   return (
     <div>
       <div>
@@ -116,7 +139,17 @@ const LatestAlbumDetail = ({ albumData }: LatestAlbumProps) => {
       <ul className="space-y-2">
         {albumTrackData.map((item) => (
           <li key={item.id} className="flex flex-row items-center">
-            <div className="w-[100%] rounded-lg py-2 transition-colors">
+            <div
+              className="w-[100%] rounded-lg py-2 transition-colors"
+              onClick={() =>
+                handlePlayBtn(
+                  item.id,
+                  item.name,
+                  item.artists[0].name,
+                  item.duration_ms,
+                )
+              }
+            >
               <p className="text-#000 text-sm font-semibold">{item.name}</p>
               <p className="text-sm font-normal text-[rgba(0,0,0,0.60)]">
                 {item.artists[0].name}
