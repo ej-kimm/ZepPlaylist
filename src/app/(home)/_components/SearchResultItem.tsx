@@ -2,9 +2,10 @@
 
 import { MusicSaveBottomSheet } from '@/components/common'
 import { usePlaylistMusicUpsert } from '@/hooks/usePlaylistMusicUpsert'
+import { useSearchHistory } from '@/hooks/useSearchHistoryItem'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import Image from 'next/image'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { FiMoreHorizontal } from 'react-icons/fi'
 
 type SearchResultProps = {
@@ -13,11 +14,22 @@ type SearchResultProps = {
   searchResultArtists: SpotifyApi.ArtistObjectFull[]
 }
 
+type SearchHistoryItem = {
+  query: string
+  expirationDate: number
+}
+
 const SearchResultItem = ({
   searchParams,
   searchResultList,
   searchResultArtists,
 }: SearchResultProps) => {
+  const { saveSearchHistory } = useSearchHistory()
+
+  useEffect(() => {
+    saveSearchHistory(searchParams)
+  }, [searchParams])
+
   const { isPlayerOpen, setTrackIds, setPlayerOpen, play } =
     useMusicPlayerStore()
   const { upsertMusic } = usePlaylistMusicUpsert()
@@ -45,8 +57,6 @@ const SearchResultItem = ({
   }
 
   const handleOpenBottomSheet = () => setIsBottomSheetOpen((prev) => !prev)
-
-  console.log(searchResultArtists)
 
   return (
     <>
