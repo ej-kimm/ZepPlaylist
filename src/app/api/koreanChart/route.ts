@@ -16,8 +16,7 @@ export async function GET() {
 
     const resolvedMusicData = await Promise.all(
       cleanedMelonChart!.map(
-        async (item) =>
-          await getKrSpotifyTrackId(token, item.songName, item.artistName),
+        async (item) => await getKrSpotifyTrackId(token, item.songName),
       ),
     )
 
