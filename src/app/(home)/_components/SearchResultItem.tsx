@@ -81,7 +81,10 @@ const SearchResultItem = ({
           <h2 className="title-2 mt-3">곡</h2>
           <ul>
             {searchResultList.map((item) => (
-              <li className="flex items-center gap-4 rounded-lg py-2 transition-colors">
+              <li
+                className="flex items-center gap-4 rounded-lg py-2 transition-colors"
+                key={item.id}
+              >
                 <div
                   className="flex-shrink-0 cursor-pointer"
                   onClick={() =>

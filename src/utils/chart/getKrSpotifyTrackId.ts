@@ -1,8 +1,4 @@
-export const getKrSpotifyTrackId = async (
-  token: string,
-  musicName: string,
-  artistName: string,
-) => {
+export const getKrSpotifyTrackId = async (token: string, musicName: string) => {
   try {
     const res = await fetch(
       `https://api.spotify.com/v1/search?q=${musicName}&type=track&limit=10`,

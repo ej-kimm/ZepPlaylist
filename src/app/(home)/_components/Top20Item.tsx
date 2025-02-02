@@ -24,6 +24,7 @@ const Top20Item: React.FC<Top20ItemProps> = ({ chartList }) => {
     <ul className="scroll-invisible grid auto-cols-auto grid-flow-col grid-rows-4 gap-2 overflow-x-auto">
       {chartList.map((chart, index) => (
         <li
+          key={chart.spotify_id}
           onClick={() =>
             handlePlayBtn({
               id: chart.spotify_id,

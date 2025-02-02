@@ -28,7 +28,10 @@ const Top100ChartList = ({ top100Chart }: Top100ChartListProps) => {
   return (
     <ul className="w-full space-y-2">
       {top100Chart.map((chart, index) => (
-        <li className="flex flex-row items-center transition-shadow">
+        <li
+          className="flex flex-row items-center transition-shadow"
+          key={chart.spotify_id}
+        >
           <div
             className="flex w-full cursor-pointer items-center space-x-2 py-2 pr-2 transition-colors"
             onClick={() =>
