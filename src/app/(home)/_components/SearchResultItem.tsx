@@ -1,12 +1,12 @@
 'use client'
 
+import moreButton from '@/assets/images/moreButton.svg'
 import { MusicSaveBottomSheet } from '@/components/common'
 import { usePlaylistMusicUpsert } from '@/hooks/usePlaylistMusicUpsert'
 import { useSearchHistory } from '@/hooks/useSearchHistoryItem'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
-import { FiMoreHorizontal } from 'react-icons/fi'
 
 type SearchResultProps = {
   searchParams: string
@@ -33,7 +33,9 @@ const SearchResultItem = ({
   const { isPlayerOpen, setTrackIds, setPlayerOpen, play } =
     useMusicPlayerStore()
   const { upsertMusic } = usePlaylistMusicUpsert()
+
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState<boolean>(false)
+  const [selectedSong, setSelectedSong] = useState<SpotifyApi.TrackObjectFull>()
 
   const handlePlayBtn = async (
     songId: string,
@@ -56,7 +58,10 @@ const SearchResultItem = ({
     play()
   }
 
-  const handleOpenBottomSheet = () => setIsBottomSheetOpen((prev) => !prev)
+  const handleMoreButtonClick = (song: SpotifyApi.TrackObjectFull) => {
+    setSelectedSong(song)
+    setIsBottomSheetOpen(true)
+  }
 
   return (
     <>
@@ -123,21 +128,32 @@ const SearchResultItem = ({
                     {item.artists[0].name}
                   </p>
                 </div>
-
-                <button type="button" onClick={handleOpenBottomSheet}>
-                  <FiMoreHorizontal fontSize={24} />
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    handleMoreButtonClick(item)
+                  }}
+                >
+                  <Image
+                    src={moreButton}
+                    alt="More Options"
+                    width={24}
+                    height={24}
+                  />
                 </button>
-
-                <MusicSaveBottomSheet
-                  isOpen={isBottomSheetOpen}
-                  handleClose={handleOpenBottomSheet}
-                  musicName={item.name}
-                  artistName={item.artists[0].name}
-                />
               </li>
             ))}
           </ul>
         </div>
+        {selectedSong && (
+          <MusicSaveBottomSheet
+            isOpen={isBottomSheetOpen}
+            handleClose={() => setIsBottomSheetOpen(false)}
+            musicName={selectedSong!.name}
+            artistName={selectedSong!.artists[0].name}
+          />
+        )}
       </div>
     </>
   )
