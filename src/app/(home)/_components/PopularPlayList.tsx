@@ -2,8 +2,12 @@ import { getPopularPlaylists } from '@/api/community/actions'
 import ClientPopularPlaylistUI from '@/app/community/_components/ClientPopularPlaylistUI'
 import CustomSwiper from '@/app/community/_components/CustomSwiper'
 import defaultProfileImg from '@/assets/images/defaultProfileImg.png'
+import rightArrow from '@/assets/images/rightArrow.svg'
 import { createServerClient } from '@supabase/ssr'
+import clsx from 'clsx'
 import { cookies } from 'next/headers'
+import Image from 'next/image'
+import Link from 'next/link'
 
 const PopularPlayList = async () => {
   const supabase = createServerClient(
@@ -22,8 +26,17 @@ const PopularPlayList = async () => {
 
   const popularPlaylists = await getPopularPlaylists(userId ?? '')
   return (
-    <div>
-      <h1 className="title-1 mb-4 mt-5">인기 있는 플레이리스트</h1>
+    <div className="flex flex-wrap gap-4">
+      <div className="flex w-full justify-between">
+        <h1 className="title-2 flex justify-start">인기 있는 플레이리스트</h1>
+        <Link
+          href={'/community'}
+          className={clsx('desktop: caption-4 flex h-5 justify-end gap-1')}
+        >
+          더보기
+          <Image src={rightArrow} height={16} width={16} alt=">" />
+        </Link>
+      </div>
       <CustomSwiper
         items={popularPlaylists.map((playlist) => ({
           id: playlist.id,
