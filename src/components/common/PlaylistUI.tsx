@@ -14,6 +14,7 @@ type PlaylistUIProps = {
   isLiked?: boolean
   onLikeToggle: () => void
   onClick?: () => void
+  className?: string
 }
 
 const PlaylistUI = ({
@@ -24,11 +25,12 @@ const PlaylistUI = ({
   isLiked,
   onLikeToggle,
   onClick,
+  className,
 }: PlaylistUIProps) => {
   const [isClicked, setIsClicked] = useState(isLiked)
   return (
     <div
-      className="mt-4 flex cursor-pointer items-center justify-between rounded-lg bg-white p-4 shadow"
+      className={`mt-4 flex cursor-pointer items-center justify-between rounded-lg bg-white p-4 shadow${className}`}
       onClick={onClick}
     >
       {/* 프로필 이미지 */}
