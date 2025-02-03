@@ -1,31 +1,28 @@
 import { getPlaylists, getPopularPlaylists } from '@/api/community/actions'
+
 import defaultProfileImg from '@/assets/images/defaultProfileImg.png'
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 import ClientPopularPlaylistUI from './_components/ClientPopularPlaylistUI'
 import CustomSwiper from './_components/CustomSwiper'
 import KeywordCarouselWrapper from './_components/KeywordCarouselWrapper'
+import FloatingPlusButton from './_components/FloatingPlusButton'
 
 const CommunityPage = async (): Promise<JSX.Element> => {
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll: () => cookies().getAll(),
-      },
-    },
+    { cookies: { getAll: () => cookies().getAll() } }
   )
 
   const { data: session } = await supabase.auth.getSession()
-
   const userId = session?.session?.user?.id ?? null
 
   const allPlaylists = await getPlaylists(userId ?? '')
   const popularPlaylists = await getPopularPlaylists(userId ?? '')
 
   return (
-    <div>
+    <div className="relative pb-24"> {/* 추가된 부분 */}
       <h1 className="title-1 mb-4 mt-5">인기 있는 플레이리스트</h1>
       <CustomSwiper
         items={popularPlaylists.map((playlist) => ({
@@ -38,10 +35,7 @@ const CommunityPage = async (): Promise<JSX.Element> => {
                 id: playlist.id,
                 playlistName: playlist.name,
                 profileImg: playlist.profile_image ?? defaultProfileImg,
-                nickName:
-                  playlist.nickname && playlist.nickname.trim() !== ''
-                    ? playlist.nickname
-                    : 'Anonymous',
+                nickName: playlist.nickname?.trim() || 'Anonymous',
               }}
               userId={userId ?? ''}
             />
@@ -52,6 +46,7 @@ const CommunityPage = async (): Promise<JSX.Element> => {
         allPlaylists={allPlaylists}
         userId={userId ?? ''}
       />
+      <FloatingPlusButton />
     </div>
   )
 }
