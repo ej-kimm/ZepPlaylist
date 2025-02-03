@@ -19,7 +19,7 @@ const PlayList = () => {
     isFetchingNextPage,
     error,
     isLoading,
-  } = usePlaylistQuery('default')
+  } = usePlaylistQuery('user')
   const toggleLike = useToggleLikeMutation()
   const { ref } = useInView({
     threshold: 1,

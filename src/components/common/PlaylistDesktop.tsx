@@ -36,7 +36,7 @@ const PlaylistDesktopUI = ({
           alt="좋아요 상태"
           width={16}
           height={16}
-          onClick={(e) => {
+          onClick={() => {
             setIsClicked(!isClicked)
             onLikeToggle()
           }}
