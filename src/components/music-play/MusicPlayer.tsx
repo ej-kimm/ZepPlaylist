@@ -151,6 +151,7 @@ const MusicPlayer = () => {
         title="로그인 필요"
         content="로그인 화면으로 이동합니다"
         type="vertical"
+        className="desktop:w-[434px]"
         onConfirm={redirectToLogin}
         onCancel={closeModal}
       />
