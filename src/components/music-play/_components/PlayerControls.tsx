@@ -14,7 +14,6 @@ type PlayerControlsProps = {
 }
 
 const PlayerControls = ({ className, ICON_SIZE }: PlayerControlsProps) => {
-
   const router = useRouter()
   const {
     trackIds,

@@ -19,7 +19,6 @@ const Modal: React.FC<ModalProps> = ({
   type = 'single',
   onConfirm,
   onCancel,
-  className,
 }) => {
   if (!isOpen) return null
 
