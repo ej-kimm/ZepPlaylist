@@ -83,7 +83,7 @@ const MusicPlayer = () => {
                 'desktop:absolute desktop:left-1/2 desktop:top-1/2 desktop:w-[546px] desktop:-translate-x-1/2 desktop:-translate-y-1/2 desktop:bg-white',
               )}
             >
-              <PlayerControls />
+              <PlayerControls className="gap-2" ICON_SIZE={24} />
               <ProgressBar
                 playerState={playerState}
                 onSeek={handleSeek}

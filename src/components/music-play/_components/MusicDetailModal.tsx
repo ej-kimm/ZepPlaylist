@@ -94,7 +94,7 @@ export default function MusicDetailModal({
           playerState={{ ready, played, duration }}
           onSeek={onSeek}
         />
-        <PlayerControls />
+        <PlayerControls className="gap-10 desktop:hidden" ICON_SIZE={36} />
       </div>
     </section>
   )
