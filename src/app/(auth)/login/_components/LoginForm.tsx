@@ -77,7 +77,7 @@ const LoginForm = () => {
     <form
       onSubmit={handleSubmit(onSubmit)}
       className={clsx(
-        'sm:p-6 mx-auto max-w-sm border-b border-black border-opacity-40',
+        'sm:p-6 mx-auto border-b border-black border-opacity-40',
         'gap-[32px] desktop:mx-0 desktop:flex desktop:w-full desktop:flex-col desktop:border-none',
       )}
     >
