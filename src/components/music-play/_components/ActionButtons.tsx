@@ -12,7 +12,7 @@ import { userStore } from '@/store/userSlice'
 import clsx from 'clsx'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 type ActionButtonsProps = {
   musicName: string | undefined
@@ -41,6 +41,7 @@ const ActionButtons = ({
   const [isSaved, setIsSaved] = useState<boolean>(false) // save 상태 관리
   const [isOpen, setIsOpen] = useState<boolean>(false) // 로그인 모달 상태
   const [isVolumeVisible, setIsVolumeVisible] = useState(false)
+  const volumeRef = useRef<HTMLDivElement>(null)
 
   const toggleVolumeButton = () => setIsVolumeVisible((prev) => !prev)
   const handleUserAction = (type: 'like' | 'save') => {
@@ -65,6 +66,25 @@ const ActionButtons = ({
     handleCloseAllModals()
     router.push('/login')
   }
+  const handleVolumeClickOutside = (event: MouseEvent) => {
+    if (
+      volumeRef.current &&
+      !volumeRef.current.contains(event.target as Node)
+    ) {
+      setIsVolumeVisible(false)
+    }
+  }
+
+  useEffect(() => {
+    if (isVolumeVisible) {
+      document.addEventListener('mousedown', handleVolumeClickOutside)
+    } else {
+      document.removeEventListener('mousedown', handleVolumeClickOutside)
+    }
+
+    return () =>
+      document.removeEventListener('mousedown', handleVolumeClickOutside)
+  }, [isVolumeVisible])
 
   return (
     <>
@@ -81,7 +101,10 @@ const ActionButtons = ({
           onClick={toggleVolumeButton}
         >
           {isVolumeVisible && (
-            <div className="z-volume absolute bottom-[calc(100%+20px)] left-1/2 flex h-[126px] w-11 -translate-x-1/2 justify-center bg-white px-5 py-2">
+            <div
+              ref={volumeRef}
+              className="z-volume absolute bottom-[calc(100%+20px)] left-1/2 flex h-[126px] w-11 -translate-x-1/2 justify-center bg-white px-5 py-2"
+            >
               <input
                 className="volume-slider"
                 type="range"
