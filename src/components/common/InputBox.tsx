@@ -48,7 +48,7 @@ const InputBox = <T extends FieldValues>({
         />
       )}
       {errorMessage && (
-        <p className="mt-2 text-sm text-red-500">{errorMessage}</p>
+        <p className="text-[16px] text-[#ff0000]">{errorMessage}</p>
       )}
     </div>
   )
