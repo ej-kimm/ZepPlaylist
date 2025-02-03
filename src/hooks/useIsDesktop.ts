@@ -10,7 +10,7 @@ export default function useIsDesktop(breakpoint = 720) {
   useEffect(() => {
     window.addEventListener('resize', handleResize)
     return () => window.removeEventListener('resize', handleResize)
-  }, [])
+  }, [handleResize])
 
   return isDesktop
 }
