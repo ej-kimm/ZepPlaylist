@@ -9,41 +9,28 @@ import likeTrue from '@/assets/images/likeTrue.svg'
 import moreButton from '@/assets/images/moreButton.svg'
 import { Modal } from '@/components/common'
 import MusicSaveBottomSheet from '@/components/common/MusicSaveBottomSheet'
+import type { Comment } from '@/types/comment'
+import type { CommunitySong } from '@/types/CommunitySong'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { TbTrash } from 'react-icons/tb'
-
-type Song = {
-  spotify_id: string
-  title: string
-  artist: string
-  album_cover: string | null
-}
-
-type Comment = {
-  id: string
-  created_at: string
-  user_id: string
-  content: string
-  profileImage?: string | null
-}
 
 type CommunityDetailUIProps = {
   nickname: string
   profileImage: string | null
   description: string | null
   playlistName: string
-  songs: Song[]
+  songs: CommunitySong[]
   comments: Comment[]
   content: string
   setContent: React.Dispatch<React.SetStateAction<string>>
-  handleSongClick: () => void
   handleAddComment: () => Promise<void>
   handleDeleteComment: (commentId: string) => Promise<void>
   currentUserId: string | null
   isLiked: boolean
   onLikeToggle: () => Promise<void>
+  handlePlayFromIndex: (index: number) => void
 }
 
 export default function CommunityDetailUI({
@@ -55,7 +42,7 @@ export default function CommunityDetailUI({
   comments,
   content,
   setContent,
-  handleSongClick,
+  handlePlayFromIndex,
   handleAddComment,
   handleDeleteComment,
   currentUserId,
@@ -63,7 +50,7 @@ export default function CommunityDetailUI({
   onLikeToggle,
 }: CommunityDetailUIProps) {
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false)
-  const [selectedSong, setSelectedSong] = useState<Song | null>(null)
+  const [selectedSong, setSelectedSong] = useState<CommunitySong | null>(null)
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const [selectedCommentId, setSelectedCommentId] = useState<string | null>(
     null,
@@ -94,7 +81,7 @@ export default function CommunityDetailUI({
     }
   }
 
-  const handleMoreButtonClick = (song: Song) => {
+  const handleMoreButtonClick = (song: CommunitySong) => {
     setSelectedSong(song)
     setIsBottomSheetOpen(true)
   }
@@ -147,11 +134,11 @@ export default function CommunityDetailUI({
       <div className="flex flex-col">
         <ul className="mt-4">
           {songs.length > 0 ? (
-            songs.map((song) => (
+            songs.map((song, index) => (
               <li
                 key={song.spotify_id}
                 className="flex items-center justify-between py-4"
-                onClick={() => handleSongClick()}
+                onClick={() => handlePlayFromIndex(index)}
               >
                 <div className="flex items-center">
                   <div className="relative h-12 w-12">
@@ -191,101 +178,114 @@ export default function CommunityDetailUI({
       </div>
 
       {/* 댓글 목록 섹션 */}
-      {isCommentVisible && (
-        <div className="fixed bottom-16 left-0 right-0 z-10 h-[240px] w-full overflow-y-auto bg-gradient-to-t from-black/50 via-gray-800/30 to-white/10 p-4 shadow-lg backdrop-blur-md">
-          {/* 댓글 숨기기 버튼 (우측 상단) */}
-          <div className="relative h-8 w-full">
-            <button
-              onClick={toggleCommentVisibility}
-              className="absolute right-3 top-1 flex h-8 w-8 items-center justify-center"
-            >
-              <Image
-                src={ChevronDownXL}
-                alt="Hide Comments"
-                width={24}
-                height={24}
-              />
-            </button>
+      <div>
+        {isCommentVisible && (
+          <div className="fixed bottom-28 left-0 right-0 z-10 h-[240px] w-full overflow-y-auto bg-gradient-to-t from-black/50 via-gray-800/30 to-white/10 p-4 shadow-lg backdrop-blur-[6px]">
+            {/* 댓글 숨기기 버튼 (우측 상단) */}
+            <div className="relative h-8 w-full">
+              <button
+                onClick={toggleCommentVisibility}
+                className="absolute right-3 top-1 flex h-8 w-8 items-center justify-center"
+              >
+                <Image
+                  src={ChevronDownXL}
+                  alt="Hide Comments"
+                  width={24}
+                  height={24}
+                />
+              </button>
+            </div>
+            <ul className="space-y-4 pt-4">
+              {comments.map((comment) => (
+                <li
+                  key={comment.id}
+                  className="flex items-start space-x-4 pb-4"
+                >
+                  <div className="h-8 w-8 flex-shrink-0 overflow-hidden rounded-full">
+                    <Image
+                      src={comment.users.profile_image || defaultProfileImg}
+                      alt="작성자 프로필 이미지"
+                      width={32}
+                      height={32}
+                      className="h-full w-full object-cover" 
+                    />
+                  </div>
+                  {/* 닉네임 & 내용 영역 */}
+                  <div className="flex-1 mt-1">
+                    <div className="flex items-baseline gap-2">
+                      <span className="caption-1 text-sm font-medium text-white">
+                        {comment.users.nickname}:
+                      </span>
+                      <p className="caption-1 flex-1 text-sm text-white">
+                        {comment.content}
+                      </p>
+                      {currentUserId === comment.user_id && (
+                        <button
+                          onClick={() => openDeleteModal(comment.id)}
+                          className="text-gray-400 hover:text-red-500"
+                        >
+                          <TbTrash size={16} />
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ul>
           </div>
-          <ul className="space-y-4 pt-4">
-            {comments.map((comment) => (
-              <li key={comment.id} className="flex items-start space-x-4 pb-4">
-                <div className="flex-shrink-0 rounded-full">
-                  <Image
-                    src={comment.profileImage || defaultProfileImg}
-                    alt="작성자 프로필 이미지"
-                    width={32}
-                    height={32}
-                    className="object-cover"
-                  />
-                </div>
-                <div className="flex flex-1 items-center justify-between">
-                  <p className="caption-1 flex-1text-gray-500 mt-2">
-                    {comment.content}
-                  </p>
-                  {currentUserId === comment.user_id && (
-                    <button
-                      onClick={() => openDeleteModal(comment.id)}
-                      className="mr-4 flex h-6 w-6 items-center justify-center text-gray-500"
-                    >
-                      <TbTrash size={20} />
-                    </button>
-                  )}
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+        )}
 
-      {/* 댓글 입력 섹션 */}
-      <div
-        className={`fixed bottom-0 left-0 right-0 z-10 h-16 w-full transition-all duration-300 ${
-          isCommentVisible ? 'bg-white/50 backdrop-blur-md' : 'bg-white'
-        } shadow-lg`}
-      >
-        <div className="flex items-center gap-2 p-2">
-          <input
-            type="text"
-            className="md:min-w-[120px] h-9 min-w-[50px] flex-1 rounded-full border border-gray-200 px-4 text-sm focus:outline-none"
-            placeholder="댓글을 입력해주세요!"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' && content.trim().length > 0) {
-                handleAddCommentWithRedirect()
-              }
-            }}
-            disabled={!isCommentVisible} // 댓글 숨김 상태에서 입력창 비활성화
-          />
-          {content.trim().length > 0 && (
-            <button
-              onClick={handleAddCommentWithRedirect}
-              className="ml-2 flex h-8 w-8 flex-shrink-0 items-center justify-center"
-              disabled={!isCommentVisible} // 댓글 숨김 상태에서 제출 버튼 비활성화
-            >
-              <Image
-                src={commentSubmitButton}
-                alt="Submit Comment"
-                width={36}
-                height={36}
-              />
-            </button>
-          )}
-          {/* 댓글 보이기 버튼 (댓글 숨김 상태일 때만 표시) */}
-          {!isCommentVisible && (
-            <button
-              onClick={toggleCommentVisibility}
-              className="ml-1 flex h-8 w-8 items-center justify-center"
-            >
-              <Image
-                src={ChevronUpXL}
-                alt="Show Comments"
-                width={24}
-                height={24}
-              />
-            </button>
-          )}
+        {/* 댓글 입력 섹션 */}
+        <div
+          className={`fixed bottom-12 left-0 right-0 z-10 h-16 w-full transition-all duration-300 ${
+            isCommentVisible
+              ? 'bg-black/50 backdrop-blur-[5px]'
+              : 'bg-black/50 backdrop-blur-[5px]'
+          } shadow-lg`}
+        >
+          <div className="flex items-center gap-2 p-2">
+            <input
+              type="text"
+              className="md:min-w-[120px] h-9 min-w-[50px] flex-1 rounded-lg border border-gray-200 bg-white px-4 text-sm focus:outline-none"
+              placeholder="댓글을 입력해주세요!"
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && content.trim().length > 0) {
+                  handleAddCommentWithRedirect()
+                }
+              }}
+              disabled={!isCommentVisible} // 댓글 숨김 상태에서 입력창 비활성화
+            />
+            {content.trim().length > 0 && (
+              <button
+                onClick={handleAddCommentWithRedirect}
+                className="ml-2 flex h-8 w-8 flex-shrink-0 items-center justify-center"
+                disabled={!isCommentVisible} // 댓글 숨김 상태에서 제출 버튼 비활성화
+              >
+                <Image
+                  src={commentSubmitButton}
+                  alt="Submit Comment"
+                  width={36}
+                  height={36}
+                />
+              </button>
+            )}
+            {/* 댓글 보이기 버튼 (댓글 숨김 상태일 때만 표시) */}
+            {!isCommentVisible && (
+              <button
+                onClick={toggleCommentVisibility}
+                className="ml-1 flex h-8 w-8 items-center justify-center"
+              >
+                <Image
+                  src={ChevronUpXL}
+                  alt="Show Comments"
+                  width={24}
+                  height={24}
+                />
+              </button>
+            )}
+          </div>
         </div>
       </div>
 
