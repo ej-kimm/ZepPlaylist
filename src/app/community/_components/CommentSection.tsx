@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import CommunityDetailUI from './CommunityDetailUI'
 import type { Comment } from '@/types/comment'
-import type { CommunitySong } from '@/types/CommunitySong'
+import type { CommunitySong } from '@/types/communitySong'
 
 
 type Props = {

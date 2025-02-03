@@ -7,6 +7,7 @@ import ClientPopularPlaylistUI from './_components/ClientPopularPlaylistUI'
 import CustomSwiper from './_components/CustomSwiper'
 import KeywordCarouselWrapper from './_components/KeywordCarouselWrapper'
 import FloatingPlusButton from './_components/FloatingPlusButton'
+import clsx from 'clsx'
 
 const CommunityPage = async (): Promise<JSX.Element> => {
   const supabase = createServerClient(
@@ -22,8 +23,8 @@ const CommunityPage = async (): Promise<JSX.Element> => {
   const popularPlaylists = await getPopularPlaylists(userId ?? '')
 
   return (
-    <div className="relative pb-24"> {/* 추가된 부분 */}
-      <h1 className="title-1 mb-4 mt-5">인기 있는 플레이리스트</h1>
+    <div> 
+      <h1 className={clsx("title-1 mb-4 mt-5", 'desktop:mb-10 desktop:mt-20 desktop: headline-1')}>인기 있는 플레이리스트</h1>
       <CustomSwiper
         items={popularPlaylists.map((playlist) => ({
           id: playlist.id,

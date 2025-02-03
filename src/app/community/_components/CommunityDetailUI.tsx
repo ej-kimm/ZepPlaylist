@@ -10,7 +10,8 @@ import moreButton from '@/assets/images/moreButton.svg'
 import { Modal } from '@/components/common'
 import MusicSaveBottomSheet from '@/components/common/MusicSaveBottomSheet'
 import type { Comment } from '@/types/comment'
-import type { CommunitySong } from '@/types/CommunitySong'
+import type { CommunitySong } from '@/types/communitySong'
+import clsx from 'clsx'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
@@ -95,88 +96,101 @@ export default function CommunityDetailUI({
   }
 
   return (
-    <div>
-      {/* 상단 정보 */}
-      <div>
-        <div className="flex w-full items-center justify-between">
-          <h1 className="title-1 mb-2 mt-2">{playlistName}</h1>
-          <button onClick={onLikeToggle} className="mb-2 mt-2 h-6 w-6">
-            <Image
-              src={isLiked ? likeTrue : likeFalse}
-              alt="Like Button"
-              width={16}
-              height={16}
-            />
-          </button>
-        </div>
-        <p className="body-1 mb-2">{description || '설명이 없습니다.'}</p>
-        <div className="flex items-center gap-2">
-          <div
-            className="flex-shrink-0 overflow-hidden rounded-full"
-            style={{
-              width: '24px',
-              height: '24px',
-            }}
-          >
-            <Image
-              src={profileImage || defaultProfileImg}
-              alt="프로필 이미지"
-              width={24}
-              height={24}
-              className="object-contain"
-            />
+    <div
+      className={clsx(
+        'flex flex-col',
+        'desktop:flex-row desktop:items-start desktop:gap-8',
+      )}
+    >
+      <div
+        className={clsx(
+          'flex-1',
+          'desktop:max-w-[60%]', // 데스크탑에서 60% 너비
+        )}
+      >
+        {/* 상단 정보 */}
+        <div>
+          <div className="flex w-full items-center justify-between">
+            <h1 className="title-1 mb-2 mt-2">{playlistName}</h1>
+            <button onClick={onLikeToggle} className="mb-2 mt-2 h-6 w-6">
+              <Image
+                src={isLiked ? likeTrue : likeFalse}
+                alt="Like Button"
+                width={16}
+                height={16}
+              />
+            </button>
           </div>
-          <span className="caption-2">{nickname}</span>
+          <p className="body-1 mb-2">{description || '설명이 없습니다.'}</p>
+          <div className="flex items-center gap-2">
+            <div
+              className="flex-shrink-0 overflow-hidden rounded-full"
+              style={{
+                width: '24px',
+                height: '24px',
+              }}
+            >
+              <Image
+                src={profileImage || defaultProfileImg}
+                alt="프로필 이미지"
+                width={24}
+                height={24}
+                className="object-contain"
+              />
+            </div>
+            <span className="caption-2">{nickname}</span>
+          </div>
+        </div>
+
+        {/* 노래 목록 */}
+        <div className="flex flex-col">
+          <ul className="mt-4">
+            {songs.length > 0 ? (
+              songs.map((song, index) => (
+                <li
+                  key={song.spotify_id}
+                  className="flex items-center justify-between py-4"
+                  onClick={() => handlePlayFromIndex(index)}
+                >
+                  <div className="flex items-center">
+                    <div className="relative h-12 w-12">
+                      <Image
+                        src={song.album_cover || '이미지가 없습니다.'}
+                        alt={`${song.title} 앨범 커버`}
+                        layout="fill"
+                        objectFit="cover"
+                        className="rounded"
+                      />
+                    </div>
+                    <div className="ml-4">
+                      <p className="text-sm font-semibold">{song.title}</p>
+                      <p className="text-xs text-gray-500">{song.artist}</p>
+                    </div>
+                  </div>
+                  <button
+                    className="h-6 w-6"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      handleMoreButtonClick(song)
+                    }}
+                  >
+                    <Image
+                      src={moreButton}
+                      alt="More Options"
+                      width={24}
+                      height={24}
+                    />
+                  </button>
+                </li>
+              ))
+            ) : (
+              <p className="text-gray-500">노래 정보가 없습니다.</p>
+            )}
+          </ul>
         </div>
       </div>
 
-      {/* 노래 목록 */}
-      <div className="flex flex-col">
-        <ul className="mt-4">
-          {songs.length > 0 ? (
-            songs.map((song, index) => (
-              <li
-                key={song.spotify_id}
-                className="flex items-center justify-between py-4"
-                onClick={() => handlePlayFromIndex(index)}
-              >
-                <div className="flex items-center">
-                  <div className="relative h-12 w-12">
-                    <Image
-                      src={song.album_cover || '이미지가 없습니다.'}
-                      alt={`${song.title} 앨범 커버`}
-                      layout="fill"
-                      objectFit="cover"
-                      className="rounded"
-                    />
-                  </div>
-                  <div className="ml-4">
-                    <p className="text-sm font-semibold">{song.title}</p>
-                    <p className="text-xs text-gray-500">{song.artist}</p>
-                  </div>
-                </div>
-                <button
-                  className="h-6 w-6"
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    handleMoreButtonClick(song)
-                  }}
-                >
-                  <Image
-                    src={moreButton}
-                    alt="More Options"
-                    width={24}
-                    height={24}
-                  />
-                </button>
-              </li>
-            ))
-          ) : (
-            <p className="text-gray-500">노래 정보가 없습니다.</p>
-          )}
-        </ul>
-      </div>
-
+<div></div>
       {/* 댓글 목록 섹션 */}
       <div>
         {isCommentVisible && (
@@ -207,11 +221,11 @@ export default function CommunityDetailUI({
                       alt="작성자 프로필 이미지"
                       width={32}
                       height={32}
-                      className="h-full w-full object-cover" 
+                      className="h-full w-full object-cover"
                     />
                   </div>
                   {/* 닉네임 & 내용 영역 */}
-                  <div className="flex-1 mt-1">
+                  <div className="mt-1 flex-1">
                     <div className="flex items-baseline gap-2">
                       <span className="caption-1 text-sm font-medium text-white">
                         {comment.users.nickname}:
