@@ -1,5 +1,6 @@
 import { PlaylistRow } from '@/types/playlist'
 import { useState } from 'react'
+import PlaylistItem from './PlaylistItem'
 
 type PlaylistListProps = {
   playlists: PlaylistRow[]
@@ -21,10 +22,6 @@ export default function PlaylistList({
   handleDeletePlaylist,
 }: PlaylistListProps) {
   const [showDropdown, setShowDropdown] = useState<string | null>(null)
-
-  const toggleDropdown = (id: string) => {
-    setShowDropdown((prev) => (prev === id ? null : id))
-  }
 
   return (
     <>
@@ -54,74 +51,15 @@ export default function PlaylistList({
         </li>
 
         {playlists.map((playlist) => (
-          <li
+          <PlaylistItem
             key={playlist.id}
-            className="flex items-center justify-between"
-            onClick={(e) => {
-              e.stopPropagation()
-              handlePlaylistClick(playlist.id)
-            }}
-          >
-            <div className="flex items-center space-x-4">
-              <div
-                className={`relative h-[44px] w-[44px] rounded-lg bg-cover bg-center ${
-                  playlist.latest_song_cover
-                    ? ''
-                    : 'flex items-center justify-center bg-gray-300'
-                }`}
-                style={
-                  playlist.latest_song_cover
-                    ? { backgroundImage: `url(${playlist.latest_song_cover})` }
-                    : undefined
-                }
-              >
-                {!playlist.latest_song_cover && (
-                  <span className="font-pretendard text-lg text-gray-500">
-                    +
-                  </span>
-                )}
-              </div>
-              <div>
-                <p className="caption-1 font-pretendard">{playlist.name}</p>
-                <p className="text-sm text-gray-500">
-                  {playlist.description || '곡 NN개'}
-                </p>
-              </div>
-            </div>
-            <div className="relative">
-              <button
-                onClick={(e) => {
-                  e.stopPropagation()
-                  toggleDropdown(playlist.id)
-                }}
-                className="text-xl text-gray-500"
-              >
-                ⋮
-              </button>
-              {showDropdown === playlist.id && (
-                <div className="absolute right-0 mt-2 w-24 rounded-lg bg-white shadow-lg">
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      openModal('edit', playlist)
-                    }}
-                    className="block w-full px-4 py-2 text-left text-sm hover:bg-gray-100"
-                  >
-                    수정
-                  </button>
-                  <button
-                    className="block w-full px-4 py-2 text-left text-sm text-red-500 hover:bg-gray-100"
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      handleDeletePlaylist(playlist.id)
-                    }}
-                  >
-                    삭제
-                  </button>
-                </div>
-              )}
-            </div>
-          </li>
+            playlist={playlist}
+            showDropdown={showDropdown}
+            toggleDropdown={setShowDropdown}
+            handlePlaylistClick={handlePlaylistClick}
+            openModal={openModal}
+            handleDeletePlaylist={handleDeletePlaylist}
+          />
         ))}
       </ul>
     </>
