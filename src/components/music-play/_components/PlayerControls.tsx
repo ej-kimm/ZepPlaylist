@@ -8,7 +8,12 @@ import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import clsx from 'clsx'
 import Image from 'next/image'
 
-const PlayerControls = () => {
+type PlayerControlsProps = {
+  className: string
+  ICON_SIZE: number
+}
+
+const PlayerControls = ({ className, ICON_SIZE }: PlayerControlsProps) => {
   const {
     trackIds,
     currentTrackIndex,
@@ -19,7 +24,6 @@ const PlayerControls = () => {
     playPreviousTrack,
   } = useMusicPlayerStore()
 
-  const ICON_SIZE = isPlayerModalOpen ? 36 : 24
   const isFirstTrack = currentTrackIndex === 0
   const isLastTrack = currentTrackIndex === trackIds.length - 1
 
@@ -28,7 +32,7 @@ const PlayerControls = () => {
       className={clsx(
         'flex shrink-0 items-center justify-end py-2',
         'desktop:mb-[10px] desktop:w-full desktop:justify-center desktop:gap-[60px] desktop:py-0',
-        isPlayerModalOpen ? 'gap-10 desktop:hidden' : 'gap-2',
+        className,
       )}
     >
       <button type="button" onClick={playPreviousTrack} disabled={isFirstTrack}>
