@@ -37,7 +37,10 @@ export default function MusicDetailModal({
   const [isFullLyrics, setIsFullLyrics] = useState<boolean>(false)
   const [isDesktop, setIsDesktop] = useState<boolean>(window.innerWidth >= 720) // 화면 크기 상태
 
-  const handleClickLyrics = () => setIsFullLyrics((prev) => !prev)
+  const handleClickLyrics = () => {
+    if (isDesktop) return
+    setIsFullLyrics((prev) => !prev)
+  }
 
   const handleResize = () => {
     const isDesktopView = window.innerWidth >= 720
@@ -88,7 +91,6 @@ export default function MusicDetailModal({
         <Lyrics
           lyrics={lyrics}
           isFullLyrics={isFullLyrics}
-          isDesktop={isDesktop}
           onClickLyrics={handleClickLyrics}
         />
         <ProgressBar
