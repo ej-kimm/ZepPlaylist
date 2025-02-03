@@ -1,5 +1,6 @@
 import { fetchKoreanChart } from '@/api/home/actions'
 import type { Charts } from '@/types/billboradCharts'
+import clsx from 'clsx'
 import MusicChartHeader from '../_components/MusicChartHeader'
 import Top100ChartList from '../_components/Top100ChartList'
 
@@ -16,7 +17,12 @@ const koreaTop100 = async () => {
     list: koreanTop100Chart!,
   }
   return (
-    <div className="mx-auto flex w-full max-w-3xl flex-col items-center">
+    <div
+      className={clsx(
+        'mx-auto flex w-full max-w-3xl flex-col items-center',
+        'desktop:max-w-[1200px]',
+      )}
+    >
       <MusicChartHeader
         top100ChartMusic={koreanTop100Chart!}
         isKoreaChart={newData.isKoreaChart}
