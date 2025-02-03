@@ -35,8 +35,12 @@ const ActionButtons = ({
   const { user } = userStore()
   const user_id = user?.id || ''
   const { songLike, updateLike } = useSongLike({ user_id })
-  const { closePlayerModal, setPlayerClose, togglePlayerModal } =
-    useMusicPlayerStore()
+  const {
+    isPlayerModalOpen,
+    closePlayerModal,
+    setPlayerClose,
+    togglePlayerModal,
+  } = useMusicPlayerStore()
 
   const [isSaved, setIsSaved] = useState<boolean>(false) // save 상태 관리
   const [isOpen, setIsOpen] = useState<boolean>(false) // 로그인 모달 상태
@@ -151,7 +155,7 @@ const ActionButtons = ({
             width={ICON_SIZE}
             height={ICON_SIZE}
             alt="leftArrow"
-            className="rotate-90"
+            className={isPlayerModalOpen ? '-rotate-90' : 'rotate-90'}
           />
         </button>
       </div>
