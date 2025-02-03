@@ -11,6 +11,7 @@ interface ModalProps {
   className?: string
   onConfirm?: () => void
   onCancel: () => void
+  children?: React.ReactNode
 }
 
 const Modal: React.FC<ModalProps> = ({
@@ -21,6 +22,7 @@ const Modal: React.FC<ModalProps> = ({
   className,
   onConfirm,
   onCancel,
+  children,
 }) => {
   if (!isOpen) return null
 
@@ -76,6 +78,7 @@ const Modal: React.FC<ModalProps> = ({
         <h2 className="title-1 mb-2 text-left">{title}</h2>
         <p className="button-1 text-left text-[#4A4A4A]">{content}</p>
       </div>
+      {children}
       {renderButtons()}
     </ModalAnimation>
   )
