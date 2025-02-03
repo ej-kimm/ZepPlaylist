@@ -2,7 +2,8 @@ import imPlay from '@/assets/images/imPlay.svg'
 import { PlaylistDetails } from '@/types/song'
 import { differenceInDays, isToday } from 'date-fns'
 import Image from 'next/image'
-import { FaEllipsisV, FaRandom } from 'react-icons/fa'
+import { FaRandom } from 'react-icons/fa'
+import PlaylistItem from './PlaylistItem'
 
 type PlaylistDetailUIProps = {
   playlistDetails: PlaylistDetails
@@ -71,7 +72,6 @@ export default function PlaylistDetailUI({
         >
           <FaRandom className="text-black" size={24} />
         </button>
-
         <button
           className="relative flex h-14 w-14 items-center justify-center rounded-full bg-secondary"
           onClick={handlePlayAll}
@@ -81,56 +81,22 @@ export default function PlaylistDetailUI({
       </section>
 
       <ul className="mt-6 space-y-2">
-        {songs.length > 0 ? (
-          songs.map((song, index) => (
-            <li
-              key={song.spotify_id}
-              className="relative flex cursor-pointer items-center justify-between bg-white"
-              onClick={() => handlePlayFromIndex(index)}
-            >
-              <div className="flex items-center">
-                <div
-                  className="bg-lightgray h-[44px] w-[44px] rounded-lg bg-cover bg-center"
-                  style={{
-                    backgroundImage: `url(${song.album_cover || '/default-album-cover.jpg'})`,
-                  }}
-                ></div>
-                <div className="ml-4">
-                  <p className="font-pretendard">{song.title}</p>
-                  <p className="text-sm text-gray-500">{song.artist}</p>
-                </div>
-              </div>
-              <div className="flex items-center">
-                <button
-                  className="relative p-2 text-gray-500 hover:text-gray-800"
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    toggleDropdown(song.spotify_id)
-                  }}
-                >
-                  <FaEllipsisV />
-                </button>
-                {showDropdown === song.spotify_id && (
-                  <div className="absolute right-0 mt-2 w-24 rounded-lg border bg-white shadow-lg">
-                    <button
-                      className="block w-full px-4 py-2 text-left text-sm text-red-500 hover:bg-gray-100"
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        handleDeleteSong(song.spotify_id)
-                      }}
-                    >
-                      삭제
-                    </button>
-                  </div>
-                )}
-              </div>
-            </li>
-          ))
-        ) : (
-          <p className="mt-4 text-center text-gray-500">
-            플레이리스트에 곡이 없습니다.
-          </p>
-        )}
+        {songs.map((song, index) => (
+          <PlaylistItem
+            key={song.spotify_id}
+            playlist={{
+              id: song.spotify_id,
+              name: song.title,
+              description: song.artist,
+              latest_song_cover: song.album_cover,
+            }}
+            isDetailPage={true}
+            handlePlaylistClick={() => handlePlayFromIndex(index)}
+            handleDeleteSong={handleDeleteSong}
+            showDropdown={showDropdown}
+            toggleDropdown={toggleDropdown}
+          />
+        ))}
       </ul>
     </div>
   )

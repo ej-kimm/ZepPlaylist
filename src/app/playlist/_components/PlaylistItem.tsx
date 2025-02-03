@@ -7,6 +7,7 @@ type PlaylistItemProps = {
   toggleDropdown: (id: string) => void
   handlePlaylistClick?: (playlistId: string) => void
   handleDeletePlaylist?: (playlistId: string) => void
+  handleDeleteSong?: (songId: string) => void
   openModal?: (type: 'add' | 'edit', playlist?: PlaylistRow) => void
   isDetailPage?: boolean
 }
@@ -17,6 +18,7 @@ export default function PlaylistItem({
   toggleDropdown,
   handlePlaylistClick,
   handleDeletePlaylist,
+  handleDeleteSong,
   openModal,
   isDetailPage = false,
 }: PlaylistItemProps) {
@@ -71,7 +73,7 @@ export default function PlaylistItem({
         </button>
         {showDropdown === playlist.id && (
           <div className="absolute right-0 mt-2 w-24 rounded-lg bg-white shadow-lg">
-            {!isDetailPage && (
+            {!isDetailPage ? (
               <>
                 <button
                   onClick={(e) => {
@@ -92,6 +94,16 @@ export default function PlaylistItem({
                   삭제
                 </button>
               </>
+            ) : (
+              <button
+                className="block w-full px-4 py-2 text-left text-sm text-red-500 hover:bg-gray-100"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  if (playlist.id) handleDeleteSong?.(playlist.id)
+                }}
+              >
+                삭제
+              </button>
             )}
           </div>
         )}
