@@ -7,13 +7,14 @@ import skipNext from '@/assets/images/skipNext.svg'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import clsx from 'clsx'
 import Image from 'next/image'
-
+import { useRouter } from 'next/navigation'
 type PlayerControlsProps = {
   className: string
   ICON_SIZE: number
 }
 
 const PlayerControls = ({ className, ICON_SIZE }: PlayerControlsProps) => {
+  const router = useRouter()
   const {
     trackIds,
     currentTrackIndex,
@@ -26,7 +27,6 @@ const PlayerControls = ({ className, ICON_SIZE }: PlayerControlsProps) => {
 
   const isFirstTrack = currentTrackIndex === 0
   const isLastTrack = currentTrackIndex === trackIds.length - 1
-
   return (
     <div
       className={clsx(
@@ -69,6 +69,9 @@ const PlayerControls = ({ className, ICON_SIZE }: PlayerControlsProps) => {
             width={ICON_SIZE}
             height={ICON_SIZE}
             alt="playlist"
+            onClick={() => {
+              router.replace('/current-play')
+            }}
           />
         </button>
       )}
