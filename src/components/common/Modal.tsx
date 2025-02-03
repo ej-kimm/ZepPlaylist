@@ -6,7 +6,7 @@ import { PrimaryButton, SecondaryButton } from './Button'
 interface ModalProps {
   isOpen: boolean
   title: string
-  content: string | JSX.Element
+  content?: string | JSX.Element
   type?: 'single' | 'vertical' | 'horizontal' | 'none'
   className?: string
   onConfirm?: () => void
