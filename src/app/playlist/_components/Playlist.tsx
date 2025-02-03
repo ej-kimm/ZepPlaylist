@@ -132,6 +132,18 @@ export default function Playlist({ initialPlaylists }: PlaylistComponentProps) {
     },
   })
 
+  const handleDeleteConfirmation = (playlistId: string) => {
+    setModalProps({
+      isOpen: true,
+      title: '플레이리스트 삭제',
+      content: '플레이리스트를 정말 삭제하시겠습니까?',
+      type: 'vertical',
+      onConfirm: () => {
+        deletePlaylistMutation.mutate(playlistId)
+      },
+      onCancel: () => setModalProps((prev) => ({ ...prev, isOpen: false })),
+    })
+  }
   const deletePlaylistMutation = useMutation({
     mutationFn: (playlistId: string) => deletePlaylist(playlistId),
     onSuccess: () => {
@@ -199,7 +211,7 @@ export default function Playlist({ initialPlaylists }: PlaylistComponentProps) {
           playlists={playlists || []}
           latestLikedSongCover={latestLikedSongCover || ''}
           openModal={openModal}
-          handleDeletePlaylist={(id) => deletePlaylistMutation.mutate(id)}
+          handleDeletePlaylist={handleDeleteConfirmation}
           showDropdown={showDropdown}
           handleLikesClick={() => router.push('/playlist/likes')}
           handlePlaylistClick={(id) => router.push(`/playlist/${id}`)}
