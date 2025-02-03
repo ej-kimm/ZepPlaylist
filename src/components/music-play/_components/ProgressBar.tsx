@@ -1,6 +1,4 @@
 'use client'
-
-import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import clsx from 'clsx'
 
 type PlayerState = {
@@ -13,15 +11,15 @@ type ProgressBarProps = {
   playerState: PlayerState
   onSeek: (value: number) => void
   url: string[]
+  className: string
 }
 
 const ProgressBar = ({
   playerState: { ready, played, duration },
   onSeek,
   url,
+  className,
 }: ProgressBarProps) => {
-  const { isPlayerModalOpen } = useMusicPlayerStore()
-
   // 시간 포맷 함수 (초 → mm:ss)
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60)
@@ -35,11 +33,7 @@ const ProgressBar = ({
 
   return (
     <div
-      className={clsx(
-        'flex w-full flex-col gap-1',
-        'desktop:flex',
-        isPlayerModalOpen ? 'block desktop:hidden' : 'hidden',
-      )}
+      className={clsx('flex w-full flex-col gap-1', 'desktop:flex', className)}
     >
       <div className="flex justify-between">
         <time className="text-[8px] font-normal leading-none tracking-normal opacity-60">
@@ -50,10 +44,7 @@ const ProgressBar = ({
         </time>
       </div>
       <input
-        className={clsx(
-          'range-slider',
-          !isPlayerModalOpen && 'desktop:mx-auto desktop:w-[327px]',
-        )}
+        className={clsx('range-slider', 'desktop:mx-auto desktop:w-[327px]')}
         type="range"
         min="0"
         max="0.999999"
