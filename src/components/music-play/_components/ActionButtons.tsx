@@ -17,7 +17,7 @@ type ActionButtonsProps = {
   ICON_SIZE: number
   volumeLevel?: number
   onVolumeChange?: (volume: number) => void
-  onUserAction?: (type: 'like' | 'save') => void
+  onUserAction: (type: 'like' | 'save') => void
 }
 
 const ActionButtons = ({

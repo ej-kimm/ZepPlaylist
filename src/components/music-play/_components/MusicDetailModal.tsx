@@ -1,12 +1,8 @@
-import { Modal, MusicSaveBottomSheet } from '@/components/common'
 import useIsDesktop from '@/hooks/useIsDesktop'
 import useScrollLock from '@/hooks/useScrollLock'
-import useSongLike from '@/hooks/useSongLike'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
-import { userStore } from '@/store/userSlice'
 import { Tables } from '@/types/supabase'
 import clsx from 'clsx'
-import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import ActionButtons from './ActionButtons'
 import AlbumCover from './AlbumCover'
@@ -26,6 +22,7 @@ type MusicDetailModalProps = {
   url: string[]
   playerState: PlayerState
   onSeek: (value: number) => void
+  onUserAction: (type: 'like' | 'save') => void
 }
 
 export default function MusicDetailModal({
@@ -34,46 +31,18 @@ export default function MusicDetailModal({
   lyrics,
   playerState: { played, duration, ready },
   onSeek,
+  onUserAction,
 }: MusicDetailModalProps) {
-  const router = useRouter()
-  const { user } = userStore()
-  const user_id = user?.id || ''
   const { title, artist } = musicDetail || {}
-  const { isPlayerModalOpen, closePlayerModal, setPlayerClose } =
-    useMusicPlayerStore()
-  const { updateLike } = useSongLike({ user_id })
+  const { isPlayerModalOpen } = useMusicPlayerStore()
   const isDesktop = useIsDesktop()
   useScrollLock(isPlayerModalOpen)
 
   const [isFullLyrics, setIsFullLyrics] = useState<boolean>(false)
-  const [isSaved, setIsSaved] = useState<boolean>(false) // save 상태 관리
-  const [isOpen, setIsOpen] = useState<boolean>(false) // 로그인 모달 상태
 
   const handleClickLyrics = () => {
     if (isDesktop) return
     setIsFullLyrics((prev) => !prev)
-  }
-  const handleUserAction = (type: 'like' | 'save') => {
-    if (!user_id) {
-      setIsOpen(true)
-      return
-    }
-
-    if (type === 'like') {
-      updateLike.mutate({ user_id })
-    } else if (type === 'save') {
-      setIsSaved((prev) => !prev)
-    }
-  }
-  const closeModal = () => setIsOpen(false)
-  const handleCloseAllModals = () => {
-    closePlayerModal()
-    closeModal()
-    setPlayerClose()
-  }
-  const redirectToLogin = () => {
-    handleCloseAllModals()
-    router.push('/login')
   }
 
   return (
@@ -105,7 +74,7 @@ export default function MusicDetailModal({
             <ActionButtons
               className="flex desktop:hidden"
               ICON_SIZE={16}
-              onUserAction={handleUserAction}
+              onUserAction={onUserAction}
             />
             {!isFullLyrics && <AlbumCover musicDetail={musicDetail} />}
           </div>
@@ -123,22 +92,6 @@ export default function MusicDetailModal({
           <PlayerControls className="gap-10 desktop:hidden" ICON_SIZE={36} />
         </div>
       </section>
-
-      <Modal
-        isOpen={isOpen}
-        title="로그인 필요"
-        content="로그인 화면으로 이동합니다"
-        type="vertical"
-        onConfirm={redirectToLogin}
-        onCancel={closeModal}
-      />
-
-      <MusicSaveBottomSheet
-        isOpen={isSaved}
-        handleClose={() => handleUserAction('save')}
-        musicName={title || ''}
-        artistName={artist || ''}
-      />
     </>
   )
 }
