@@ -30,9 +30,11 @@ const Navbar = () => {
   const router = useRouter()
   const pathname = usePathname()
   const { user, setUser } = userStore()
-  const { isPlayerModalOpen, setPlayerClose } = useMusicPlayerStore()
+  const { isPlayerModalOpen, togglePlayerModal, setPlayerClose } =
+    useMusicPlayerStore()
 
   const handleLogIn = () => {
+    if (isPlayerModalOpen) setPlayerClose()
     router.push('/login')
   }
 
@@ -49,6 +51,12 @@ const Navbar = () => {
     if (isPlayerModalOpen) setPlayerClose()
   }
 
+  const handleLinkClick = () => {
+    if (isPlayerModalOpen) {
+      togglePlayerModal()
+    }
+  }
+
   return (
     <nav className={clsx('hidden gap-9', 'desktop:flex')}>
       {/* 일반 링크 */}
@@ -56,6 +64,7 @@ const Navbar = () => {
         <Link
           key={index}
           href={link.to}
+          onClick={handleLinkClick}
           className={clsx(
             'button-2 relative whitespace-nowrap px-[10px] py-2 text-[#636363] transition-colors',
             pathname === link.to ? 'text-primary' : 'hover:text-primary',
@@ -71,6 +80,7 @@ const Navbar = () => {
       {user && (
         <Link
           href="/my-page"
+          onClick={handleLinkClick}
           className={clsx(
             'button-2 relative whitespace-nowrap px-[10px] py-2 text-[#636363] transition-colors',
             pathname === '/my-page' ? 'text-primary' : 'hover:text-primary',
