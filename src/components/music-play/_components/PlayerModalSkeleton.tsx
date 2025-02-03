@@ -1,5 +1,6 @@
 import { Skeleton } from '@/components/common'
 
+// TODO : 웹 스켈레톤 해야함
 const PlayerModalSkeleton = () => {
   return (
     <section className="fixed bottom-0 left-0 z-player-modal h-navBar-calc w-full bg-white px-6 pb-5">

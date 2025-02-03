@@ -1,14 +1,9 @@
-import likeFalse from '@/assets/images/likeFalse.svg'
-import likeTrue from '@/assets/images/likeTrue.svg'
-import save from '@/assets/images/save.svg'
-import { Modal, MusicSaveBottomSheet } from '@/components/common'
-import useSongLike from '@/hooks/useSongLike'
+import useScrollLock from '@/hooks/useScrollLock'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
-import { userStore } from '@/store/userSlice'
 import { Tables } from '@/types/supabase'
-import Image from 'next/image'
-import { useRouter } from 'next/navigation'
+import clsx from 'clsx'
 import { useEffect, useState } from 'react'
+import ActionButtons from './ActionButtons'
 import AlbumCover from './AlbumCover'
 import Lyrics from './Lyrics'
 import PlayerControls from './PlayerControls'
@@ -35,116 +30,73 @@ export default function MusicDetailModal({
   playerState: { played, duration, ready },
   onSeek,
 }: MusicDetailModalProps) {
-  const router = useRouter()
-  const { user } = userStore()
-  const user_id = user?.id || ''
   const { title, artist } = musicDetail || {}
-  const { isPlayerModalOpen, closePlayerModal, setPlayerClose } =
-    useMusicPlayerStore()
-  const { songLike, updateLike } = useSongLike({ user_id })
+  const { isPlayerModalOpen } = useMusicPlayerStore()
+  useScrollLock(isPlayerModalOpen)
 
   const [isFullLyrics, setIsFullLyrics] = useState<boolean>(false)
-  const [isLiked, setIsLiked] = useState<boolean>(false)
-  const [isSaved, setIsSaved] = useState<boolean>(false)
-  const [isOpen, setIsOpen] = useState<boolean>(false) // 로그인 모달창 open
+  const [isDesktop, setIsDesktop] = useState<boolean>(window.innerWidth >= 720) // 화면 크기 상태
 
-  const handleUserAction = (type: 'like' | 'save') => {
-    if (!user_id) {
-      setIsOpen(true)
-      return
-    }
-
-    if (type === 'like') {
-      updateLike.mutate({ user_id })
-    } else if (type === 'save') {
-      setIsSaved((prev) => !prev)
-    }
-  }
   const handleClickLyrics = () => setIsFullLyrics((prev) => !prev)
-  const closeModal = () => setIsOpen(false)
-  const handleCloseAllModals = () => {
-    closePlayerModal()
-    closeModal()
-    setPlayerClose()
-  }
-  const redirectToLogin = () => {
-    handleCloseAllModals()
-    router.push('/login')
+
+  const handleResize = () => {
+    const isDesktopView = window.innerWidth >= 720
+    setIsDesktop(isDesktopView)
+    if (isDesktopView) {
+      setIsFullLyrics(false)
+    }
   }
 
-  // 로그인 한 유저
   useEffect(() => {
-    if (songLike !== undefined) {
-      setIsLiked(songLike)
-    }
-  }, [songLike])
-
-  // MusicDetailModal이 열렸을 때 스크롤 비활성화
-  useEffect(() => {
-    if (isPlayerModalOpen) {
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = 'auto'
-    }
-
-    return () => {
-      document.body.style.overflow = 'auto'
-    }
-  }, [isPlayerModalOpen])
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   return (
-    <>
-      <section
-        className={`fixed bottom-0 left-0 z-player-modal h-navBar-calc w-full bg-white px-6 pb-5 transition-all duration-500 ease-out ${isPlayerModalOpen ? 'translate-y-0' : 'translate-y-full'}`}
+    <section
+      className={clsx(
+        'fixed bottom-0 left-0 z-player-modal h-navBar-calc w-full bg-white px-6 pb-5 transition-all duration-500 ease-out',
+        'desktop:flex desktop:h-navBar-desktop-calc desktop:items-center desktop:justify-center desktop:p-0',
+        isPlayerModalOpen
+          ? 'translate-y-0 desktop:bottom-[66px]'
+          : 'translate-y-full',
+      )}
+    >
+      <div
+        className={clsx(
+          'grid h-full w-full grid-cols-1 place-items-center',
+          'desktop:h-[533px] desktop:w-[1042px] desktop:grid-cols-2 desktop:bg-white',
+        )}
       >
-        <div className="flex h-full flex-col items-center justify-between">
+        <div
+          className={clsx(
+            'flex h-full w-full flex-col items-center justify-between',
+          )}
+        >
           <header>
             <h3 className="title-1 mb-2 text-center">{title}</h3>
             <p className="caption-1 text-center">{artist}</p>
           </header>
-          <div className="flex items-center justify-center gap-[23px]">
-            <button onClick={() => handleUserAction('like')}>
-              <Image
-                src={isLiked ? likeTrue : likeFalse}
-                width={16}
-                height={16}
-                alt={isLiked ? 'likeTrue' : 'likeFalse'}
-              />
-            </button>
-            <button onClick={() => handleUserAction('save')}>
-              <Image src={save} width={16} height={16} alt="save" />
-            </button>
-          </div>
+          <ActionButtons
+            musicName={musicDetail?.title}
+            artistName={musicDetail?.artist}
+          />
           {!isFullLyrics && <AlbumCover musicDetail={musicDetail} />}
-          <Lyrics
-            lyrics={lyrics}
-            isFullLyrics={isFullLyrics}
-            onClickLyrics={handleClickLyrics}
-          />
-          <ProgressBar
-            url={url}
-            playerState={{ ready, played, duration }}
-            onSeek={onSeek}
-          />
-          <PlayerControls />
         </div>
-      </section>
-
-      <Modal
-        isOpen={isOpen}
-        title="로그인 필요"
-        content="로그인 화면으로 이동합니다"
-        type="vertical"
-        onConfirm={redirectToLogin}
-        onCancel={closeModal}
-      />
-
-      <MusicSaveBottomSheet
-        isOpen={isSaved}
-        handleClose={() => handleUserAction('save')}
-        musicName={title || ''}
-        artistName={artist || ''}
-      />
-    </>
+        <Lyrics
+          lyrics={lyrics}
+          isFullLyrics={isFullLyrics}
+          isDesktop={isDesktop}
+          onClickLyrics={handleClickLyrics}
+        />
+        <ProgressBar
+          url={url}
+          playerState={{ ready, played, duration }}
+          onSeek={onSeek}
+          className="desktop:hidden"
+        />
+        <PlayerControls className="gap-10 desktop:hidden" ICON_SIZE={36} />
+      </div>
+    </section>
   )
 }

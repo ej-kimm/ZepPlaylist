@@ -2,11 +2,11 @@
 import { useSpotifySearch } from '@/hooks/useGetSpotifyMusicId'
 import { usePlaylistMusicUpsert } from '@/hooks/usePlaylistMusicUpsert'
 import usePlaylistOperations from '@/hooks/usePlaylistOperations'
+import useScrollLock from '@/hooks/useScrollLock'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import { userStore } from '@/store/userSlice'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useEffect } from 'react'
 import BottomSheet from './BottomSheet'
 import Skeleton from './Skeleton'
 
@@ -28,14 +28,13 @@ const MusicSaveBottomSheet = ({
   const { searchSpotifyId } = useSpotifySearch()
   const { upsertMusic, addMusicToPlaylistTable } = usePlaylistMusicUpsert()
   const { closePlayerModal } = useMusicPlayerStore()
+  useScrollLock(isOpen)
 
   // 특정 플레이리스트 목록을 동작하는 함수
   const addMusiscInPlayList = async (playlistId: string) => {
+    console.log(musicName, artistName)
     try {
-      const newMusicName = musicName.replace(/\s*\(.*?\)\s*/g, '').trim()
-      const newArtistiName = artistName.replace(/\s*\(.*?\)\s*/g, '').trim()
-
-      const musicData = await searchSpotifyId(newMusicName, newArtistiName)
+      const musicData = await searchSpotifyId(musicName, artistName)
 
       // spubase music 테이블에 곡 담아주는 함수 호출
       const musicId = await upsertMusic(musicData!)
@@ -54,19 +53,6 @@ const MusicSaveBottomSheet = ({
     closePlayerModal()
     handleClose()
   }
-
-  // 스크롤 비활성화
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = 'auto'
-    }
-
-    return () => {
-      document.body.style.overflow = 'auto'
-    }
-  }, [isOpen])
 
   return (
     <BottomSheet
