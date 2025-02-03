@@ -80,6 +80,8 @@ export default function MusicDetailModal({
           <ActionButtons
             musicName={musicDetail?.title}
             artistName={musicDetail?.artist}
+            className="flex desktop:hidden"
+            ICON_SIZE={16}
           />
           {!isFullLyrics && <AlbumCover musicDetail={musicDetail} />}
         </div>

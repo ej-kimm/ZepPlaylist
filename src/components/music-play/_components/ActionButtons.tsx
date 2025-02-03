@@ -17,6 +17,8 @@ import { useState } from 'react'
 type ActionButtonsProps = {
   musicName: string | undefined
   artistName: string | undefined
+  className: string
+  ICON_SIZE: number
   volumeLevel?: number
   onVolumeChange?: (volume: number) => void
 }
@@ -24,6 +26,8 @@ type ActionButtonsProps = {
 const ActionButtons = ({
   musicName,
   artistName,
+  className,
+  ICON_SIZE,
   volumeLevel,
   onVolumeChange,
 }: ActionButtonsProps) => {
@@ -31,18 +35,12 @@ const ActionButtons = ({
   const { user } = userStore()
   const user_id = user?.id || ''
   const { songLike, updateLike } = useSongLike({ user_id })
-  const {
-    isPlayerModalOpen,
-    closePlayerModal,
-    setPlayerClose,
-    togglePlayerModal,
-  } = useMusicPlayerStore()
+  const { closePlayerModal, setPlayerClose, togglePlayerModal } =
+    useMusicPlayerStore()
 
   const [isSaved, setIsSaved] = useState<boolean>(false) // save 상태 관리
   const [isOpen, setIsOpen] = useState<boolean>(false) // 로그인 모달 상태
   const [isVolumeVisible, setIsVolumeVisible] = useState(false)
-
-  const iconSize = isPlayerModalOpen ? 16 : 24
 
   const toggleVolumeButton = () => setIsVolumeVisible((prev) => !prev)
   const handleUserAction = (type: 'like' | 'save') => {
@@ -72,10 +70,9 @@ const ActionButtons = ({
     <>
       <div
         className={clsx(
-          'desktop:flex desktop:gap-[29px]',
-          isPlayerModalOpen
-            ? 'flex items-center justify-center gap-[23px] desktop:hidden'
-            : 'hidden',
+          'items-center justify-center gap-[23px]',
+          'desktop:gap-[29px]',
+          className,
         )}
       >
         <button
@@ -102,8 +99,8 @@ const ActionButtons = ({
 
           <Image
             src={volumeLevel === 0 ? volumeZero : volume}
-            width={iconSize}
-            height={iconSize}
+            width={ICON_SIZE}
+            height={ICON_SIZE}
             alt="volume"
           />
         </button>
@@ -114,8 +111,8 @@ const ActionButtons = ({
         >
           <Image
             src={songLike ? likeTrue : likeFalse}
-            width={iconSize}
-            height={iconSize}
+            width={ICON_SIZE}
+            height={ICON_SIZE}
             alt="heart"
           />
         </button>
@@ -124,7 +121,7 @@ const ActionButtons = ({
           onClick={() => handleUserAction('save')}
           className="desktop:order-2"
         >
-          <Image src={save} width={iconSize} height={iconSize} alt="save" />
+          <Image src={save} width={ICON_SIZE} height={ICON_SIZE} alt="save" />
         </button>
         <button
           type="button"
@@ -133,8 +130,8 @@ const ActionButtons = ({
         >
           <Image
             src={leftArrow}
-            width={iconSize}
-            height={iconSize}
+            width={ICON_SIZE}
+            height={ICON_SIZE}
             alt="leftArrow"
             className="rotate-90"
           />

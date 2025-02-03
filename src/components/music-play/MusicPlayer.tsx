@@ -94,6 +94,8 @@ const MusicPlayer = () => {
             artistName={musicDetail?.artist}
             volumeLevel={playerState.volume}
             onVolumeChange={handleVolumeChange}
+            className="hidden desktop:flex"
+            ICON_SIZE={24}
           />
         </div>
 
