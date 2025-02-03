@@ -48,12 +48,12 @@ const PlayerSkeleton = () => {
             <Skeleton width="24px" height="24px" borderRadius="8px" />
             <Skeleton width="24px" height="24px" borderRadius="8px" />
             <Skeleton width="24px" height="24px" borderRadius="8px" />
-            {/* <Skeleton
+            <Skeleton
               width="24px"
               height="24px"
               borderRadius="8px"
               className={clsx('desktop:hidden')}
-            /> */}
+            />
           </div>
 
           {/* ProgressBar */}

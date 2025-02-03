@@ -16,7 +16,12 @@ const HeaderLeft = ({ isHamburgerOpen, toggleMenu }: HeaderLeftProps) => {
   const pathname = usePathname()
   const { isPlayerModalOpen, togglePlayerModal } = useMusicPlayerStore()
 
-  const handleBackHome = () => router.push('/')
+  const handleBackHome = () => {
+    if (isPlayerModalOpen) {
+      togglePlayerModal()
+    }
+    router.push('/')
+  }
   const handleBack = () => {
     if (isHamburgerOpen) {
       toggleMenu()

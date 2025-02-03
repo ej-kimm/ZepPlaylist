@@ -32,9 +32,7 @@ const ProgressBar = ({
   }
 
   return (
-    <div
-      className={clsx('flex w-full flex-col gap-1', 'desktop:flex', className)}
-    >
+    <div className={clsx('w-full flex-col gap-1', className)}>
       <div className="flex justify-between">
         <time className="text-[8px] font-normal leading-none tracking-normal opacity-60">
           {formatTime(played * duration)}

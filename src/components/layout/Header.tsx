@@ -55,14 +55,14 @@ const Header = () => {
     return () => {
       window.removeEventListener('scroll', handleScroll)
     }
-  }, [handleScroll])
+  }, [handleScroll, isHomePage])
 
   return (
     <>
       <header
         className={clsx(
           'fixed left-0 top-0 z-header flex h-navBar w-full items-center justify-between bg-white px-6',
-          'desktop:left-1/2 desktop:h-navBar-desktop desktop:max-w-[1200px] desktop:-translate-x-1/2 desktop:transform desktop:px-[30px]',
+          'desktop:h-navBar-desktop desktop:px-[30px]',
           isHomePage ? 'desktop:' + navbarColor : 'bg-white',
         )}
       >
