@@ -1,7 +1,6 @@
 'use client'
 
-import type { BillboardSong } from '@/types/billboradCharts'
-import type { MelonChartSong } from '@/types/melonCharts'
+import type { Charts } from '@/types/billboradCharts'
 import Link from 'next/link'
 import { useState } from 'react'
 import Top20Item from './Top20Item'
@@ -10,19 +9,25 @@ import rightArrow from '@/assets/images/rightArrow.svg'
 import Image from 'next/image'
 
 type Top20ListProps = {
-  koreaTop20ChartList: MelonChartSong[]
-  billboardTop20ChartList: BillboardSong[]
+  newKoreanTop20ChartList: {
+    isKoreaChart: true
+    list: Charts[]
+  }
+  newBillboardTop20ChartList: {
+    isKoreaChart: false
+    list: Charts[]
+  }
 }
 
 const Top20List: React.FC<Top20ListProps> = ({
-  koreaTop20ChartList,
-  billboardTop20ChartList,
+  newKoreanTop20ChartList,
+  newBillboardTop20ChartList,
 }) => {
   const [isKoreaChart, setIsKoreaChart] = useState(true)
 
-  const chartList: Array<MelonChartSong | BillboardSong> = isKoreaChart
-    ? koreaTop20ChartList
-    : billboardTop20ChartList
+  const chartList: Array<Charts> = isKoreaChart
+    ? newKoreanTop20ChartList.list
+    : newBillboardTop20ChartList.list
 
   return (
     <div className="mb-5">
@@ -50,34 +55,7 @@ const Top20List: React.FC<Top20ListProps> = ({
           <Image src={rightArrow} height={16} width={16} alt=">" />
         </Link>
       </div>
-      <ul className="scroll-invisible grid auto-cols-auto grid-flow-col grid-rows-4 gap-2 overflow-x-auto">
-        {chartList.map((chart, index) => (
-          <Top20Item
-            key={
-              isKoreaChart
-                ? (chart as MelonChartSong).SONGID
-                : (chart as BillboardSong).rank
-            }
-            chart={chart}
-            index={index}
-            musicName={
-              isKoreaChart
-                ? (chart as MelonChartSong).SONGNAME
-                : (chart as BillboardSong).title
-            }
-            artistName={
-              isKoreaChart
-                ? (chart as MelonChartSong).ARTISTLIST[0].ARTISTNAME
-                : (chart as BillboardSong).artist
-            }
-            albumCover={
-              isKoreaChart
-                ? (chart as MelonChartSong).ALBUMIMG
-                : (chart as BillboardSong).cover
-            }
-          />
-        ))}
-      </ul>
+      <Top20Item chartList={chartList} />
     </div>
   )
 }
