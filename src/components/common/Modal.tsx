@@ -32,7 +32,7 @@ const Modal: React.FC<ModalProps> = ({
         )
       case 'vertical': // 확인/취소 버튼이 세로로 배치됨
         return (
-          <div className="flex flex-col gap-4">
+          <div className="flex w-full flex-col gap-4">
             {onCancel && (
               <SecondaryButton onClick={onCancel} className="block h-[39px]">
                 취소
