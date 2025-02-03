@@ -13,12 +13,16 @@ type ProgressBarProps = {
   playerState: PlayerState
   onSeek: (value: number) => void
   url: string[]
+  className: string
+  progressInputClassName?: string
 }
 
 const ProgressBar = ({
   playerState: { ready, played, duration },
   onSeek,
   url,
+  className,
+  progressInputClassName,
 }: ProgressBarProps) => {
   const { isPlayerModalOpen } = useMusicPlayerStore()
 
@@ -35,11 +39,7 @@ const ProgressBar = ({
 
   return (
     <div
-      className={clsx(
-        'flex w-full flex-col gap-1',
-        'desktop:flex',
-        isPlayerModalOpen ? 'block desktop:hidden' : 'hidden',
-      )}
+      className={clsx('flex w-full flex-col gap-1', 'desktop:flex', className)}
     >
       <div className="flex justify-between">
         <time className="text-[8px] font-normal leading-none tracking-normal opacity-60">
@@ -50,10 +50,7 @@ const ProgressBar = ({
         </time>
       </div>
       <input
-        className={clsx(
-          'range-slider',
-          !isPlayerModalOpen && 'desktop:mx-auto desktop:w-[327px]',
-        )}
+        className={clsx('range-slider', 'desktop:mx-auto desktop:w-[327px]')}
         type="range"
         min="0"
         max="0.999999"

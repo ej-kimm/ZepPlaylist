@@ -88,6 +88,7 @@ const MusicPlayer = () => {
                 playerState={playerState}
                 onSeek={handleSeek}
                 url={url}
+                className="hidden"
               />
             </div>
             <ActionButtons
