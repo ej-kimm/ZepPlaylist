@@ -11,7 +11,6 @@ type Top20ItemProps = {
 const Top20Item: React.FC<Top20ItemProps> = ({ chartList }) => {
   const { isPlayerOpen, setTrackIds, setPlayerOpen, play } =
     useMusicPlayerStore()
-
   const { upsertMusic } = usePlaylistMusicUpsert()
 
   const handlePlayBtn = async (musicData: SpotifyTrack) => {
