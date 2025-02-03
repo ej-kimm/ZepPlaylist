@@ -1,8 +1,9 @@
+import useIsDesktop from '@/hooks/useIsDesktop'
 import useScrollLock from '@/hooks/useScrollLock'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import { Tables } from '@/types/supabase'
 import clsx from 'clsx'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import ActionButtons from './ActionButtons'
 import AlbumCover from './AlbumCover'
 import Lyrics from './Lyrics'
@@ -32,28 +33,15 @@ export default function MusicDetailModal({
 }: MusicDetailModalProps) {
   const { title, artist } = musicDetail || {}
   const { isPlayerModalOpen } = useMusicPlayerStore()
+  const isDesktop = useIsDesktop()
   useScrollLock(isPlayerModalOpen)
 
   const [isFullLyrics, setIsFullLyrics] = useState<boolean>(false)
-  const [isDesktop, setIsDesktop] = useState<boolean>(window.innerWidth >= 720) // 화면 크기 상태
 
   const handleClickLyrics = () => {
     if (isDesktop) return
     setIsFullLyrics((prev) => !prev)
   }
-
-  const handleResize = () => {
-    const isDesktopView = window.innerWidth >= 720
-    setIsDesktop(isDesktopView)
-    if (isDesktopView) {
-      setIsFullLyrics(false)
-    }
-  }
-
-  useEffect(() => {
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
 
   return (
     <section

@@ -1,20 +1,11 @@
 import { Skeleton } from '@/components/common'
+import useIsDesktop from '@/hooks/useIsDesktop'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import clsx from 'clsx'
-import { useEffect, useState } from 'react'
 
 const PlayerModalSkeleton = () => {
   const { isPlayerModalOpen } = useMusicPlayerStore()
-  const [isDesktop, setIsDesktop] = useState<boolean>(window.innerWidth >= 720) // 화면 크기 상태
-
-  const handleResize = () => {
-    setIsDesktop(window.innerWidth >= 720)
-  }
-
-  useEffect(() => {
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
+  const isDesktop = useIsDesktop()
 
   return (
     <section
