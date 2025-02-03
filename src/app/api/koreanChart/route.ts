@@ -1,7 +1,7 @@
 // app/api/korean-chart/route.ts
 
 import { fetchAndCleanMelonChart } from '@/utils/chart/fetchMelonChart'
-import { getSpotifyTrackData } from '@/utils/chart/getSpotifyTrackId'
+import { getKrSpotifyTrackId } from '@/utils/chart/getKrSpotifyTrackId'
 import { getSpotifyToken } from '@/utils/spotifyToken/getToken'
 import { supabase } from '@/utils/supabase/client'
 import { NextResponse } from 'next/server'
@@ -16,8 +16,7 @@ export async function GET() {
 
     const resolvedMusicData = await Promise.all(
       cleanedMelonChart!.map(
-        async (item) =>
-          await getSpotifyTrackData(token, item.songName, item.artistName),
+        async (item) => await getKrSpotifyTrackId(token, item.songName),
       ),
     )
 
@@ -25,11 +24,15 @@ export async function GET() {
       (item) => item !== undefined,
     )
 
+    const uniqueMusicData = Array.from(
+      new Map(validMusicData.map((item) => [item.id, item])).values(),
+    )
+
     const { data: insertMelonChart, error: insertMelonChartError } =
       await supabase
         .from('korean_chart')
-        .insert(
-          validMusicData.map((item) => ({
+        .upsert(
+          uniqueMusicData.map((item) => ({
             spotify_id: item.id,
             title: item.title,
             artist: item.artist,
@@ -37,6 +40,10 @@ export async function GET() {
             play_time: item.playTime,
             created_at: new Date().toISOString(),
           })),
+          {
+            onConflict: 'spotify_id', // 중복 감지 기준 컬럼
+            ignoreDuplicates: false, // true: 건너뛰기, false: 업데이트
+          },
         )
         .select('*')
 

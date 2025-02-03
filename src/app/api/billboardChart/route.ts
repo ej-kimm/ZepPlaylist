@@ -34,7 +34,7 @@ export async function GET() {
     const { data: insertBillboardChart, error: insertBillboardChartError } =
       await supabase
         .from('billboard_chart')
-        .insert(
+        .upsert(
           validMusicData.map((item) => ({
             spotify_id: item.id,
             title: item.title,
@@ -43,10 +43,14 @@ export async function GET() {
             play_time: item.playTime,
             created_at: new Date().toISOString(),
           })),
+          {
+            onConflict: 'spotify_id', // 중복 감지 기준 컬럼
+            ignoreDuplicates: false, // true: 건너뛰기, false: 업데이트
+          },
         )
         .select('*')
 
-    if (insertBillboardChart!) {
+    if (insertBillboardChartError) {
       console.error('Error inserting data:', insertBillboardChartError)
     } else {
       console.log('Data inserted successfully:', insertBillboardChart)

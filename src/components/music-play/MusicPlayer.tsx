@@ -26,7 +26,7 @@ const MusicPlayer = () => {
   const { musicDetail, url, lyrics, isPending } = usePlayer()
   const pathname = usePathname()
 
-  const hidePlayerBar =
+  const stopPlaying =
     pathname === '/login' || pathname.startsWith('/community/')
 
   const handleReady = () => setPlayerState({ ...playerState, ready: true })
@@ -43,14 +43,13 @@ const MusicPlayer = () => {
 
   // 경로에 따른 동작
   useEffect(() => {
-    if (hidePlayerBar) {
+    if (stopPlaying) {
       stop()
     }
-  }, [hidePlayerBar, stop])
+  }, [stopPlaying, stop])
 
   if (!isPlayerOpen) return null // 초기에 노래를 재생하지 않으면 플레이어바 숨김
   if (!url || isPending) {
-    if (pathname.startsWith('/community/')) return null
     return isPlayerModalOpen ? <PlayerModalSkeleton /> : <PlayerSkeleton />
   }
 
@@ -69,44 +68,43 @@ const MusicPlayer = () => {
         onProgress={handleProgress} // 현재 재생 시간
         onEnded={stop}
       />
-      {!hidePlayerBar && (
-        <section
-          className={clsx(
-            'fixed bottom-0 left-0 z-player h-player w-full bg-white shadow-drop',
-            'desktop:h-navBar-desktop',
-          )}
-        >
-          <div className="flex h-full items-center justify-between px-6">
-            <MusicDetails musicDetail={musicDetail} />
-            <div
-              className={clsx(
-                'desktop:absolute desktop:left-1/2 desktop:top-1/2 desktop:w-[546px] desktop:-translate-x-1/2 desktop:-translate-y-1/2 desktop:bg-white',
-              )}
-            >
-              <PlayerControls />
-              <ProgressBar
-                playerState={playerState}
-                onSeek={handleSeek}
-                url={url}
-              />
-            </div>
-            <ActionButtons
-              musicName={musicDetail?.title}
-              artistName={musicDetail?.artist}
-              volumeLevel={playerState.volume}
-              onVolumeChange={handleVolumeChange}
+      <section
+        className={clsx(
+          'fixed bottom-0 left-0 z-player h-player w-full bg-white shadow-drop',
+          'desktop:h-navBar-desktop',
+        )}
+      >
+        <div className="flex h-full items-center justify-between px-6">
+          <MusicDetails musicDetail={musicDetail} />
+          <div
+            className={clsx(
+              'desktop:absolute desktop:left-1/2 desktop:top-1/2 desktop:w-[546px] desktop:-translate-x-1/2 desktop:-translate-y-1/2 desktop:bg-white',
+            )}
+          >
+            <PlayerControls className="gap-2" ICON_SIZE={24} />
+            <ProgressBar
+              playerState={playerState}
+              onSeek={handleSeek}
+              url={url}
+              className="hidden"
             />
           </div>
-
-          <MusicDetailModal
-            url={url}
-            musicDetail={musicDetail}
-            lyrics={lyrics}
-            playerState={playerState}
-            onSeek={handleSeek}
+          <ActionButtons
+            musicName={musicDetail?.title}
+            artistName={musicDetail?.artist}
+            volumeLevel={playerState.volume}
+            onVolumeChange={handleVolumeChange}
           />
-        </section>
-      )}
+        </div>
+
+        <MusicDetailModal
+          url={url}
+          musicDetail={musicDetail}
+          lyrics={lyrics}
+          playerState={playerState}
+          onSeek={handleSeek}
+        />
+      </section>
     </>
   )
 }

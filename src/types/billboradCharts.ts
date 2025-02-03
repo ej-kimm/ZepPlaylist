@@ -16,3 +16,12 @@ export type SpotifyTrack = {
   playTime: number
   albumCover: string
 }
+
+export type Charts = {
+  spotify_id: string
+  created_at: string
+  title: string
+  artist: string
+  play_time: number
+  album_cover: string
+}
