@@ -19,7 +19,7 @@ const SignupForm = () => {
   }
 
   const handleCheckboxChange = () => {
-    setIsChecked(true)
+    setIsChecked((prev) => !prev)
     setIsModalOpen(false)
   }
   const handleCloseModal = () => {
@@ -147,10 +147,7 @@ const SignupForm = () => {
           서비스 정책 이용약관
         </span>
       </div>
-      <PrimaryButton
-        type="submit"
-        className={clsx('mt-4 h-[39px]', 'desktop:mt-12')}
-      >
+      <PrimaryButton type="submit" className={clsx('mt-4 h-[39px]')}>
         회원가입
       </PrimaryButton>
       <Modal
