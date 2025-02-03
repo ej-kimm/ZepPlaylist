@@ -12,8 +12,10 @@ import PlayerControls from './_components/PlayerControls'
 import PlayerModalSkeleton from './_components/PlayerModalSkeleton'
 import PlayerSkeleton from './_components/PlayerSkeleton'
 import ProgressBar from './_components/ProgressBar'
+import Router from 'next/router'
 
 const MusicPlayer = () => {
+  const router = Router
   const playerRef = useRef<ReactPlayer>(null)
   const [playerState, setPlayerState] = useState({
     ready: false, // onReady에서 영상이 로드된 상태값을 받아 사용
@@ -24,6 +26,7 @@ const MusicPlayer = () => {
   const { isPlayerOpen, isPlaying, isPlayerModalOpen, stop } =
     useMusicPlayerStore()
   const { musicDetail, url, lyrics, isPending } = usePlayer()
+  console.log('musicDetail', musicDetail)
   const pathname = usePathname()
 
   const hidePlayerBar =

@@ -1,5 +1,7 @@
+import CurrentItem from './_components/CurrentItem'
+
 const page = () => {
-  return <div>page</div>
+  return <CurrentItem />
 }
 
 export default page

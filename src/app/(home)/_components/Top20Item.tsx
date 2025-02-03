@@ -24,7 +24,6 @@ const Top20Item: React.FC<Top20ItemProps> = ({
 
   const { isPlayerOpen, setTrackIds, setPlayerOpen, play } =
     useMusicPlayerStore()
-
   const { upsertMusic } = usePlaylistMusicUpsert()
 
   const handlePlayBtn = async () => {
