@@ -81,7 +81,7 @@ const ActionButtons = ({
           onClick={toggleVolumeButton}
         >
           {isVolumeVisible && (
-            <div className="absolute bottom-[calc(100%+20px)] left-1/2 flex h-[126px] w-11 -translate-x-1/2 justify-center bg-white px-5 py-2">
+            <div className="z-volume absolute bottom-[calc(100%+20px)] left-1/2 flex h-[126px] w-11 -translate-x-1/2 justify-center bg-white px-5 py-2">
               <input
                 className="volume-slider"
                 type="range"
