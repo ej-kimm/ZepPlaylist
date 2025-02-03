@@ -86,7 +86,7 @@ const MusicPlayer = () => {
               playerState={playerState}
               onSeek={handleSeek}
               url={url}
-              className="hidden"
+              className="hidden desktop:flex"
             />
           </div>
           <ActionButtons
