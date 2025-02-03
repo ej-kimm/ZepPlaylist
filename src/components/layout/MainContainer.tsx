@@ -14,7 +14,7 @@ export default function MainContainer({ children }: MainContainerProps) {
   const { isPlayerOpen } = useMusicPlayerStore()
 
   const isHomePage = pathname === '/'
-  const isCommunity = pathname.startsWith('/community/')
+  // const isCommunity = pathname.startsWith('/community/')
 
   return (
     <main

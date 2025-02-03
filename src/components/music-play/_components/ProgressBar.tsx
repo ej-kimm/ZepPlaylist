@@ -1,6 +1,4 @@
 'use client'
-
-import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import clsx from 'clsx'
 
 type PlayerState = {
@@ -14,7 +12,6 @@ type ProgressBarProps = {
   onSeek: (value: number) => void
   url: string[]
   className: string
-  progressInputClassName?: string
 }
 
 const ProgressBar = ({
@@ -22,10 +19,7 @@ const ProgressBar = ({
   onSeek,
   url,
   className,
-  progressInputClassName,
 }: ProgressBarProps) => {
-  const { isPlayerModalOpen } = useMusicPlayerStore()
-
   // 시간 포맷 함수 (초 → mm:ss)
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60)
