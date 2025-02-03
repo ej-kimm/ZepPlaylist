@@ -41,7 +41,7 @@ const ActionButtons = ({
   const [isSaved, setIsSaved] = useState<boolean>(false) // save 상태 관리
   const [isOpen, setIsOpen] = useState<boolean>(false) // 로그인 모달 상태
   const [isVolumeVisible, setIsVolumeVisible] = useState(false)
-  const volumeRef = useRef<HTMLDivElement>(null)
+  const volumeRef = useRef<HTMLButtonElement>(null)
 
   const toggleVolumeButton = () => setIsVolumeVisible((prev) => !prev)
   const handleUserAction = (type: 'like' | 'save') => {
@@ -76,15 +76,12 @@ const ActionButtons = ({
   }
 
   useEffect(() => {
-    if (isVolumeVisible) {
-      document.addEventListener('mousedown', handleVolumeClickOutside)
-    } else {
+    document.addEventListener('mousedown', handleVolumeClickOutside)
+
+    return () => {
       document.removeEventListener('mousedown', handleVolumeClickOutside)
     }
-
-    return () =>
-      document.removeEventListener('mousedown', handleVolumeClickOutside)
-  }, [isVolumeVisible])
+  }, [])
 
   return (
     <>
@@ -96,15 +93,13 @@ const ActionButtons = ({
         )}
       >
         <button
+          ref={volumeRef}
           type="button"
           className={clsx('relative hidden', 'desktop:order-1 desktop:block')}
           onClick={toggleVolumeButton}
         >
           {isVolumeVisible && (
-            <div
-              ref={volumeRef}
-              className="z-volume absolute bottom-[calc(100%+20px)] left-1/2 flex h-[126px] w-11 -translate-x-1/2 justify-center bg-white px-5 py-2"
-            >
+            <div className="z-volume absolute bottom-[calc(100%+20px)] left-1/2 flex h-[126px] w-11 -translate-x-1/2 justify-center bg-white px-5 py-2">
               <input
                 className="volume-slider"
                 type="range"
