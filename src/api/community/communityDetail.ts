@@ -55,7 +55,18 @@ export const getCommunityComments = async (
 
   const { data, error } = await supabase
     .from('comments')
-    .select('*')
+    .select(
+      `
+      id,
+      created_at,
+      content,
+      user_id,
+      users:user_id (
+        profile_image,
+        nickname
+      )
+    `,
+    )
     .eq('playlist_id', playlistId)
     .order('created_at', { ascending: true })
 
@@ -64,7 +75,13 @@ export const getCommunityComments = async (
     throw new Error('댓글 데이터를 가져오는 데 실패했습니다.')
   }
 
-  return data || []
+  const commentsWithUserInfo = data.map((comment) => ({
+    ...comment,
+    profile_image: comment.users?.profile_image || null,
+    nickname: comment.users?.nickname || 'Anonymous',
+  }))
+
+  return commentsWithUserInfo
 }
 
 export const getCommunityDetail = async (
