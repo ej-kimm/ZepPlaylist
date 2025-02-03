@@ -24,15 +24,11 @@ export async function GET() {
       (item) => item !== undefined,
     )
 
-    const uniqueMusicData = Array.from(
-      new Map(validMusicData.map((item) => [item.id, item])).values(),
-    )
-
     const { data: insertMelonChart, error: insertMelonChartError } =
       await supabase
         .from('korean_chart')
         .upsert(
-          uniqueMusicData.map((item) => ({
+          validMusicData.map((item) => ({
             spotify_id: item.id,
             title: item.title,
             artist: item.artist,
