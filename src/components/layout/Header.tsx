@@ -55,7 +55,7 @@ const Header = () => {
     return () => {
       window.removeEventListener('scroll', handleScroll)
     }
-  }, [handleScroll])
+  }, [handleScroll, isHomePage])
 
   return (
     <>

@@ -45,11 +45,11 @@ const ActionButtons = ({
     }
   }
   const handleLikeClick = () => {
-    onUserAction && onUserAction('like')
+    onUserAction('like')
   }
 
   const handleSaveClick = () => {
-    onUserAction && onUserAction('save')
+    onUserAction('save')
   }
 
   useEffect(() => {
