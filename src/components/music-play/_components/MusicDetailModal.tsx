@@ -1,8 +1,9 @@
+import useIsDesktop from '@/hooks/useIsDesktop'
 import useScrollLock from '@/hooks/useScrollLock'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import { Tables } from '@/types/supabase'
 import clsx from 'clsx'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import ActionButtons from './ActionButtons'
 import AlbumCover from './AlbumCover'
 import Lyrics from './Lyrics'
@@ -21,6 +22,7 @@ type MusicDetailModalProps = {
   url: string[]
   playerState: PlayerState
   onSeek: (value: number) => void
+  onUserAction: (type: 'like' | 'save') => void
 }
 
 export default function MusicDetailModal({
@@ -29,74 +31,67 @@ export default function MusicDetailModal({
   lyrics,
   playerState: { played, duration, ready },
   onSeek,
+  onUserAction,
 }: MusicDetailModalProps) {
   const { title, artist } = musicDetail || {}
   const { isPlayerModalOpen } = useMusicPlayerStore()
+  const isDesktop = useIsDesktop()
   useScrollLock(isPlayerModalOpen)
 
   const [isFullLyrics, setIsFullLyrics] = useState<boolean>(false)
-  const [isDesktop, setIsDesktop] = useState<boolean>(window.innerWidth >= 720) // 화면 크기 상태
 
-  const handleClickLyrics = () => setIsFullLyrics((prev) => !prev)
-
-  const handleResize = () => {
-    const isDesktopView = window.innerWidth >= 720
-    setIsDesktop(isDesktopView)
-    if (isDesktopView) {
-      setIsFullLyrics(false)
-    }
+  const handleClickLyrics = () => {
+    if (isDesktop) return
+    setIsFullLyrics((prev) => !prev)
   }
 
-  useEffect(() => {
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
-
   return (
-    <section
-      className={clsx(
-        'fixed bottom-0 left-0 z-player-modal h-navBar-calc w-full bg-white px-6 pb-5 transition-all duration-500 ease-out',
-        'desktop:flex desktop:h-navBar-desktop-calc desktop:items-center desktop:justify-center desktop:p-0',
-        isPlayerModalOpen
-          ? 'translate-y-0 desktop:bottom-[66px]'
-          : 'translate-y-full',
-      )}
-    >
-      <div
+    <>
+      <section
         className={clsx(
-          'grid h-full w-full grid-cols-1 place-items-center',
-          'desktop:h-[533px] desktop:w-[1042px] desktop:grid-cols-2 desktop:bg-white',
+          'fixed bottom-0 left-0 z-player-modal h-navBar-calc w-full bg-white px-6 pb-5 transition-all duration-500 ease-out',
+          'desktop:flex desktop:h-navBar-desktop-calc desktop:items-center desktop:justify-center desktop:p-0',
+          isPlayerModalOpen
+            ? 'translate-y-0 desktop:bottom-[66px]'
+            : 'translate-y-full',
         )}
       >
         <div
           className={clsx(
-            'flex h-full w-full flex-col items-center justify-between',
+            'grid h-full w-full grid-cols-1 place-items-center',
+            'desktop:h-[533px] desktop:w-[1042px] desktop:grid-cols-2 desktop:bg-white',
           )}
         >
-          <header>
-            <h3 className="title-1 mb-2 text-center">{title}</h3>
-            <p className="caption-1 text-center">{artist}</p>
-          </header>
-          <ActionButtons
-            musicName={musicDetail?.title}
-            artistName={musicDetail?.artist}
+          <div
+            className={clsx(
+              'flex h-full w-full flex-col items-center justify-between',
+            )}
+          >
+            <header>
+              <h3 className="title-1 mb-2 text-center">{title}</h3>
+              <p className="caption-1 text-center">{artist}</p>
+            </header>
+            <ActionButtons
+              className="flex desktop:hidden"
+              ICON_SIZE={16}
+              onUserAction={onUserAction}
+            />
+            {!isFullLyrics && <AlbumCover musicDetail={musicDetail} />}
+          </div>
+          <Lyrics
+            lyrics={lyrics}
+            isFullLyrics={isFullLyrics}
+            onClickLyrics={handleClickLyrics}
           />
-          {!isFullLyrics && <AlbumCover musicDetail={musicDetail} />}
+          <ProgressBar
+            url={url}
+            playerState={{ ready, played, duration }}
+            onSeek={onSeek}
+            className="flex desktop:hidden"
+          />
+          <PlayerControls className="gap-10 desktop:hidden" ICON_SIZE={36} />
         </div>
-        <Lyrics
-          lyrics={lyrics}
-          isFullLyrics={isFullLyrics}
-          isDesktop={isDesktop}
-          onClickLyrics={handleClickLyrics}
-        />
-        <ProgressBar
-          url={url}
-          playerState={{ ready, played, duration }}
-          onSeek={onSeek}
-          className="desktop:hidden"
-        />
-        <PlayerControls className="gap-10 desktop:hidden" ICON_SIZE={36} />
-      </div>
-    </section>
+      </section>
+    </>
   )
 }

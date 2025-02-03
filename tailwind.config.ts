@@ -40,6 +40,7 @@ const config: Config = {
         header: '10',
         player: '10',
         'player-modal': '20',
+        volume: '30',
         sidebar: '30',
         'bottom-sheet': '40',
       },

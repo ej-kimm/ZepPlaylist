@@ -7,16 +7,10 @@ import { useState } from 'react'
 type LyricsProps = {
   lyrics: string
   isFullLyrics: boolean
-  isDesktop: boolean
   onClickLyrics: () => void
 }
 
-const Lyrics = ({
-  lyrics,
-  isFullLyrics,
-  isDesktop,
-  onClickLyrics,
-}: LyricsProps) => {
+const Lyrics = ({ lyrics, isFullLyrics, onClickLyrics }: LyricsProps) => {
   const [isTranslation, setIsTranslation] = useState<boolean>(false)
   // const { translatedLyrics, isPending } = useLyricsTranslation(lyrics)
   const { translatedLyrics, isPending } = useLyricsTranslation()
@@ -76,7 +70,7 @@ const Lyrics = ({
             .replace(/(\n){3,}/g, '\n') // 연속된 \n이 2번 이상 나오면 1번으로 줄이기
             .replace(/\n/g, '<br />'), // 각 \n을 <br />로 바꾸기
         }}
-        onClick={isDesktop ? undefined : onClickLyrics} // desktop일 때는 가사 클릭 못하게 막기
+        onClick={onClickLyrics}
       />
     </div>
   )

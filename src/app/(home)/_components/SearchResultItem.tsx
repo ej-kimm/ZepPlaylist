@@ -28,7 +28,7 @@ const SearchResultItem = ({
 
   useEffect(() => {
     saveSearchHistory(searchParams)
-  }, [searchParams])
+  }, [searchParams, saveSearchHistory])
 
   const { isPlayerOpen, setTrackIds, setPlayerOpen, play } =
     useMusicPlayerStore()
