@@ -1,15 +1,30 @@
 'use client'
-import { InputBox, PrimaryButton } from '@/components/common'
+import { InputBox, Modal, PrimaryButton } from '@/components/common'
 import { supabase } from '@/utils/supabase/client'
 import { zodResolver } from '@hookform/resolvers/zod'
+import clsx from 'clsx'
 import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import Swal from 'sweetalert2'
 import { z } from 'zod'
+import Service from './Service'
 
 const SignupForm = () => {
   const router = useRouter()
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isChecked, setIsChecked] = useState(false)
+  const handleOpenModal = () => {
+    setIsModalOpen(true)
+  }
 
+  const handleCheckboxChange = () => {
+    setIsChecked(true)
+    setIsModalOpen(false)
+  }
+  const handleCloseModal = () => {
+    setIsModalOpen(false)
+  }
   const validator = z
     .object({
       email: z
@@ -52,9 +67,6 @@ const SignupForm = () => {
         },
       },
     })
-
-    // 이미지 url 데이터 url 그대로넣지말고 테이블에 직접 인설트 하기전에 스토리지 서비스이용해서 이미지파일 올려놓고 파일에대한 위치를 받아와서
-    // 다운로드url넣어주면 스토리지 한번 서칭해봐야할듯
     if (signUpError) {
       console.error(signUpError.message)
       Swal.fire({
@@ -74,7 +86,10 @@ const SignupForm = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="mt-[25px] w-full bg-white"
+      className={clsx(
+        'mt-[25px] w-full bg-white',
+        'desktop:mt-[36px] desktop:w-full',
+      )}
     >
       <InputBox
         name="email"
@@ -83,7 +98,10 @@ const SignupForm = () => {
         required={true}
         errorMessage={errors.email?.message}
         register={register}
-        className="caption-2 w-full rounded-lg border-white bg-[#f4f4f4] text-[16px]"
+        className={clsx(
+          'caption-2 w-full rounded-lg border-white bg-[#f4f4f4] text-[16px]',
+          'desktop:mb-[52px]',
+        )}
       />
       <InputBox
         name="password"
@@ -92,7 +110,10 @@ const SignupForm = () => {
         required={true}
         register={register}
         errorMessage={errors.password?.message}
-        className="caption-2 mt-6 w-full rounded-lg border-white bg-[#f4f4f4] text-[16px]"
+        className={clsx(
+          'caption-2 mt-6 w-full rounded-lg border-white bg-[#f4f4f4] text-[16px]',
+          'desktop:mb-[52px]',
+        )}
       />
       <InputBox
         name="passwordCheck"
@@ -101,7 +122,10 @@ const SignupForm = () => {
         required={true}
         register={register}
         errorMessage={errors.passwordCheck?.message}
-        className="caption-2 mt-6 w-full rounded-lg border-white bg-[#f4f4f4] text-[16px]"
+        className={clsx(
+          'caption-2 mt-6 w-full rounded-lg border-white bg-[#f4f4f4] text-[16px]',
+          'desktop:mb-[52px]',
+        )}
       />
       <InputBox
         name="nickname"
@@ -110,23 +134,43 @@ const SignupForm = () => {
         required={true}
         register={register}
         errorMessage={errors.nickname?.message}
-        className="caption-2 mt-6 w-full rounded-lg border-white bg-[#f4f4f4] text-[16px]"
+        className={clsx(
+          'caption-2 mt-6 w-full rounded-lg border-white bg-[#f4f4f4] text-[16px]',
+          'desktop:mb-[53px]',
+        )}
       />
       <div className="mt-4 flex items-center justify-center">
         <input
           type="checkbox"
-          className="mr-2 h-5 w-5 rounded border-gray-300 accent-primary"
+          className="mr-2 h-5 w-5 cursor-auto rounded border-gray-300 accent-primary"
+          checked={isChecked}
+          readOnly
+          onClick={handleOpenModal}
         />
-        <span className="caption-1">서비스 정책 이용약관</span>
+        <span onClick={handleOpenModal} className="caption-1 cursor-auto">
+          서비스 정책 이용약관
+        </span>
       </div>
-      <PrimaryButton type="submit" className="mt-4 h-[39px]">
+      <PrimaryButton
+        type="submit"
+        className={clsx('mt-4 h-[39px]', 'desktop:mt-12')}
+      >
         회원가입
       </PrimaryButton>
+      <Modal
+        isOpen={isModalOpen}
+        title="서비스 이용 약관"
+        content={
+          <Service
+            handleCheckboxChange={handleCheckboxChange}
+            isChecked={isChecked}
+          />
+        }
+        onCancel={handleCloseModal}
+        type="none"
+        className={clsx('desktop:w-full')}
+      />
     </form>
   )
 }
-
 export default SignupForm
-
-// 이미지 url 데이터 url 그대로넣지말고 테이블에 직접 인설트 하기전에 스토리지 서비스이용해서 이미지파일 올려놓고 파일에대한 위치를 받아와서
-// 다운로드url넣어주면 스토리지 한번 서칭해봐야할듯

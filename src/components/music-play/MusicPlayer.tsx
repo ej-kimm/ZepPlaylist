@@ -24,6 +24,7 @@ const MusicPlayer = () => {
   const { isPlayerOpen, isPlaying, isPlayerModalOpen, stop } =
     useMusicPlayerStore()
   const { musicDetail, url, lyrics, isPending } = usePlayer()
+  console.log('musicDetail', musicDetail)
   const pathname = usePathname()
 
   const stopPlaying =

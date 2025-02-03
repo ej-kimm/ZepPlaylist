@@ -55,7 +55,7 @@ const PlayList = () => {
                     playlistName={p.name}
                     nickName={user.nickname}
                     isLiked={isLiked}
-                    onClick={() => {
+                    onClick={() => { 
                       router.push(`/community/${p.id}`)
                     }}
                     likeCount={likeCount}

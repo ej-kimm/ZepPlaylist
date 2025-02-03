@@ -58,14 +58,14 @@ const ProfileEditBottomSheet = ({
         { nickname: editNickname, profile_image: profileImage },
         user.id,
       )
+      Swal.fire('완료', '프로필 수정이 완료됐습니다!', 'success')
+      console.log('first', updateData)
+      handleClose()
       setUser({
         ...user,
         nickname: updateData[0].nickname,
         profile_image: updateData[0].profile_image,
       })
-      Swal.fire('완료', '프로필 수정이 완료됐습니다!', 'success')
-      console.log('first', updateData)
-      handleClose()
     } catch (error) {
       console.error('프로필 업데이트 오류:', error)
       Swal.fire({
@@ -109,7 +109,7 @@ const ProfileEditBottomSheet = ({
           type="text"
           value={editNickname}
           onChange={handleNickname}
-          className="caption-2 h-9 w-full rounded-lg border border-white bg-[#f4f4f4] pl-2 text-[16px] cursor-text"
+          className="caption-2 h-9 w-full cursor-text rounded-lg border border-white bg-[#f4f4f4] pl-2 text-[16px]"
         />
         <button
           className="caption-1 mt-5 w-full text-left"
@@ -119,8 +119,8 @@ const ProfileEditBottomSheet = ({
         </button>
         <PrimaryButton
           type="button"
-          className="mt-9 h-[39px]"
           onClick={handleSubmit}
+          className="mt-9 h-[39px]"
         >
           확인
         </PrimaryButton>
