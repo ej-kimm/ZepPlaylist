@@ -46,7 +46,7 @@ const Top20List: React.FC<Top20ListProps> = ({
                 'title-2 cursor-pointer',
                 isKoreaChart ? 'text-black' : 'text-gray-300',
                 isKoreaChart && 'desktop:text-secondary',
-                'desktop: py-2 pr-[10px]',
+                'desktop: px-[10px] py-2',
               )}
             >
               국내 TOP 100
