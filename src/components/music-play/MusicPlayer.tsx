@@ -110,7 +110,7 @@ const MusicPlayer = () => {
       />
       <section
         className={clsx(
-          'h-player fixed bottom-0 left-0 z-player w-full bg-white shadow-drop',
+          'fixed bottom-0 left-0 z-player h-player w-full bg-white shadow-drop',
           'desktop:h-navBar-desktop',
         )}
       >
@@ -127,13 +127,13 @@ const MusicPlayer = () => {
               playerState={playerState}
               onSeek={handleSeek}
               url={url}
-              className="desktop:flex hidden"
+              className="hidden desktop:flex"
             />
           </div>
           <ActionButtons
             volumeLevel={playerState.volume}
             onVolumeChange={handleVolumeChange}
-            className="desktop:flex hidden"
+            className="hidden desktop:flex"
             ICON_SIZE={24}
             onUserAction={handleUserAction}
           />
@@ -170,8 +170,6 @@ const MusicPlayer = () => {
         <MusicSaveBottomSheet
           isOpen={isSaved}
           handleClose={() => handleUserAction('save')}
-          musicName={musicDetail?.title || ''}
-          artistName={musicDetail?.artist || ''}
           musicData={musicDetail!}
         />
       )}
