@@ -85,7 +85,7 @@ const MusicSaveModal = ({
               <Skeleton height="16px" className="flex-grow" />
             </div>
           ) : (
-            <ul className="scroll-invisible h-full max-h-[calc(50vh-204px)] space-y-[23px] overflow-y-scroll bg-white">
+            <ul className="scroll-invisible h-full max-h-[280px] space-y-[23px] overflow-y-scroll bg-white">
               {playlists.map((playlist) => (
                 <li
                   key={playlist.id}
