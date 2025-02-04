@@ -18,7 +18,7 @@ const HistoryList = () => {
   const isDesktop = useIsDesktop()
 
   const totalPlayTime = historyTracks.reduce(
-    (acc, track) => acc + track.play_time!,
+    (acc, track) => acc + track.play_time,
     0,
   )
   const totalTime = Math.floor(totalPlayTime / 60000)
