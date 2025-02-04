@@ -41,7 +41,7 @@ const MusicChartHeader = ({
               playTime: newMusicData.play_time,
               albumCover: newMusicData.album_cover,
             }
-            console.log(convertNewMusicData)
+
             upsertMusic(convertNewMusicData)
             return newMusicData.spotify_id
           })

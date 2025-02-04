@@ -1,44 +1,41 @@
-'use client'
+import { useSpotifySearch } from '@/hooks/useGetSpotifyMusicId'
 import { usePlaylistMusicUpsert } from '@/hooks/usePlaylistMusicUpsert'
 import usePlaylistOperations from '@/hooks/usePlaylistOperations'
 import useScrollLock from '@/hooks/useScrollLock'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import { userStore } from '@/store/userSlice'
-import type { SpotifyTrack } from '@/types/billboradCharts'
 import Image from 'next/image'
 import Link from 'next/link'
-import BottomSheet from './BottomSheet'
+import Modal from './Modal'
 import Skeleton from './Skeleton'
 
-type MusicSaveBottomSheetProps = {
+type MusicSaveModalProps = {
   musicName: string
   artistName: string
   isOpen: boolean
   handleClose: () => void
-  musicData: SpotifyTrack
 }
 
-const MusicSaveBottomSheet = ({
+const MusicSaveModal = ({
   musicName,
   artistName,
   isOpen,
   handleClose,
-  musicData,
-}: MusicSaveBottomSheetProps) => {
+}: MusicSaveModalProps) => {
   const { user } = userStore()
   const { playlists, isPending } = usePlaylistOperations()
+  const { searchSpotifyId } = useSpotifySearch()
   const { upsertMusic, addMusicToPlaylistTable } = usePlaylistMusicUpsert()
   const { closePlayerModal } = useMusicPlayerStore()
   useScrollLock(isOpen)
 
   // 특정 플레이리스트 목록을 동작하는 함수
-  const addMusiscInPlayList = async (
-    playlistId: string,
-    musicData: SpotifyTrack,
-  ) => {
+  const addMusiscInPlayList = async (playlistId: string) => {
     try {
+      const musicData = await searchSpotifyId(musicName, artistName)
+
       // spubase music 테이블에 곡 담아주는 함수 호출
-      const musicId = await upsertMusic(musicData)
+      const musicId = await upsertMusic(musicData!)
 
       // spubase playlist_music 테이블에 곡 담아주는 함수 호출
       await addMusicToPlaylistTable(musicId as string, playlistId)
@@ -56,23 +53,20 @@ const MusicSaveBottomSheet = ({
   }
 
   return (
-    <BottomSheet
-      height="auto"
-      maxWidth="100%"
+    <Modal
       isOpen={isOpen}
-      onClose={handleClose}
+      onCancel={handleClose}
+      title={musicName}
+      content={artistName}
+      type="none"
+      className="desktop:w-[532px]"
     >
-      <header className="flex h-[88px] flex-col justify-center border-b border-opacity-60 px-4">
-        <h3 className="title-2 mb-2 truncate font-medium">{musicName}</h3>
-        <p className="body-2 truncate opacity-40">{artistName}</p>
-      </header>
+      <div className="border-t border-black border-opacity-60">
+        <h2 className="body-2 py-3">플레이리스트 담기</h2>
 
-      <div className="flex flex-col">
-        <h1 className="my-3 text-base">플레이리스트 담기</h1>
-
-        <div className="h-full bg-white px-4">
+        <div className="h-full bg-white px-4 py-[26px]">
           <Link href="/playlist" onClick={handleCloseAllModals}>
-            <div className="mb-2 flex items-center gap-2">
+            <div className="mb-[23px] flex items-center gap-2">
               <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[#C4C4C4]">
                 <span className="font-pretendard text-lg text-white">+</span>
               </div>
@@ -81,7 +75,7 @@ const MusicSaveBottomSheet = ({
           </Link>
 
           {!user && isPending ? (
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-[23px]">
               <Skeleton
                 width="48px"
                 height="48px"
@@ -91,12 +85,12 @@ const MusicSaveBottomSheet = ({
               <Skeleton height="16px" className="flex-grow" />
             </div>
           ) : (
-            <ul className="scroll-invisible h-full max-h-[calc(50vh-204px)] space-y-2 overflow-y-scroll bg-white">
+            <ul className="scroll-invisible h-full max-h-[calc(50vh-204px)] space-y-[23px] overflow-y-scroll bg-white">
               {playlists.map((playlist) => (
                 <li
                   key={playlist.id}
                   className="flex items-center gap-2"
-                  onClick={() => addMusiscInPlayList(playlist.id, musicData)}
+                  onClick={() => addMusiscInPlayList(playlist.id)}
                 >
                   {playlist.latest_song_cover ? (
                     <Image
@@ -116,8 +110,8 @@ const MusicSaveBottomSheet = ({
           )}
         </div>
       </div>
-    </BottomSheet>
+    </Modal>
   )
 }
 
-export default MusicSaveBottomSheet
+export default MusicSaveModal
