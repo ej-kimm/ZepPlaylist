@@ -1,5 +1,7 @@
 import close from '@/assets/images/close.svg'
+import { useAddPlaylist, useUpdatePlaylist } from '@/hooks/usePlaylists'
 import useScrollLock from '@/hooks/useScrollLock'
+import { userStore } from '@/store/userSlice'
 import Image from 'next/image'
 import { useState } from 'react'
 import KeywordCarousel from './KeywordCarousel'
@@ -9,7 +11,10 @@ type PlaylistModalProps = {
   modalType: 'add' | 'edit' | null
   isOpen: boolean
   onClose: () => void
-}
+} & ( // edit일 때만 selectedPlaylistId 필수
+  | { modalType: 'add' | null; selectedPlaylistId?: undefined }
+  | { modalType: 'edit'; selectedPlaylistId: string }
+)
 
 type Playlist = {
   title: string
@@ -20,6 +25,7 @@ type Playlist = {
 
 export default function PlaylistModal({
   modalType,
+  selectedPlaylistId,
   isOpen,
   onClose,
 }: PlaylistModalProps) {
@@ -29,6 +35,9 @@ export default function PlaylistModal({
     isPublic: false,
     selectedKeywords: [],
   })
+  const { user } = userStore()
+  const addPlaylistMutation = useAddPlaylist(() => onClose())
+  const updatePlaylistMutation = useUpdatePlaylist(() => onClose())
   useScrollLock(isOpen)
 
   const toggleKeyword = (keyword: string) => {
@@ -54,7 +63,25 @@ export default function PlaylistModal({
   }
 
   const handleSubmit = () => {
-    // TODO : 현준님코드 분리하면 로직 추가해야함
+    if (modalType === 'add') {
+      addPlaylistMutation.mutate({
+        name: playlist.title,
+        description: playlist.description,
+        is_public: playlist.isPublic,
+        keyword: playlist.selectedKeywords.join(','),
+        user_id: user?.id || '',
+      })
+    } else if (modalType === 'edit' && selectedPlaylistId) {
+      updatePlaylistMutation.mutate({
+        id: selectedPlaylistId,
+        updatedData: {
+          name: playlist.title,
+          description: playlist.description,
+          is_public: playlist.isPublic,
+          keyword: playlist.selectedKeywords.join(','),
+        },
+      })
+    }
   }
 
   return (
