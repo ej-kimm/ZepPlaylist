@@ -14,7 +14,6 @@ export default function MainContainer({ children }: MainContainerProps) {
   const { isPlayerOpen } = useMusicPlayerStore()
 
   const isHomePage = pathname === '/'
-  const isCommunityDetail = /^\/community\/[^/]+$/.test(pathname)
 
   return (
     <main
@@ -23,7 +22,6 @@ export default function MainContainer({ children }: MainContainerProps) {
         'desktop:bg-transparent desktop:p-0 desktop:pt-navBar-desktop',
         isHomePage ? 'pr-0 desktop:max-w-[1186px]' : 'desktop:max-w-[1200px]',
         isPlayerOpen ? 'pb-player desktop:pb-player-desktop' : '',
-        isCommunityDetail ? 'pb-32' : '',
       )}
     >
       {children}
