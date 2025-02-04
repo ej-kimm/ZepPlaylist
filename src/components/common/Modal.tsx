@@ -76,7 +76,7 @@ const Modal: React.FC<ModalProps> = ({
         )}
       >
         <h2 className="title-1 mb-2 text-left">{title}</h2>
-        <div className="button-1 text-left text-[#4A4A4A]">{content}</div>
+        <p className="button-1 text-left text-[#4A4A4A]">{content}</p>
       </div>
       {children}
       {renderButtons()}

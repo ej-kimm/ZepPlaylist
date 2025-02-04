@@ -1,9 +1,8 @@
 'use client'
 
 import moreButton from '@/assets/images/moreButton.svg'
-import { MusicSaveBottomSheet } from '@/components/common'
-
-import WebVerMusicSaveModal from '@/components/common/WebVerMusicSaveModal'
+import { MusicSaveBottomSheet, MusicSaveModal } from '@/components/common'
+import useIsDesktop from '@/hooks/useIsDesktop'
 import { usePlaylistMusicUpsert } from '@/hooks/usePlaylistMusicUpsert'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import type { Charts, SpotifyTrack } from '@/types/billboradCharts'
@@ -21,17 +20,18 @@ const Top100ChartList = ({ top100Chart }: Top100ChartListProps) => {
     useMusicPlayerStore()
   const { upsertMusic } = usePlaylistMusicUpsert()
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState<boolean>(false)
-  const [selectedSong, setSelectedSong] = useState<Charts>()
-  // const isDesktop = useIsDesktop()
+
+  const [selectedSong, setSelectedSong] = useState<SpotifyTrack>()
+  const isDesktop = useIsDesktop()
 
   const handlePlayBtn = async (newMusicData: SpotifyTrack) => {
     await upsertMusic(newMusicData)
     if (!isPlayerOpen) setPlayerOpen()
-    setTrackIds(newMusicData.id)
+    setTrackIds(newMusicData!.spotify_id)
     play()
   }
 
-  const handleMoreButtonClick = (song: Charts) => {
+  const handleMoreButtonClick = (song: SpotifyTrack) => {
     setSelectedSong(song)
     setIsBottomSheetOpen(true)
   }
@@ -49,12 +49,12 @@ const Top100ChartList = ({ top100Chart }: Top100ChartListProps) => {
               className="items-centerspace-x-2 flex w-full cursor-pointer gap-2 transition-colors"
               onClick={() =>
                 handlePlayBtn({
-                  id: chart.spotify_id,
+                  spotify_id: chart.spotify_id,
                   title: chart.title,
                   artist: chart.artist,
-                  playTime: chart.play_time,
-                  albumCover: chart.album_cover,
-                  albumName: chart.album_name,
+                  play_time: chart.play_time,
+                  album_cover: chart.album_cover,
+                  album_name: chart.album_name,
                 })
               }
             >
@@ -90,26 +90,27 @@ const Top100ChartList = ({ top100Chart }: Top100ChartListProps) => {
                 alt="More Options"
                 width={24}
                 height={24}
-                className={clsx('desktop:hidden block')}
-              />
-              <WebVerMusicSaveModal
-                musicName={chart.title}
-                artistName={chart.artist}
-                musicData={selectedSong!}
-                handleClose={() => setIsBottomSheetOpen(false)}
+                className={clsx('block desktop:hidden')}
               />
             </button>
           </li>
         ))}
       </ul>
-      {selectedSong && (
-        <MusicSaveBottomSheet
-          isOpen={isBottomSheetOpen}
-          handleClose={() => setIsBottomSheetOpen(false)}
-          musicName={selectedSong!.title}
-          artistName={selectedSong!.artist}
-        />
-      )}
+
+      {selectedSong &&
+        (isDesktop ? (
+          <MusicSaveModal
+            isOpen={isBottomSheetOpen}
+            handleClose={() => setIsBottomSheetOpen(false)}
+            musicData={selectedSong}
+          />
+        ) : (
+          <MusicSaveBottomSheet
+            isOpen={isBottomSheetOpen}
+            handleClose={() => setIsBottomSheetOpen(false)}
+            musicData={selectedSong}
+          />
+        ))}
     </>
   )
 }

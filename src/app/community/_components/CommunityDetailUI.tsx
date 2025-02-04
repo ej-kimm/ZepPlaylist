@@ -485,10 +485,9 @@ export default function CommunityDetailUI({
 
       {selectedSong && (
         <MusicSaveBottomSheet
-          musicName={selectedSong.title}
-          artistName={selectedSong.artist}
           isOpen={isBottomSheetOpen}
           handleClose={() => setIsBottomSheetOpen(false)}
+          musicData={selectedSong}
         />
       )}
     </div>
