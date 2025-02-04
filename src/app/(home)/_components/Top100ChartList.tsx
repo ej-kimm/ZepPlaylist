@@ -2,9 +2,12 @@
 
 import moreButton from '@/assets/images/moreButton.svg'
 import { MusicSaveBottomSheet } from '@/components/common'
+import WebVerMusicSaveButtomUi from '@/components/common/WebVerMusicSaveButtomUi'
+import useIsDesktop from '@/hooks/useIsDesktop'
 import { usePlaylistMusicUpsert } from '@/hooks/usePlaylistMusicUpsert'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import type { Charts, SpotifyTrack } from '@/types/billboradCharts'
+import clsx from 'clsx'
 import Image from 'next/image'
 import { useState } from 'react'
 import Top100ChartDesktopHeader from './Top100ChartDesktopHeader'
@@ -19,6 +22,7 @@ const Top100ChartList = ({ top100Chart }: Top100ChartListProps) => {
   const { upsertMusic } = usePlaylistMusicUpsert()
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState<boolean>(false)
   const [selectedSong, setSelectedSong] = useState<Charts>()
+  const isDesktop = useIsDesktop()
 
   const handlePlayBtn = async (newMusicData: SpotifyTrack) => {
     await upsertMusic(newMusicData)
@@ -50,6 +54,7 @@ const Top100ChartList = ({ top100Chart }: Top100ChartListProps) => {
                   artist: chart.artist,
                   playTime: chart.play_time,
                   albumCover: chart.album_cover,
+                  albumName: chart.album_name,
                 })
               }
             >
@@ -85,12 +90,17 @@ const Top100ChartList = ({ top100Chart }: Top100ChartListProps) => {
                 alt="More Options"
                 width={24}
                 height={24}
+                className={clsx('desktop:hidden block')}
+              />
+              <WebVerMusicSaveButtomUi
+                musicName={chart.title}
+                artistName={chart.artist}
               />
             </button>
           </li>
         ))}
       </ul>
-      {selectedSong && (
+      {selectedSong && !isDesktop && (
         <MusicSaveBottomSheet
           isOpen={isBottomSheetOpen}
           handleClose={() => setIsBottomSheetOpen(false)}
