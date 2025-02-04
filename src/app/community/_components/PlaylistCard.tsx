@@ -12,7 +12,7 @@ export type PlaylistCardProps = {
     name: string
     likeCount: number
     likedByUser?: boolean
-    profileImg: string | StaticImageData
+    profile_img: string | StaticImageData
     nickName: string
   }
   userId: string | null
@@ -50,7 +50,7 @@ const PlaylistCard = ({ playlist, userId }: PlaylistCardProps) => {
   return (
     <>
       <PlaylistUI
-        profileImg={playlist.profileImg}
+        profileImg={playlist.profile_img}
         playlistName={playlist.name}
         nickName={playlist.nickName}
         likeCount={playlist.likeCount + (isLiked ? 1 : 0)}

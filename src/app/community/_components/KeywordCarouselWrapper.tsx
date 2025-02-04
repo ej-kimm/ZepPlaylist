@@ -2,20 +2,12 @@
 
 import PlaylistSection from '@/app/community/_components/PlaylistSection'
 import { KeywordCarousel } from '@/components/common'
+import type { CommunityPlaylist } from '@/types/communityPlaylists'
+import clsx from 'clsx'
 import { useState } from 'react'
 
-type Playlist = {
-  id: string
-  name: string
-  likedByUser?: boolean
-  profile_image: string | null
-  nickname: string | null
-  keyword: string
-  likeCount: number
-}
-
 type KeywordCarouselWrapperProps = {
-  allPlaylists: Playlist[]
+  allPlaylists: CommunityPlaylist[]
   userId: string
 }
 
@@ -25,7 +17,7 @@ const KeywordCarouselWrapper = ({
 }: KeywordCarouselWrapperProps) => {
   const [selectedKeywords, setSelectedKeywords] = useState<string[]>([])
   const [filteredPlaylists, setFilteredPlaylists] =
-    useState<Playlist[]>(allPlaylists)
+    useState<CommunityPlaylist[]>(allPlaylists)
 
   const handleToggleKeyword = (keyword: string) => {
     const updatedKeywords = selectedKeywords.includes(keyword)
@@ -49,7 +41,14 @@ const KeywordCarouselWrapper = ({
 
   return (
     <div>
-      <h1 className="title-1 mt-4">플레이리스트</h1>
+      <h1
+        className={clsx(
+          'title-1 mt-4',
+          'desktop:headline-1 desktop:mb-10 desktop:mt-20',
+        )}
+      >
+        플레이리스트
+      </h1>
       <KeywordCarousel
         selectedKeywords={selectedKeywords}
         onToggleKeyword={handleToggleKeyword}

@@ -55,7 +55,18 @@ export const getCommunityComments = async (
 
   const { data, error } = await supabase
     .from('comments')
-    .select('*')
+    .select(
+      `
+      id,
+      created_at,
+      content,
+      user_id,
+      users:user_id (
+        profile_image,
+        nickname
+      )
+    `,
+    )
     .eq('playlist_id', playlistId)
     .order('created_at', { ascending: true })
 
@@ -64,7 +75,13 @@ export const getCommunityComments = async (
     throw new Error('댓글 데이터를 가져오는 데 실패했습니다.')
   }
 
-  return data || []
+  const commentsWithUserInfo = data.map((comment) => ({
+    ...comment,
+    profile_image: comment.users?.profile_image || null,
+    nickname: comment.users?.nickname || 'Anonymous',
+  }))
+
+  return commentsWithUserInfo
 }
 
 export const getCommunityDetail = async (
@@ -117,49 +134,5 @@ export const getCommunityDetail = async (
     profileImage: user.profile_image,
     nickname: user.nickname,
     isLiked,
-  }
-}
-
-export const togglePlaylistLike = async (
-  playlistId: string,
-  userId: string,
-) => {
-  const supabase = createClient<Database>(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-  )
-
-  const { data: existingLike, error: fetchError } = await supabase
-    .from('playlist_like')
-    .select('*')
-    .eq('playlist_id', playlistId)
-    .eq('user_id', userId)
-    .single()
-
-  if (fetchError && fetchError.code !== 'PGRST116') {
-    console.error('Error fetching like:', fetchError.message)
-    throw new Error(fetchError.message)
-  }
-
-  if (existingLike) {
-    const { error: deleteError } = await supabase
-      .from('playlist_like')
-      .delete()
-      .eq('playlist_id', playlistId)
-      .eq('user_id', userId)
-
-    if (deleteError) {
-      console.error('Error removing like:', deleteError.message)
-      throw new Error(deleteError.message)
-    }
-  } else {
-    const { error: insertError } = await supabase
-      .from('playlist_like')
-      .insert({ playlist_id: playlistId, user_id: userId })
-
-    if (insertError) {
-      console.error('Error adding like:', insertError.message)
-      throw new Error(insertError.message)
-    }
   }
 }
