@@ -3,6 +3,7 @@
 import ChevronDownXL from '@/assets/images/Chevron_Down_XL.svg'
 import ChevronUpXL from '@/assets/images/Chevron_Up_XL.svg'
 import commentSubmitButton from '@/assets/images/commentSubmit.svg'
+import CommunityWebCircle from '@/assets/images/communityWebCircle.svg'
 import defaultProfileImg from '@/assets/images/defaultProfileImg.png'
 import likeFalse from '@/assets/images/likeFalse.svg'
 import likeTrue from '@/assets/images/likeTrue.svg'
@@ -100,13 +101,13 @@ export default function CommunityDetailUI({
     <div
       className={clsx(
         'flex flex-col',
-        'desktop:flex-row desktop:items-start desktop:gap-8',
+        'desktop:flex-row desktop:items-start desktop:gap-20',
       )}
     >
       {/* 노래 목록 섹션 (60%) */}
       <div className={clsx('flex-1', 'desktop:max-w-[60%]')}>
-        {/* 상단 정보 */}
-        <div>
+        {/* 상단 정보 (모바일) */}
+        <div className="desktop:hidden">
           <div className="flex w-full items-center justify-between">
             <h1 className="title-1 mb-2 mt-2">{playlistName}</h1>
             <button onClick={onLikeToggle} className="mb-2 mt-2 h-6 w-6">
@@ -129,23 +130,64 @@ export default function CommunityDetailUI({
                 alt="프로필 이미지"
                 width={24}
                 height={24}
-                className="object-contain"
+                className="object-cover h-full w-full"
               />
             </div>
             <span className="caption-2">{nickname}</span>
           </div>
         </div>
 
+        {/* 상단 정보 (PC) */}
+        <div className="hidden desktop:block">
+          <div className="flex w-full items-center justify-between">
+            <h1 className="headline-1 mt-12">
+              {playlistName}
+            </h1>
+            <button onClick={onLikeToggle} className="mt-12 h-8 w-8">
+              <Image
+                src={isLiked ? likeTrue : likeFalse}
+                alt="Like Button"
+                width={24}
+                height={24}
+              />
+            </button>
+          </div>
+          <p className="caption-3 mt-3">
+            {description || '설명이 없습니다.'}
+          </p>
+          <div className="flex items-center gap-3">
+            <div
+              className="flex-shrink-0 overflow-hidden rounded-full mt-3 mb-10"
+              style={{ width: '36px', height: '36px' }} // PC에서 프로필 이미지 크기 증가
+            >
+              <Image
+                src={profileImage || defaultProfileImg}
+                alt="프로필 이미지"
+                width={36}
+                height={36}
+                className="object-cover h-full w-full"
+              />
+            </div>
+            <span className="caption-1 mt-3 mb-10">
+              {nickname}
+            </span>
+          </div>
+        </div>
+
         {/* 노래 목록 */}
         <div className="flex flex-col">
-          <ul className="mb-12 mt-4">
+          <ul className="mb-12">
             {songs.length > 0 ? (
               songs.map((song, index) => (
                 <li
                   key={song.spotify_id}
-                  className="flex items-center justify-between py-4"
+                  className={clsx(
+                    'flex items-center justify-between py-4',
+                    'desktop:hidden', // PC에서는 모바일 버전 숨김
+                  )}
                   onClick={() => handlePlayFromIndex(index)}
                 >
+                  {/* 모바일 버전 (기존 코드 유지) */}
                   <div className="flex items-center">
                     <div className="relative h-12 w-12">
                       <Image
@@ -180,6 +222,57 @@ export default function CommunityDetailUI({
             ) : (
               <p className="text-gray-500">노래 정보가 없습니다.</p>
             )}
+
+            {/* PC 버전 추가 */}
+            {songs.length > 0 &&
+              songs.map((song, index) => (
+                <li
+                  key={`pc-${song.spotify_id}`}
+                  className={clsx(
+                    'hidden items-center justify-between py-4',
+                    'desktop:flex', // PC에서만 표시
+                  )}
+                  onClick={() => handlePlayFromIndex(index)}
+                >
+                  {/* 앨범 커버 */}
+                  <div className="relative h-[54px] w-[54px] flex-shrink-0">
+                    <Image
+                      src={song.album_cover || '이미지가 없습니다.'}
+                      alt={`${song.title} 앨범 커버`}
+                      layout="fill"
+                      objectFit="cover"
+                      className="rounded"
+                    />
+                  </div>
+
+                  {/* 텍스트 정보 (가로 배치) */}
+                  <div className="ml-6 flex flex-1 items-center justify-between">
+                    <div className="flex-1">
+                      <p className="body-2">{song.title}</p>
+                    </div>
+                    <p className="caption-1">{song.artist}</p>
+                    <p className="mx-8 flex-1 caption-1">
+                      {song.album_name}
+                    </p>
+                  </div>
+
+                  {/* 커뮤니티 웹 서클 아이콘 */}
+                  <button
+                    className="h-9 w-9 flex-shrink-0"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      handleMoreButtonClick(song)
+                    }}
+                  >
+                    <Image
+                      src={CommunityWebCircle}
+                      alt="More Options"
+                      width={36}
+                      height={36}
+                    />
+                  </button>
+                </li>
+              ))}
           </ul>
         </div>
       </div>
@@ -209,7 +302,7 @@ export default function CommunityDetailUI({
                       alt="프로필"
                       width={32}
                       height={32}
-                      className="object-cover"
+                      className="object-cover h-full w-full"
                     />
                   </div>
                   <div className="flex-1">
