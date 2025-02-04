@@ -161,7 +161,7 @@ const SignupForm = () => {
         }
         onCancel={handleCloseModal}
         type="none"
-        className={clsx('desktop:w-full')}
+        className={clsx('desktop:h-[580px] desktop:w-[550px]')}
       />
     </form>
   )

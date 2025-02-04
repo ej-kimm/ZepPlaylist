@@ -59,14 +59,14 @@ const Service = ({ isChecked, handleCheckboxChange }: Props) => {
       <div className="flex">
         <input
           type="checkbox"
-          className="mr-2 h-5 w-5 cursor-auto rounded border-gray-300 accent-primary desktop:ml-[35%]"
+          className="ml-[20%] mr-2 h-5 w-5 cursor-auto rounded border-gray-300 accent-primary desktop:ml-[35%]"
           onChange={handleCheckboxChange}
           checked={isChecked}
         />
         <span className="caption-1">서비스 정책 이용약관 동의</span>
       </div>
     </div>
-  )
+  ) 
 }
 
 export default Service
