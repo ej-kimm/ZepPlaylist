@@ -24,16 +24,15 @@ const MusicSaveModal = ({
 }: MusicSaveModalProps) => {
   const { user } = userStore()
   const { playlists, isPending } = usePlaylistOperations()
-  const { searchSpotifyId } = useSpotifySearch()
   const { upsertMusic, addMusicToPlaylistTable } = usePlaylistMusicUpsert()
   const { closePlayerModal } = useMusicPlayerStore()
+  const { searchSpotifyId } = useSpotifySearch()
   useScrollLock(isOpen)
 
   // 특정 플레이리스트 목록을 동작하는 함수
   const addMusiscInPlayList = async (playlistId: string) => {
     try {
       const musicData = await searchSpotifyId(musicName, artistName)
-
       // spubase music 테이블에 곡 담아주는 함수 호출
       const musicId = await upsertMusic(musicData!)
 
@@ -85,7 +84,7 @@ const MusicSaveModal = ({
               <Skeleton height="16px" className="flex-grow" />
             </div>
           ) : (
-            <ul className="scroll-invisible h-full max-h-[calc(50vh-204px)] space-y-[23px] overflow-y-scroll bg-white">
+            <ul className="scroll-invisible h-full max-h-[280px] space-y-[23px] overflow-y-scroll bg-white">
               {playlists.map((playlist) => (
                 <li
                   key={playlist.id}

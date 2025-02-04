@@ -28,3 +28,14 @@ export type Charts = {
   album_cover: string
   album_name?: string | null
 }
+
+export type MusicSaveModalType = {
+  spotify_id: string
+  title: string
+  artist: string
+  album_cover: string | null
+  album_name?: string | null
+  lyrics?: string | null
+  play_time?: number | null
+  created_at?: string
+}
