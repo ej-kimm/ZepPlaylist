@@ -8,6 +8,7 @@ import { Modal } from '@/components/common'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import { PlaylistDetails } from '@/types/song'
 import { useCallback, useEffect, useState } from 'react'
+import PlaylistDetailDesktop from './PlaylistDetailDesktop'
 import PlaylistDetailUI from './PlaylistDetailUI'
 
 export default function PlaylistDetailsComponent({
@@ -29,6 +30,16 @@ export default function PlaylistDetailsComponent({
     onConfirm: () => {},
     onCancel: () => setModalProps((prev) => ({ ...prev, isOpen: false })),
   })
+
+  const [isDesktop, setIsDesktop] = useState<boolean>(false)
+
+  useEffect(() => {
+    const handleResize = () => setIsDesktop(window.innerWidth >= 720)
+    setIsDesktop(window.innerWidth >= 720)
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
   const toggleDropdown = (songId: string) => {
     setDropdownOpen((prev) => (prev === songId ? null : songId))
   }
@@ -138,15 +149,26 @@ export default function PlaylistDetailsComponent({
 
   return (
     <>
-      <PlaylistDetailUI
-        playlistDetails={playlistDetails}
-        handlePlayAll={handlePlayAll}
-        handleShufflePlay={handleShufflePlay}
-        handlePlayFromIndex={handlePlayFromIndex}
-        showDropdown={dropdownOpen}
-        toggleDropdown={toggleDropdown}
-        handleDeleteSong={handleDeleteConfirmation}
-      />
+      {isDesktop ? (
+        <PlaylistDetailDesktop
+          playlistDetails={playlistDetails}
+          handlePlayAll={handlePlayAll}
+          handleShufflePlay={handleShufflePlay}
+          handlePlayFromIndex={handlePlayFromIndex}
+          handleDeleteSong={handleDeleteConfirmation}
+        />
+      ) : (
+        <PlaylistDetailUI
+          playlistDetails={playlistDetails}
+          handlePlayAll={handlePlayAll}
+          handleShufflePlay={handleShufflePlay}
+          handlePlayFromIndex={handlePlayFromIndex}
+          showDropdown={dropdownOpen}
+          toggleDropdown={toggleDropdown}
+          handleDeleteSong={handleDeleteConfirmation}
+        />
+      )}
+
       <Modal
         isOpen={modalProps.isOpen}
         title={modalProps.title}
