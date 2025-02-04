@@ -1,7 +1,8 @@
 'use client'
 
 import moreButton from '@/assets/images/moreButton.svg'
-import { MusicSaveModal } from '@/components/common'
+import { MusicSaveBottomSheet, MusicSaveModal } from '@/components/common'
+import useIsDesktop from '@/hooks/useIsDesktop'
 import { usePlaylistMusicUpsert } from '@/hooks/usePlaylistMusicUpsert'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import type { Charts, SpotifyTrack } from '@/types/billboradCharts'
@@ -20,7 +21,7 @@ const Top100ChartList = ({ top100Chart }: Top100ChartListProps) => {
   const { upsertMusic } = usePlaylistMusicUpsert()
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState<boolean>(false)
   const [selectedSong, setSelectedSong] = useState<Charts>()
-  // const isDesktop = useIsDesktop()
+  const isDesktop = useIsDesktop()
 
   const handlePlayBtn = async (newMusicData: SpotifyTrack) => {
     await upsertMusic(newMusicData)
@@ -94,25 +95,22 @@ const Top100ChartList = ({ top100Chart }: Top100ChartListProps) => {
           </li>
         ))}
       </ul>
-      {
-        selectedSong && (
-          // (isDesktop ? (
+      {selectedSong &&
+        (isDesktop ? (
           <MusicSaveModal
             isOpen={isBottomSheetOpen}
             handleClose={() => setIsBottomSheetOpen(false)}
             musicName={selectedSong!.title}
             artistName={selectedSong!.artist}
           />
-        )
-        // ) : (
-        //   <MusicSaveBottomSheet
-        //     isOpen={isBottomSheetOpen}
-        //     handleClose={() => setIsBottomSheetOpen(false)}
-        //     musicName={selectedSong!.title}
-        //     artistName={selectedSong!.artist}
-        //   />
-        // ))
-      }
+        ) : (
+          <MusicSaveBottomSheet
+            isOpen={isBottomSheetOpen}
+            handleClose={() => setIsBottomSheetOpen(false)}
+            musicName={selectedSong!.title}
+            artistName={selectedSong!.artist}
+          />
+        ))}
     </>
   )
 }
