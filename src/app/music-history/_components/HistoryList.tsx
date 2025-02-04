@@ -53,7 +53,7 @@ const HistoryList = () => {
     <section className={clsx('my-3')}>
       <div className={clsx('flex flex-col gap-3')}>
         <HistoryListHeader
-          trackCount={historyTracks.length}
+          historyTracks={historyTracks}
           totalTime={totalTime}
         />
         {isDesktop ? (
