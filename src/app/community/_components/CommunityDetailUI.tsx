@@ -67,6 +67,7 @@ export default function CommunityDetailUI({
       return
     }
     await handleAddComment()
+    console.log('API Response:', comments);
   }
 
   const openDeleteModal = (commentId: string) => {
@@ -102,12 +103,8 @@ export default function CommunityDetailUI({
         'desktop:flex-row desktop:items-start desktop:gap-8',
       )}
     >
-      <div
-        className={clsx(
-          'flex-1',
-          'desktop:max-w-[60%]', // 데스크탑에서 60% 너비
-        )}
-      >
+      {/* 노래 목록 섹션 (60%) */}
+      <div className={clsx('flex-1', 'desktop:max-w-[60%]')}>
         {/* 상단 정보 */}
         <div>
           <div className="flex w-full items-center justify-between">
@@ -125,10 +122,7 @@ export default function CommunityDetailUI({
           <div className="flex items-center gap-2">
             <div
               className="flex-shrink-0 overflow-hidden rounded-full"
-              style={{
-                width: '24px',
-                height: '24px',
-              }}
+              style={{ width: '24px', height: '24px' }}
             >
               <Image
                 src={profileImage || defaultProfileImg}
@@ -144,7 +138,7 @@ export default function CommunityDetailUI({
 
         {/* 노래 목록 */}
         <div className="flex flex-col">
-          <ul className="mt-4">
+          <ul className="mb-12 mt-4">
             {songs.length > 0 ? (
               songs.map((song, index) => (
                 <li
@@ -190,16 +184,89 @@ export default function CommunityDetailUI({
         </div>
       </div>
 
-<div></div>
-      {/* 댓글 목록 섹션 */}
-      <div>
+      {/* 웹 전용 댓글 섹션 (40%) */}
+      <div
+        className={clsx(
+          'hidden desktop:block desktop:max-w-[40%] desktop:flex-1',
+          'desktop:sticky desktop:top-4 desktop:h-[calc(100vh-160px)]',
+        )}
+      >
+        <div className="flex h-full flex-col gap-4">
+          {/* 댓글 목록 */}
+          <div className="flex-1 overflow-y-auto">
+            <ul className="space-y-4">
+              {comments.map((comment) => (
+                <li key={comment.id} className="flex items-start gap-4 py-2">
+                  <div className="h-8 w-8 shrink-0 overflow-hidden rounded-full">
+                    <Image
+                      src={comment.users?.profile_image || defaultProfileImg}
+                      alt="프로필"
+                      width={32}
+                      height={32}
+                      className="object-cover"
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-sm font-medium">
+                        {comment.users?.nickname}:
+                      </span>
+                      <p className="flex-1 text-sm">{comment.content}</p>
+                      {currentUserId === comment.user_id && (
+                        <button
+                          onClick={() => openDeleteModal(comment.id)}
+                          className="text-gray-400 hover:text-red-500"
+                        >
+                          <TbTrash size={16} />
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* 웹 댓글 입력창 */}
+          <div className="sticky bottom-0 border-t bg-white pt-4">
+            <div className="flex items-center gap-2">
+              <input
+                type="text"
+                className="flex-1 rounded-lg border border-gray-200 px-4 py-2 text-sm focus:outline-none"
+                placeholder="댓글을 입력해주세요!"
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && content.trim().length > 0) {
+                    handleAddCommentWithRedirect()
+                  }
+                }}
+              />
+              <button
+                onClick={handleAddCommentWithRedirect}
+                className="ml-2 flex h-8 w-8 flex-shrink-0 items-center justify-center"
+                disabled={!content.trim().length}
+              >
+                <Image
+                  src={commentSubmitButton}
+                  alt="Submit Comment"
+                  width={36}
+                  height={36}
+                />
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* 모바일 댓글 섹션 */}
+      <div className="desktop:hidden">
         {isCommentVisible && (
           <div className="fixed bottom-28 left-0 right-0 z-10 h-[240px] w-full overflow-y-auto bg-gradient-to-t from-black/50 via-gray-800/30 to-white/10 p-4 shadow-lg backdrop-blur-[6px]">
-            {/* 댓글 숨기기 버튼 (우측 상단) */}
             <div className="relative h-8 w-full">
               <button
                 onClick={toggleCommentVisibility}
-                className="absolute right-3 top-1 flex h-8 w-8 items-center justify-center"
+                className="absolute right-1 top-1 flex h-8 w-8 items-center justify-center"
               >
                 <Image
                   src={ChevronDownXL}
@@ -217,18 +284,17 @@ export default function CommunityDetailUI({
                 >
                   <div className="h-8 w-8 flex-shrink-0 overflow-hidden rounded-full">
                     <Image
-                      src={comment.users.profile_image || defaultProfileImg}
-                      alt="작성자 프로필 이미지"
+                      src={comment.users?.profile_image || defaultProfileImg}
+                      alt="프로필"
                       width={32}
                       height={32}
                       className="h-full w-full object-cover"
                     />
                   </div>
-                  {/* 닉네임 & 내용 영역 */}
                   <div className="mt-1 flex-1">
                     <div className="flex items-baseline gap-2">
                       <span className="caption-1 text-sm font-medium text-white">
-                        {comment.users.nickname}:
+                        {comment.users?.nickname}:
                       </span>
                       <p className="caption-1 flex-1 text-sm text-white">
                         {comment.content}
@@ -236,7 +302,7 @@ export default function CommunityDetailUI({
                       {currentUserId === comment.user_id && (
                         <button
                           onClick={() => openDeleteModal(comment.id)}
-                          className="text-gray-400 hover:text-red-500"
+                          className="text-white mr-3"
                         >
                           <TbTrash size={16} />
                         </button>
@@ -249,13 +315,9 @@ export default function CommunityDetailUI({
           </div>
         )}
 
-        {/* 댓글 입력 섹션 */}
+        {/* 모바일 댓글 입력창 */}
         <div
-          className={`fixed bottom-12 left-0 right-0 z-10 h-16 w-full transition-all duration-300 ${
-            isCommentVisible
-              ? 'bg-black/50 backdrop-blur-[5px]'
-              : 'bg-black/50 backdrop-blur-[5px]'
-          } shadow-lg`}
+          className={`fixed bottom-12 left-0 right-0 z-10 h-16 w-full transition-all duration-300 ${isCommentVisible ? 'bg-black/50 backdrop-blur-[5px]' : 'bg-black/50 backdrop-blur-[5px]'} shadow-lg`}
         >
           <div className="flex items-center gap-2 p-2">
             <input
@@ -269,13 +331,13 @@ export default function CommunityDetailUI({
                   handleAddCommentWithRedirect()
                 }
               }}
-              disabled={!isCommentVisible} // 댓글 숨김 상태에서 입력창 비활성화
+              disabled={!isCommentVisible}
             />
-            {content.trim().length > 0 && (
+            {isCommentVisible && content.trim().length > 0 && (
               <button
                 onClick={handleAddCommentWithRedirect}
-                className="ml-2 flex h-8 w-8 flex-shrink-0 items-center justify-center"
-                disabled={!isCommentVisible} // 댓글 숨김 상태에서 제출 버튼 비활성화
+                className="ml-1 flex h-8 w-8 flex-shrink-0 items-center justify-center"
+                disabled={!isCommentVisible}
               >
                 <Image
                   src={commentSubmitButton}
@@ -285,7 +347,6 @@ export default function CommunityDetailUI({
                 />
               </button>
             )}
-            {/* 댓글 보이기 버튼 (댓글 숨김 상태일 때만 표시) */}
             {!isCommentVisible && (
               <button
                 onClick={toggleCommentVisibility}
@@ -303,7 +364,7 @@ export default function CommunityDetailUI({
         </div>
       </div>
 
-      {/* 댓글 삭제 모달 */}
+      {/* 모달 및 기타 요소 */}
       <Modal
         isOpen={isDeleteModalOpen}
         title="댓글 삭제"
