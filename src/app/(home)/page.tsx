@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import { Suspense } from 'react'
 import Charts from './_components/Charts'
 import LatestAlbums from './_components/LatestAlbums'
@@ -11,10 +12,17 @@ export default async function Home() {
       <Suspense fallback={<p>Loading...</p>}>
         <SearchBar />
       </Suspense>
-      <LatestAlbums />
-      <Charts />
-      <UserLikedSong />
-      <PopularPlayList />
+      <div
+        className={clsx(
+          'flex-col gap-5',
+          'desktop:gap-[120px] desktop:mt-[80px] desktop:mb-[85px] desktop:max-w-[1200px] flex',
+        )}
+      >
+        <LatestAlbums />
+        <Charts />
+        <UserLikedSong />
+        <PopularPlayList />
+      </div>
     </>
   )
 }

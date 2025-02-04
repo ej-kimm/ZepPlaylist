@@ -80,7 +80,7 @@ export default function PlaylistDetailUI({
         </button>
       </section>
 
-      <ul className="mt-6 space-y-2">
+      <ul className="mt-6">
         {songs.map((song, index) => (
           <PlaylistItem
             key={song.spotify_id}

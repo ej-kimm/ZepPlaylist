@@ -46,52 +46,50 @@ export default function MusicDetailModal({
   }
 
   return (
-    <>
-      <section
+    <section
+      className={clsx(
+        'fixed bottom-0 left-0 z-player-modal h-navBar-calc w-full bg-white px-6 pb-5 transition-all duration-500 ease-out',
+        'desktop:flex desktop:h-navBar-desktop-calc desktop:items-center desktop:justify-center desktop:p-0',
+        isPlayerModalOpen
+          ? 'translate-y-0 desktop:bottom-[66px]'
+          : 'translate-y-full',
+      )}
+    >
+      <div
         className={clsx(
-          'fixed bottom-0 left-0 z-player-modal h-navBar-calc w-full bg-white px-6 pb-5 transition-all duration-500 ease-out',
-          'desktop:flex desktop:h-navBar-desktop-calc desktop:items-center desktop:justify-center desktop:p-0',
-          isPlayerModalOpen
-            ? 'translate-y-0 desktop:bottom-[66px]'
-            : 'translate-y-full',
+          'grid h-full w-full grid-cols-1 place-items-center',
+          'desktop:h-[533px] desktop:w-[1042px] desktop:grid-cols-2 desktop:bg-white',
         )}
       >
         <div
           className={clsx(
-            'grid h-full w-full grid-cols-1 place-items-center',
-            'desktop:h-[533px] desktop:w-[1042px] desktop:grid-cols-2 desktop:bg-white',
+            'flex h-full w-full flex-col items-center justify-between',
           )}
         >
-          <div
-            className={clsx(
-              'flex h-full w-full flex-col items-center justify-between',
-            )}
-          >
-            <header>
-              <h3 className="title-1 mb-2 text-center">{title}</h3>
-              <p className="caption-1 text-center">{artist}</p>
-            </header>
-            <ActionButtons
-              className="flex desktop:hidden"
-              ICON_SIZE={16}
-              onUserAction={onUserAction}
-            />
-            {!isFullLyrics && <AlbumCover musicDetail={musicDetail} />}
-          </div>
-          <Lyrics
-            lyrics={lyrics}
-            isFullLyrics={isFullLyrics}
-            onClickLyrics={handleClickLyrics}
-          />
-          <ProgressBar
-            url={url}
-            playerState={{ ready, played, duration }}
-            onSeek={onSeek}
+          <header>
+            <h3 className="title-1 mb-2 text-center">{title}</h3>
+            <p className="caption-1 text-center">{artist}</p>
+          </header>
+          <ActionButtons
             className="flex desktop:hidden"
+            ICON_SIZE={16}
+            onUserAction={onUserAction}
           />
-          <PlayerControls className="gap-10 desktop:hidden" ICON_SIZE={36} />
+          {!isFullLyrics && <AlbumCover musicDetail={musicDetail} />}
         </div>
-      </section>
-    </>
+        <Lyrics
+          lyrics={lyrics}
+          isFullLyrics={isFullLyrics}
+          onClickLyrics={handleClickLyrics}
+        />
+        <ProgressBar
+          url={url}
+          playerState={{ ready, played, duration }}
+          onSeek={onSeek}
+          className="flex desktop:hidden"
+        />
+        <PlayerControls className="gap-10 desktop:hidden" ICON_SIZE={36} />
+      </div>
+    </section>
   )
 }

@@ -61,7 +61,6 @@ const PlayerControls = ({ className, ICON_SIZE }: PlayerControlsProps) => {
           className={clsx(isLastTrack ? 'opacity-40' : 'opacity-100')}
         />
       </button>
-      {/* TODO : playlist 기능 만들어야함 */}
       {!isPlayerModalOpen && (
         <button type="button" className={clsx('desktop:hidden')}>
           <Image
@@ -70,7 +69,7 @@ const PlayerControls = ({ className, ICON_SIZE }: PlayerControlsProps) => {
             height={ICON_SIZE}
             alt="playlist"
             onClick={() => {
-              router.replace('/current-play')
+              router.push('/music-history')
             }}
           />
         </button>

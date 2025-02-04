@@ -1,4 +1,9 @@
-export { PrimaryButton, SecondaryButton, UnderLineButton } from './Button'
+export {
+  BorderButton,
+  PrimaryButton,
+  SecondaryButton,
+  UnderLineButton,
+} from './Button'
 export { default as ClientSwiper } from './ClientSwiper'
 export { default as InputBox } from './InputBox'
 export { default as KeywordCarousel } from './KeywordCarousel'

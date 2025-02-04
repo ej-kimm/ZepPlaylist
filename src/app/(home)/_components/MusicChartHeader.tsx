@@ -5,6 +5,7 @@ import whitePlay from '@/assets/images/whitePlay.svg'
 import { usePlaylistMusicUpsert } from '@/hooks/usePlaylistMusicUpsert'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import type { Charts } from '@/types/billboradCharts'
+import clsx from 'clsx'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -58,39 +59,70 @@ const MusicChartHeader = ({
 
   return (
     <>
-      <div className="flex items-center gap-3.5 self-stretch py-[10px]">
-        <Link href={'/koreaTopChart'}>
-          <p
-            className={`text-lg font-semibold ${isKoreaChart ? 'text-black' : 'text-gray-300'}`}
-          >
-            국내
-          </p>
-        </Link>
-        <Link href={'/billboardTopChart'}>
-          <p
-            className={`text-lg font-semibold ${!isKoreaChart ? 'text-black' : 'text-gray-300'}`}
-          >
-            빌보드
-          </p>
-        </Link>
-      </div>
-      <div className="mb-3 mt-4 flex items-center justify-between self-stretch">
-        <button
-          onClick={handlePlayAll}
-          className="flex w-[65px] items-center gap-1"
+      <div className={clsx('flex w-full flex-col gap-6', 'desktop: mt-10')}>
+        <p className={clsx('title-1', 'desktop:title-3')}>TOP 100</p>
+        <div
+          className={clsx(
+            'flex items-center gap-3.5 self-stretch',
+            'desktop: flex gap-[65px]',
+          )}
         >
-          <Image src={whitePlay} alt="전체 재생" width={16} height={16} />
-          <p className="text-xs font-normal">전체 재생</p>
-        </button>
-        <div className="mb-3 flex w-[150px] items-center gap-1">
-          <Image
-            src={clock}
-            alt="업데이트 시간"
-            width={16}
-            height={16}
-            style={{ flexShrink: 0 }}
-          />
-          <p className="text-xs">업데이트 시간 {currentHour}:00 </p>
+          <Link
+            href={'/koreaTopChart'}
+            // className={clsx('desktop: flex gap-[65px]')}
+          >
+            <p
+              className={clsx(
+                `title-2 ${isKoreaChart ? 'text-black' : 'text-gray-300'}`,
+                isKoreaChart && 'desktop:text-secondary',
+                'desktop: px-[10px] py-2',
+              )}
+            >
+              국내
+            </p>
+            <p
+              className={clsx(
+                isKoreaChart &&
+                  'desktop:border-b-[1px] desktop:border-secondary',
+              )}
+            ></p>
+          </Link>
+          <Link href={'/billboardTopChart'}>
+            <p
+              className={clsx(
+                `title-2 ${!isKoreaChart ? 'text-black' : 'text-gray-300'}`,
+                !isKoreaChart && 'desktop:text-secondary',
+                'desktop: px-[10px] py-2',
+              )}
+            >
+              빌보드
+            </p>
+            <p
+              className={clsx(
+                !isKoreaChart &&
+                  'desktop:border-b-[1px] desktop:border-secondary',
+              )}
+            ></p>
+          </Link>
+        </div>
+        <div className="mb-3 flex items-center justify-between self-stretch">
+          <button
+            onClick={handlePlayAll}
+            className="flex w-[65px] items-center gap-1"
+          >
+            <Image src={whitePlay} alt="전체 재생" width={16} height={16} />
+            <p className="text-xs font-normal">전체 재생</p>
+          </button>
+          <div className="mb-3 flex items-center gap-1">
+            <Image
+              src={clock}
+              alt="업데이트 시간"
+              width={16}
+              height={16}
+              style={{ flexShrink: 0 }}
+            />
+            <p className="text-xs">업데이트 시간 {currentHour}:00 </p>
+          </div>
         </div>
       </div>
     </>

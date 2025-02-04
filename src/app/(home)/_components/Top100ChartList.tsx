@@ -2,11 +2,15 @@
 
 import moreButton from '@/assets/images/moreButton.svg'
 import { MusicSaveBottomSheet } from '@/components/common'
+
+import WebVerMusicSaveModal from '@/components/common/WebVerMusicSaveModal'
 import { usePlaylistMusicUpsert } from '@/hooks/usePlaylistMusicUpsert'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import type { Charts, SpotifyTrack } from '@/types/billboradCharts'
+import clsx from 'clsx'
 import Image from 'next/image'
 import { useState } from 'react'
+import Top100ChartDesktopHeader from './Top100ChartDesktopHeader'
 
 type Top100ChartListProps = {
   top100Chart: Charts[]
@@ -18,6 +22,7 @@ const Top100ChartList = ({ top100Chart }: Top100ChartListProps) => {
   const { upsertMusic } = usePlaylistMusicUpsert()
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState<boolean>(false)
   const [selectedSong, setSelectedSong] = useState<Charts>()
+  // const isDesktop = useIsDesktop()
 
   const handlePlayBtn = async (newMusicData: SpotifyTrack) => {
     await upsertMusic(newMusicData)
@@ -33,14 +38,15 @@ const Top100ChartList = ({ top100Chart }: Top100ChartListProps) => {
 
   return (
     <>
-      <ul className="w-full space-y-2">
+      <Top100ChartDesktopHeader />
+      <ul className="flex w-full flex-col gap-2 space-y-2 pt-1">
         {top100Chart.map((chart, index) => (
           <li
-            className="flex flex-row items-center transition-shadow"
+            className="flex flex-row items-center gap-2 transition-shadow"
             key={chart.spotify_id}
           >
             <div
-              className="flex w-full cursor-pointer items-center space-x-2 py-2 pr-2 transition-colors"
+              className="items-centerspace-x-2 flex w-full cursor-pointer gap-2 transition-colors"
               onClick={() =>
                 handlePlayBtn({
                   id: chart.spotify_id,
@@ -48,10 +54,11 @@ const Top100ChartList = ({ top100Chart }: Top100ChartListProps) => {
                   artist: chart.artist,
                   playTime: chart.play_time,
                   albumCover: chart.album_cover,
+                  albumName: chart.album_name,
                 })
               }
             >
-              <p className="title-2">{index + 1}</p>
+              <p className="title-2 flex w-8 items-center">{index + 1}</p>
               <div className="relative flex-shrink-0">
                 <Image
                   src={chart.album_cover}
@@ -83,6 +90,13 @@ const Top100ChartList = ({ top100Chart }: Top100ChartListProps) => {
                 alt="More Options"
                 width={24}
                 height={24}
+                className={clsx('desktop:hidden block')}
+              />
+              <WebVerMusicSaveModal
+                musicName={chart.title}
+                artistName={chart.artist}
+                musicData={selectedSong!}
+                handleClose={() => setIsBottomSheetOpen(false)}
               />
             </button>
           </li>
