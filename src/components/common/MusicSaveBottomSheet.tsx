@@ -1,40 +1,41 @@
 'use client'
+import { useSpotifySearch } from '@/hooks/useGetSpotifyMusicId'
 import { usePlaylistMusicUpsert } from '@/hooks/usePlaylistMusicUpsert'
 import usePlaylistOperations from '@/hooks/usePlaylistOperations'
 import useScrollLock from '@/hooks/useScrollLock'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import { userStore } from '@/store/userSlice'
-import type { SpotifyTrack } from '@/types/billboradCharts'
 import Image from 'next/image'
 import Link from 'next/link'
 import BottomSheet from './BottomSheet'
 import Skeleton from './Skeleton'
 
 type MusicSaveBottomSheetProps = {
+  musicName: string
+  artistName: string
   isOpen: boolean
   handleClose: () => void
-  musicData: SpotifyTrack
 }
 
 const MusicSaveBottomSheet = ({
+  musicName,
+  artistName,
   isOpen,
   handleClose,
-  musicData,
 }: MusicSaveBottomSheetProps) => {
   const { user } = userStore()
   const { playlists, isPending } = usePlaylistOperations()
   const { upsertMusic, addMusicToPlaylistTable } = usePlaylistMusicUpsert()
   const { closePlayerModal } = useMusicPlayerStore()
+  const { searchSpotifyId } = useSpotifySearch()
   useScrollLock(isOpen)
 
   // 특정 플레이리스트 목록을 동작하는 함수
-  const addMusiscInPlayList = async (
-    playlistId: string,
-    musicData: SpotifyTrack,
-  ) => {
+  const addMusiscInPlayList = async (playlistId: string) => {
     try {
+      const musicData = await searchSpotifyId(musicName, artistName)
       // spubase music 테이블에 곡 담아주는 함수 호출
-      const musicId = await upsertMusic(musicData)
+      const musicId = await upsertMusic(musicData!)
 
       // spubase playlist_music 테이블에 곡 담아주는 함수 호출
       await addMusicToPlaylistTable(musicId as string, playlistId)
@@ -59,8 +60,8 @@ const MusicSaveBottomSheet = ({
       onClose={handleClose}
     >
       <header className="flex h-[88px] flex-col justify-center border-b border-opacity-60 px-4">
-        <h3 className="title-2 mb-2 truncate font-medium">{musicData.title}</h3>
-        <p className="body-2 truncate opacity-40">{musicData.artist}</p>
+        <h3 className="title-2 mb-2 truncate font-medium">{musicName}</h3>
+        <p className="body-2 truncate opacity-40">{artistName}</p>
       </header>
 
       <div className="flex flex-col">
@@ -92,7 +93,7 @@ const MusicSaveBottomSheet = ({
                 <li
                   key={playlist.id}
                   className="flex items-center gap-2"
-                  onClick={() => addMusiscInPlayList(playlist.id, musicData)}
+                  onClick={() => addMusiscInPlayList(playlist.id)}
                 >
                   {playlist.latest_song_cover ? (
                     <Image
