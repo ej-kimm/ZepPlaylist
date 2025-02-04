@@ -102,8 +102,7 @@ const Top100ChartList = ({ top100Chart }: Top100ChartListProps) => {
           <MusicSaveModal
             isOpen={isBottomSheetOpen}
             handleClose={() => setIsBottomSheetOpen(false)}
-            musicName={selectedSong!.title}
-            artistName={selectedSong!.artist}
+            musicData={selectedSong}
           />
         ) : (
           <MusicSaveBottomSheet

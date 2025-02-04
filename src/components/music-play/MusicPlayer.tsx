@@ -163,8 +163,7 @@ const MusicPlayer = () => {
         <MusicSaveModal
           isOpen={isSaved}
           handleClose={() => handleUserAction('save')}
-          musicName={musicDetail?.title || ''}
-          artistName={musicDetail?.artist || ''}
+          musicData={musicDetail!}
         />
       ) : (
         <MusicSaveBottomSheet
