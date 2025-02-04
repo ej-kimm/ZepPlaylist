@@ -25,7 +25,6 @@ export type LikedSong = {
     artist: string
     spotify_id: string
     play_time: number
-    album_title: string
   }
   created_at: string
 }
