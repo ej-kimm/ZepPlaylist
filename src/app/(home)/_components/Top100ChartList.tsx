@@ -103,7 +103,7 @@ const Top100ChartList = ({ top100Chart }: Top100ChartListProps) => {
           </li>
         ))}
       </ul>
-      {selectedSong && !isDesktop && (
+      {selectedSong && (
         <MusicSaveBottomSheet
           isOpen={isBottomSheetOpen}
           handleClose={() => setIsBottomSheetOpen(false)}
