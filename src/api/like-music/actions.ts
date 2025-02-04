@@ -36,7 +36,8 @@ export async function fetchLikedSongs() {
           title,
           album_cover,
           artist,
-          play_time
+          play_time,
+          album_name
         ),
         created_at,
         id
