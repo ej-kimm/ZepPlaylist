@@ -1,39 +1,40 @@
+import { useSpotifySearch } from '@/hooks/useGetSpotifyMusicId'
 import { usePlaylistMusicUpsert } from '@/hooks/usePlaylistMusicUpsert'
 import usePlaylistOperations from '@/hooks/usePlaylistOperations'
 import useScrollLock from '@/hooks/useScrollLock'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import { userStore } from '@/store/userSlice'
-import type { SpotifyTrack } from '@/types/billboradCharts'
 import Image from 'next/image'
 import Link from 'next/link'
 import Modal from './Modal'
 import Skeleton from './Skeleton'
 
 type MusicSaveModalProps = {
+  musicName: string
+  artistName: string
   isOpen: boolean
   handleClose: () => void
-  musicData: SpotifyTrack
 }
 
 const MusicSaveModal = ({
+  musicName,
+  artistName,
   isOpen,
   handleClose,
-  musicData,
 }: MusicSaveModalProps) => {
   const { user } = userStore()
   const { playlists, isPending } = usePlaylistOperations()
   const { upsertMusic, addMusicToPlaylistTable } = usePlaylistMusicUpsert()
   const { closePlayerModal } = useMusicPlayerStore()
+  const { searchSpotifyId } = useSpotifySearch()
   useScrollLock(isOpen)
 
   // 특정 플레이리스트 목록을 동작하는 함수
-  const addMusiscInPlayList = async (
-    playlistId: string,
-    musicData: SpotifyTrack,
-  ) => {
+  const addMusiscInPlayList = async (playlistId: string) => {
     try {
+      const musicData = await searchSpotifyId(musicName, artistName)
       // spubase music 테이블에 곡 담아주는 함수 호출
-      const musicId = await upsertMusic(musicData)
+      const musicId = await upsertMusic(musicData!)
 
       // spubase playlist_music 테이블에 곡 담아주는 함수 호출
       await addMusicToPlaylistTable(musicId as string, playlistId)
@@ -54,8 +55,8 @@ const MusicSaveModal = ({
     <Modal
       isOpen={isOpen}
       onCancel={handleClose}
-      title={musicData.title}
-      content={musicData.artist}
+      title={musicName}
+      content={artistName}
       type="none"
       className="desktop:w-[532px]"
     >
@@ -88,7 +89,7 @@ const MusicSaveModal = ({
                 <li
                   key={playlist.id}
                   className="flex items-center gap-2"
-                  onClick={() => addMusiscInPlayList(playlist.id, musicData)}
+                  onClick={() => addMusiscInPlayList(playlist.id)}
                 >
                   {playlist.latest_song_cover ? (
                     <Image

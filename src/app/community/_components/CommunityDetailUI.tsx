@@ -96,7 +96,7 @@ export default function CommunityDetailUI({
   const toggleCommentVisibility = () => {
     setIsCommentVisible((prev) => !prev)
   }
-
+  console.log(selectedSong)
   return (
     <div
       className={clsx(
@@ -477,7 +477,8 @@ export default function CommunityDetailUI({
         <MusicSaveBottomSheet
           isOpen={isBottomSheetOpen}
           handleClose={() => setIsBottomSheetOpen(false)}
-          musicData={selectedSong}
+          musicName={selectedSong.title}
+          artistName={selectedSong.artist}
         />
       )}
     </div>
