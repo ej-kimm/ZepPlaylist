@@ -39,9 +39,13 @@ const PlayList = () => {
     <div className="h-full w-full overflow-hidden">
       {playlists?.pages.map((page, pageIndex) => {
         return (
+          // 화면 사이즈가 늘어나면 이미지 크기 늘릴지
+          // 그냥 이상태에서 1056사이즈로 갈지지
+          // max-w 정정
+          // 이미지 크기 제한이 있어야함
           <div
             key={pageIndex}
-            className="gap-6 desktop:grid desktop:grid-cols-5 desktop:px-12"
+            className="desktop:mx-auto desktop:w-[1056px] gap-x-6 gap-y-10 desktop:grid desktop:grid-cols-3 desktop:place-items-center desktop-lg:grid-cols-5"
           >
             {page?.playlists.map((p) => {
               const isLiked = p.playlist_like.some(
