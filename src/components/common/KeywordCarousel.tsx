@@ -17,7 +17,7 @@ const KeywordCarousel = ({
   onToggleKeyword,
 }: KeywordCarouselProps) => {
   return (
-    <div className={clsx("mt-4 w-full", "desktop:mb-10")}>
+    <div className={clsx('mt-4 w-full', 'desktop:mb-10')}>
       <Swiper
         spaceBetween={8}
         slidesPerView="auto"
@@ -30,18 +30,19 @@ const KeywordCarousel = ({
           <SwiperSlide key={label} style={{ width: 'auto' }}>
             <button
               onClick={() => onToggleKeyword(label)}
-              className={`flex h-10 items-center justify-center rounded-full border px-3 ${
+              className={clsx(
+                'flex items-center justify-center rounded-full border',
+                'h-10 px-3 text-xs', // 기본 모바일 스타일
+                'desktop:h-12 desktop:px-4 desktop:text-sm', // PC 버전 스타일
                 selectedKeywords.includes(label)
                   ? 'border-[#9032E8] bg-[#9032E8] text-white'
-                  : 'border-[#9032E8] bg-white text-[#9032E8]'
-              }`}
+                  : 'border-[#9032E8] bg-white text-[#9032E8]',
+              )}
               style={{
-                fontSize: '12px',
-                padding: '6px 12px',
                 transition: 'all 0.3s ease',
               }}
             >
-              <span className="mr-2 text-base">{emoji}</span>{' '}
+              <span className="text-base desktop:text-xl">{emoji}</span>{' '}
               <span className="font-semibold">{label}</span>
             </button>
           </SwiperSlide>
