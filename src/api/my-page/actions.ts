@@ -24,16 +24,11 @@ export const updateProfile = async (
   return data
 }
 
-export const getPlaylists = async () => {
-  const { data: user, error: userError } = await supabase.auth.getUser()
-  if (userError) {
-    console.error(userError.message)
-    return
-  }
+export const getPlaylists = async (user_id: string) => {
   const { data: playlists, error } = await supabase
     .from('playlists')
     .select(`*, playlist_like(*), playlist_music(* , music(*)) `)
-    .eq('user_id', user.user!.id)
+    .eq('user_id', user_id)
   if (error) {
     console.error('error', error)
     throw error.message

@@ -1,14 +1,16 @@
 'use client'
+import { fetchPlaylistsWithCovers } from '@/api/playlist/actions'
 import ddd from '@/assets/images/ddd.png'
 import { PlaylistUI } from '@/components/common'
 import PlaylistDesktopUI from '@/components/common/PlaylistDesktop'
 import { usePlaylistQuery } from '@/hooks/usePlaylistQuery'
 import { useToggleLikeMutation } from '@/hooks/useToggleLikeMutation'
 import { userStore } from '@/store/userSlice'
+import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 import { useInView } from 'react-intersection-observer'
 import MyPageSkeleton from './MyPageSkeleton'
-const PlayList = () => {
+const MyPlayList = () => {
   const { user } = userStore()
   const router = useRouter()
   const {
@@ -19,6 +21,19 @@ const PlayList = () => {
     error,
     isLoading,
   } = usePlaylistQuery('user')
+  console.log('first', playlists)
+  const { data: playlists2 } = useQuery({
+    queryKey: ['playlists', user?.id],
+    queryFn: () => {
+      if (!user?.id) {
+        return Promise.reject('유저정보 확인 불가')
+      }
+      return fetchPlaylistsWithCovers()
+    },
+    enabled: !!user?.id,
+    staleTime: 0,
+  })
+  console.log('playlists2', playlists2)
 
   const toggleLike = useToggleLikeMutation()
   const { ref } = useInView({
@@ -39,13 +54,9 @@ const PlayList = () => {
     <div className="h-full w-full overflow-hidden">
       {playlists?.pages.map((page, pageIndex) => {
         return (
-          // 화면 사이즈가 늘어나면 이미지 크기 늘릴지
-          // 그냥 이상태에서 1056사이즈로 갈지지
-          // max-w 정정
-          // 이미지 크기 제한이 있어야함
           <div
             key={pageIndex}
-            className="desktop:mx-auto desktop:w-[1056px] gap-x-6 gap-y-10 desktop:grid desktop:grid-cols-3 desktop:place-items-center desktop-lg:grid-cols-5"
+            className="gap-x-6 gap-y-10 desktop:mx-auto desktop:grid desktop:h-full desktop:w-full desktop:grid-cols-5 desktop:place-items-center"
           >
             {page?.playlists.map((p) => {
               const isLiked = p.playlist_like.some(
@@ -104,4 +115,4 @@ const PlayList = () => {
   )
 }
 
-export default PlayList
+export default MyPlayList
