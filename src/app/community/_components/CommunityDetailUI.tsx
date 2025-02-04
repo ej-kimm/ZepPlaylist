@@ -67,7 +67,7 @@ export default function CommunityDetailUI({
       return
     }
     await handleAddComment()
-    console.log('API Response:', comments);
+    console.log('API Response:', comments)
   }
 
   const openDeleteModal = (commentId: string) => {
@@ -188,13 +188,19 @@ export default function CommunityDetailUI({
       <div
         className={clsx(
           'hidden desktop:block desktop:max-w-[40%] desktop:flex-1',
-          'desktop:sticky desktop:top-4 desktop:h-[calc(100vh-160px)]',
+          'desktop:sticky desktop:top-4 desktop:h-[calc(100vh-140px)]',
+          'relative', // 추가
         )}
       >
-        <div className="flex h-full flex-col gap-4">
+        {/* 블러 배경 레이어 */}
+        <div
+          className="absolute inset-0 z-0 bg-gradient-to-t from-black/70 via-gray-800/30 to-white/10 p-4 shadow-lg backdrop-blur-[6px]"
+          aria-hidden="true"
+        />
+        <div className="relative z-10 flex h-full flex-col gap-4 bg-transparent">
           {/* 댓글 목록 */}
-          <div className="flex-1 overflow-y-auto">
-            <ul className="space-y-4">
+          <div className="flex-1 overflow-y-auto [&>*]:bg-transparent">
+            <ul className="space-y-4 bg-transparent pl-4">
               {comments.map((comment) => (
                 <li key={comment.id} className="flex items-start gap-4 py-2">
                   <div className="h-8 w-8 shrink-0 overflow-hidden rounded-full">
@@ -208,16 +214,16 @@ export default function CommunityDetailUI({
                   </div>
                   <div className="flex-1">
                     <div className="flex items-baseline gap-2">
-                      <span className="text-sm font-medium">
+                      <span className="mt-1 text-sm font-medium">
                         {comment.users?.nickname}:
                       </span>
                       <p className="flex-1 text-sm">{comment.content}</p>
                       {currentUserId === comment.user_id && (
                         <button
                           onClick={() => openDeleteModal(comment.id)}
-                          className="text-gray-400 hover:text-red-500"
+                          className="hover:text-bold mr-4 text-gray-600"
                         >
-                          <TbTrash size={16} />
+                          <TbTrash size={18} />
                         </button>
                       )}
                     </div>
@@ -228,11 +234,11 @@ export default function CommunityDetailUI({
           </div>
 
           {/* 웹 댓글 입력창 */}
-          <div className="sticky bottom-0 border-t bg-white pt-4">
-            <div className="flex items-center gap-2">
+          <div className="sticky bottom-0 border-t border-white/20 bg-white/10 backdrop-blur-[6px]">
+            <div className="flex items-center px-4 py-4">
               <input
                 type="text"
-                className="flex-1 rounded-lg border border-gray-200 px-4 py-2 text-sm focus:outline-none"
+                className="flex-1 rounded-lg border border-white/20 bg-white px-4 py-2 text-sm text-black focus:outline-none"
                 placeholder="댓글을 입력해주세요!"
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
@@ -242,18 +248,19 @@ export default function CommunityDetailUI({
                   }
                 }}
               />
-              <button
-                onClick={handleAddCommentWithRedirect}
-                className="ml-2 flex h-8 w-8 flex-shrink-0 items-center justify-center"
-                disabled={!content.trim().length}
-              >
-                <Image
-                  src={commentSubmitButton}
-                  alt="Submit Comment"
-                  width={36}
-                  height={36}
-                />
-              </button>
+              {content.trim().length > 0 && (
+                <button
+                  onClick={handleAddCommentWithRedirect}
+                  className="ml-2 flex h-8 w-8 flex-shrink-0 items-center justify-center"
+                >
+                  <Image
+                    src={commentSubmitButton}
+                    alt="Submit Comment"
+                    width={36}
+                    height={36}
+                  />
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -302,7 +309,7 @@ export default function CommunityDetailUI({
                       {currentUserId === comment.user_id && (
                         <button
                           onClick={() => openDeleteModal(comment.id)}
-                          className="text-white mr-3"
+                          className="mr-3 text-white"
                         >
                           <TbTrash size={16} />
                         </button>
