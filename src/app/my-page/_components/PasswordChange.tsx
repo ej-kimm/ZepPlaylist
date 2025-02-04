@@ -21,10 +21,12 @@ const passwordChangeSchema = z
 
 type PasswordChangeForm = z.infer<typeof passwordChangeSchema>
 type PasswordChangeProps = {
-  setIsOpenPassword: React.Dispatch<React.SetStateAction<boolean>>
+  handleClosePasswordSheet: () => void
 }
 
-export const PasswordChange = ({ setIsOpenPassword }: PasswordChangeProps) => {
+export const PasswordChange = ({
+  handleClosePasswordSheet,
+}: PasswordChangeProps) => {
   const {
     register,
     handleSubmit,
@@ -37,6 +39,7 @@ export const PasswordChange = ({ setIsOpenPassword }: PasswordChangeProps) => {
     const { error: passwordChangeError } = await supabase.auth.updateUser({
       password: newPassword,
     })
+    handleClosePasswordSheet()
 
     if (passwordChangeError) {
       console.error(passwordChangeError.message)
@@ -50,8 +53,7 @@ export const PasswordChange = ({ setIsOpenPassword }: PasswordChangeProps) => {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="mt-10">
-      <h1 className="title-1 mb-7">비밀번호 변경</h1>
+    <form onSubmit={handleSubmit(onSubmit)} className="mt-10 w-full">
       <InputBox
         name="newPassword"
         type="password"
@@ -72,13 +74,7 @@ export const PasswordChange = ({ setIsOpenPassword }: PasswordChangeProps) => {
         required={true}
         className="caption-2 mb-9 w-full cursor-text rounded-lg border-white bg-[#f4f4f4] text-[16px]"
       />
-      <PrimaryButton
-        type="submit"
-        className={clsx('h-[39px]', 'desktop:w-[532px]')}
-        onClick={() => {
-          setIsOpenPassword(false)
-        }}
-      >
+      <PrimaryButton type="submit" className={clsx('h-[39px] w-full')}>
         확인
       </PrimaryButton>
     </form>
