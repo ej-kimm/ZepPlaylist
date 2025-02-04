@@ -1,9 +1,10 @@
 import PlaylistItem from '@/components/common/PlaylistItem'
+import type { Tables } from '@/types/supabase'
 import { useState } from 'react'
 import HistoryListNone from './HistoryListNone'
 
 interface HistoryListUIProps {
-  historyTracks: any[]
+  historyTracks: Tables<'music'>[]
   handlePlayFromIndex: (index: number) => void
   handleDeleteSong: (songId: string) => void
 }

@@ -1,9 +1,10 @@
 import Bean from '@/assets/images/Bin.svg'
 import TableList from '@/components/common/Tableilst'
+import type { Tables } from '@/types/supabase'
 import Image from 'next/image'
 
 interface HistoryListDesktopProps {
-  historyTracks: any[]
+  historyTracks: Tables<'music'>[]
   handlePlayFromIndex: (index: number) => void
   handleDeleteSong: (songId: string) => void
 }
