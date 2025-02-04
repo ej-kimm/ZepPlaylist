@@ -36,16 +36,17 @@ const SearchResultItem = ({
   const { upsertMusic } = usePlaylistMusicUpsert()
 
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState<boolean>(false)
-  const [selectedSong, setSelectedSong] = useState<SpotifyApi.TrackObjectFull>()
+  const [selectedSong, setSelectedSong] = useState<SpotifyTrack>()
+  console.log(selectedSong)
 
   const handlePlayBtn = async (newMusicData: SpotifyTrack) => {
     await upsertMusic(newMusicData)
     if (!isPlayerOpen) setPlayerOpen() // 페이지 방문 후, 첫 곡 재생이면 플레이어바 보여줌
-    setTrackIds(newMusicData.id)
+    setTrackIds(newMusicData!.spotify_id)
     play()
   }
 
-  const handleMoreButtonClick = (song: SpotifyApi.TrackObjectFull) => {
+  const handleMoreButtonClick = (song: SpotifyTrack) => {
     setSelectedSong(song)
     setIsBottomSheetOpen(true)
   }
@@ -81,12 +82,12 @@ const SearchResultItem = ({
                   className="flex-shrink-0 cursor-pointer"
                   onClick={() =>
                     handlePlayBtn({
-                      id: item.id,
+                      spotify_id: item.id,
                       title: item.name,
                       artist: item.artists[0].name,
-                      playTime: item.duration_ms,
-                      albumCover: item.album.images[0].url,
-                      albumName: item.album.name,
+                      play_time: item.duration_ms,
+                      album_cover: item.album.images[0].url,
+                      album_name: item.album.name,
                     })
                   }
                 >
@@ -103,12 +104,12 @@ const SearchResultItem = ({
                   className="flex min-w-0 flex-1 cursor-pointer flex-col gap-1"
                   onClick={() =>
                     handlePlayBtn({
-                      id: item.id,
+                      spotify_id: item.id,
                       title: item.name,
                       artist: item.artists[0].name,
-                      playTime: item.duration_ms,
-                      albumCover: item.album.images[0].url,
-                      albumName: item.album.name,
+                      play_time: item.duration_ms,
+                      album_cover: item.album.images[0].url,
+                      album_name: item.album.name,
                     })
                   }
                 >
@@ -121,7 +122,14 @@ const SearchResultItem = ({
                   type="button"
                   onClick={(e) => {
                     e.stopPropagation()
-                    handleMoreButtonClick(item)
+                    handleMoreButtonClick({
+                      spotify_id: item.id,
+                      title: item.name,
+                      artist: item.artists[0].name,
+                      play_time: item.duration_ms,
+                      album_cover: item.album.images[0].url,
+                      album_name: item.album.name,
+                    })
                   }}
                 >
                   <Image
@@ -139,8 +147,9 @@ const SearchResultItem = ({
           <MusicSaveBottomSheet
             isOpen={isBottomSheetOpen}
             handleClose={() => setIsBottomSheetOpen(false)}
-            musicName={selectedSong!.name}
-            artistName={selectedSong!.artists[0].name}
+            musicName={selectedSong!.title}
+            artistName={selectedSong!.artist}
+            musicData={selectedSong!}
           />
         )}
       </div>

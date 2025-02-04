@@ -187,7 +187,7 @@ export default function CommunityDetailUI({
       {/* 웹 전용 댓글 섹션 (40%) */}
       <div
         className={clsx(
-          'hidden desktop:block desktop:max-w-[40%] desktop:flex-1',
+          'desktop:block desktop:max-w-[40%] desktop:flex-1 hidden',
           'desktop:sticky desktop:top-4 desktop:h-[calc(100vh-160px)]',
         )}
       >
@@ -322,7 +322,7 @@ export default function CommunityDetailUI({
           <div className="flex items-center gap-2 p-2">
             <input
               type="text"
-              className="md:min-w-[120px] h-9 min-w-[50px] flex-1 rounded-lg border border-gray-200 bg-white px-4 text-sm focus:outline-none"
+              className="h-9 min-w-[50px] flex-1 rounded-lg border border-gray-200 bg-white px-4 text-sm focus:outline-none md:min-w-[120px]"
               placeholder="댓글을 입력해주세요!"
               value={content}
               onChange={(e) => setContent(e.target.value)}
@@ -389,6 +389,7 @@ export default function CommunityDetailUI({
           artistName={selectedSong.artist}
           isOpen={isBottomSheetOpen}
           handleClose={() => setIsBottomSheetOpen(false)}
+          musicData={selectedSong}
         />
       )}
     </div>
