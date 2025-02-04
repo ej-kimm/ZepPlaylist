@@ -28,9 +28,9 @@ export default function PlaylistList({
       <h2 className="title-2 flex h-[40px] items-center justify-start font-pretendard">
         내가 만든 플레이리스트
       </h2>
-      <ul className="mt-4 space-y-4">
+      <ul className="mt-4">
         <li
-          className="flex cursor-pointer items-center justify-start space-x-4"
+          className="flex cursor-pointer items-center justify-start space-x-4 pb-2"
           onClick={() => openModal('add')}
         >
           <div className="flex h-[44px] w-[44px] items-center justify-center rounded-lg bg-[#DFDFDF]">
@@ -40,7 +40,7 @@ export default function PlaylistList({
         </li>
 
         <li
-          className="flex cursor-pointer items-center justify-start space-x-4"
+          className="flex cursor-pointer items-center justify-start space-x-4 py-2"
           onClick={handleLikesClick}
         >
           <div

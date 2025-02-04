@@ -116,7 +116,8 @@ const MusicPlayer = () => {
           <MusicDetails musicDetail={musicDetail} />
           <div
             className={clsx(
-              'desktop:absolute desktop:left-1/2 desktop:top-1/2 desktop:w-[546px] desktop:-translate-x-1/2 desktop:-translate-y-1/2 desktop:bg-white',
+              'desktop:absolute desktop:left-1/2 desktop:top-1/2 desktop:w-[327px] desktop:-translate-x-1/2 desktop:-translate-y-1/2 desktop:bg-white',
+              'desktop-xl:w-[546px]',
             )}
           >
             <PlayerControls className="gap-2" ICON_SIZE={24} />
