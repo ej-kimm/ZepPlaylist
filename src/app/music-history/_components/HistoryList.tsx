@@ -44,7 +44,7 @@ const HistoryList = () => {
       localStorage.getItem(`${user?.id}-history-playlist`) || '[]',
     )
     setHistoryTracks(storedTracks)
-  }, [])
+  }, [user?.id])
 
   return (
     <section className={clsx('my-3')}>

@@ -79,7 +79,7 @@ const usePlayer = () => {
         )
       }
     }
-  }, [musicDetail?.musicDetail])
+  }, [musicDetail?.musicDetail, user?.id])
 
   return {
     musicDetail: musicDetail?.musicDetail,
