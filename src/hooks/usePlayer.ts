@@ -60,22 +60,20 @@ const usePlayer = () => {
   // 재생했던 목록들 session저장
   useEffect(() => {
     if (musicDetail?.musicDetail) {
+      // created_at, lyrics제외 저장
+      const { created_at, lyrics, ...rest } = musicDetail.musicDetail
+
       const storedMusicDetails = JSON.parse(
-        sessionStorage.getItem(`${user?.id}-history-playlist`) || '[]',
+        localStorage.getItem(`${user?.id}-history-playlist`) || '[]',
       )
-      const validation = storedMusicDetails.some(
-        (track: Tables<'music'>) =>
-          track.title === musicDetail.musicDetail.title,
+      const isAlreayStored = storedMusicDetails.some(
+        (track: Tables<'music'>) => track.title === rest.title,
       )
-      if (!validation) {
-        const updatedMusicDetails = [
-          musicDetail.musicDetail,
-          ...storedMusicDetails,
-        ]
-        if (updatedMusicDetails.length > 10) {
-          updatedMusicDetails.pop()
-        }
-        sessionStorage.setItem(
+
+      if (!isAlreayStored) {
+        const updatedMusicDetails = [rest, ...storedMusicDetails].slice(0, 20) // 최대 20개 까지만 저장
+
+        localStorage.setItem(
           `${user?.id}-history-playlist`,
           JSON.stringify(updatedMusicDetails),
         )

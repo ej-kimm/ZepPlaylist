@@ -32,7 +32,7 @@ const HistoryList = () => {
     const updatedTracks = historyTracks.filter(
       (track) => track.spotify_id !== songId,
     )
-    sessionStorage.setItem(
+    localStorage.setItem(
       `${user?.id}-history-playlist`,
       JSON.stringify(updatedTracks),
     )
@@ -41,7 +41,7 @@ const HistoryList = () => {
 
   useEffect(() => {
     const storedTracks = JSON.parse(
-      sessionStorage.getItem(`${user?.id}-history-playlist`) || '[]',
+      localStorage.getItem(`${user?.id}-history-playlist`) || '[]',
     )
     setHistoryTracks(storedTracks)
   }, [])
@@ -72,7 +72,7 @@ const HistoryList = () => {
               />
             ))
           ) : (
-            <p>최근 재생한 곡이 없습니다.</p>
+            <p className="button-1">최근 재생한 곡이 없습니다.</p>
           )}
         </ul>
       </div>
