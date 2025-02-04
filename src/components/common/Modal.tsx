@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import React from 'react'
 import ModalAnimation from '../animation/ModalAnimation'
 import { PrimaryButton, SecondaryButton } from './Button'
@@ -7,9 +8,10 @@ interface ModalProps {
   title: string
   content: string | JSX.Element
   type?: 'single' | 'vertical' | 'horizontal' | 'none'
+  className?: string
   onConfirm?: () => void
   onCancel: () => void
-  className?: string
+  children?: React.ReactNode
 }
 
 const Modal: React.FC<ModalProps> = ({
@@ -17,8 +19,10 @@ const Modal: React.FC<ModalProps> = ({
   title,
   content,
   type = 'single',
+  className,
   onConfirm,
   onCancel,
+  children,
 }) => {
   if (!isOpen) return null
 
@@ -64,11 +68,17 @@ const Modal: React.FC<ModalProps> = ({
   }
 
   return (
-    <ModalAnimation isOpen={isOpen} onClose={onCancel}>
-      <div className={`${type === 'horizontal' ? 'mb-6' : 'mb-4'}`}>
+    <ModalAnimation isOpen={isOpen} onClose={onCancel} className={className}>
+      <div
+        className={clsx(
+          'desktop:mb-7',
+          type === 'horizontal' ? 'mb-6' : 'mb-4',
+        )}
+      >
         <h2 className="title-1 mb-2 text-left">{title}</h2>
         <p className="button-1 text-left text-[#4A4A4A]">{content}</p>
       </div>
+      {children}
       {renderButtons()}
     </ModalAnimation>
   )
