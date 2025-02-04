@@ -33,7 +33,8 @@ export const getCommunitySongs = async (
         title,
         artist,
         album_cover,
-        play_time
+        play_time,
+        album_name
       )
     `,
     )
