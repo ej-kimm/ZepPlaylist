@@ -1,4 +1,3 @@
-'use client'
 import { useSpotifySearch } from '@/hooks/useGetSpotifyMusicId'
 import { usePlaylistMusicUpsert } from '@/hooks/usePlaylistMusicUpsert'
 import usePlaylistOperations from '@/hooks/usePlaylistOperations'
@@ -7,22 +6,22 @@ import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import { userStore } from '@/store/userSlice'
 import Image from 'next/image'
 import Link from 'next/link'
-import BottomSheet from './BottomSheet'
+import Modal from './Modal'
 import Skeleton from './Skeleton'
 
-type MusicSaveBottomSheetProps = {
+type MusicSaveModalProps = {
   musicName: string
   artistName: string
   isOpen: boolean
   handleClose: () => void
 }
 
-const MusicSaveBottomSheet = ({
+const MusicSaveModal = ({
   musicName,
   artistName,
   isOpen,
   handleClose,
-}: MusicSaveBottomSheetProps) => {
+}: MusicSaveModalProps) => {
   const { user } = userStore()
   const { playlists, isPending } = usePlaylistOperations()
   const { searchSpotifyId } = useSpotifySearch()
@@ -32,7 +31,6 @@ const MusicSaveBottomSheet = ({
 
   // 특정 플레이리스트 목록을 동작하는 함수
   const addMusiscInPlayList = async (playlistId: string) => {
-    console.log(musicName, artistName)
     try {
       const musicData = await searchSpotifyId(musicName, artistName)
 
@@ -55,23 +53,20 @@ const MusicSaveBottomSheet = ({
   }
 
   return (
-    <BottomSheet
-      height="auto"
-      maxWidth="100%"
+    <Modal
       isOpen={isOpen}
-      onClose={handleClose}
+      onCancel={handleClose}
+      title={musicName}
+      content={artistName}
+      type="none"
+      className="desktop:w-[532px]"
     >
-      <header className="flex h-[88px] flex-col justify-center border-b border-opacity-60 px-4">
-        <h3 className="title-2 mb-2 truncate font-medium">{musicName}</h3>
-        <p className="body-2 truncate opacity-40">{artistName}</p>
-      </header>
+      <div className="border-t border-black border-opacity-60">
+        <h2 className="body-2 py-3">플레이리스트 담기</h2>
 
-      <div className="flex flex-col">
-        <h1 className="my-3 text-base">플레이리스트 담기</h1>
-
-        <div className="h-full bg-white px-4">
+        <div className="h-full bg-white px-4 py-[26px]">
           <Link href="/playlist" onClick={handleCloseAllModals}>
-            <div className="mb-2 flex items-center gap-2">
+            <div className="mb-[23px] flex items-center gap-2">
               <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[#C4C4C4]">
                 <span className="font-pretendard text-lg text-white">+</span>
               </div>
@@ -80,7 +75,7 @@ const MusicSaveBottomSheet = ({
           </Link>
 
           {!user && isPending ? (
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-[23px]">
               <Skeleton
                 width="48px"
                 height="48px"
@@ -90,7 +85,7 @@ const MusicSaveBottomSheet = ({
               <Skeleton height="16px" className="flex-grow" />
             </div>
           ) : (
-            <ul className="scroll-invisible h-full max-h-[calc(50vh-204px)] space-y-2 overflow-y-scroll bg-white">
+            <ul className="scroll-invisible h-full max-h-[calc(50vh-204px)] space-y-[23px] overflow-y-scroll bg-white">
               {playlists.map((playlist) => (
                 <li
                   key={playlist.id}
@@ -115,8 +110,8 @@ const MusicSaveBottomSheet = ({
           )}
         </div>
       </div>
-    </BottomSheet>
+    </Modal>
   )
 }
 
-export default MusicSaveBottomSheet
+export default MusicSaveModal
