@@ -112,9 +112,9 @@ export default function PlaylistDetailDesktop({
 
       <div className="mt-8 flex w-full justify-between border-b border-gray-300 pb-2">
         <p className="caption-1 w-[30%] pl-[94px]">제목</p>
-        <p className="caption-1 w-[30%] text-center">아티스트</p>
-        <p className="caption-1 w-[30%] pr-[65px] text-center">앨범제목</p>
-        <p className="w-[36px]"></p>
+        <p className="caption-1 w-[30%] pr-[430px] text-center">아티스트</p>
+        <p className="caption-1 w-[30%] pr-[420px] text-center">앨범제목</p>
+        <p className="w-[100px]"></p>
       </div>
 
       <ul className="mt-2 flex w-full flex-col">
@@ -144,13 +144,9 @@ export default function PlaylistDetailDesktop({
               </div>
             </div>
 
-            <p className="caption-1 w-[30%] truncate text-center">
-              {song.artist}
-            </p>
+            <p className="caption-1 w-[30%] truncate">{song.artist}</p>
 
-            <p className="caption-1 w-[30%] truncate text-center">
-              앨범 이름 없음
-            </p>
+            <p className="caption-1 w-[30%] truncate">앨범 이름 없음</p>
 
             <button
               onClick={() => handleDeleteSong(song.spotify_id)}
