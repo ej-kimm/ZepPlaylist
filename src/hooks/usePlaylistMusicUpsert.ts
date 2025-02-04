@@ -5,6 +5,7 @@ import Swal from 'sweetalert2'
 
 export const usePlaylistMusicUpsert = () => {
   const upsertMusic = useCallback(async (musicData: SpotifyTrack) => {
+    console.log(musicData)
     if (!musicData) {
       console.log('No data returned from onFetchMusicData')
       return null
@@ -13,7 +14,7 @@ export const usePlaylistMusicUpsert = () => {
     const { data: existingMusic, error: fetchError } = await supabase
       .from('music')
       .select('*')
-      .eq('spotify_id', musicData.id)
+      .eq('spotify_id', musicData.spotify_id)
       .maybeSingle()
 
     if (fetchError && fetchError.code !== 'PGRST116') {
@@ -25,11 +26,13 @@ export const usePlaylistMusicUpsert = () => {
       const { data: insertedMusic, error: insertError } = await supabase
         .from('music')
         .insert({
-          spotify_id: musicData.id,
+          // 이거 왜구래요????????????
+          spotify_id: musicData.spotify_id,
           title: musicData.title,
           artist: musicData.artist,
-          album_cover: musicData.albumCover,
-          play_time: musicData.playTime,
+          album_cover: musicData.album_cover,
+          album_name: musicData.album_name,
+          play_time: musicData.play_time ?? 0,
           created_at: new Date().toISOString(),
         })
         .select()
@@ -46,7 +49,7 @@ export const usePlaylistMusicUpsert = () => {
       const { data: updatedMusic, error: updateError } = await supabase
         .from('music')
         .update({ created_at: new Date().toISOString() })
-        .eq('spotify_id', musicData.id)
+        .eq('spotify_id', musicData.spotify_id)
         .select()
         .single()
 

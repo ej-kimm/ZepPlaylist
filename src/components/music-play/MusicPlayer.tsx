@@ -1,4 +1,5 @@
 'use client'
+import useIsDesktop from '@/hooks/useIsDesktop'
 import usePlayer from '@/hooks/usePlayer'
 import useSongLike from '@/hooks/useSongLike'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
@@ -7,7 +8,7 @@ import clsx from 'clsx'
 import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import ReactPlayer from 'react-player'
-import { Modal, MusicSaveBottomSheet } from '../common'
+import { Modal, MusicSaveBottomSheet, MusicSaveModal } from '../common'
 import ActionButtons from './_components/ActionButtons'
 import MusicDetailModal from './_components/MusicDetailModal'
 import MusicDetails from './_components/MusicDetails'
@@ -40,6 +41,7 @@ const MusicPlayer = () => {
   } = useMusicPlayerStore()
   const { musicDetail, url, lyrics, isPending } = usePlayer()
   const pathname = usePathname()
+  const isDesktop = useIsDesktop()
 
   const stopPlaying =
     pathname === '/login' || pathname.startsWith('/community/')
@@ -116,7 +118,8 @@ const MusicPlayer = () => {
           <MusicDetails musicDetail={musicDetail} />
           <div
             className={clsx(
-              'desktop:absolute desktop:left-1/2 desktop:top-1/2 desktop:w-[546px] desktop:-translate-x-1/2 desktop:-translate-y-1/2 desktop:bg-white',
+              'desktop:absolute desktop:left-1/2 desktop:top-1/2 desktop:w-[327px] desktop:-translate-x-1/2 desktop:-translate-y-1/2 desktop:bg-white',
+              'desktop-xl:w-[546px]',
             )}
           >
             <PlayerControls className="gap-2" ICON_SIZE={24} />
@@ -156,12 +159,19 @@ const MusicPlayer = () => {
         onCancel={closeModal}
       />
 
-      <MusicSaveBottomSheet
-        isOpen={isSaved}
-        handleClose={() => handleUserAction('save')}
-        musicName={musicDetail?.title || ''}
-        artistName={musicDetail?.artist || ''}
-      />
+      {isDesktop ? (
+        <MusicSaveModal
+          isOpen={isSaved}
+          handleClose={() => handleUserAction('save')}
+          musicData={musicDetail!}
+        />
+      ) : (
+        <MusicSaveBottomSheet
+          isOpen={isSaved}
+          handleClose={() => handleUserAction('save')}
+          musicData={musicDetail!}
+        />
+      )}
     </>
   )
 }

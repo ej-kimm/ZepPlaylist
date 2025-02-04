@@ -2,6 +2,7 @@
 
 import { removeLikedSong } from '@/api/like-music/actions'
 import { Modal } from '@/components/common'
+import useIsDesktop from '@/hooks/useIsDesktop'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import { LikedSong } from '@/types/song'
 import { useEffect, useRef, useState } from 'react'
@@ -28,13 +29,7 @@ export default function LikedSongsPage({
     onConfirm: () => {},
     onCancel: () => setModalProps((prev) => ({ ...prev, isOpen: false })),
   })
-  const [isDesktop, setIsDesktop] = useState<boolean>(window.innerWidth >= 720)
-
-  useEffect(() => {
-    const handleResize = () => setIsDesktop(window.innerWidth >= 720)
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
+  const isDesktop = useIsDesktop()
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -54,8 +49,8 @@ export default function LikedSongsPage({
   const handleDelete = (likeId: string) => {
     setModalProps({
       isOpen: true,
-      title: '좋아요 곡 삭제',
-      content: '정말 삭제하시겠습니까?',
+      title: '좋아요 해제',
+      content: '정말 좋아요를 해제하시겠습니까?',
       type: 'vertical',
       onConfirm: async () => {
         try {
@@ -64,7 +59,7 @@ export default function LikedSongsPage({
           setModalProps({
             isOpen: true,
             title: '완료',
-            content: '좋아요 곡이 삭제되었습니다!',
+            content: '좋아요가 해제되었습니다!',
             type: 'single',
             onConfirm: () =>
               setModalProps((prev) => ({ ...prev, isOpen: false })),
@@ -75,7 +70,7 @@ export default function LikedSongsPage({
           setModalProps({
             isOpen: true,
             title: '오류',
-            content: '좋아요 곡을 삭제하는 중 문제가 발생했습니다.',
+            content: '좋아요를 해제하는 과정에서 오류가 발생했습니다.',
             type: 'single',
             onConfirm: () =>
               setModalProps((prev) => ({ ...prev, isOpen: false })),

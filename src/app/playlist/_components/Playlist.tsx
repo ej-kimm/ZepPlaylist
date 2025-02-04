@@ -1,16 +1,15 @@
 'use client'
 
-import {
-  addPlaylist,
-  deletePlaylist,
-  fetchLatestLikedSongCover,
-  fetchPlaylistsWithCovers,
-  updatePlaylist,
-} from '@/api/playlist/actions'
 import { Modal, PlaylistBottomSheet } from '@/components/common'
+import {
+  useAddPlaylist,
+  useDeletePlaylist,
+  useFetchPlaylists,
+  useLatestLikedSongCover,
+  useUpdatePlaylist,
+} from '@/hooks/usePlaylists'
 import { userStore } from '@/store/userSlice'
 import { PlaylistRow } from '@/types/playlist'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import PlaylistList from './PlaylistUI'
@@ -20,76 +19,16 @@ type PlaylistComponentProps = { initialPlaylists: PlaylistRow[] }
 export default function Playlist({ initialPlaylists }: PlaylistComponentProps) {
   const { user, isLogin } = userStore()
   const router = useRouter()
-  const queryClient = useQueryClient()
-
-  const [modalProps, setModalProps] = useState({
-    isOpen: false,
-    title: '',
-    content: '',
-    type: 'single' as 'single' | 'vertical' | 'horizontal',
-    onConfirm: () => {},
-    onCancel: () => setModalProps((prev) => ({ ...prev, isOpen: false })),
-  })
 
   useEffect(() => {
     if (!isLogin || !user?.id) {
       router.replace('/login')
-      setModalProps({
-        isOpen: true,
-        title: '오류',
-        content: '로그인이 필요합니다.',
-        type: 'single',
-        onConfirm: () => setModalProps((prev) => ({ ...prev, isOpen: false })),
-        onCancel: () => {},
-      })
     }
   }, [user, router, isLogin])
 
-  const { data: playlists, isLoading } = useQuery({
-    queryKey: ['playlists', user?.id],
-    queryFn: () => {
-      if (!user?.id) {
-        return Promise.reject('유저정보 확인 불가')
-      }
-      return fetchPlaylistsWithCovers()
-    },
-    enabled: !!user?.id,
-    staleTime: 0,
-    initialData: initialPlaylists,
-  })
-
-  const { data: latestLikedSongCover } = useQuery({
-    queryKey: ['latestLikedSongCover', user?.id],
-    queryFn: () => fetchLatestLikedSongCover(user!.id),
-    enabled: !!user,
-  })
-
-  const addPlaylistMutation = useMutation({
-    mutationFn: (newPlaylist: Omit<PlaylistRow, 'id' | 'created_at'>) =>
-      addPlaylist(newPlaylist),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['playlists', user?.id] })
-      setModalProps({
-        isOpen: true,
-        title: '완료',
-        content: '플레이리스트가 추가되었습니다!',
-        type: 'single',
-        onConfirm: () => setModalProps((prev) => ({ ...prev, isOpen: false })),
-        onCancel: () => {},
-      })
-      closeModal()
-    },
-    onError: () => {
-      setModalProps({
-        isOpen: true,
-        title: '오류',
-        content: '플레이리스트 추가 중 문제가 발생했습니다.',
-        type: 'single',
-        onConfirm: () => setModalProps((prev) => ({ ...prev, isOpen: false })),
-        onCancel: () => {},
-      })
-    },
-  })
+  const { data: playlists, isLoading } = useFetchPlaylists(initialPlaylists)
+  const { data: latestLikedSongCover } = useLatestLikedSongCover()
+  const { handleDeleteConfirmation, modalProps } = useDeletePlaylist()
 
   const [modalType, setModalType] = useState<'add' | 'edit' | null>(null)
   const [selectedPlaylist, setSelectedPlaylist] = useState<PlaylistRow | null>(
@@ -100,74 +39,9 @@ export default function Playlist({ initialPlaylists }: PlaylistComponentProps) {
   const [isPublic, setIsPublic] = useState(false)
   const [selectedKeywords, setSelectedKeywords] = useState<string[]>([])
   const [showDropdown, setShowDropdown] = useState<string | null>(null)
-  const updatePlaylistMutation = useMutation({
-    mutationFn: ({
-      id,
-      updatedData,
-    }: {
-      id: string
-      updatedData: Partial<PlaylistRow>
-    }) => updatePlaylist(id, updatedData),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['playlists', user?.id] })
-      setModalProps({
-        isOpen: true,
-        title: '플레이리스트 수정',
-        content: '플레이리스트가 수정되었습니다.',
-        type: 'single',
-        onConfirm: () => setModalProps((prev) => ({ ...prev, isOpen: false })),
-        onCancel: () => {},
-      })
-      closeModal()
-    },
-    onError: () => {
-      setModalProps({
-        isOpen: true,
-        title: '오류',
-        content: '플레이리스트 수정 중 문제가 발생했습니다.',
-        type: 'single',
-        onConfirm: () => setModalProps((prev) => ({ ...prev, isOpen: false })),
-        onCancel: () => {},
-      })
-    },
-  })
 
-  const handleDeleteConfirmation = (playlistId: string) => {
-    setModalProps({
-      isOpen: true,
-      title: '플레이리스트 삭제',
-      content: '플레이리스트를 정말 삭제하시겠습니까?',
-      type: 'vertical',
-      onConfirm: () => {
-        deletePlaylistMutation.mutate(playlistId)
-      },
-      onCancel: () => setModalProps((prev) => ({ ...prev, isOpen: false })),
-    })
-  }
-  const deletePlaylistMutation = useMutation({
-    mutationFn: (playlistId: string) => deletePlaylist(playlistId),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['playlists', user?.id] })
-      setModalProps({
-        isOpen: true,
-        title: '완료',
-        content: '플레이리스트가 삭제되었습니다!',
-        type: 'single',
-        onConfirm: () => setModalProps((prev) => ({ ...prev, isOpen: false })),
-        onCancel: () => {},
-      })
-    },
-    onError: () => {
-      setModalProps({
-        isOpen: true,
-        title: '오류',
-        content: '플레이리스트 삭제 중 문제가 발생했습니다.',
-        type: 'single',
-        onConfirm: () => setModalProps((prev) => ({ ...prev, isOpen: false })),
-        onCancel: () => {},
-      })
-    },
-  })
+  const addPlaylistMutation = useAddPlaylist(() => closeModal())
+  const updatePlaylistMutation = useUpdatePlaylist(() => closeModal())
 
   const openModal = (type: 'add' | 'edit', playlist?: PlaylistRow) => {
     setModalType(type)
@@ -202,6 +76,7 @@ export default function Playlist({ initialPlaylists }: PlaylistComponentProps) {
         : [...prev, keyword],
     )
   }
+
   return (
     <div className="mx-auto h-full max-w-[375px] bg-white">
       {isLoading ? (
@@ -211,24 +86,17 @@ export default function Playlist({ initialPlaylists }: PlaylistComponentProps) {
           playlists={playlists || []}
           latestLikedSongCover={latestLikedSongCover || ''}
           openModal={openModal}
-          handleDeletePlaylist={handleDeleteConfirmation}
-          showDropdown={showDropdown}
-          handleLikesClick={() => router.push('/playlist/likes')}
           handlePlaylistClick={(id) => router.push(`/playlist/${id}`)}
+          handleLikesClick={() => router.push('/playlist/likes')}
+          showDropdown={showDropdown}
           setShowDropdown={setShowDropdown}
+          handleDeletePlaylist={handleDeleteConfirmation}
         />
       ) : (
         <p className="mt-6 text-center text-gray-500">로그인이 필요합니다.</p>
       )}
 
-      <Modal
-        isOpen={modalProps.isOpen}
-        title={modalProps.title}
-        content={modalProps.content}
-        type={modalProps.type}
-        onConfirm={modalProps.onConfirm}
-        onCancel={modalProps.onCancel}
-      />
+      <Modal {...modalProps} />
 
       <PlaylistBottomSheet
         isOpen={!!modalType}
@@ -253,7 +121,7 @@ export default function Playlist({ initialPlaylists }: PlaylistComponentProps) {
             })
           } else if (modalType === 'edit' && selectedPlaylist) {
             updatePlaylistMutation.mutate({
-              id: selectedPlaylist.id || '',
+              id: selectedPlaylist.id,
               updatedData: {
                 name,
                 description,

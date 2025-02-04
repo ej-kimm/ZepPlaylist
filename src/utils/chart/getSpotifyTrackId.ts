@@ -26,6 +26,7 @@ export const getSpotifyTrackData = async (
         title: item.name,
         playTime: item.duration_ms,
         albumCover: item.album.images[0].url,
+        albumName: item.album.name,
       }))
       .find((item) => item.artist === artistName || item.title === musicName)
 

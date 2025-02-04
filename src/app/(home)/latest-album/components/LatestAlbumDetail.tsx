@@ -5,6 +5,7 @@ import moreButton from '@/assets/images/moreButton.svg'
 import { MusicSaveBottomSheet } from '@/components/common'
 import { usePlaylistMusicUpsert } from '@/hooks/usePlaylistMusicUpsert'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
+import type { SpotifyTrack } from '@/types/billboradCharts'
 import Image from 'next/image'
 import { useState } from 'react'
 
@@ -18,8 +19,7 @@ const LatestAlbumDetail = ({ albumData }: LatestAlbumProps) => {
 
   const { upsertMusic } = usePlaylistMusicUpsert()
 
-  const [selectedSong, setSelectedSong] =
-    useState<SpotifyApi.TrackObjectSimplified>()
+  const [selectedSong, setSelectedSong] = useState<SpotifyTrack>()
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState<boolean>(false)
 
   const albumTrackData = albumData.tracks.items
@@ -35,14 +35,16 @@ const LatestAlbumDetail = ({ albumData }: LatestAlbumProps) => {
     (total, item) => total + item.duration_ms,
     0,
   )
+
   const handlePlayAll = () => {
     const musicData = albumTrackData.map((song) => {
       return {
-        id: song.id,
+        spotify_id: song.id,
         title: song.name,
         artist: song.artists[0].name,
-        albumCover: albumData.images[0].url,
-        playTime: song.duration_ms,
+        album_cover: albumData.images[0].url,
+        play_time: song.duration_ms,
+        album_name: albumData.name,
       }
     })
     musicData.map(async (item) => await upsertMusic(item))
@@ -54,31 +56,18 @@ const LatestAlbumDetail = ({ albumData }: LatestAlbumProps) => {
     play()
   }
 
-  const handleMoreButtonClick = (song: SpotifyApi.TrackObjectSimplified) => {
+  const handleMoreButtonClick = (song: SpotifyTrack) => {
     setSelectedSong(song)
     setIsBottomSheetOpen(true)
   }
 
-  const handlePlayBtn = async (
-    id: string,
-    musicName: string,
-    artist: string,
-    playTime: number,
-  ) => {
+  const handlePlayBtn = async (newMusicData: SpotifyTrack) => {
     // 데이터 일치화를 위해 ()와 안의 텍스트 제거
-
-    const newMusicData = {
-      id: id, // 스포티파이로 변환한 아이디
-      title: musicName,
-      artist: artist,
-      playTime: playTime,
-      albumCover: albumData.images[0].url,
-    }
-
+    console.log(newMusicData)
     await upsertMusic(newMusicData)
 
     if (!isPlayerOpen) setPlayerOpen()
-    setTrackIds(id)
+    setTrackIds(newMusicData!.spotify_id)
     play()
   }
 
@@ -147,12 +136,14 @@ const LatestAlbumDetail = ({ albumData }: LatestAlbumProps) => {
             <div
               className="w-[100%] rounded-lg py-2 transition-colors"
               onClick={() =>
-                handlePlayBtn(
-                  item.id,
-                  item.name,
-                  item.artists[0].name,
-                  item.duration_ms,
-                )
+                handlePlayBtn({
+                  spotify_id: item.id,
+                  title: item.name,
+                  artist: item.artists[0].name,
+                  play_time: item.duration_ms,
+                  album_name: albumData.name,
+                  album_cover: albumData.images[0].url,
+                })
               }
             >
               <p className="text-#000 text-sm font-semibold">{item.name}</p>
@@ -165,7 +156,14 @@ const LatestAlbumDetail = ({ albumData }: LatestAlbumProps) => {
               type="button"
               onClick={(e) => {
                 e.stopPropagation()
-                handleMoreButtonClick(item)
+                handleMoreButtonClick({
+                  spotify_id: item.id,
+                  title: item.name,
+                  artist: item.artists[0].name,
+                  play_time: item.duration_ms,
+                  album_name: albumData.name,
+                  album_cover: albumData.images[0].url,
+                })
               }}
             >
               {' '}
@@ -181,10 +179,9 @@ const LatestAlbumDetail = ({ albumData }: LatestAlbumProps) => {
       </ul>
       {selectedSong && (
         <MusicSaveBottomSheet
-          musicName={selectedSong.name}
-          artistName={selectedSong.artists[0].name}
           isOpen={isBottomSheetOpen}
           handleClose={() => setIsBottomSheetOpen(false)}
+          musicData={selectedSong}
         />
       )}
     </div>

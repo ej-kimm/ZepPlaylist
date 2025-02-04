@@ -33,6 +33,8 @@ const Header = () => {
         return '마이 페이지'
       case pathname.startsWith('/latest-album'):
         return '최신 앨범'
+      case pathname === '/music-history':
+        return '재생목록'
       default:
         return ''
     }

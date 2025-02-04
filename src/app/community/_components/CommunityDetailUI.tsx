@@ -67,7 +67,7 @@ export default function CommunityDetailUI({
       return
     }
     await handleAddComment()
-    console.log('API Response:', comments);
+    console.log('API Response:', comments)
   }
 
   const openDeleteModal = (commentId: string) => {
@@ -302,7 +302,7 @@ export default function CommunityDetailUI({
                       {currentUserId === comment.user_id && (
                         <button
                           onClick={() => openDeleteModal(comment.id)}
-                          className="text-white mr-3"
+                          className="mr-3 text-white"
                         >
                           <TbTrash size={16} />
                         </button>
@@ -385,10 +385,9 @@ export default function CommunityDetailUI({
 
       {selectedSong && (
         <MusicSaveBottomSheet
-          musicName={selectedSong.title}
-          artistName={selectedSong.artist}
           isOpen={isBottomSheetOpen}
           handleClose={() => setIsBottomSheetOpen(false)}
+          musicData={selectedSong}
         />
       )}
     </div>

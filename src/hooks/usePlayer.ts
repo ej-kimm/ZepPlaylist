@@ -6,11 +6,13 @@ import {
 import { getSongLyrics } from '@/api/music-play/lyrics-api'
 import { fetchPreviewUrl } from '@/api/spotifyToken'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
+import { userStore } from '@/store/userSlice'
 import type { Tables } from '@/types/supabase'
 import { useQuery } from '@tanstack/react-query'
 import { useEffect } from 'react'
 
 const usePlayer = () => {
+  const { user } = userStore()
   const currentTrackId = useMusicPlayerStore(
     (state) => state.trackIds[state.currentTrackIndex],
   )
@@ -54,32 +56,31 @@ const usePlayer = () => {
     staleTime: 12 * 60 * 60 * 1000, // 12시간
     gcTime: 24 * 60 * 60 * 1000, // 24시간
   })
-  // 뮤직디테일 8개 담기 (현재재생목록 만들거) 로컬스토리지에 담아서 8개 갯수제한두고 가사 애매한데 그냥 제목클릭하면 다시 은지님 컴포넌트로 넘길지지
-  // 은지님한테 타입 물어봐서 지정해주기기
+
+  // 재생했던 목록들 session저장
   useEffect(() => {
     if (musicDetail?.musicDetail) {
+      // created_at, lyrics제외 저장
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { created_at, lyrics, ...rest } = musicDetail.musicDetail
+
       const storedMusicDetails = JSON.parse(
-        localStorage.getItem('current-playlist') || '[]',
+        localStorage.getItem(`${user?.id}-history-playlist`) || '[]',
       )
-      const validation = storedMusicDetails.some(
-        (track: Tables<'music'>) =>
-          track.title === musicDetail.musicDetail.title,
+      const isAlreayStored = storedMusicDetails.some(
+        (track: Tables<'music'>) => track.title === rest.title,
       )
-      if (!validation) {
-        const updatedMusicDetails = [
-          musicDetail.musicDetail,
-          ...storedMusicDetails,
-        ]
-        if (updatedMusicDetails.length > 8) {
-          updatedMusicDetails.pop()
-        }
+
+      if (!isAlreayStored) {
+        const updatedMusicDetails = [rest, ...storedMusicDetails].slice(0, 20) // 최대 20개 까지만 저장
+
         localStorage.setItem(
-          'current-playlist',
+          `${user?.id}-history-playlist`,
           JSON.stringify(updatedMusicDetails),
         )
       }
     }
-  }, [musicDetail?.musicDetail])
+  }, [musicDetail?.musicDetail, user?.id])
 
   return {
     musicDetail: musicDetail?.musicDetail,

@@ -10,11 +10,14 @@ export type BillboardSong = {
 }
 
 export type SpotifyTrack = {
-  id: string
+  album_cover: string | null
+  album_name?: string | null
   artist: string
+  created_at?: string
+  lyrics?: string | null
+  play_time?: number | null
+  spotify_id: string
   title: string
-  playTime: number
-  albumCover: string
 }
 
 export type Charts = {
@@ -24,4 +27,5 @@ export type Charts = {
   artist: string
   play_time: number
   album_cover: string
+  album_name?: string | null
 }
