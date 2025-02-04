@@ -1,5 +1,5 @@
 'use client'
-import PlaylistItem from '@/app/playlist/_components/PlaylistItem'
+import PlaylistItem from '@/components/common/PlaylistItem'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import { userStore } from '@/store/userSlice'
 import type { Tables } from '@/types/supabase'

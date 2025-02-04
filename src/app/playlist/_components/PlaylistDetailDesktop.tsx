@@ -112,18 +112,11 @@ export default function PlaylistDetailDesktop({
       </section>
 
       <TableList
-        items={songs.map((song) => ({
-          id: song.spotify_id,
-          music: {
-            title: song.title,
-            artist: song.artist,
-            album_cover: song.album_cover || undefined,
-          },
-        }))}
+        items={songs}
         handleItemClick={(index) => handlePlayFromIndex(index)}
         renderAction={(song) => (
           <button
-            onClick={() => handleDeleteSong(song.id)}
+            onClick={() => handleDeleteSong(song.spotify_id)}
             className="flex h-[36px] w-[36px] items-center justify-center rounded-full border border-primary bg-white"
           >
             <Image

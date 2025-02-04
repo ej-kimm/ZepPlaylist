@@ -48,6 +48,7 @@ const Navbar = () => {
       })
     }
     setUser(null)
+    window.location.reload()
     if (isPlayerModalOpen) setPlayerClose()
   }
 

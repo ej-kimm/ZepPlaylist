@@ -56,10 +56,10 @@ const Service = ({ isChecked, handleCheckboxChange }: Props) => {
         인지한 경우 이를 즉시 통지하고 안내에 따라야합니다 <br />
       </p>
       <br />
-      <div className="flex">
+      <div className="flex items-center justify-center">
         <input
           type="checkbox"
-          className="mr-2 h-5 w-5 cursor-auto rounded border-gray-300 accent-primary desktop:ml-[35%]"
+          className="mr-2 h-5 w-5 cursor-auto rounded border-gray-300 accent-primary"
           onChange={handleCheckboxChange}
           checked={isChecked}
         />
@@ -68,5 +68,5 @@ const Service = ({ isChecked, handleCheckboxChange }: Props) => {
     </div>
   )
 }
-
+ 
 export default Service
