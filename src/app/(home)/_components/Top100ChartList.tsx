@@ -21,17 +21,17 @@ const Top100ChartList = ({ top100Chart }: Top100ChartListProps) => {
   const { upsertMusic } = usePlaylistMusicUpsert()
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState<boolean>(false)
 
-  const [selectedSong, setSelectedSong] = useState<SpotifyTrack>()
+  const [selectedSong, setSelectedSong] = useState<Charts>()
   const isDesktop = useIsDesktop()
 
   const handlePlayBtn = async (newMusicData: SpotifyTrack) => {
     await upsertMusic(newMusicData)
     if (!isPlayerOpen) setPlayerOpen()
-    setTrackIds(newMusicData!.spotify_id)
+    setTrackIds(newMusicData.id)
     play()
   }
 
-  const handleMoreButtonClick = (song: SpotifyTrack) => {
+  const handleMoreButtonClick = (song: Charts) => {
     setSelectedSong(song)
     setIsBottomSheetOpen(true)
   }
@@ -49,12 +49,12 @@ const Top100ChartList = ({ top100Chart }: Top100ChartListProps) => {
               className="items-centerspace-x-2 flex w-full cursor-pointer gap-2 transition-colors"
               onClick={() =>
                 handlePlayBtn({
-                  spotify_id: chart.spotify_id,
+                  id: chart.spotify_id,
                   title: chart.title,
                   artist: chart.artist,
-                  play_time: chart.play_time,
-                  album_cover: chart.album_cover,
-                  album_name: chart.album_name,
+                  playTime: chart.play_time,
+                  albumCover: chart.album_cover,
+                  albumName: chart.album_name,
                 })
               }
             >
@@ -102,13 +102,15 @@ const Top100ChartList = ({ top100Chart }: Top100ChartListProps) => {
           <MusicSaveModal
             isOpen={isBottomSheetOpen}
             handleClose={() => setIsBottomSheetOpen(false)}
-            musicData={selectedSong}
+            musicName={selectedSong!.title}
+            artistName={selectedSong!.artist}
           />
         ) : (
           <MusicSaveBottomSheet
             isOpen={isBottomSheetOpen}
             handleClose={() => setIsBottomSheetOpen(false)}
-            musicData={selectedSong}
+            musicName={selectedSong!.title}
+            artistName={selectedSong!.artist}
           />
         ))}
     </>
