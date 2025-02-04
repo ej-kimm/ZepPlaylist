@@ -2,6 +2,9 @@
 
 import moreButton from '@/assets/images/moreButton.svg'
 import { MusicSaveBottomSheet } from '@/components/common'
+
+import WebVerMusicSaveModal from '@/components/common/WebVerMusicSaveModal'
+import useIsDesktop from '@/hooks/useIsDesktop'
 import { usePlaylistMusicUpsert } from '@/hooks/usePlaylistMusicUpsert'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import type { Charts, SpotifyTrack } from '@/types/billboradCharts'
@@ -20,7 +23,7 @@ const Top100ChartList = ({ top100Chart }: Top100ChartListProps) => {
   const { upsertMusic } = usePlaylistMusicUpsert()
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState<boolean>(false)
   const [selectedSong, setSelectedSong] = useState<Charts>()
-  // const isDesktop = useIsDesktop()
+  const isDesktop = useIsDesktop()
 
   const handlePlayBtn = async (newMusicData: SpotifyTrack) => {
     await upsertMusic(newMusicData)
@@ -90,15 +93,17 @@ const Top100ChartList = ({ top100Chart }: Top100ChartListProps) => {
                 height={24}
                 className={clsx('desktop:hidden block')}
               />
-              {/* <WebVerMusicSaveButtomUi
+              <WebVerMusicSaveModal
                 musicName={chart.title}
                 artistName={chart.artist}
-              /> */}
+                musicData={selectedSong!}
+                handleClose={() => setIsBottomSheetOpen(false)}
+              />
             </button>
           </li>
         ))}
       </ul>
-      {selectedSong && (
+      {selectedSong && !isDesktop && (
         <MusicSaveBottomSheet
           isOpen={isBottomSheetOpen}
           handleClose={() => setIsBottomSheetOpen(false)}
