@@ -2,6 +2,7 @@
 
 import { removeLikedSong } from '@/api/like-music/actions'
 import { Modal } from '@/components/common'
+import useIsDesktop from '@/hooks/useIsDesktop'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import { LikedSong } from '@/types/song'
 import { useEffect, useRef, useState } from 'react'
@@ -28,13 +29,7 @@ export default function LikedSongsPage({
     onConfirm: () => {},
     onCancel: () => setModalProps((prev) => ({ ...prev, isOpen: false })),
   })
-  const [isDesktop, setIsDesktop] = useState<boolean>(window.innerWidth >= 720)
-
-  useEffect(() => {
-    const handleResize = () => setIsDesktop(window.innerWidth >= 720)
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
+  const isDesktop = useIsDesktop()
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
