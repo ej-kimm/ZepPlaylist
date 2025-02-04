@@ -5,7 +5,7 @@ export const getSpotifyTrackData = async (
 ) => {
   try {
     const res = await fetch(
-      `https://api.spotify.com/v1/search?q=${musicName}&type=track&limit=10`,
+      `https://api.spotify.com/v1/search?q=${musicName}&type=track&limit=1`,
       {
         method: 'GET',
         headers: {

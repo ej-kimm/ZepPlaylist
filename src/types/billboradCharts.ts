@@ -14,9 +14,10 @@ export type SpotifyTrack = {
   artist: string
   created_at?: string
   title: string
-  playTime: number
+  playTime?: number
   albumCover: string
   albumName?: string | null
+  lyrics?: string | null
 }
 
 export type Charts = {
@@ -29,8 +30,8 @@ export type Charts = {
   album_name?: string | null
 }
 
-export type MusicSaveModalType = {
-  spotify_id: string
+export type MusicSaveType = {
+  id: string
   title: string
   artist: string
   album_cover: string | null
