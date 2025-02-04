@@ -130,7 +130,7 @@ export default function CommunityDetailUI({
                 alt="프로필 이미지"
                 width={24}
                 height={24}
-                className="object-cover h-full w-full"
+                className="h-full w-full object-cover"
               />
             </div>
             <span className="caption-2">{nickname}</span>
@@ -140,9 +140,7 @@ export default function CommunityDetailUI({
         {/* 상단 정보 (PC) */}
         <div className="hidden desktop:block">
           <div className="flex w-full items-center justify-between">
-            <h1 className="headline-1 mt-12">
-              {playlistName}
-            </h1>
+            <h1 className="headline-1 mt-12">{playlistName}</h1>
             <button onClick={onLikeToggle} className="mt-12 h-8 w-8">
               <Image
                 src={isLiked ? likeTrue : likeFalse}
@@ -152,12 +150,10 @@ export default function CommunityDetailUI({
               />
             </button>
           </div>
-          <p className="caption-3 mt-3">
-            {description || '설명이 없습니다.'}
-          </p>
+          <p className="caption-3 mt-3">{description || '설명이 없습니다.'}</p>
           <div className="flex items-center gap-3">
             <div
-              className="flex-shrink-0 overflow-hidden rounded-full mt-3 mb-10"
+              className="mb-10 mt-3 flex-shrink-0 overflow-hidden rounded-full"
               style={{ width: '36px', height: '36px' }} // PC에서 프로필 이미지 크기 증가
             >
               <Image
@@ -165,12 +161,10 @@ export default function CommunityDetailUI({
                 alt="프로필 이미지"
                 width={36}
                 height={36}
-                className="object-cover h-full w-full"
+                className="h-full w-full object-cover"
               />
             </div>
-            <span className="caption-1 mt-3 mb-10">
-              {nickname}
-            </span>
+            <span className="caption-1 mb-10 mt-3">{nickname}</span>
           </div>
         </div>
 
@@ -247,13 +241,9 @@ export default function CommunityDetailUI({
 
                   {/* 텍스트 정보 (가로 배치) */}
                   <div className="ml-6 flex flex-1 items-center justify-between">
-                    <div className="flex-1">
-                      <p className="body-2">{song.title}</p>
-                    </div>
-                    <p className="caption-1">{song.artist}</p>
-                    <p className="mx-8 flex-1 caption-1">
-                      {song.album_name}
-                    </p>
+                    <p className="body-2 flex-1">{song.title}</p>
+                    <p className="caption-1 flex-1">{song.artist}</p>
+                    <p className="caption-1 flex-1">{song.album_name}</p>
                   </div>
 
                   {/* 커뮤니티 웹 서클 아이콘 */}
@@ -302,7 +292,7 @@ export default function CommunityDetailUI({
                       alt="프로필"
                       width={32}
                       height={32}
-                      className="object-cover h-full w-full"
+                      className="h-full w-full object-cover"
                     />
                   </div>
                   <div className="flex-1">
