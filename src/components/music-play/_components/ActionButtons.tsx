@@ -55,6 +55,9 @@ const ActionButtons = ({
     onUserAction('save')
   }
   const handlePlaylistClick = () => {
+    if (isPlayerModalOpen) {
+      togglePlayerModal()
+    }
     router.push('/music-history')
   }
 
