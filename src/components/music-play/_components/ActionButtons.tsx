@@ -3,6 +3,7 @@ import save from '@/assets/images/close.svg'
 import likeFalse from '@/assets/images/heart.svg'
 import leftArrow from '@/assets/images/leftArrow.svg'
 import likeTrue from '@/assets/images/likeTrue.svg'
+import playlist from '@/assets/images/playlist.svg'
 import volume from '@/assets/images/volume.svg'
 import volumeZero from '@/assets/images/volumeZero.svg'
 import useSongLike from '@/hooks/useSongLike'
@@ -10,6 +11,7 @@ import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import { userStore } from '@/store/userSlice'
 import clsx from 'clsx'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 
 type ActionButtonsProps = {
@@ -27,6 +29,7 @@ const ActionButtons = ({
   onVolumeChange,
   onUserAction,
 }: ActionButtonsProps) => {
+  const router = useRouter()
   const { user } = userStore()
   const user_id = user?.id || ''
   const { songLike } = useSongLike({ user_id })
@@ -50,6 +53,9 @@ const ActionButtons = ({
 
   const handleSaveClick = () => {
     onUserAction('save')
+  }
+  const handlePlaylistClick = () => {
+    router.push('/music-history')
   }
 
   useEffect(() => {
@@ -75,7 +81,7 @@ const ActionButtons = ({
         onClick={toggleVolumeButton}
       >
         {isVolumeVisible && (
-          <div className="z-volume absolute bottom-[calc(100%+20px)] left-1/2 flex h-[126px] w-11 -translate-x-1/2 justify-center bg-white px-5 py-2">
+          <div className="absolute bottom-[calc(100%+20px)] left-1/2 z-volume flex h-[126px] w-11 -translate-x-1/2 justify-center bg-white px-5 py-2">
             <input
               className="volume-slider"
               type="range"
@@ -119,8 +125,20 @@ const ActionButtons = ({
       </button>
       <button
         type="button"
-        onClick={togglePlayerModal}
+        onClick={handlePlaylistClick}
         className={clsx('hidden', 'desktop:order-4 desktop:block')}
+      >
+        <Image
+          src={playlist}
+          width={ICON_SIZE}
+          height={ICON_SIZE}
+          alt="playlist"
+        />
+      </button>
+      <button
+        type="button"
+        onClick={togglePlayerModal}
+        className={clsx('hidden', 'desktop:order-5 desktop:block')}
       >
         <Image
           src={leftArrow}
