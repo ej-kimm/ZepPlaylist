@@ -35,11 +35,11 @@ const MusicChartHeader = ({
           .filter((data) => !!data)
           .map((newMusicData) => {
             const convertNewMusicData = {
-              id: newMusicData.spotify_id,
+              spotify_id: newMusicData.spotify_id,
               title: newMusicData.title,
               artist: newMusicData.artist,
-              playTime: newMusicData.play_time,
-              albumCover: newMusicData.album_cover,
+              play_time: newMusicData.play_time,
+              album_cover: newMusicData.album_cover,
             }
 
             upsertMusic(convertNewMusicData)

@@ -49,11 +49,11 @@ export const useSpotifySearch = () => {
 
         return data
           .map((item) => ({
-            id: item.id,
+            spotify_id: item.id,
             artist: item.artists[0].name,
             title: item.name,
             playTime: item.duration_ms,
-            albumCover: item.album.images[0].url,
+            album_cover: item.album.images[0].url,
           }))
           .find(
             (item) => item.artist === artistName || item.title === musicName,
