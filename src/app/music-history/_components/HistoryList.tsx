@@ -53,7 +53,7 @@ const HistoryList = () => {
           <p className="caption-2">곡 수: {historyTracks.length}개</p>
           <p className="caption-2">재생시간: {totalTime}분</p>
         </header>
-        <ul className="space-y-2">
+        <ul>
           {historyTracks.length > 0 ? (
             historyTracks.map((song) => (
               <PlaylistItem

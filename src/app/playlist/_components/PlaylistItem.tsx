@@ -1,6 +1,6 @@
 import { PlaylistRow } from '@/types/playlist'
 import { FaLock } from 'react-icons/fa'
-import { FiMoreHorizontal } from 'react-icons/fi'
+import { FiMoreHorizontal, FiMoreVertical } from 'react-icons/fi'
 
 type PlaylistItemProps = {
   playlist: Pick<PlaylistRow, 'id'> & Partial<PlaylistRow>
@@ -26,7 +26,7 @@ export default function PlaylistItem({
   return (
     <li
       key={playlist.id}
-      className="flex cursor-pointer items-center justify-between"
+      className="flex cursor-pointer items-center justify-between py-2"
       onClick={(e) => {
         e.stopPropagation()
         if (handlePlaylistClick) handlePlaylistClick(playlist.id)
@@ -39,25 +39,22 @@ export default function PlaylistItem({
               ? ''
               : 'flex items-center justify-center bg-gray-300'
           }`}
-          style={
-            playlist.latest_song_cover
-              ? { backgroundImage: `url(${playlist.latest_song_cover})` }
-              : undefined
-          }
+          style={{
+            backgroundImage: playlist.latest_song_cover
+              ? `url(${playlist.latest_song_cover})`
+              : undefined,
+          }}
         >
           {!isDetailPage && !playlist.is_public && (
             <div className="absolute right-1 top-1 flex h-4 w-4 items-center justify-center rounded-full bg-black bg-opacity-50">
               <FaLock className="text-xs text-white" />
             </div>
           )}
-          {!playlist.latest_song_cover && (
-            <span className="font-pretendard text-lg text-gray-500">+</span>
-          )}
         </div>
         <div className="flex w-full flex-col justify-center">
-          <p className="button-2 mb-1">{playlist.name}</p>
+          <p className="button-2 mb-1">{playlist.name || '제목 없음'}</p>
           <p className="caption-2 text-opacity-60">
-            {playlist.description || '곡 NN개'}
+            {playlist.description || '아티스트 정보 없음'}
           </p>
         </div>
       </div>
@@ -70,8 +67,13 @@ export default function PlaylistItem({
           }}
           className="text-xl text-gray-500"
         >
-          <FiMoreHorizontal fontSize={24} color="black" />
+          {isDetailPage ? (
+            <FiMoreHorizontal fontSize={24} color="black" />
+          ) : (
+            <FiMoreVertical fontSize={24} color="black" />
+          )}
         </button>
+
         {showDropdown === playlist.id && (
           <div className="absolute right-0 top-3 mt-2 w-24 rounded-lg bg-white shadow-lg">
             {!isDetailPage ? (
