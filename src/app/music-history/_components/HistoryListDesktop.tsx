@@ -2,6 +2,7 @@ import Bean from '@/assets/images/Bin.svg'
 import TableList from '@/components/common/Tableilst'
 import type { Tables } from '@/types/supabase'
 import Image from 'next/image'
+import HistoryListNone from './HistoryListNone'
 
 interface HistoryListDesktopProps {
   historyTracks: Tables<'music'>[]
@@ -14,7 +15,7 @@ const HistoryListDesktop = ({
   handlePlayFromIndex,
   handleDeleteSong,
 }: HistoryListDesktopProps) => {
-  return (
+  return historyTracks.length > 0 ? (
     <TableList
       items={historyTracks}
       handleItemClick={(index) => handlePlayFromIndex(index)}
@@ -33,6 +34,8 @@ const HistoryListDesktop = ({
         </button>
       )}
     />
+  ) : (
+    <HistoryListNone />
   )
 }
 
