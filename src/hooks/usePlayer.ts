@@ -61,6 +61,7 @@ const usePlayer = () => {
   useEffect(() => {
     if (musicDetail?.musicDetail) {
       // created_at, lyrics제외 저장
+      // eslint-disable-next-line no-unused-vars
       const { created_at, lyrics, ...rest } = musicDetail.musicDetail
 
       const storedMusicDetails = JSON.parse(
