@@ -107,7 +107,7 @@ const ActionButtons = ({
       <button
         type="button"
         onClick={handleLikeClick}
-        className="desktop:order-3"
+        className={clsx('desktop:order-3 desktop:hidden', 'desktop-xl:block')}
       >
         <Image
           src={songLike ? likeTrue : likeFalse}
@@ -119,7 +119,7 @@ const ActionButtons = ({
       <button
         type="button"
         onClick={handleSaveClick}
-        className="desktop:order-2"
+        className={clsx('desktop:order-2 desktop:hidden', 'desktop-xl:block')}
       >
         <Image src={save} width={ICON_SIZE} height={ICON_SIZE} alt="save" />
       </button>
