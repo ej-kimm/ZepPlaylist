@@ -17,7 +17,7 @@ const PasswordEditBottomSheet = ({
       height="auto"
       maxWidth="100%"
     >
-      <PasswordChange setIsOpenPassword={handleClose} />
+      <PasswordChange handleClosePasswordSheet={handleClose} />
     </BottomSheet>
   )
 }
