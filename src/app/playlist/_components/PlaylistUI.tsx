@@ -1,6 +1,6 @@
 import { PlaylistRow } from '@/types/playlist'
 import { useState } from 'react'
-import PlaylistItem from './PlaylistItem'
+import PlaylistItem from '../../../components/common/PlaylistItem'
 
 type PlaylistListProps = {
   playlists: PlaylistRow[]

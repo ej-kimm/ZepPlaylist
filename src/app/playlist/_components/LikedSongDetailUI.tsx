@@ -2,7 +2,7 @@ import imPlay from '@/assets/images/imPlay.svg'
 import { LikedSong } from '@/types/song'
 import Image from 'next/image'
 import { FaRandom } from 'react-icons/fa'
-import PlaylistItem from './PlaylistItem'
+import PlaylistItem from '../../../components/common/PlaylistItem'
 
 type LikedSongsDetailUIProps = {
   likedSongs: LikedSong[]
