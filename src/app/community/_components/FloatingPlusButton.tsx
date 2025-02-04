@@ -40,7 +40,7 @@ const FloatingPlusButton = () => {
           setModalType('add')
           setIsBottomSheetOpen(true)
         }}
-        className={clsx("fixed bottom-20 right-4 z-50 h-14 w-14 rounded-full bg-primary p-3 transition-all hover:scale-110", "desktop:right-9")}
+        className={clsx("fixed bottom-20 right-5 z-50 h-14 w-14 rounded-full bg-primary p-3 transition-all hover:scale-110", "desktop:right-5")}
       >
         <Image src={plusButton} alt="Add Playlist" width={32} height={32} />
       </button>
