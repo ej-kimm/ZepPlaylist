@@ -1,41 +1,39 @@
-import { useSpotifySearch } from '@/hooks/useGetSpotifyMusicId'
 import { usePlaylistMusicUpsert } from '@/hooks/usePlaylistMusicUpsert'
 import usePlaylistOperations from '@/hooks/usePlaylistOperations'
 import useScrollLock from '@/hooks/useScrollLock'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import { userStore } from '@/store/userSlice'
+import type { SpotifyTrack } from '@/types/billboradCharts'
 import Image from 'next/image'
 import Link from 'next/link'
 import Modal from './Modal'
 import Skeleton from './Skeleton'
 
 type MusicSaveModalProps = {
-  musicName: string
-  artistName: string
   isOpen: boolean
   handleClose: () => void
+  musicData: SpotifyTrack
 }
 
 const MusicSaveModal = ({
-  musicName,
-  artistName,
   isOpen,
   handleClose,
+  musicData,
 }: MusicSaveModalProps) => {
   const { user } = userStore()
   const { playlists, isPending } = usePlaylistOperations()
-  const { searchSpotifyId } = useSpotifySearch()
   const { upsertMusic, addMusicToPlaylistTable } = usePlaylistMusicUpsert()
   const { closePlayerModal } = useMusicPlayerStore()
   useScrollLock(isOpen)
 
   // 특정 플레이리스트 목록을 동작하는 함수
-  const addMusiscInPlayList = async (playlistId: string) => {
+  const addMusiscInPlayList = async (
+    playlistId: string,
+    musicData: SpotifyTrack,
+  ) => {
     try {
-      const musicData = await searchSpotifyId(musicName, artistName)
-
       // spubase music 테이블에 곡 담아주는 함수 호출
-      const musicId = await upsertMusic(musicData!)
+      const musicId = await upsertMusic(musicData)
 
       // spubase playlist_music 테이블에 곡 담아주는 함수 호출
       await addMusicToPlaylistTable(musicId as string, playlistId)
@@ -56,8 +54,8 @@ const MusicSaveModal = ({
     <Modal
       isOpen={isOpen}
       onCancel={handleClose}
-      title={musicName}
-      content={artistName}
+      title={musicData.title}
+      content={musicData.artist}
       type="none"
       className="desktop:w-[532px]"
     >
@@ -85,12 +83,12 @@ const MusicSaveModal = ({
               <Skeleton height="16px" className="flex-grow" />
             </div>
           ) : (
-            <ul className="scroll-invisible h-full max-h-[calc(50vh-204px)] space-y-[23px] overflow-y-scroll bg-white">
+            <ul className="scroll-invisible h-full max-h-[280px] space-y-[23px] overflow-y-scroll bg-white">
               {playlists.map((playlist) => (
                 <li
                   key={playlist.id}
                   className="flex items-center gap-2"
-                  onClick={() => addMusiscInPlayList(playlist.id)}
+                  onClick={() => addMusiscInPlayList(playlist.id, musicData)}
                 >
                   {playlist.latest_song_cover ? (
                     <Image

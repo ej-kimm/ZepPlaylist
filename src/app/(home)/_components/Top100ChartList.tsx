@@ -90,7 +90,7 @@ const Top100ChartList = ({ top100Chart }: Top100ChartListProps) => {
                 alt="More Options"
                 width={24}
                 height={24}
-                className={clsx('desktop:hidden block')}
+                className={clsx('block desktop:hidden')}
               />
             </button>
           </li>
@@ -102,15 +102,12 @@ const Top100ChartList = ({ top100Chart }: Top100ChartListProps) => {
           <MusicSaveModal
             isOpen={isBottomSheetOpen}
             handleClose={() => setIsBottomSheetOpen(false)}
-            musicName={selectedSong!.title}
-            artistName={selectedSong!.artist}
+            musicData={selectedSong}
           />
         ) : (
           <MusicSaveBottomSheet
             isOpen={isBottomSheetOpen}
             handleClose={() => setIsBottomSheetOpen(false)}
-            musicName={selectedSong!.title}
-            artistName={selectedSong!.artist}
             musicData={selectedSong}
           />
         ))}
