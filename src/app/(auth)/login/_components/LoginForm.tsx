@@ -77,14 +77,14 @@ const LoginForm = () => {
     <form
       onSubmit={handleSubmit(onSubmit)}
       className={clsx(
-        'sm:p-6 mx-auto max-w-sm border-b border-black border-opacity-40',
-        'desktop:mx-0 desktop:w-full desktop:border-none',
+        'sm:p-6 mx-auto border-b border-black border-opacity-40',
+        'gap-[32px] desktop:mx-0 desktop:flex desktop:w-full desktop:flex-col desktop:border-none',
       )}
     >
       <h2
         className={clsx(
           'title-1 mt-[72px] text-left',
-          'desktop:mb-[68px] desktop:text-left',
+          'desktop:mb-[36px] desktop:text-left',
         )}
       >
         로그인
@@ -106,12 +106,12 @@ const LoginForm = () => {
         register={register}
         className={clsx(
           'caption-2 mt-8 w-full rounded-lg border-white bg-[#f4f4f4] text-[16px]',
-          'desktop:mb-[74px] desktop:mt-[32px]',
+          'desktop:mb-[38px]',
         )}
       />
       <PrimaryButton
         type="submit"
-        className={clsx('mb-12 mt-8 h-[39px]', 'desktop:mb-10')}
+        className={clsx('mb-12 mt-8 h-[39px]', 'desktop:mb-2')}
       >
         로그인
       </PrimaryButton>

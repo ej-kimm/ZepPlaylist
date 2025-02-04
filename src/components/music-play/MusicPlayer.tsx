@@ -1,10 +1,13 @@
 'use client'
 import usePlayer from '@/hooks/usePlayer'
+import useSongLike from '@/hooks/useSongLike'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
+import { userStore } from '@/store/userSlice'
 import clsx from 'clsx'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import ReactPlayer from 'react-player'
+import { Modal, MusicSaveBottomSheet } from '../common'
 import ActionButtons from './_components/ActionButtons'
 import MusicDetailModal from './_components/MusicDetailModal'
 import MusicDetails from './_components/MusicDetails'
@@ -14,6 +17,9 @@ import PlayerSkeleton from './_components/PlayerSkeleton'
 import ProgressBar from './_components/ProgressBar'
 
 const MusicPlayer = () => {
+  const router = useRouter()
+  const { user } = userStore()
+  const user_id = user?.id || ''
   const playerRef = useRef<ReactPlayer>(null)
   const [playerState, setPlayerState] = useState({
     ready: false, // onReady에서 영상이 로드된 상태값을 받아 사용
@@ -21,10 +27,18 @@ const MusicPlayer = () => {
     duration: 0, // 총 재생 시간
     volume: 0.3, // 노래 볼륨
   })
-  const { isPlayerOpen, isPlaying, isPlayerModalOpen, stop } =
-    useMusicPlayerStore()
+  const [isSaved, setIsSaved] = useState<boolean>(false) // save 상태 관리
+  const [isOpen, setIsOpen] = useState<boolean>(false) // 로그인 모달 상태
+  const { updateLike } = useSongLike({ user_id })
+  const {
+    isPlayerOpen,
+    isPlaying,
+    isPlayerModalOpen,
+    closePlayerModal,
+    setPlayerClose,
+    stop,
+  } = useMusicPlayerStore()
   const { musicDetail, url, lyrics, isPending } = usePlayer()
-  console.log('musicDetail', musicDetail)
   const pathname = usePathname()
 
   const stopPlaying =
@@ -41,6 +55,29 @@ const MusicPlayer = () => {
   }
   const handleVolumeChange = (volume: number) =>
     setPlayerState({ ...playerState, volume })
+
+  const handleUserAction = (type: 'like' | 'save') => {
+    if (!user_id) {
+      setIsOpen(true)
+      return
+    }
+
+    if (type === 'like') {
+      updateLike.mutate({ user_id })
+    } else if (type === 'save') {
+      setIsSaved((prev) => !prev)
+    }
+  }
+  const closeModal = () => setIsOpen(false)
+  const handleCloseAllModals = () => {
+    closePlayerModal()
+    closeModal()
+    setPlayerClose()
+  }
+  const redirectToLogin = () => {
+    handleCloseAllModals()
+    router.push('/login')
+  }
 
   // 경로에 따른 동작
   useEffect(() => {
@@ -87,14 +124,15 @@ const MusicPlayer = () => {
               playerState={playerState}
               onSeek={handleSeek}
               url={url}
-              className="hidden"
+              className="hidden desktop:flex"
             />
           </div>
           <ActionButtons
-            musicName={musicDetail?.title}
-            artistName={musicDetail?.artist}
             volumeLevel={playerState.volume}
             onVolumeChange={handleVolumeChange}
+            className="hidden desktop:flex"
+            ICON_SIZE={24}
+            onUserAction={handleUserAction}
           />
         </div>
 
@@ -104,8 +142,26 @@ const MusicPlayer = () => {
           lyrics={lyrics}
           playerState={playerState}
           onSeek={handleSeek}
+          onUserAction={handleUserAction}
         />
       </section>
+
+      <Modal
+        isOpen={isOpen}
+        title="로그인 필요"
+        content="로그인 화면으로 이동합니다"
+        type="vertical"
+        className="desktop:w-[434px]"
+        onConfirm={redirectToLogin}
+        onCancel={closeModal}
+      />
+
+      <MusicSaveBottomSheet
+        isOpen={isSaved}
+        handleClose={() => handleUserAction('save')}
+        musicName={musicDetail?.title || ''}
+        artistName={musicDetail?.artist || ''}
+      />
     </>
   )
 }

@@ -1,6 +1,7 @@
 'use client'
 import { Skeleton } from '@/components/common'
 import useAlbumCover from '@/hooks/useAlbumCover'
+import useIsDesktop from '@/hooks/useIsDesktop'
 import { Tables } from '@/types/supabase'
 import clsx from 'clsx'
 import Image from 'next/image'
@@ -13,13 +14,17 @@ type AlbumCoverProps = {
 export default function AlbumCover({ musicDetail }: AlbumCoverProps) {
   const { title, artist, album_cover } = musicDetail || {}
   const { album, genre, isPending } = useAlbumCover()
+  const isDesktop = useIsDesktop()
   const [isFlipped, setIsFlipped] = useState<boolean>(false)
 
   const handleFlip = async () => {
     setIsFlipped((prev) => !prev)
   }
 
-  if (isPending) return <Skeleton width="266px" height="266px" />
+  if (isPending) {
+    if (isDesktop) return <Skeleton width="433px" height="433px" />
+    return <Skeleton width="266px" height="266px" />
+  }
 
   return (
     <div

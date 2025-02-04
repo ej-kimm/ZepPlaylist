@@ -88,7 +88,7 @@ const SignupForm = () => {
       onSubmit={handleSubmit(onSubmit)}
       className={clsx(
         'mt-[25px] w-full bg-white',
-        'desktop:mt-[36px] desktop:w-full',
+        'desktop:mt-[36px] desktop:flex desktop:w-full desktop:flex-col desktop:gap-[52px]',
       )}
     >
       <InputBox
@@ -100,7 +100,6 @@ const SignupForm = () => {
         register={register}
         className={clsx(
           'caption-2 w-full rounded-lg border-white bg-[#f4f4f4] text-[16px]',
-          'desktop:mb-[52px]',
         )}
       />
       <InputBox
@@ -112,7 +111,6 @@ const SignupForm = () => {
         errorMessage={errors.password?.message}
         className={clsx(
           'caption-2 mt-6 w-full rounded-lg border-white bg-[#f4f4f4] text-[16px]',
-          'desktop:mb-[52px]',
         )}
       />
       <InputBox
@@ -124,7 +122,6 @@ const SignupForm = () => {
         errorMessage={errors.passwordCheck?.message}
         className={clsx(
           'caption-2 mt-6 w-full rounded-lg border-white bg-[#f4f4f4] text-[16px]',
-          'desktop:mb-[52px]',
         )}
       />
       <InputBox
@@ -136,7 +133,6 @@ const SignupForm = () => {
         errorMessage={errors.nickname?.message}
         className={clsx(
           'caption-2 mt-6 w-full rounded-lg border-white bg-[#f4f4f4] text-[16px]',
-          'desktop:mb-[53px]',
         )}
       />
       <div className="mt-4 flex items-center justify-center">
