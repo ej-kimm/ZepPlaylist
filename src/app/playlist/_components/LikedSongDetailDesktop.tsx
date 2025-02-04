@@ -135,11 +135,6 @@ export default function LikedSongsDetailDesktop({
               {song.music.artist}
             </p>
 
-            {/* 앨범 제목 */}
-            <p className="caption-1 truncate text-center">
-              {song.music.album_title || '앨범 제목 없음'}
-            </p>
-
             {/* 좋아요 버튼 (보라색 아이콘 적용 + 크기 축소) */}
             <button
               onClick={() => handleDelete(song.id)}
