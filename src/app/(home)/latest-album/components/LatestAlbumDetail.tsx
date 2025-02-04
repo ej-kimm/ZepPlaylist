@@ -5,6 +5,7 @@ import moreButton from '@/assets/images/moreButton.svg'
 import { MusicSaveBottomSheet } from '@/components/common'
 import { usePlaylistMusicUpsert } from '@/hooks/usePlaylistMusicUpsert'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
+import type { SpotifyTrack } from '@/types/billboradCharts'
 import Image from 'next/image'
 import { useState } from 'react'
 
@@ -35,6 +36,7 @@ const LatestAlbumDetail = ({ albumData }: LatestAlbumProps) => {
     (total, item) => total + item.duration_ms,
     0,
   )
+
   const handlePlayAll = () => {
     const musicData = albumTrackData.map((song) => {
       return {
@@ -43,9 +45,12 @@ const LatestAlbumDetail = ({ albumData }: LatestAlbumProps) => {
         artist: song.artists[0].name,
         albumCover: albumData.images[0].url,
         playTime: song.duration_ms,
+        albumName: albumData.name,
       }
     })
     musicData.map(async (item) => await upsertMusic(item))
+
+    console.log(musicData)
 
     const albumAllTrackIds = albumTrackData.map((song) => song.id)
 
@@ -59,26 +64,13 @@ const LatestAlbumDetail = ({ albumData }: LatestAlbumProps) => {
     setIsBottomSheetOpen(true)
   }
 
-  const handlePlayBtn = async (
-    id: string,
-    musicName: string,
-    artist: string,
-    playTime: number,
-  ) => {
+  const handlePlayBtn = async (newMusicData: SpotifyTrack) => {
     // 데이터 일치화를 위해 ()와 안의 텍스트 제거
-
-    const newMusicData = {
-      id: id, // 스포티파이로 변환한 아이디
-      title: musicName,
-      artist: artist,
-      playTime: playTime,
-      albumCover: albumData.images[0].url,
-    }
 
     await upsertMusic(newMusicData)
 
     if (!isPlayerOpen) setPlayerOpen()
-    setTrackIds(id)
+    setTrackIds(newMusicData.id)
     play()
   }
 
@@ -147,12 +139,14 @@ const LatestAlbumDetail = ({ albumData }: LatestAlbumProps) => {
             <div
               className="w-[100%] rounded-lg py-2 transition-colors"
               onClick={() =>
-                handlePlayBtn(
-                  item.id,
-                  item.name,
-                  item.artists[0].name,
-                  item.duration_ms,
-                )
+                handlePlayBtn({
+                  id: item.id,
+                  title: item.name,
+                  artist: item.artists[0].name,
+                  playTime: item.duration_ms,
+                  albumName: albumData.name,
+                  albumCover: albumData.images[0].url,
+                })
               }
             >
               <p className="text-#000 text-sm font-semibold">{item.name}</p>

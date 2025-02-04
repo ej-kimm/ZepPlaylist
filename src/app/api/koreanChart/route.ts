@@ -1,7 +1,7 @@
 // app/api/korean-chart/route.ts
 
 import { fetchAndCleanMelonChart } from '@/utils/chart/fetchMelonChart'
-import { getKrSpotifyTrackId } from '@/utils/chart/getKrSpotifyTrackId'
+import { getSpotifyTrackData } from '@/utils/chart/getSpotifyTrackId'
 import { getSpotifyToken } from '@/utils/spotifyToken/getToken'
 import { supabase } from '@/utils/supabase/client'
 import { NextResponse } from 'next/server'
@@ -14,9 +14,16 @@ export async function GET() {
 
     const cleanedMelonChart = await fetchAndCleanMelonChart()
 
+    // const resolvedMusicData = await Promise.all(
+    //   cleanedMelonChart!.map(
+    //     async (item) => await getKrSpotifyTrackId(token, item.songName),
+    //   ),
+    // )
+
     const resolvedMusicData = await Promise.all(
       cleanedMelonChart!.map(
-        async (item) => await getKrSpotifyTrackId(token, item.songName),
+        async (item) =>
+          await getSpotifyTrackData(token, item.songName, item.artistName),
       ),
     )
 
@@ -33,6 +40,7 @@ export async function GET() {
             title: item.title,
             artist: item.artist,
             album_cover: item.albumCover,
+            album_name: item.albumName,
             play_time: item.playTime,
             created_at: new Date().toISOString(),
           })),
