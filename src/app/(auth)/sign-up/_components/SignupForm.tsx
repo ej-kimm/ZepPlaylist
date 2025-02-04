@@ -1,5 +1,7 @@
 'use client'
 import { InputBox, Modal, PrimaryButton } from '@/components/common'
+import BottomSheet from '@/components/common/BottomSheet'
+import useIsDesktop from '@/hooks/useIsDesktop'
 import { supabase } from '@/utils/supabase/client'
 import { zodResolver } from '@hookform/resolvers/zod'
 import clsx from 'clsx'
@@ -14,12 +16,13 @@ const SignupForm = () => {
   const router = useRouter()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isChecked, setIsChecked] = useState(false)
+  const isDesktop = useIsDesktop(720)
   const handleOpenModal = () => {
     setIsModalOpen(true)
   }
 
   const handleCheckboxChange = () => {
-    setIsChecked(true)
+    setIsChecked((prev) => !prev)
     setIsModalOpen(false)
   }
   const handleCloseModal = () => {
@@ -147,25 +150,41 @@ const SignupForm = () => {
           서비스 정책 이용약관
         </span>
       </div>
-      <PrimaryButton
-        type="submit"
-        className={clsx('mt-4 h-[39px]', 'desktop:mt-12')}
-      >
+      <PrimaryButton type="submit" className={clsx('mt-4 h-[39px]')}>
         회원가입
       </PrimaryButton>
-      <Modal
-        isOpen={isModalOpen}
-        title="서비스 이용 약관"
-        content={
-          <Service
-            handleCheckboxChange={handleCheckboxChange}
-            isChecked={isChecked}
+      <>
+        {isDesktop ? (
+          <Modal
+            isOpen={isModalOpen}
+            title="서비스 이용 약관"
+            content={
+              <Service
+                handleCheckboxChange={handleCheckboxChange}
+                isChecked={isChecked}
+              />
+            }
+            onCancel={handleCloseModal}
+            type="none"
+            className={clsx('desktop:h-[580px] desktop:w-[550px]')}
           />
-        }
-        onCancel={handleCloseModal}
-        type="none"
-        className={clsx('desktop:w-full')}
-      />
+        ) : (
+          <BottomSheet
+            isOpen={isModalOpen}
+            onClose={handleCloseModal}
+            height="80%"
+            maxWidth="100%"
+          >
+            <h1 className="text-[24px]">
+              <b>서비스 이용 약관</b>
+            </h1>
+            <Service
+              handleCheckboxChange={handleCheckboxChange}
+              isChecked={isChecked}
+            />
+          </BottomSheet>
+        )}
+      </>
     </form>
   )
 }
