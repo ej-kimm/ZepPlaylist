@@ -179,8 +179,6 @@ const LatestAlbumDetail = ({ albumData }: LatestAlbumProps) => {
       </ul>
       {selectedSong && (
         <MusicSaveBottomSheet
-          musicName={selectedSong.title}
-          artistName={selectedSong.artist}
           isOpen={isBottomSheetOpen}
           handleClose={() => setIsBottomSheetOpen(false)}
           musicData={selectedSong}

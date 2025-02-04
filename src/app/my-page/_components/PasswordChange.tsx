@@ -1,6 +1,7 @@
 import { InputBox, PrimaryButton } from '@/components/common'
 import { supabase } from '@/utils/supabase/client'
 import { zodResolver } from '@hookform/resolvers/zod'
+import clsx from 'clsx'
 import { useForm } from 'react-hook-form'
 import Swal from 'sweetalert2'
 import { z } from 'zod'
@@ -58,7 +59,9 @@ export const PasswordChange = ({ setIsOpenPassword }: PasswordChangeProps) => {
         register={register}
         errorMessage={errors.newPassword?.message}
         required={true}
-        className="caption-2 mb-3 w-full cursor-text rounded-lg border-white bg-[#f4f4f4] text-[16px]"
+        className={clsx(
+          'caption-2 mb-3 w-full cursor-text rounded-lg border-white bg-[#f4f4f4] text-[16px]',
+        )}
       />
       <InputBox
         name="passwordCheck"
@@ -71,7 +74,7 @@ export const PasswordChange = ({ setIsOpenPassword }: PasswordChangeProps) => {
       />
       <PrimaryButton
         type="submit"
-        className="h-[39px]"
+        className={clsx('h-[39px]', 'desktop:w-[532px]')}
         onClick={() => {
           setIsOpenPassword(false)
         }}

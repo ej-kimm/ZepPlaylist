@@ -147,8 +147,6 @@ const SearchResultItem = ({
           <MusicSaveBottomSheet
             isOpen={isBottomSheetOpen}
             handleClose={() => setIsBottomSheetOpen(false)}
-            musicName={selectedSong!.title}
-            artistName={selectedSong!.artist}
             musicData={selectedSong!}
           />
         )}

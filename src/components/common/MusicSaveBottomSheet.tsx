@@ -11,16 +11,12 @@ import BottomSheet from './BottomSheet'
 import Skeleton from './Skeleton'
 
 type MusicSaveBottomSheetProps = {
-  musicName: string
-  artistName: string
   isOpen: boolean
   handleClose: () => void
   musicData: SpotifyTrack
 }
 
 const MusicSaveBottomSheet = ({
-  musicName,
-  artistName,
   isOpen,
   handleClose,
   musicData,
@@ -63,8 +59,8 @@ const MusicSaveBottomSheet = ({
       onClose={handleClose}
     >
       <header className="flex h-[88px] flex-col justify-center border-b border-opacity-60 px-4">
-        <h3 className="title-2 mb-2 truncate font-medium">{musicName}</h3>
-        <p className="body-2 truncate opacity-40">{artistName}</p>
+        <h3 className="title-2 mb-2 truncate font-medium">{musicData.title}</h3>
+        <p className="body-2 truncate opacity-40">{musicData.artist}</p>
       </header>
 
       <div className="flex flex-col">
