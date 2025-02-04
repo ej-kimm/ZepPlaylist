@@ -1,5 +1,5 @@
 import { PlaylistRow } from '@/types/playlist'
-import { FaEllipsisV, FaLock } from 'react-icons/fa'
+import { FaEllipsisH, FaEllipsisV, FaLock } from 'react-icons/fa'
 
 type PlaylistItemProps = {
   playlist: Pick<PlaylistRow, 'id'> & Partial<PlaylistRow>
@@ -25,7 +25,7 @@ export default function PlaylistItem({
   return (
     <li
       key={playlist.id}
-      className="flex cursor-pointer items-center justify-between"
+      className="flex cursor-pointer items-center justify-between p-2"
       onClick={(e) => {
         e.stopPropagation()
         if (handlePlaylistClick) handlePlaylistClick(playlist.id)
@@ -34,29 +34,26 @@ export default function PlaylistItem({
       <div className="flex items-center space-x-4">
         <div
           className={`relative h-[44px] w-[44px] rounded-lg bg-cover bg-center ${
-            playlist.latest_song_cover
-              ? ''
-              : 'flex items-center justify-center bg-gray-300'
+            playlist.latest_song_cover ? '' : 'bg-gray-300'
           }`}
-          style={
-            playlist.latest_song_cover
-              ? { backgroundImage: `url(${playlist.latest_song_cover})` }
-              : undefined
-          }
+          style={{
+            backgroundImage: playlist.latest_song_cover
+              ? `url(${playlist.latest_song_cover})`
+              : undefined,
+          }}
         >
           {!isDetailPage && !playlist.is_public && (
             <div className="absolute right-1 top-1 flex h-4 w-4 items-center justify-center rounded-full bg-black bg-opacity-50">
               <FaLock className="text-xs text-white" />
             </div>
           )}
-          {!playlist.latest_song_cover && (
-            <span className="font-pretendard text-lg text-gray-500">+</span>
-          )}
         </div>
         <div>
-          <p className="caption-1 font-pretendard">{playlist.name}</p>
+          <p className="caption-1 font-pretendard">
+            {playlist.name || '제목 없음'}
+          </p>
           <p className="text-sm text-gray-500">
-            {playlist.description || '곡 NN개'}
+            {playlist.description || '아티스트 정보 없음'}
           </p>
         </div>
       </div>
@@ -69,8 +66,9 @@ export default function PlaylistItem({
           }}
           className="text-xl text-gray-500"
         >
-          <FaEllipsisV />
+          {isDetailPage ? <FaEllipsisH /> : <FaEllipsisV />}
         </button>
+
         {showDropdown === playlist.id && (
           <div className="absolute right-0 mt-2 w-24 rounded-lg bg-white shadow-lg">
             {!isDetailPage ? (

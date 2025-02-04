@@ -5,6 +5,7 @@ import { Modal } from '@/components/common'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import { LikedSong } from '@/types/song'
 import { useEffect, useRef, useState } from 'react'
+import LikedSongsDetailDesktop from './LikedSongDetailDesktop'
 import LikedSongsDetailUI from './LikedSongDetailUI'
 
 type LikedSongsPageProps = {
@@ -27,6 +28,13 @@ export default function LikedSongsPage({
     onConfirm: () => {},
     onCancel: () => setModalProps((prev) => ({ ...prev, isOpen: false })),
   })
+  const [isDesktop, setIsDesktop] = useState<boolean>(window.innerWidth >= 720)
+
+  useEffect(() => {
+    const handleResize = () => setIsDesktop(window.innerWidth >= 720)
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -112,15 +120,25 @@ export default function LikedSongsPage({
 
   return (
     <>
-      <LikedSongsDetailUI
-        likedSongs={likedSongs}
-        handlePlayAll={handlePlayAll}
-        handleShufflePlay={handleShufflePlay}
-        handlePlayFromSong={handlePlayFromSong}
-        showDropdown={showDropdown}
-        toggleDropdown={toggleDropdown}
-        handleDelete={handleDelete}
-      />
+      {isDesktop ? (
+        <LikedSongsDetailDesktop
+          likedSongs={likedSongs}
+          handlePlayAll={handlePlayAll}
+          handleShufflePlay={handleShufflePlay}
+          handlePlayFromSong={handlePlayFromSong}
+          handleDelete={handleDelete}
+        />
+      ) : (
+        <LikedSongsDetailUI
+          likedSongs={likedSongs}
+          handlePlayAll={handlePlayAll}
+          handleShufflePlay={handleShufflePlay}
+          handlePlayFromSong={handlePlayFromSong}
+          showDropdown={showDropdown}
+          toggleDropdown={toggleDropdown}
+          handleDelete={handleDelete}
+        />
+      )}
       <Modal
         isOpen={modalProps.isOpen}
         title={modalProps.title}
