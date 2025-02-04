@@ -2,17 +2,11 @@
 
 import PlaylistCard from '@/app/community/_components/PlaylistCard'
 import defaultProfileImg from '@/assets/images/defaultProfileImg.png'
+import type { CommunityPlaylist } from '@/types/communityPlaylists'
 
 export type PlaylistSectionProps = {
   userId: string
-  playlists: {
-    id: string
-    name: string
-    likeCount: number
-    likedByUser?: boolean
-    profile_image: string | null
-    nickname: string | null
-  }[]
+  playlists: CommunityPlaylist[]
 }
 
 const PlaylistSection = ({ userId, playlists }: PlaylistSectionProps) => {
@@ -23,7 +17,7 @@ const PlaylistSection = ({ userId, playlists }: PlaylistSectionProps) => {
           key={playlist.id}
           playlist={{
             ...playlist,
-            profileImg: playlist.profile_image ?? defaultProfileImg,
+            profile_img: playlist.profile_image ?? defaultProfileImg,
             nickName: playlist.nickname || 'Anonymous',
           }}
           userId={userId}
