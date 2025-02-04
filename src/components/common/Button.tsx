@@ -41,6 +41,23 @@ export const SecondaryButton: React.FC<ButtonProps> = ({
   )
 }
 
+export const BorderButton: React.FC<ButtonProps> = ({
+  type = 'button',
+  onClick,
+  children,
+  className,
+}) => {
+  return (
+    <button
+      type={type}
+      onClick={onClick}
+      className={`caption-1 rounded-full border border-secondary text-secondary ${className}`}
+    >
+      {children}
+    </button>
+  )
+}
+
 export const UnderLineButton: React.FC<ButtonProps> = ({
   type = 'button',
   onClick,

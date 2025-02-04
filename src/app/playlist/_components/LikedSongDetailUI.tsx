@@ -49,7 +49,7 @@ export default function LikedSongsDetailUI({
         <p className="font-pretendard text-sm">곡 수: {likedSongs.length}곡</p>
       </section>
 
-      <ul className="space-y-2">
+      <ul>
         {likedSongs.map((song, index) => (
           <PlaylistItem
             key={song.id}
