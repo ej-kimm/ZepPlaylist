@@ -3,13 +3,12 @@
 import { Modal } from '@/components/common'
 import usePlaylistLike from '@/hooks/usePlaylistLike'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
+import type { Comment } from '@/types/comment'
+import type { CommunitySong } from '@/types/communitySong'
 import { supabase } from '@/utils/supabase/client'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import CommunityDetailUI from './CommunityDetailUI'
-import type { Comment } from '@/types/comment'
-import type { CommunitySong } from '@/types/communitySong'
-
 
 type Props = {
   songs: CommunitySong[]
@@ -105,8 +104,20 @@ export default function CommentSection({
 
     const { data, error } = await supabase
       .from('comments')
-      .insert({ playlist_id: playlistId, user_id: currentUserId, content })
-      .select()
+      .insert({
+        playlist_id: playlistId,
+        user_id: currentUserId,
+        content,
+      })
+      .select(
+        `
+      *,
+      users (
+        profile_image,
+        nickname
+      )
+    `,
+      ) // 사용자 정보 포함
       .single()
 
     if (error) {
@@ -114,10 +125,7 @@ export default function CommentSection({
       return
     }
 
-    setComments((prev) => [
-      ...prev,
-      { ...data, profile_image: null } as unknown as Comment,
-    ])
+    setComments((prev) => [...prev, data as unknown as Comment])
     setContent('')
   }
 
