@@ -2,6 +2,7 @@
 
 import Bean from '@/assets/images/Bin.svg'
 import playButton from '@/assets/images/playButton.svg'
+import TableList from '@/components/common/Tableilst'
 import { PlaylistDetails } from '@/types/song'
 import { differenceInDays, isToday } from 'date-fns'
 import Image from 'next/image'
@@ -110,59 +111,31 @@ export default function PlaylistDetailDesktop({
         </button>
       </section>
 
-      <div className="mt-8 flex w-full justify-between border-b border-gray-300 pb-2">
-        <p className="caption-1 w-[30%] pl-[94px]">제목</p>
-        <p className="caption-1 w-[30%] pr-[430px] text-center">아티스트</p>
-        <p className="caption-1 w-[30%] pr-[420px] text-center">앨범제목</p>
-        <p className="w-[100px]"></p>
-      </div>
-
-      <ul className="mt-2 flex w-full flex-col">
-        {songs.map((song, index) => (
-          <li
-            key={song.spotify_id}
-            className="flex w-full items-center justify-between px-[24px] py-[4px]"
+      <TableList
+        items={songs.map((song) => ({
+          id: song.spotify_id,
+          music: {
+            title: song.title,
+            artist: song.artist,
+            album_cover: song.album_cover || undefined,
+          },
+        }))}
+        handleItemClick={(index) => handlePlayFromIndex(index)}
+        renderAction={(song) => (
+          <button
+            onClick={() => handleDeleteSong(song.id)}
+            className="flex h-[36px] w-[36px] items-center justify-center rounded-full border border-primary bg-white"
           >
-            <div className="flex w-[30%] items-center gap-[21px]">
-              <div className="h-[52px] w-[52px] overflow-hidden rounded-lg bg-[#D9D9D9]">
-                {song.album_cover && (
-                  <Image
-                    src={song.album_cover}
-                    alt={song.title}
-                    width={52}
-                    height={52}
-                    className="rounded-lg"
-                  />
-                )}
-              </div>
-
-              <div
-                className="cursor-pointer truncate text-left"
-                onClick={() => handlePlayFromIndex(index)}
-              >
-                <h3 className="caption-1">{song.title}</h3>
-              </div>
-            </div>
-
-            <p className="caption-1 w-[30%] truncate">{song.artist}</p>
-
-            <p className="caption-1 w-[30%] truncate">앨범 이름 없음</p>
-
-            <button
-              onClick={() => handleDeleteSong(song.spotify_id)}
-              className="flex h-[36px] w-[36px] items-center justify-center rounded-full border border-primary bg-white"
-            >
-              <Image
-                src={Bean}
-                alt="좋아요"
-                width={16}
-                height={16}
-                className="h-4 w-4 text-primary"
-              />
-            </button>
-          </li>
-        ))}
-      </ul>
+            <Image
+              src={Bean}
+              alt="삭제"
+              width={16}
+              height={16}
+              className="h-4 w-4 text-primary"
+            />
+          </button>
+        )}
+      />
     </div>
   )
 }
