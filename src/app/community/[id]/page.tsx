@@ -29,7 +29,7 @@ const CommunityDetailPage = async ({
         songs={songs}
         comments={comments}
         playlistId={params.id}
-        isLiked={isLiked} // 좋아요 상태 전달
+        isLiked={isLiked}
       />
     </div>
   )

@@ -3,33 +3,15 @@
 import { Modal } from '@/components/common'
 import usePlaylistLike from '@/hooks/usePlaylistLike'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
+import type { Comment } from '@/types/comment'
+import type { CommunitySong } from '@/types/communitySong'
 import { supabase } from '@/utils/supabase/client'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import CommunityDetailUI from './CommunityDetailUI'
 
-type User = {
-  profile_image: string | null
-}
-
-type Song = {
-  spotify_id: string
-  title: string
-  artist: string
-  album_cover: string | null
-}
-
-type Comment = {
-  users?: User
-  id: string
-  created_at: string
-  user_id: string
-  content: string
-  profile_image?: string | null
-}
-
 type Props = {
-  songs: Song[]
+  songs: CommunitySong[]
   comments: Comment[]
   playlistId: string
   nickname: string
@@ -53,7 +35,7 @@ export default function CommentSection({
   const [currentUserId, setCurrentUserId] = useState<string | null>(null)
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
 
-  const { setTrackIds, playNextTrack, setPlayerOpen, play } =
+  const { isPlayerOpen, setTrackIds, setPlayerOpen, play } =
     useMusicPlayerStore()
   const { toggleLike, isLiked } = usePlaylistLike({
     user_id: currentUserId || '',
@@ -80,7 +62,8 @@ export default function CommentSection({
           user_id,
           content,
           users (
-            profile_image
+            profile_image,
+            nickname
           )
         `,
         )
@@ -96,7 +79,8 @@ export default function CommentSection({
 
       const commentsWithProfiles = data.map((comment: Comment) => ({
         ...comment,
-        profile_image: comment.users?.profile_image || null,
+        profileImage: comment.users?.profile_image || null,
+        nickname: comment.users?.nickname || 'Anonymous', // 닉네임 추가
       }))
 
       setComments(commentsWithProfiles)
@@ -112,12 +96,6 @@ export default function CommentSection({
     }
   }, [songs, playlistId, play, setPlayerOpen, setTrackIds])
 
-  const handleSongClick = () => {
-    setTrackIds(songs.map((song) => song.spotify_id))
-    playNextTrack()
-    play()
-  }
-
   const handleAddComment = async () => {
     if (!currentUserId) {
       alert('로그인이 필요합니다.')
@@ -126,8 +104,20 @@ export default function CommentSection({
 
     const { data, error } = await supabase
       .from('comments')
-      .insert({ playlist_id: playlistId, user_id: currentUserId, content })
-      .select()
+      .insert({
+        playlist_id: playlistId,
+        user_id: currentUserId,
+        content,
+      })
+      .select(
+        `
+      *,
+      users (
+        profile_image,
+        nickname
+      )
+    `,
+      ) // 사용자 정보 포함
       .single()
 
     if (error) {
@@ -135,10 +125,7 @@ export default function CommentSection({
       return
     }
 
-    setComments((prev) => [
-      ...prev,
-      { ...data, profile_image: null } as unknown as Comment,
-    ])
+    setComments((prev) => [...prev, data as unknown as Comment])
     setContent('')
   }
 
@@ -168,6 +155,13 @@ export default function CommentSection({
     })
   }
 
+  const handlePlayFromIndex = (index: number) => {
+    if (!isPlayerOpen) setPlayerOpen()
+    const trackIdsFromIndex = songs.slice(index).map((song) => song.spotify_id)
+    setTrackIds(trackIdsFromIndex)
+    play()
+  }
+
   const handleConfirmLogin = () => {
     router.push('/login')
   }
@@ -183,17 +177,17 @@ export default function CommentSection({
         comments={comments}
         content={content}
         setContent={setContent}
-        handleSongClick={handleSongClick}
         handleAddComment={handleAddComment}
         handleDeleteComment={handleDeleteComment}
         currentUserId={currentUserId}
         isLiked={isLiked}
         onLikeToggle={handleToggleLike}
+        handlePlayFromIndex={handlePlayFromIndex}
       />
       <Modal
         isOpen={isLoginModalOpen}
-        title="로그인 필요" 
-        content="좋아요를 누르려면 로그인이 필요합니다." 
+        title="로그인 필요"
+        content="좋아요를 누르려면 로그인이 필요합니다."
         type="horizontal"
         onConfirm={handleConfirmLogin}
         onCancel={() => setIsLoginModalOpen(false)}

@@ -1,6 +1,7 @@
 'use client'
 
 import { availableKeywords } from '@/constants/keywords'
+import clsx from 'clsx'
 import 'swiper/css'
 import 'swiper/css/pagination'
 import { Autoplay } from 'swiper/modules'
@@ -16,7 +17,7 @@ const KeywordCarousel = ({
   onToggleKeyword,
 }: KeywordCarouselProps) => {
   return (
-    <div className="mt-4 w-full">
+    <div className={clsx("mt-4 w-full", "desktop:mb-10")}>
       <Swiper
         spaceBetween={8}
         slidesPerView="auto"
