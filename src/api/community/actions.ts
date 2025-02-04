@@ -121,7 +121,7 @@ export async function getPlaylists(userId: string, keywords: string[] = []) {
   }
 }
 
-export async function getPopularPlaylists(userId: string, limit: number = 5) {
+export async function getPopularPlaylists(userId: string, limit: number = 10) {
   const playlists = await getPlaylists(userId)
   return playlists.sort((a, b) => b.likeCount - a.likeCount).slice(0, limit)
 }

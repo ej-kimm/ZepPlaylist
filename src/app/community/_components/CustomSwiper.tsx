@@ -27,7 +27,8 @@ const CustomSwiper: React.FC<CustomSwiperProps> = ({ items }) => {
         580: { slidesPerView: 3.2, spaceBetween: 1 },
         620: { slidesPerView: 3.5, spaceBetween: 1 },
         660: { slidesPerView: 4, spaceBetween: 1 },
-        700: { slidesPerView: 4, spaceBetween: 1 },
+        720: { slidesPerView: 5, spaceBetween: 1 },
+        1200: { slidesPerView: 7, spaceBetween: 1 },
       }}
     >
       {items.map((item) => (
