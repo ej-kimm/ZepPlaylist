@@ -9,6 +9,7 @@ const config: Config = {
   theme: {
     screens: {
       desktop: '720px',
+      'desktop-lg': '1000px',
     },
     extend: {
       colors: {
