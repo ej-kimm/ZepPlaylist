@@ -68,7 +68,7 @@ export const getCommunityComments = async (
     `,
     )
     .eq('playlist_id', playlistId)
-    .order('created_at', { ascending: true })
+    .order('created_at', { ascending: false })
 
   if (error) {
     console.error('Error fetching comments:', error.message)
