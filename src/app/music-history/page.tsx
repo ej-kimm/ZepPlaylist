@@ -1,7 +1,7 @@
-import HistoryItem from './_components/HistoryItem'
+import HistoryList from './_components/HistoryList'
 
-const CurrentPlayPage = () => {
-  return <HistoryItem />
+const MusicHistoryPage = () => {
+  return <HistoryList />
 }
 
-export default CurrentPlayPage
+export default MusicHistoryPage

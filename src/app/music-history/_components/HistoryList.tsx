@@ -6,7 +6,7 @@ import type { Tables } from '@/types/supabase'
 import clsx from 'clsx'
 import { useEffect, useState } from 'react'
 
-const HistoryItem = () => {
+const HistoryList = () => {
   const { user } = userStore()
   const { isPlayerOpen, setTrackIds, setPlayerOpen, play } =
     useMusicPlayerStore()
@@ -80,4 +80,4 @@ const HistoryItem = () => {
   )
 }
 
-export default HistoryItem
+export default HistoryList
