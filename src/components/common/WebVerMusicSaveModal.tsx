@@ -7,7 +7,7 @@ import { usePlaylistMusicUpsert } from '@/hooks/usePlaylistMusicUpsert'
 import usePlaylistOperations from '@/hooks/usePlaylistOperations'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import { userStore } from '@/store/userSlice'
-import type { Charts } from '@/types/billboradCharts'
+import type { SpotifyTrack } from '@/types/billboradCharts'
 import clsx from 'clsx'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -16,7 +16,7 @@ import Modal from './Modal'
 import Skeleton from './Skeleton'
 
 type WebVerMusicSaveModalProps = {
-  musicData: Charts
+  musicData: SpotifyTrack
   musicName: string
   artistName: string
   handleClose: () => void
@@ -35,7 +35,7 @@ const WebVerMusicSaveModal = ({
   const { upsertMusic, addMusicToPlaylistTable } = usePlaylistMusicUpsert()
   const { closePlayerModal } = useMusicPlayerStore()
 
-  console.log(musicData)
+  // console.log(musicData)
 
   const handleModalButtonClick = () => {
     console.log('모달 버튼')
