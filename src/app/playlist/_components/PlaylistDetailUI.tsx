@@ -3,7 +3,7 @@ import { PlaylistDetails } from '@/types/song'
 import { differenceInDays, isToday } from 'date-fns'
 import Image from 'next/image'
 import { FaRandom } from 'react-icons/fa'
-import PlaylistItem from './PlaylistItem'
+import PlaylistItem from '../../../components/common/PlaylistItem'
 
 type PlaylistDetailUIProps = {
   playlistDetails: PlaylistDetails

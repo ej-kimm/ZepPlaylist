@@ -36,7 +36,8 @@ export async function fetchLikedSongs() {
           title,
           album_cover,
           artist,
-          play_time
+          play_time,
+          album_name
         ),
         created_at,
         id
@@ -46,7 +47,15 @@ export async function fetchLikedSongs() {
       .order('created_at', { ascending: false })
 
     if (error) throw error
-    return data || []
+    return (
+      data?.map((song) => ({
+        ...song,
+        music: {
+          ...song.music,
+          play_time: song.music.play_time ?? 0,
+        },
+      })) || []
+    )
   } catch (error) {
     console.error('좋아요 리스트 가져오기 오류:', error)
     throw new Error('좋아요 리스트 데이터를 가져오는 중 문제가 발생했습니다.')
