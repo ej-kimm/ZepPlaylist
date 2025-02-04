@@ -40,6 +40,7 @@ export async function GET() {
             title: item.title,
             artist: item.artist,
             album_cover: item.albumCover,
+            album_name: item.albumName,
             play_time: item.playTime,
             created_at: new Date().toISOString(),
           })),

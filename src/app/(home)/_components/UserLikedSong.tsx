@@ -65,7 +65,7 @@ const UserLikedSong = () => {
               <Image src={likeTrue} alt="Like Button" width={16} height={16} />
             </div>
           ) : (
-            <ul className="scroll-invisible mb-14 flex space-x-4 overflow-x-auto">
+            <ul className="scroll-invisible flex space-x-4 overflow-x-auto">
               {matchedMusicInfo.map((item) => (
                 <LikeSongItem item={item} key={item.id} />
               ))}

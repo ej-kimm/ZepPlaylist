@@ -5,6 +5,7 @@ import Swal from 'sweetalert2'
 
 export const usePlaylistMusicUpsert = () => {
   const upsertMusic = useCallback(async (musicData: SpotifyTrack) => {
+    console.log(musicData)
     if (!musicData) {
       console.log('No data returned from onFetchMusicData')
       return null
@@ -29,6 +30,7 @@ export const usePlaylistMusicUpsert = () => {
           title: musicData.title,
           artist: musicData.artist,
           album_cover: musicData.albumCover,
+          album_name: musicData.albumName,
           play_time: musicData.playTime,
           created_at: new Date().toISOString(),
         })

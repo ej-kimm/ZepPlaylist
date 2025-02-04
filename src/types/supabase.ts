@@ -12,6 +12,7 @@ export type Database = {
       billboard_chart: {
         Row: {
           album_cover: string
+          album_name: string | null
           artist: string
           created_at: string
           play_time: number
@@ -20,6 +21,7 @@ export type Database = {
         }
         Insert: {
           album_cover: string
+          album_name?: string | null
           artist: string
           created_at?: string
           play_time: number
@@ -28,6 +30,7 @@ export type Database = {
         }
         Update: {
           album_cover?: string
+          album_name?: string | null
           artist?: string
           created_at?: string
           play_time?: number
@@ -78,6 +81,7 @@ export type Database = {
       korean_chart: {
         Row: {
           album_cover: string
+          album_name: string | null
           artist: string
           created_at: string
           play_time: number
@@ -86,6 +90,7 @@ export type Database = {
         }
         Insert: {
           album_cover: string
+          album_name?: string | null
           artist: string
           created_at?: string
           play_time: number
@@ -94,6 +99,7 @@ export type Database = {
         }
         Update: {
           album_cover?: string
+          album_name?: string | null
           artist?: string
           created_at?: string
           play_time?: number
@@ -105,6 +111,7 @@ export type Database = {
       music: {
         Row: {
           album_cover: string
+          album_name: string | null
           artist: string
           created_at: string
           lyrics: string | null
@@ -114,6 +121,7 @@ export type Database = {
         }
         Insert: {
           album_cover: string
+          album_name?: string | null
           artist: string
           created_at?: string
           lyrics?: string | null
@@ -123,6 +131,7 @@ export type Database = {
         }
         Update: {
           album_cover?: string
+          album_name?: string | null
           artist?: string
           created_at?: string
           lyrics?: string | null
