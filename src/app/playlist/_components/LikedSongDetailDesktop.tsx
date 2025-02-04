@@ -63,6 +63,7 @@ export default function LikedSongsDetailDesktop({
           artist: song.music.artist,
           album_cover: song.music.album_cover || null,
           album_name: song.music.album_name || '앨범 제목 없음',
+          play_time: song.music.play_time ?? 0,
         }))}
         handleItemClick={handlePlayFromSong}
         renderAction={(song) => (
