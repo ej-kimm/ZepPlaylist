@@ -11,6 +11,7 @@ import { useEffect, useRef, useState } from 'react'
 import ReactPlayer from 'react-player'
 import { Modal, MusicSaveBottomSheet, MusicSaveModal } from '../common'
 import ActionButtons from './_components/ActionButtons'
+import ErrorMessage from './_components/ErrorMessage'
 import MusicDetailModal from './_components/MusicDetailModal'
 import MusicDetails from './_components/MusicDetails'
 import PlayerControls from './_components/PlayerControls'
@@ -37,13 +38,12 @@ const MusicPlayer = () => {
     isPlayerOpen,
     isPlaying,
     isPlayerModalOpen,
+    showErrorMessage,
     closePlayerModal,
     setPlayerClose,
     stop,
   } = useMusicPlayerStore()
   const { musicDetail, url, lyrics, isPending } = usePlayer()
-
-  console.log('MusicPlayer', musicDetail)
   const pathname = usePathname()
   const isDesktop = useIsDesktop()
 
@@ -105,6 +105,9 @@ const MusicPlayer = () => {
   if (!isPlayerOpen) return null // 초기에 노래를 재생하지 않으면 플레이어바 숨김
   if (!url || isPending) {
     return isPlayerModalOpen ? <PlayerModalSkeleton /> : <PlayerSkeleton />
+  }
+  if (url.length === 0) {
+    return showErrorMessage && <ErrorMessage />
   }
 
   return (
