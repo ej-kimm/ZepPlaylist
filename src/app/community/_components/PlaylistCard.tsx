@@ -32,7 +32,6 @@ const PlaylistCard = ({ playlist, userId }: PlaylistCardProps) => {
   useEffect(() => {
     setLikeCount(playlist.likeCount)
   }, [playlist.likeCount])
-  console.log("에러 콘솔",playlist)
 
   const handleLikeToggle = () => {
     if (!userId) {

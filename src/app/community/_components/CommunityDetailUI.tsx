@@ -186,7 +186,7 @@ export default function CommunityDetailUI({
                 <li
                   key={song.spotify_id}
                   className={clsx(
-                    'flex items-center justify-between py-4 cursor-pointer',
+                    'flex cursor-pointer items-center justify-between py-4',
                     'desktop:hidden', // PC에서는 모바일 버전 숨김
                   )}
                   onClick={() => handlePlayFromIndex(index)}
@@ -233,7 +233,7 @@ export default function CommunityDetailUI({
                 <li
                   key={`pc-${song.spotify_id}`}
                   className={clsx(
-                    'hidden items-center justify-between py-4 cursor-pointer',
+                    'hidden cursor-pointer items-center justify-between py-4',
                     'desktop:flex', // PC에서만 표시
                   )}
                   onClick={() => handlePlayFromIndex(index)}
