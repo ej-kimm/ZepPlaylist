@@ -2,12 +2,12 @@
 
 import likeTrue from '@/assets/images/likeTrue.svg'
 import whiteHeart from '@/assets/images/whiteHeart.svg'
-import Image, { type StaticImageData } from 'next/image'
+import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
 import { FiMoreVertical } from 'react-icons/fi'
 
 type PlaylistDesktopUIProps = {
-  album_cover: string | StaticImageData
+  album_cover: string | undefined
   title: string
   description: string
   isLiked?: boolean
@@ -49,13 +49,19 @@ const PlaylistDesktopUI = ({
 
   return (
     <div
-      className="relative h-[192px] w-[192px] overflow-hidden rounded-[21.94px] lg:h-[212px] lg:w-[212px] xl:h-[232px] xl:w-[232px] 2xl:h-[252px] 2xl:w-[252px]"
+      className={`relative h-[192px] w-[192px] overflow-hidden rounded-[21.94px] lg:h-[212px] lg:w-[212px] xl:h-[232px] xl:w-[232px] 2xl:h-[252px] 2xl:w-[252px] ${
+        album_cover ? '' : 'bg-gray-300'
+      }`}
       onClick={onClick}
     >
       <div className="absolute bottom-0 left-0 z-20 h-[40%] w-full bg-gradient-to-b from-transparent via-black/[0.63] to-black/[0.7]"></div>
-      <button onClick={() => {}}>
-        <Image fill alt="최근 앨범사진" src={album_cover} className="z-10" />
-      </button>
+      {album_cover ? (
+        <Image fill alt="" src={album_cover} className="absolute inset-0" />
+      ) : (
+        <div className="absolute inset-0 bg-gray-300"></div>
+      )}
+
+      <div className="absolute bottom-0 left-0 z-20 h-[40%] w-full bg-gradient-to-b from-transparent via-black/[0.63] to-black/[0.7]"></div>
 
       <div className="absolute right-3 top-3 z-40">
         <button

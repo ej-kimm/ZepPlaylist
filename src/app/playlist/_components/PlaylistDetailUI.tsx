@@ -32,10 +32,7 @@ export default function PlaylistDetailUI({
     last_updated,
     songs,
   } = playlistDetails
-  const latestSongCover =
-    songs.length > 0
-      ? songs[0].album_cover || '/default-cover.jpg'
-      : '/default-cover.jpg'
+  const latestSongCover = songs.length > 0 ? songs[0].album_cover || null : null
 
   return (
     <div className="mx-auto h-[858px] max-w-[375px] bg-white">

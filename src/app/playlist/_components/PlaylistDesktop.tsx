@@ -73,7 +73,7 @@ export default function PlaylistDesktop({
         {playlists.map((playlist) => (
           <PlaylistDesktopUI
             key={playlist.id}
-            album_cover={playlist.latest_song_cover || '/favicon.svg'}
+            album_cover={playlist.latest_song_cover || undefined}
             title={playlist.name}
             description={playlist.description || '설명 없음'}
             isLiked={playlist.is_liked}
