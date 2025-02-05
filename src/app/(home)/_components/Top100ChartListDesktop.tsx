@@ -20,7 +20,7 @@ const Top100ChartListDesktop = ({
       <div className="w-full">
         <div className="mt-8 flex w-full justify-between border-b border-gray-300 px-[24px] pb-2">
           <p className="caption-1 text-[#636363]">순위</p>
-          <p className="caption-1 w-[30%] pl-[90px] text-[#636363]">제목</p>
+          <p className="caption-1 w-[28%] pl-[60px] text-[#636363]">제목</p>
           <p className="caption-1 w-[30%] text-[#636363]">아티스트</p>
           <p className="caption-1 w-[30%] text-[#636363]">앨범제목</p>
 
