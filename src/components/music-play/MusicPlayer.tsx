@@ -11,6 +11,7 @@ import { useEffect, useRef, useState } from 'react'
 import ReactPlayer from 'react-player'
 import { Modal, MusicSaveBottomSheet, MusicSaveModal } from '../common'
 import ActionButtons from './_components/ActionButtons'
+import ErrorMessage from './_components/ErrorMessage'
 import MusicDetailModal from './_components/MusicDetailModal'
 import MusicDetails from './_components/MusicDetails'
 import PlayerControls from './_components/PlayerControls'
@@ -37,6 +38,7 @@ const MusicPlayer = () => {
     isPlayerOpen,
     isPlaying,
     isPlayerModalOpen,
+    showErrorMessage,
     closePlayerModal,
     setPlayerClose,
     stop,
@@ -104,6 +106,9 @@ const MusicPlayer = () => {
   if (!url || isPending) {
     return isPlayerModalOpen ? <PlayerModalSkeleton /> : <PlayerSkeleton />
   }
+  if (url.length === 0) {
+    return showErrorMessage && <ErrorMessage />
+  }
 
   return (
     <>
@@ -134,11 +139,7 @@ const MusicPlayer = () => {
               'desktop-xl:w-[546px]',
             )}
           >
-            <PlayerControls
-              isUrl={url.length > 0}
-              className="gap-2"
-              ICON_SIZE={24}
-            />
+            <PlayerControls className="gap-2" ICON_SIZE={24} />
             <ProgressBar
               playerState={playerState}
               onSeek={handleSeek}

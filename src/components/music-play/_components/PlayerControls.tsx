@@ -8,17 +8,13 @@ import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import clsx from 'clsx'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
+
 type PlayerControlsProps = {
-  isUrl: boolean
   className: string
   ICON_SIZE: number
 }
 
-const PlayerControls = ({
-  isUrl,
-  className,
-  ICON_SIZE,
-}: PlayerControlsProps) => {
+const PlayerControls = ({ className, ICON_SIZE }: PlayerControlsProps) => {
   const router = useRouter()
   const {
     trackIds,
@@ -41,7 +37,7 @@ const PlayerControls = ({
         className,
       )}
     >
-      <button type="button" onClick={playPreviousTrack} disabled={isFirstTrack}>
+      <button type="button" onClick={playPreviousTrack}>
         <Image
           src={skipBack}
           width={ICON_SIZE}
@@ -50,16 +46,15 @@ const PlayerControls = ({
           className={clsx(isFirstTrack ? 'opacity-40' : 'opacity-100')}
         />
       </button>
-      <button type="button" onClick={togglePlay} disabled={!isUrl}>
+      <button type="button" onClick={togglePlay}>
         <Image
-          src={!isUrl ? pause : isPlaying ? pause : playing}
+          src={isPlaying ? pause : playing}
           width={ICON_SIZE}
           height={ICON_SIZE}
           alt={isPlaying ? 'pause' : 'play'}
-          className={clsx(!isUrl && 'opacity-40')}
         />
       </button>
-      <button type="button" onClick={playNextTrack} disabled={isLastTrack}>
+      <button type="button" onClick={playNextTrack}>
         <Image
           src={skipNext}
           width={ICON_SIZE}

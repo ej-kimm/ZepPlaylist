@@ -13,6 +13,7 @@ import { useEffect } from 'react'
 
 const usePlayer = () => {
   const { user } = userStore()
+  const { setShowErrorMessage } = useMusicPlayerStore()
   const currentTrackId = useMusicPlayerStore(
     (state) => state.trackIds[state.currentTrackIndex],
   )
@@ -57,7 +58,18 @@ const usePlayer = () => {
     gcTime: 24 * 60 * 60 * 1000, // 24시간
   })
 
-  // 재생했던 목록들 session저장
+  // 음악 재생이 안될 경우 에러 메세지 타이머 시작
+  useEffect(() => {
+    if (musicDetail?.trackUrl.length > 0) return
+    setShowErrorMessage(true)
+    const timer = setTimeout(() => {
+      setShowErrorMessage(false)
+    }, 3000)
+
+    return () => clearTimeout(timer)
+  }, [musicDetail?.trackUrl, currentTrackId])
+
+  // 재생했던 목록들 localStorage에 저장
   useEffect(() => {
     if (musicDetail?.musicDetail && musicDetail?.trackUrl?.length > 0) {
       // created_at, lyrics제외 저장
