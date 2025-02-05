@@ -1,6 +1,7 @@
 'use client'
 
 import { Modal, PlaylistBottomSheet } from '@/components/common'
+import useIsDesktop from '@/hooks/useIsDesktop'
 import {
   useAddPlaylist,
   useDeletePlaylist,
@@ -9,9 +10,11 @@ import {
   useUpdatePlaylist,
 } from '@/hooks/usePlaylists'
 import { userStore } from '@/store/userSlice'
-import { PlaylistRow } from '@/types/playlist'
+import { PlaylistRow, type PlaylistInsert } from '@/types/playlist'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import PlaylistDesktop from './PlaylistDesktop'
+import PlaylistSkeleton from './PlaylistSkeleton'
 import PlaylistList from './PlaylistUI'
 
 type PlaylistComponentProps = { initialPlaylists: PlaylistRow[] }
@@ -19,6 +22,7 @@ type PlaylistComponentProps = { initialPlaylists: PlaylistRow[] }
 export default function Playlist({ initialPlaylists }: PlaylistComponentProps) {
   const { user, isLogin } = userStore()
   const router = useRouter()
+  const isDesktop = useIsDesktop()
 
   useEffect(() => {
     if (!isLogin || !user?.id) {
@@ -76,22 +80,30 @@ export default function Playlist({ initialPlaylists }: PlaylistComponentProps) {
         : [...prev, keyword],
     )
   }
+  if (isLoading) {
+    return <PlaylistSkeleton />
+  }
 
   return (
-    <div className="mx-auto h-full max-w-[375px] bg-white">
-      {isLoading ? (
-        <p className="mt-6 text-center text-gray-500">데이터 로딩 중...</p>
-      ) : isLogin ? (
-        <PlaylistList
-          playlists={playlists || []}
-          latestLikedSongCover={latestLikedSongCover || ''}
-          openModal={openModal}
-          handlePlaylistClick={(id) => router.push(`/playlist/${id}`)}
-          handleLikesClick={() => router.push('/playlist/likes')}
-          showDropdown={showDropdown}
-          setShowDropdown={setShowDropdown}
-          handleDeletePlaylist={handleDeleteConfirmation}
-        />
+    <div className="mx-auto h-full w-full bg-white">
+      {isLogin ? (
+        isDesktop ? (
+          <PlaylistDesktop
+            playlists={playlists || []}
+            handleLikeToggle={(id) => console.log(`좋아요 토글: ${id}`)}
+          />
+        ) : (
+          <PlaylistList
+            playlists={playlists || []}
+            latestLikedSongCover={latestLikedSongCover || ''}
+            openModal={openModal}
+            handlePlaylistClick={(id) => router.push(`/playlist/${id}`)}
+            handleLikesClick={() => router.push('/playlist/likes')}
+            showDropdown={showDropdown}
+            setShowDropdown={setShowDropdown}
+            handleDeletePlaylist={handleDeleteConfirmation}
+          />
+        )
       ) : (
         <p className="mt-6 text-center text-gray-500">로그인이 필요합니다.</p>
       )}
@@ -118,7 +130,7 @@ export default function Playlist({ initialPlaylists }: PlaylistComponentProps) {
               is_public: isPublic,
               keyword: selectedKeywords.join(','),
               user_id: user?.id || '',
-            })
+            } as PlaylistInsert)
           } else if (modalType === 'edit' && selectedPlaylist) {
             updatePlaylistMutation.mutate({
               id: selectedPlaylist.id,
