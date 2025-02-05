@@ -34,7 +34,7 @@ const PopularPlayList = async () => {
             'desktop:title-3 desktop:mb-10',
           )}
         >
-          인기 있는 플레이리스트
+          인기 플레이리스트
         </h1>
         <Link
           href={'/community'}

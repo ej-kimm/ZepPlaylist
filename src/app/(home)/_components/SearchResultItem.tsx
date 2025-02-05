@@ -1,16 +1,16 @@
 'use client'
 
+import communityWebCircle from '@/assets/images/communityWebCircle.svg'
 import moreButton from '@/assets/images/moreButton.svg'
-import { MusicSaveBottomSheet } from '@/components/common'
+import { MusicSaveBottomSheet, MusicSaveModal } from '@/components/common'
+import TableList from '@/components/common/Tableilst'
+import useIsDesktop from '@/hooks/useIsDesktop'
 import { usePlaylistMusicUpsert } from '@/hooks/usePlaylistMusicUpsert'
 import { useSearchHistory } from '@/hooks/useSearchHistoryItem'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import type { SpotifyTrack } from '@/types/billboradCharts'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
-import useIsDesktop from '@/hooks/useIsDesktop'
-import TableList from '@/components/common/Tableilst'
-import communityWebCircle from '@/assets/images/communityWebCircle.svg'
 
 type SearchResultProps = {
   searchParams: string
@@ -51,7 +51,9 @@ const SearchResultItem = ({
 
   return (
     <div className="mx-auto flex flex-col gap-5">
-      <h1 className="title-1 mb-3 pt-5">{searchParams} 검색 결과</h1>
+      <h1 className="title-1 mb-3 pt-5">
+        &quot;{searchParams}&quot;으로 검색된 곡
+      </h1>
       <div>
         <h2 className="title-2 flex pb-6 font-bold">가수</h2>
         <div className="flex flex-col gap-2">
@@ -68,7 +70,7 @@ const SearchResultItem = ({
       </div>
 
       <div>
-        <h2 className="title-2 mt-3">곡</h2>
+        {!isDesktop && <h2 className="title-2 mt-3">곡</h2>}
         {isDesktop ? (
           <TableList
             items={searchResultList.map((item) => ({
@@ -103,7 +105,12 @@ const SearchResultItem = ({
                   })
                 }}
               >
-                <Image src={communityWebCircle} alt="More Options" width={36} height={36} />
+                <Image
+                  src={communityWebCircle}
+                  alt="More Options"
+                  width={36}
+                  height={36}
+                />
               </button>
             )}
           />
@@ -150,7 +157,9 @@ const SearchResultItem = ({
                   }
                 >
                   <h3 className="button-2 truncate">{item.name}</h3>
-                  <p className="caption-2 truncate opacity-60">{item.artists[0].name}</p>
+                  <p className="caption-2 truncate opacity-60">
+                    {item.artists[0].name}
+                  </p>
                 </div>
                 <button
                   type="button"
@@ -166,7 +175,12 @@ const SearchResultItem = ({
                     })
                   }}
                 >
-                  <Image src={moreButton} alt="More Options" width={24} height={24} />
+                  <Image
+                    src={moreButton}
+                    alt="More Options"
+                    width={24}
+                    height={24}
+                  />
                 </button>
               </li>
             ))}
@@ -174,15 +188,23 @@ const SearchResultItem = ({
         )}
       </div>
 
-      {selectedSong && (
-        <MusicSaveBottomSheet
-          isOpen={isBottomSheetOpen}
-          handleClose={() => setIsBottomSheetOpen(false)}
-          musicName={selectedSong!.title}
-          artistName={selectedSong!.artist}
-          musicData={selectedSong}
-        />
-      )}
+      {selectedSong &&
+        (isDesktop ? (
+          <MusicSaveModal
+            isOpen={isBottomSheetOpen}
+            handleClose={() => setIsBottomSheetOpen(false)}
+            musicName={selectedSong!.title}
+            artistName={selectedSong!.artist}
+          />
+        ) : (
+          <MusicSaveBottomSheet
+            isOpen={isBottomSheetOpen}
+            handleClose={() => setIsBottomSheetOpen(false)}
+            musicName={selectedSong!.title}
+            artistName={selectedSong!.artist}
+            musicData={selectedSong}
+          />
+        ))}
     </div>
   )
 }
