@@ -7,7 +7,7 @@ export const fetchSpotifyToken = async () => {
     client_secret: process.env.SPOTIFY_CLIENT_SECRET as string,
   })
 
-  const res = await fetch('https://accounts.spotify.com/api/token', {
+  const res = await fetch(`${process.env.SPOTIFY_TOKEN_BASE_URL}/api/token`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
@@ -22,12 +22,15 @@ export const fetchSpotifyToken = async () => {
 
 export const fetchPreviewUrl = async (trackId: string) => {
   try {
-    const res = await fetch(`https://open.spotify.com/embed/track/${trackId}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
+    const res = await fetch(
+      `${process.env.SPOTIFY_AUDIO_BASE_URL}/track/${trackId}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
       },
-    })
+    )
     const htmlContent = await res.text()
 
     // <script> 태그 중 id가 __NEXT_DATA__인 태그에서 JSON 데이터를 추출

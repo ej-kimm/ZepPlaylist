@@ -5,7 +5,7 @@ export const getSpotifyTrackData = async (
 ) => {
   try {
     const res = await fetch(
-      `https://api.spotify.com/v1/search?q=${musicName}&type=track&limit=50`,
+      `${process.env.NEXT_PUBLIC_SPOTIFY_BASE_URL}/search?q=${musicName}&type=track&limit=50`,
       {
         method: 'GET',
         headers: {

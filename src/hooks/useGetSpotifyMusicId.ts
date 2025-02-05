@@ -13,7 +13,7 @@ export const useSpotifySearch = () => {
       setIsLoading(true)
       setError(null)
       const res = await fetch(
-        `https://api.spotify.com/v1/search?q=${searchParams}&type=track&limit=10`,
+        `${process.env.NEXT_PUBLIC_SPOTIFY_BASE_URL}/search?q=${searchParams}&type=track&limit=10`,
         {
           method: 'GET',
           headers: {
