@@ -13,7 +13,6 @@ const ProfileEditBottomSheet = ({
   isOpen,
   handleClose,
   handleOpenPasswordSheet,
-  onClick,
   onSubmit,
 }: ProfileEditBottomSheetProps) => {
   return (
