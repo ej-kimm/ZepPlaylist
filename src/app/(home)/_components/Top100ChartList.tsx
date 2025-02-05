@@ -21,7 +21,8 @@ const Top100ChartList = ({ top100Chart }: Top100ChartListProps) => {
   const { upsertMusic } = usePlaylistMusicUpsert()
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState<boolean>(false)
 
-  const [selectedSong, setSelectedSong] = useState<Charts>()
+  const [selectedSong, setSelectedSong] = useState<SpotifyTrack>()
+  console.log('Top100ChartList', selectedSong)
   const isDesktop = useIsDesktop()
 
   const handlePlayBtn = async (newMusicData: SpotifyTrack) => {
@@ -31,7 +32,7 @@ const Top100ChartList = ({ top100Chart }: Top100ChartListProps) => {
     play()
   }
 
-  const handleMoreButtonClick = (song: Charts) => {
+  const handleMoreButtonClick = (song: SpotifyTrack) => {
     setSelectedSong(song)
     setIsBottomSheetOpen(true)
   }
@@ -82,7 +83,14 @@ const Top100ChartList = ({ top100Chart }: Top100ChartListProps) => {
               type="button"
               onClick={(e) => {
                 e.stopPropagation()
-                handleMoreButtonClick(chart)
+                handleMoreButtonClick({
+                  id: chart.spotify_id,
+                  title: chart.title,
+                  artist: chart.artist,
+                  playTime: chart.play_time,
+                  albumCover: chart.album_cover,
+                  albumName: chart.album_name,
+                })
               }}
             >
               <Image
@@ -111,6 +119,7 @@ const Top100ChartList = ({ top100Chart }: Top100ChartListProps) => {
             handleClose={() => setIsBottomSheetOpen(false)}
             musicName={selectedSong!.title}
             artistName={selectedSong!.artist}
+            musicData={selectedSong}
           />
         ))}
     </>

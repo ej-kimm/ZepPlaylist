@@ -23,7 +23,7 @@ export const usePlaylistMusicUpsert = () => {
       return null
     }
 
-    console.log('usePlaylistMusicUpsert', existingMusic)
+    console.log('existingMusic', existingMusic)
 
     if (!existingMusic) {
       const { data: insertedMusic, error: insertError } = await supabase
@@ -34,8 +34,10 @@ export const usePlaylistMusicUpsert = () => {
           title: musicData.title,
           artist: musicData.artist,
           album_cover: musicData.albumCover,
-          album_name: musicData.albumName,
-          play_time: musicData.playTime,
+          album_name: musicData.albumName
+            ? musicData.albumName
+            : '앨범제목이 없습니다.',
+          play_time: musicData.playTime ? musicData.playTime : 0,
           created_at: new Date().toISOString(),
         })
         .select()
