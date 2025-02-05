@@ -5,6 +5,7 @@ import {
   fetchPlaylistDetails,
 } from '@/api/playlist-detail/actions'
 import { Modal } from '@/components/common'
+import useIsDesktop from '@/hooks/useIsDesktop'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import { PlaylistDetails } from '@/types/song'
 import { useCallback, useEffect, useState } from 'react'
@@ -30,15 +31,7 @@ export default function PlaylistDetailsComponent({
     onConfirm: () => {},
     onCancel: () => setModalProps((prev) => ({ ...prev, isOpen: false })),
   })
-
-  const [isDesktop, setIsDesktop] = useState<boolean>(false)
-
-  useEffect(() => {
-    const handleResize = () => setIsDesktop(window.innerWidth >= 720)
-    setIsDesktop(window.innerWidth >= 720)
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
+  const isDesktop = useIsDesktop()
 
   const toggleDropdown = (songId: string) => {
     setDropdownOpen((prev) => (prev === songId ? null : songId))
