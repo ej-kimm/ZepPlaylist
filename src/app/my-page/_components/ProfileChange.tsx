@@ -7,10 +7,11 @@ import { useRef, useState } from 'react'
 import Swal from 'sweetalert2'
 
 type Props = {
-  handleOpenPasswordSheet: () => void
-  handleClose: () => void
+  handleOpenPasswordSheet: () => void;
+  handleClose: () => void;
+  onSubmit: () => void
 }
-const ProfileChange = ({ handleOpenPasswordSheet, handleClose }: Props) => {
+const ProfileChange = ({ handleOpenPasswordSheet, handleClose, onSubmit }: Props) => {
   const { user, setUser } = userStore()
   const [editNickname, setEitNickname] = useState(user!.nickname || '')
   const [profileImage, setProfileImage] = useState(user!.profile_image)
@@ -51,8 +52,8 @@ const ProfileChange = ({ handleOpenPasswordSheet, handleClose }: Props) => {
         { nickname: editNickname, profile_image: profileImage },
         user.id,
       )
-      Swal.fire('완료', '프로필 수정이 완료됐습니다!', 'success')
       handleClose()
+      onSubmit();
       setUser({
         ...user,
         nickname: updateData[0].nickname,

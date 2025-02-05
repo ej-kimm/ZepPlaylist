@@ -2,6 +2,7 @@
 
 import defaultProfileImg from '@/assets/images/defaultProfileImg.png'
 import { userStore } from '@/store/userSlice'
+import clsx from 'clsx'
 import Image from 'next/image'
 import ProfileEdit from './ProfileEdit'
 
@@ -12,7 +13,13 @@ const Profile = () => {
     return
   }
   return (
-    <div className="mb-6 flex w-full items-center justify-between px-6">
+    <div
+      className={clsx(
+        'mb-6 flex w-full items-center justify-between',
+        'desktop:px-6',
+      )}
+    >
+      <p>프로필</p>
       <div className="flex items-center">
         <div className="h-11 w-11 overflow-hidden rounded-full">
           <Image

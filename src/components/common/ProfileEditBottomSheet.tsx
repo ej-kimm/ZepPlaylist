@@ -5,12 +5,16 @@ type ProfileEditBottomSheetProps = {
   isOpen: boolean
   handleClose: () => void
   handleOpenPasswordSheet: () => void
+  onClick?: () => void
+  onSubmit: () => void
 }
 
 const ProfileEditBottomSheet = ({
   isOpen,
   handleClose,
   handleOpenPasswordSheet,
+  onClick,
+  onSubmit,
 }: ProfileEditBottomSheetProps) => {
   return (
     <BottomSheet
@@ -23,6 +27,7 @@ const ProfileEditBottomSheet = ({
       <ProfileChange
         handleOpenPasswordSheet={handleOpenPasswordSheet}
         handleClose={handleClose}
+        onSubmit={onSubmit}
       />
     </BottomSheet>
   )

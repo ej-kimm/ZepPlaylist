@@ -10,8 +10,7 @@ export const usePlaylistQuery = () => {
     isLoading,
   } = useInfiniteQuery({
     queryKey: ['playlist'],
-    queryFn: ({ pageParam = 0 }) =>
-      fetchPlaylistsWithCovers({ pageParam }),
+    queryFn: ({ pageParam = 0 }) => fetchPlaylistsWithCovers({ pageParam }),
     getNextPageParam: (lastPage) => lastPage?.nextCursor || undefined,
     getPreviousPageParam: (firstPage) => firstPage?.prevCursor || undefined,
     initialPageParam: 0,
