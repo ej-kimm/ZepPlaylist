@@ -1,19 +1,18 @@
 import { getPlaylists, getPopularPlaylists } from '@/api/community/actions'
-
 import defaultProfileImg from '@/assets/images/defaultProfileImg.png'
 import { createServerClient } from '@supabase/ssr'
+import clsx from 'clsx'
 import { cookies } from 'next/headers'
 import ClientPopularPlaylistUI from './_components/ClientPopularPlaylistUI'
 import CustomSwiper from './_components/CustomSwiper'
-import KeywordCarouselWrapper from './_components/KeywordCarouselWrapper'
 import FloatingPlusButton from './_components/FloatingPlusButton'
-import clsx from 'clsx'
+import KeywordCarouselWrapper from './_components/KeywordCarouselWrapper'
 
 const CommunityPage = async (): Promise<JSX.Element> => {
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    { cookies: { getAll: () => cookies().getAll() } }
+    { cookies: { getAll: () => cookies().getAll() } },
   )
 
   const { data: session } = await supabase.auth.getSession()
@@ -23,8 +22,15 @@ const CommunityPage = async (): Promise<JSX.Element> => {
   const popularPlaylists = await getPopularPlaylists(userId ?? '')
 
   return (
-    <div> 
-      <h1 className={clsx("title-1 mb-4 mt-5", 'desktop:mb-10 desktop:mt-20 desktop: headline-1')}>인기 있는 플레이리스트</h1>
+    <div>
+      <h1
+        className={clsx(
+          'title-1 mb-4 mt-5',
+          'desktop: headline-1 desktop:mb-10 desktop:mt-20',
+        )}
+      >
+        인기 있는 플레이리스트
+      </h1>
       <CustomSwiper
         items={popularPlaylists.map((playlist) => ({
           id: playlist.id,
