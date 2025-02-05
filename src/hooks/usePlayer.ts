@@ -59,7 +59,7 @@ const usePlayer = () => {
 
   // 재생했던 목록들 session저장
   useEffect(() => {
-    if (musicDetail?.musicDetail) {
+    if (musicDetail?.musicDetail && musicDetail?.trackUrl?.length > 0) {
       // created_at, lyrics제외 저장
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { created_at, lyrics, ...rest } = musicDetail.musicDetail

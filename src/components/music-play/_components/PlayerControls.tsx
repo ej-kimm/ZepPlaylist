@@ -9,11 +9,16 @@ import clsx from 'clsx'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 type PlayerControlsProps = {
+  isUrl: boolean
   className: string
   ICON_SIZE: number
 }
 
-const PlayerControls = ({ className, ICON_SIZE }: PlayerControlsProps) => {
+const PlayerControls = ({
+  isUrl,
+  className,
+  ICON_SIZE,
+}: PlayerControlsProps) => {
   const router = useRouter()
   const {
     trackIds,
@@ -27,6 +32,7 @@ const PlayerControls = ({ className, ICON_SIZE }: PlayerControlsProps) => {
 
   const isFirstTrack = currentTrackIndex === 0
   const isLastTrack = currentTrackIndex === trackIds.length - 1
+
   return (
     <div
       className={clsx(
@@ -44,12 +50,13 @@ const PlayerControls = ({ className, ICON_SIZE }: PlayerControlsProps) => {
           className={clsx(isFirstTrack ? 'opacity-40' : 'opacity-100')}
         />
       </button>
-      <button type="button" onClick={togglePlay}>
+      <button type="button" onClick={togglePlay} disabled={!isUrl}>
         <Image
-          src={isPlaying ? pause : playing}
+          src={!isUrl ? pause : isPlaying ? pause : playing}
           width={ICON_SIZE}
           height={ICON_SIZE}
           alt={isPlaying ? 'pause' : 'play'}
+          className={clsx(!isUrl && 'opacity-40')}
         />
       </button>
       <button type="button" onClick={playNextTrack} disabled={isLastTrack}>

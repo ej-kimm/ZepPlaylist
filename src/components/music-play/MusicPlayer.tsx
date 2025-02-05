@@ -134,7 +134,11 @@ const MusicPlayer = () => {
               'desktop-xl:w-[546px]',
             )}
           >
-            <PlayerControls className="gap-2" ICON_SIZE={24} />
+            <PlayerControls
+              isUrl={url.length > 0}
+              className="gap-2"
+              ICON_SIZE={24}
+            />
             <ProgressBar
               playerState={playerState}
               onSeek={handleSeek}
