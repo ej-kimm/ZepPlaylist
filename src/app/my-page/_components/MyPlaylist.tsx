@@ -2,6 +2,7 @@
 import { PlaylistUI } from '@/components/common'
 import PlaylistDesktopUI from '@/components/common/PlaylistDesktop'
 import { usePlaylistQuery } from '@/hooks/usePlaylistQuery'
+import { useDeletePlaylist } from '@/hooks/usePlaylists'
 import { useToggleLike } from '@/hooks/useToggle'
 import { userStore } from '@/store/userSlice'
 import { supabase } from '@/utils/supabase/client'
@@ -20,6 +21,7 @@ const MyPlayList = () => {
     error,
     isLoading,
   } = usePlaylistQuery()
+  const { handleDeleteConfirmation } = useDeletePlaylist()
 
   const playlistLikes = useQueries({
     queries:
@@ -96,6 +98,8 @@ const MyPlayList = () => {
                       title={p.name}
                       description={p.description || '설명창'}
                       isLiked={isLiked}
+                      onDelete={() => handleDeleteConfirmation(p.id)}
+                      onEdit={() => handleDeleteConfirmation(p.id)}
                       onLikeToggle={() => {
                         toggle.mutate({ playlist_id: p.id, user_id: user.id })
                       }}
