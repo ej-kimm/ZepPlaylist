@@ -20,6 +20,8 @@ const LatestAlbumDetail = ({ albumData }: LatestAlbumProps) => {
   const { upsertMusic } = usePlaylistMusicUpsert()
 
   const [selectedSong, setSelectedSong] = useState<SpotifyTrack>()
+
+  console.log('LatestAlbum', selectedSong)
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState<boolean>(false)
 
   const albumTrackData = albumData.tracks.items
@@ -39,12 +41,12 @@ const LatestAlbumDetail = ({ albumData }: LatestAlbumProps) => {
   const handlePlayAll = () => {
     const musicData = albumTrackData.map((song) => {
       return {
-        spotify_id: song.id,
+        id: song.id,
         title: song.name,
         artist: song.artists[0].name,
-        album_cover: albumData.images[0].url,
-        play_time: song.duration_ms,
-        album_name: albumData.name,
+        albumCover: albumData.images[0].url,
+        playTime: song.duration_ms,
+        albumName: albumData.name,
       }
     })
     musicData.map(async (item) => await upsertMusic(item))
@@ -67,7 +69,7 @@ const LatestAlbumDetail = ({ albumData }: LatestAlbumProps) => {
     await upsertMusic(newMusicData)
 
     if (!isPlayerOpen) setPlayerOpen()
-    setTrackIds(newMusicData!.spotify_id)
+    setTrackIds(newMusicData.id)
     play()
   }
 
@@ -137,12 +139,12 @@ const LatestAlbumDetail = ({ albumData }: LatestAlbumProps) => {
               className="w-[100%] rounded-lg py-2 transition-colors"
               onClick={() =>
                 handlePlayBtn({
-                  spotify_id: item.id,
+                  id: item.id,
                   title: item.name,
                   artist: item.artists[0].name,
-                  play_time: item.duration_ms,
-                  album_name: albumData.name,
-                  album_cover: albumData.images[0].url,
+                  playTime: item.duration_ms,
+                  albumName: albumData.name,
+                  albumCover: albumData.images[0].url,
                 })
               }
             >
@@ -157,12 +159,12 @@ const LatestAlbumDetail = ({ albumData }: LatestAlbumProps) => {
               onClick={(e) => {
                 e.stopPropagation()
                 handleMoreButtonClick({
-                  spotify_id: item.id,
+                  id: item.id,
                   title: item.name,
                   artist: item.artists[0].name,
-                  play_time: item.duration_ms,
-                  album_name: albumData.name,
-                  album_cover: albumData.images[0].url,
+                  playTime: item.duration_ms,
+                  albumName: albumData.name,
+                  albumCover: albumData.images[0].url,
                 })
               }}
             >
@@ -179,6 +181,8 @@ const LatestAlbumDetail = ({ albumData }: LatestAlbumProps) => {
       </ul>
       {selectedSong && (
         <MusicSaveBottomSheet
+          musicName={selectedSong.title}
+          artistName={selectedSong.artist}
           isOpen={isBottomSheetOpen}
           handleClose={() => setIsBottomSheetOpen(false)}
           musicData={selectedSong}

@@ -9,7 +9,7 @@ export type UserLikedSongDetails = {
   album_cover?: string
   artist?: string
   created_at: string
-  play_time?: number | null
+  play_time?: number
   spotify_id?: string
   title?: string
   user_id: string

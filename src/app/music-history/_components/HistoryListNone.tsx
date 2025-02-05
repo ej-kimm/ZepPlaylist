@@ -10,10 +10,18 @@ const HistoryListNone = () => {
       <div
         className={clsx(
           'flex w-[226px] flex-col items-center justify-center gap-3',
+          'desktop:w-[292px]',
         )}
       >
-        <h1 className="title-2">아직 재생목록이 없습니다.</h1>
-        <p className="caption-2 text-center text-opacity-40">
+        <h1 className={clsx('title-2', 'desktop:headline-1')}>
+          아직 재생목록이 없습니다
+        </h1>
+        <p
+          className={clsx(
+            'caption-2 text-center text-opacity-40',
+            'desktop:caption-3 desktop:text-opacity-40',
+          )}
+        >
           지금 Zepplaylist에서 인기있는 곡을 듣고
           <br />
           재생목록을 만들어보세요

@@ -11,12 +11,16 @@ import BottomSheet from './BottomSheet'
 import Skeleton from './Skeleton'
 
 type MusicSaveBottomSheetProps = {
+  musicName: string
+  artistName: string
   isOpen: boolean
   handleClose: () => void
   musicData: SpotifyTrack
 }
 
 const MusicSaveBottomSheet = ({
+  musicName,
+  artistName,
   isOpen,
   handleClose,
   musicData,
@@ -25,6 +29,7 @@ const MusicSaveBottomSheet = ({
   const { playlists, isPending } = usePlaylistOperations()
   const { upsertMusic, addMusicToPlaylistTable } = usePlaylistMusicUpsert()
   const { closePlayerModal } = useMusicPlayerStore()
+  // const { searchSpotifyId } = useSpotifySearch()
   useScrollLock(isOpen)
 
   // 특정 플레이리스트 목록을 동작하는 함수
@@ -33,8 +38,10 @@ const MusicSaveBottomSheet = ({
     musicData: SpotifyTrack,
   ) => {
     try {
+      // const musicData = await searchSpotifyId(musicName, artistName)
+      // console.log('bottomSet', musicData)
       // spubase music 테이블에 곡 담아주는 함수 호출
-      const musicId = await upsertMusic(musicData)
+      const musicId = await upsertMusic(musicData!)
 
       // spubase playlist_music 테이블에 곡 담아주는 함수 호출
       await addMusicToPlaylistTable(musicId as string, playlistId)
@@ -59,8 +66,8 @@ const MusicSaveBottomSheet = ({
       onClose={handleClose}
     >
       <header className="flex h-[88px] flex-col justify-center border-b border-opacity-60 px-4">
-        <h3 className="title-2 mb-2 truncate font-medium">{musicData.title}</h3>
-        <p className="body-2 truncate opacity-40">{musicData.artist}</p>
+        <h3 className="title-2 mb-2 truncate font-medium">{musicName}</h3>
+        <p className="body-2 truncate opacity-40">{artistName}</p>
       </header>
 
       <div className="flex flex-col">

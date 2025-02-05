@@ -57,11 +57,18 @@ export default function LikedSongsDetailDesktop({
       </section>
 
       <TableList
-        items={likedSongs}
+        items={likedSongs.map((song) => ({
+          spotify_id: song.music.spotify_id,
+          title: song.music.title,
+          artist: song.music.artist,
+          album_cover: song.music.album_cover || null,
+          album_name: song.music.album_name || '앨범 제목 없음',
+          play_time: song.music.play_time ?? 0,
+        }))}
         handleItemClick={handlePlayFromSong}
         renderAction={(song) => (
           <button
-            onClick={() => handleDelete(song.id)}
+            onClick={() => handleDelete(song.spotify_id)}
             className="flex h-[36px] w-[36px] items-center justify-center rounded-full border border-primary bg-white"
           >
             <Image

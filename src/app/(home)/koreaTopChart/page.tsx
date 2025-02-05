@@ -4,8 +4,6 @@ import clsx from 'clsx'
 import MusicChartHeader from '../_components/MusicChartHeader'
 import Top100ChartList from '../_components/Top100ChartList'
 
-export const revalidate = 3600
-
 const koreaTop100 = async () => {
   const koreanTop100Chart = await fetchKoreanChart()
 

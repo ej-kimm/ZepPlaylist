@@ -4,6 +4,7 @@ import usePlayer from '@/hooks/usePlayer'
 import useSongLike from '@/hooks/useSongLike'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import { userStore } from '@/store/userSlice'
+import type { SpotifyTrack } from '@/types/billboradCharts'
 import clsx from 'clsx'
 import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
@@ -30,6 +31,7 @@ const MusicPlayer = () => {
   })
   const [isSaved, setIsSaved] = useState<boolean>(false) // save 상태 관리
   const [isOpen, setIsOpen] = useState<boolean>(false) // 로그인 모달 상태
+  const [selectedSong, setSelectedSong] = useState<SpotifyTrack>()
   const { updateLike } = useSongLike({ user_id })
   const {
     isPlayerOpen,
@@ -40,6 +42,8 @@ const MusicPlayer = () => {
     stop,
   } = useMusicPlayerStore()
   const { musicDetail, url, lyrics, isPending } = usePlayer()
+
+  console.log('MusicPlayer', musicDetail)
   const pathname = usePathname()
   const isDesktop = useIsDesktop()
 
@@ -68,6 +72,16 @@ const MusicPlayer = () => {
       updateLike.mutate({ user_id })
     } else if (type === 'save') {
       setIsSaved((prev) => !prev)
+
+      const newSong = {
+        id: musicDetail!.spotify_id,
+        artist: musicDetail!.artist,
+        title: musicDetail!.title,
+        albumCover: musicDetail!.album_cover,
+        plyTime: musicDetail!.play_time,
+        albumName: musicDetail!.album_name,
+      }
+      setSelectedSong(newSong)
     }
   }
   const closeModal = () => setIsOpen(false)
@@ -163,13 +177,16 @@ const MusicPlayer = () => {
         <MusicSaveModal
           isOpen={isSaved}
           handleClose={() => handleUserAction('save')}
-          musicData={musicDetail!}
+          musicName={musicDetail?.title || ''}
+          artistName={musicDetail?.artist || ''}
         />
       ) : (
         <MusicSaveBottomSheet
           isOpen={isSaved}
           handleClose={() => handleUserAction('save')}
-          musicData={musicDetail!}
+          musicName={musicDetail?.title || ''}
+          artistName={musicDetail?.artist || ''}
+          musicData={selectedSong!}
         />
       )}
     </>

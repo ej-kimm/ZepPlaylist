@@ -31,14 +31,17 @@ export async function fetchPlaylistDetails(
     const { data: playlistMusic, error: playlistMusicError } = await supabase
       .from('playlist_music')
       .select(
-        `music (
+        `
+    music:music_id (
       spotify_id,
       title,
       artist,
       play_time,
-      album_cover
+      album_cover,
+      album_name
     ),
-    created_at`,
+    created_at
+  `,
       )
       .eq('playlist_id', playlistId)
 
@@ -54,6 +57,7 @@ export async function fetchPlaylistDetails(
         artist: item.music.artist || '',
         play_time: item.music.play_time || 0,
         album_cover: item.music.album_cover || null,
+        album_name: item.music.album_name || null,
         created_at: item.created_at || '',
       }))
       .sort(

@@ -10,8 +10,11 @@ type TableListProps<T> = {
 
 export default function TableList<
   T extends {
-    id: string
-    music: { title: string; artist: string; album_cover?: string }
+    spotify_id: string
+    title: string
+    artist: string
+    album_cover?: string | null
+    album_name?: string | null
   },
 >({ items, handleItemClick, renderAction }: TableListProps<T>) {
   return (
@@ -26,15 +29,15 @@ export default function TableList<
       <ul className="mt-2 flex w-full flex-col">
         {items.map((item, index) => (
           <li
-            key={item.id}
+            key={item.spotify_id}
             className="flex w-full items-center justify-between px-[24px] py-[4px]"
           >
             <div className="flex w-[30%] items-center gap-[21px]">
-              <div className="h-[52px] w-[52px] overflow-hidden rounded-lg bg-[#D9D9D9]">
-                {item.music.album_cover && (
+              <div className="h-[52px] w-[52px] flex-shrink-0 overflow-hidden rounded-lg bg-[#D9D9D9]">
+                {item.album_cover && (
                   <Image
-                    src={item.music.album_cover}
-                    alt={item.music.title}
+                    src={item.album_cover}
+                    alt={item.title}
                     width={52}
                     height={52}
                     className="rounded-lg"
@@ -46,13 +49,15 @@ export default function TableList<
                 className="cursor-pointer truncate text-left"
                 onClick={() => handleItemClick(index)}
               >
-                <h3 className="caption-1">{item.music.title}</h3>
+                <h3 className="caption-1">{item.title}</h3>
               </div>
             </div>
 
-            <p className="caption-1 w-[30%] truncate">{item.music.artist}</p>
+            <p className="caption-1 w-[30%] truncate">{item.artist}</p>
 
-            <p className="caption-1 w-[30%] truncate">앨범 제목 없음</p>
+            <p className="caption-1 w-[30%] truncate">
+              {item.album_name ? item.album_name : '앨범 제목 없음'}
+            </p>
 
             {/*각각 다른 아이콘 사용 가능!*/}
             {renderAction(item)}

@@ -5,7 +5,8 @@ import Swal from 'sweetalert2'
 
 export const usePlaylistMusicUpsert = () => {
   const upsertMusic = useCallback(async (musicData: SpotifyTrack) => {
-    console.log(musicData)
+    console.log('usePlaylistMusicUpsert', musicData)
+
     if (!musicData) {
       console.log('No data returned from onFetchMusicData')
       return null
@@ -14,7 +15,7 @@ export const usePlaylistMusicUpsert = () => {
     const { data: existingMusic, error: fetchError } = await supabase
       .from('music')
       .select('*')
-      .eq('spotify_id', musicData.spotify_id)
+      .eq('spotify_id', musicData.id)
       .maybeSingle()
 
     if (fetchError && fetchError.code !== 'PGRST116') {
@@ -22,17 +23,21 @@ export const usePlaylistMusicUpsert = () => {
       return null
     }
 
+    console.log('existingMusic', existingMusic)
+
     if (!existingMusic) {
       const { data: insertedMusic, error: insertError } = await supabase
         .from('music')
         .insert({
           // 이거 왜구래요????????????
-          spotify_id: musicData.spotify_id,
+          spotify_id: musicData.id,
           title: musicData.title,
           artist: musicData.artist,
-          album_cover: musicData.album_cover,
-          album_name: musicData.album_name,
-          play_time: musicData.play_time ?? 0,
+          album_cover: musicData.albumCover,
+          album_name: musicData.albumName
+            ? musicData.albumName
+            : '앨범제목이 없습니다.',
+          play_time: musicData.playTime ? musicData.playTime : 0,
           created_at: new Date().toISOString(),
         })
         .select()
@@ -49,7 +54,7 @@ export const usePlaylistMusicUpsert = () => {
       const { data: updatedMusic, error: updateError } = await supabase
         .from('music')
         .update({ created_at: new Date().toISOString() })
-        .eq('spotify_id', musicData.spotify_id)
+        .eq('spotify_id', musicData.id)
         .select()
         .single()
 
