@@ -11,9 +11,9 @@ type LatestAlbumProps = {
 
 function LatestAlbumItmes({ latestAlbumList }: LatestAlbumProps) {
   return (
-    <ul className="flex space-x-4">
+    <ul className="flex">
       <Swiper
-        spaceBetween={14}
+        spaceBetween={12}
         slidesPerView="auto"
         autoplay={{ delay: 10000 }}
         loop={false}
@@ -31,17 +31,24 @@ function LatestAlbumItmes({ latestAlbumList }: LatestAlbumProps) {
           <SwiperSlide key={label} style={{ width: 'auto' }}>
             <Link href={`/latest-album/${album.id}`}>
               <li key={album.id} className="flex-none">
-                <div className="w-32 text-left">
+                <div className="flex w-[100px] flex-col gap-1 text-left">
                   <Image
                     src={album.images[0].url}
-                    width={100}
-                    height={100}
+                    width={96}
+                    height={96}
                     alt={album.name}
                     priority
                     className="h-auto w-full rounded-lg shadow-md"
+                    style={{
+                      height: '96px',
+                      width: '96px',
+                      objectFit: 'cover',
+                    }}
                   />
-                  <h3 className="caption-1 mt-2 truncate">{album.name}</h3>
-                  <p className="caption-2 truncate text-gray-500">
+                  <h3 className="caption-1 truncate font-medium">
+                    {album.name}
+                  </h3>
+                  <p className="caption-2 truncate text-opacity-60">
                     {album.artists[0].name}
                   </p>
                 </div>

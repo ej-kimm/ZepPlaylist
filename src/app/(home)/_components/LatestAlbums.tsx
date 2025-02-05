@@ -14,7 +14,7 @@ const LatestAlbums = async () => {
 
   return (
     <div className="w-full">
-      <h2 className={clsx('title-2 mb-4 mt-8')}>최신 앨범</h2>
+      <h2 className={clsx('title-2 mb-4')}>최신 앨범</h2>
       <LatestAlbumItmes latestAlbumList={latestAlbumList} />
     </div>
   )

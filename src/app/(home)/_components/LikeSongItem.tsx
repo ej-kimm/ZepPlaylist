@@ -20,7 +20,7 @@ const LikeSongItem: React.FC<SongItemProps> = ({ item }) => {
 
   return (
     <li className="flex-none" onClick={() => handlePlayBtn(item.spotify_id!)}>
-      <div className="h-64 w-36 text-left">
+      <div className="h-[120px] w-[120px] text-left">
         <div className="relative">
           <Image
             src={item.album_cover!}
@@ -32,15 +32,17 @@ const LikeSongItem: React.FC<SongItemProps> = ({ item }) => {
           />
           <div className="w-full bg-gradient-to-b from-white via-black">
             <div className="absolute bottom-1 left-3 mb-1 w-[calc(100%-40px)] transform">
-              <h3 className="mt-2 truncate text-xs text-white">{item.title}</h3>
-              <p className="truncate text-xs text-white">{item.artist}</p>
+              <h3 className="caption-1 truncate text-white">{item.title}</h3>
+              <p className="caption-2 truncate text-white text-opacity-80">
+                {item.artist}
+              </p>
             </div>
 
             <button
-              className="absolute bottom-1 right-1 transform"
+              className="absolute bottom-[11px] right-[11px] transform"
               type="button"
             >
-              <Image src={playing} width={25} height={25} alt={'play'} />
+              <Image src={playing} width={16} height={16} alt={'play'} />
             </button>
           </div>
         </div>

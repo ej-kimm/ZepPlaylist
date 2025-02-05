@@ -51,27 +51,22 @@ const UserLikedSong = () => {
     fetchSongLikesAndMusic()
   }, [user])
 
-  console.log(!matchedMusicInfo)
+  if (!user) return null
+
   return (
-    <div>
-      {!user ? (
-        <></>
-      ) : (
-        <div className="w-full">
-          <h2 className="title-2 mb-[23px]">내가 좋아요 한 곡</h2>
-          {matchedMusicInfo.length === 0 ? (
-            <div className="flex">
-              좋아하는 곡을 담아 주세요...
-              <Image src={likeTrue} alt="Like Button" width={16} height={16} />
-            </div>
-          ) : (
-            <ul className="scroll-invisible flex space-x-4 overflow-x-auto">
-              {matchedMusicInfo.map((item) => (
-                <LikeSongItem item={item} key={item.id} />
-              ))}
-            </ul>
-          )}
+    <div className="w-full">
+      <h2 className="title-2 mb-4">내가 좋아요 한 곡</h2>
+      {matchedMusicInfo.length === 0 ? (
+        <div className="flex">
+          좋아하는 곡을 담아 주세요...
+          <Image src={likeTrue} alt="Like Button" width={16} height={16} />
         </div>
+      ) : (
+        <ul className="scroll-invisible flex space-x-4 overflow-x-auto">
+          {matchedMusicInfo.map((item) => (
+            <LikeSongItem item={item} key={item.id} />
+          ))}
+        </ul>
       )}
     </div>
   )

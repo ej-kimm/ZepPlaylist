@@ -32,11 +32,11 @@ const Top20List: React.FC<Top20ListProps> = ({
 
   return (
     <div className={clsx('flex flex-col gap-4', 'desktop:gap-10')}>
-      <div className="flex w-full justify-between">
+      <div className="flex h-full w-full items-center justify-between">
         <div
           className={clsx(
             'flex items-center justify-start gap-[18px]',
-            'desktop: gap-6',
+            'desktop:gap-6',
           )}
         >
           <div className="flex flex-col">
@@ -44,9 +44,9 @@ const Top20List: React.FC<Top20ListProps> = ({
               onClick={() => setIsKoreaChart(true)}
               className={clsx(
                 'title-2 cursor-pointer',
-                isKoreaChart ? 'text-black' : 'text-gray-300',
+                isKoreaChart ? 'text-black' : 'text-opacity-30',
                 isKoreaChart && 'desktop:text-secondary',
-                'desktop: px-[10px] py-2',
+                'desktop:px-[10px]',
               )}
             >
               국내 TOP 100
@@ -66,7 +66,7 @@ const Top20List: React.FC<Top20ListProps> = ({
                 'title-2 cursor-pointer',
                 !isKoreaChart ? 'text-black' : 'text-gray-300',
                 !isKoreaChart && 'desktop:text-secondary',
-                'desktop: px-[10px] py-2',
+                'desktop:px-[10px]',
               )}
             >
               빌보드 TOP 100
@@ -81,7 +81,7 @@ const Top20List: React.FC<Top20ListProps> = ({
         </div>
         <Link
           href={isKoreaChart ? '/koreaTopChart' : '/billboardTopChart'}
-          className="caption-4 mt-3 flex h-5 justify-end"
+          className="caption-4 flex h-5 justify-end"
         >
           더보기
           <Image src={rightArrow} height={16} width={16} alt=">" />
