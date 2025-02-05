@@ -111,7 +111,10 @@ const LoginForm = () => {
       />
       <PrimaryButton
         type="submit"
-        className={clsx('mb-12 mt-8 h-[39px]', 'desktop:mb-2')}
+        className={clsx(
+          'mb-12 mt-8 h-[39px]',
+          'desktop:mb-2 desktop:w-[532px]',
+        )}
       >
         로그인
       </PrimaryButton>

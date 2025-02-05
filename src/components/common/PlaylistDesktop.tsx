@@ -26,7 +26,7 @@ const PlaylistDesktopUI = ({
 
   return (
     <div
-      className="lg:h-[212px] lg:w-[212px] xl:h-[232px] xl:w-[232px] 2xl:h-[252px] 2xl:w-[252px] relative h-[192px] w-[192px] overflow-hidden rounded-[21.94px]"
+      className="lg:h-[212px] lg:w-[212px] xl:h-[232px] xl:w-[232px] 2xl:h-[340px] 2xl:w-[340px] relative h-[142px] w-[142px] overflow-hidden rounded-[21.94px]"
       onClick={onClick}
     >
       <div className="absolute bottom-0 left-0 z-20 h-[40%] w-full bg-gradient-to-b from-transparent via-black/[0.63] to-black/[0.7]"></div>
