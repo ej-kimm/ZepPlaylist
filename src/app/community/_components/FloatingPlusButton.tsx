@@ -42,7 +42,7 @@ const FloatingPlusButton = () => {
           setIsOpen(true)
         }}
         className={clsx(
-          'fixed bottom-20 right-5 z-50 h-14 w-14 rounded-full bg-primary p-3 transition-all hover:scale-110',
+          'fixed bottom-20 right-5 z-40 h-14 w-14 rounded-full bg-primary p-3 transition-all hover:scale-110',
           'desktop:right-5',
         )}
       >
