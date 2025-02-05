@@ -6,8 +6,6 @@ import { getSpotifyToken } from '@/utils/spotifyToken/getToken'
 import { supabase } from '@/utils/supabase/client'
 import { NextResponse } from 'next/server'
 
-// export const revalidate = 3600
-
 export async function GET(): Promise<Response> {
   try {
     const token = await getSpotifyToken()
