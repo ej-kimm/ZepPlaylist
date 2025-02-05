@@ -17,7 +17,7 @@ const KeywordCarousel = ({
   onToggleKeyword,
 }: KeywordCarouselProps) => {
   return (
-    <div className={clsx('w-full')}>
+    <div className={clsx('w-full mt-4')}>
       <Swiper
         spaceBetween={8}
         slidesPerView="auto"
