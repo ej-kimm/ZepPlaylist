@@ -5,8 +5,6 @@ import Swal from 'sweetalert2'
 
 export const usePlaylistMusicUpsert = () => {
   const upsertMusic = useCallback(async (musicData: SpotifyTrack) => {
-    console.log('usePlaylistMusicUpsert', musicData)
-
     if (!musicData) {
       console.log('No data returned from onFetchMusicData')
       return null
@@ -22,8 +20,6 @@ export const usePlaylistMusicUpsert = () => {
       console.error('Error fetching music:', fetchError)
       return null
     }
-
-    console.log('usePlaylistMusicUpsert', existingMusic)
 
     if (!existingMusic) {
       const { data: insertedMusic, error: insertError } = await supabase
