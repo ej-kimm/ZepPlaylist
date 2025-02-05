@@ -79,7 +79,7 @@ export async function fetchPlaylistsWithCovers(): Promise<PlaylistRow[]> {
       const latestSongCover = await fetchLatestAlbumCover(playlist.id)
       return {
         ...playlist,
-        latest_song_cover: latestSongCover || '/default-cover.jpg',
+        latest_song_cover: latestSongCover || null,
       }
     }),
   )

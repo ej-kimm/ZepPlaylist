@@ -106,6 +106,16 @@ export default function Playlist({ initialPlaylists }: PlaylistComponentProps) {
             handleLikesClick={() => router.push('/playlist/likes')}
             openModal={openModal}
             handleLikeToggle={handleLikeToggle}
+            handleDeletePlaylist={handleDeleteConfirmation}
+            handleEditPlaylist={(playlist) =>
+              updatePlaylistMutation.mutate({
+                id: playlist.id,
+                updatedData: {
+                  name: playlist.name,
+                  description: playlist.description,
+                },
+              })
+            }
           />
         ) : (
           <PlaylistList

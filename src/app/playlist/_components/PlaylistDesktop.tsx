@@ -10,6 +10,8 @@ type PlaylistDesktopProps = {
   handleLikesClick: () => void
   openModal: (type: 'add' | 'edit', playlist?: PlaylistRow) => void
   handleLikeToggle: (playlistId: string) => void
+  handleEditPlaylist: (playlist: PlaylistRow) => void
+  handleDeletePlaylist: (playlistId: string) => void
 }
 
 export default function PlaylistDesktop({
@@ -18,6 +20,8 @@ export default function PlaylistDesktop({
   handlePlaylistClick,
   handleLikesClick,
   openModal,
+  handleDeletePlaylist,
+  handleEditPlaylist,
   handleLikeToggle,
 }: PlaylistDesktopProps) {
   return (
@@ -50,9 +54,13 @@ export default function PlaylistDesktop({
         </div>
 
         <div
-          className="relative h-[192px] w-[192px] cursor-pointer overflow-hidden rounded-[21.94px] bg-cover bg-center lg:h-[212px] lg:w-[212px] xl:h-[232px] xl:w-[232px] 2xl:h-[252px] 2xl:w-[252px]"
+          className={`relative h-[192px] w-[192px] cursor-pointer overflow-hidden rounded-[21.94px] bg-cover bg-center lg:h-[212px] lg:w-[212px] xl:h-[232px] xl:w-[232px] 2xl:h-[252px] 2xl:w-[252px] ${
+            latestLikedSongCover ? '' : 'bg-gray-300'
+          }`}
           style={{
-            backgroundImage: `url(${latestLikedSongCover || '/default-cover.jpg'})`,
+            backgroundImage: latestLikedSongCover
+              ? `url(${latestLikedSongCover})`
+              : undefined,
           }}
           onClick={handleLikesClick}
         >
@@ -65,12 +73,14 @@ export default function PlaylistDesktop({
         {playlists.map((playlist) => (
           <PlaylistDesktopUI
             key={playlist.id}
-            album_cover={playlist.latest_song_cover || '/default-cover.jpg'}
+            album_cover={playlist.latest_song_cover || '/favicon.svg'}
             title={playlist.name}
             description={playlist.description || '설명 없음'}
             isLiked={playlist.is_liked}
             onLikeToggle={() => handleLikeToggle(playlist.id)}
             onClick={() => handlePlaylistClick(playlist.id)}
+            onEdit={() => handleEditPlaylist(playlist)}
+            onDelete={() => handleDeletePlaylist(playlist.id)}
           />
         ))}
       </div>
