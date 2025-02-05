@@ -77,8 +77,8 @@ const LoginForm = () => {
     <form
       onSubmit={handleSubmit(onSubmit)}
       className={clsx(
-        'sm:p-6 mx-auto border-b border-black border-opacity-40',
-        'gap-[32px] desktop:mx-0 desktop:flex desktop:w-full desktop:flex-col desktop:border-none',
+        'mx-auto border-b border-black border-opacity-40',
+        'desktop:mx-0 desktop:flex desktop:w-full desktop:flex-col desktop:gap-[32px] desktop:border-none',
       )}
     >
       <h2
@@ -96,7 +96,10 @@ const LoginForm = () => {
         required
         errorMessage={errors.email?.message}
         register={register}
-        className="caption-2 mt-8 w-full rounded-lg border-white bg-[#f4f4f4] text-[16px]"
+        className={clsx(
+          'caption-2 mt-8 w-full rounded-lg border-white bg-[#f4f4f4] text-[16px]',
+          'desktop:w-[532px]',
+        )}
       />
       <InputBox
         name="password"
@@ -106,7 +109,7 @@ const LoginForm = () => {
         register={register}
         className={clsx(
           'caption-2 mt-8 w-full rounded-lg border-white bg-[#f4f4f4] text-[16px]',
-          'desktop:mb-[38px]',
+          'desktop:mb-[38px] desktop:w-[532px]',
         )}
       />
       <PrimaryButton

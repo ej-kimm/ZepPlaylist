@@ -15,11 +15,17 @@ const Profile = () => {
   return (
     <div
       className={clsx(
-        'mb-6 flex w-full items-center justify-between',
+        'mb-6 flex w-full flex-wrap items-center justify-between',
         'desktop:px-6',
       )}
     >
-      <p>프로필</p>
+      <h1
+        className={clsx(
+          '-ml-[24px] mb-4 hidden desktop:block desktop:w-full desktop:text-[22px]',
+        )}
+      >
+        프로필
+      </h1>
       <div className="flex items-center">
         <div className="h-11 w-11 overflow-hidden rounded-full">
           <Image

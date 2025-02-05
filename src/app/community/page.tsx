@@ -20,7 +20,6 @@ const CommunityPage = async (): Promise<JSX.Element> => {
   const userId = session?.session?.user?.id ?? null
 
   const allPlaylists = await getPlaylists(userId ?? '')
-  console.log('first', allPlaylists)
   const popularPlaylists = await getPopularPlaylists(userId ?? '')
 
   return (
