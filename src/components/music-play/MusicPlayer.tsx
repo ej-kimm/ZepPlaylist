@@ -42,8 +42,6 @@ const MusicPlayer = () => {
     stop,
   } = useMusicPlayerStore()
   const { musicDetail, url, lyrics, isPending } = usePlayer()
-
-  console.log('MusicPlayer', musicDetail)
   const pathname = usePathname()
   const isDesktop = useIsDesktop()
 
