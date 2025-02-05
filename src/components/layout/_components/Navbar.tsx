@@ -107,7 +107,10 @@ const Navbar = () => {
       <button
         onClick={user ? handleLogOut : handleLogIn}
         className={clsx(
-          'button-2 relative whitespace-nowrap px-[10px] py-2 text-[#636363] transition-colors hover:text-primary',
+          'button-2 relative whitespace-nowrap px-[10px] py-2 text-[#636363] transition-colors',
+          pathname === '/login' ? 'text-primary' : 'hover:text-primary',
+          'after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-0 after:bg-primary after:transition-all after:duration-300',
+          pathname === '/login' && 'after:w-full',
         )}
       >
         {user ? 'Log Out' : 'Log In'}
