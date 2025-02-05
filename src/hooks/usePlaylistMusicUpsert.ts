@@ -30,8 +30,10 @@ export const usePlaylistMusicUpsert = () => {
           title: musicData.title,
           artist: musicData.artist,
           album_cover: musicData.albumCover,
-          album_name: musicData.albumName,
-          play_time: musicData.playTime,
+          album_name: musicData.albumName
+            ? musicData.albumName
+            : '앨범제목이 없습니다.',
+          play_time: musicData.playTime ? musicData.playTime : 0,
           created_at: new Date().toISOString(),
         })
         .select()
@@ -41,8 +43,6 @@ export const usePlaylistMusicUpsert = () => {
         console.error('Error inserting new music:', insertError)
         return null
       }
-
-      // console.log('Insert successful:', insertedMusic)
       return insertedMusic.spotify_id
     } else {
       const { data: updatedMusic, error: updateError } = await supabase
