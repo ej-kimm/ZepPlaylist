@@ -61,21 +61,31 @@ const Navbar = () => {
   return (
     <nav className={clsx('hidden gap-9', 'desktop:flex')}>
       {/* 일반 링크 */}
-      {LINKS.map((link, index) => (
-        <Link
-          key={index}
-          href={link.to}
-          onClick={handleLinkClick}
-          className={clsx(
-            'button-2 relative whitespace-nowrap px-[10px] py-2 text-[#636363] transition-colors',
-            pathname === link.to ? 'text-primary' : 'hover:text-primary',
-            'after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-0 after:bg-primary after:transition-all after:duration-300',
-            pathname === link.to && 'after:w-full',
-          )}
-        >
-          {link.text}
-        </Link>
-      ))}
+      {LINKS.map((link, index) => {
+        const isCommunityActive =
+          link.to === '/community' && pathname.startsWith('/community')
+        const isPlaylistActive =
+          link.to === '/playlist' && pathname.startsWith('/playlist')
+
+        return (
+          <Link
+            key={index}
+            href={link.to}
+            className={clsx(
+              'button-2 relative whitespace-nowrap px-[10px] py-2 text-[#636363] transition-colors',
+              isCommunityActive || isPlaylistActive || pathname === link.to
+                ? 'text-primary'
+                : 'hover:text-primary',
+              'after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-0 after:bg-primary after:transition-all after:duration-300',
+              isCommunityActive || isPlaylistActive || pathname === link.to
+                ? 'after:w-full'
+                : '',
+            )}
+          >
+            {link.text}
+          </Link>
+        )
+      })}
 
       {/* 로그인 상태에서만 My Page 표시 */}
       {user && (
