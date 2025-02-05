@@ -3,7 +3,7 @@ import type { melonCharts } from '@/types/melonCharts'
 export const fetchAndCleanMelonChart = async () => {
   try {
     const response = await fetch(
-      'https://m2.melon.com/m6/chart/ent/songChartList.json',
+      `${process.env.NEXT_PUBLIC_MELON_BASE_URL}/ent/songChartList.json`,
     )
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`)

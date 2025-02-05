@@ -5,11 +5,14 @@ import { fetchSpotifyToken } from '../spotifyToken'
 export const fetchTrack = async (id: string) => {
   const token = await fetchSpotifyToken()
   try {
-    const response = await fetch(`https://api.spotify.com/v1/tracks/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
+    const response = await fetch(
+      `${process.env.SPOTIFY_BASE_URL}/tracks/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       },
-    })
+    )
 
     if (!response.ok) {
       throw new Error(`Error fetching track: ${response.statusText}`)
@@ -26,11 +29,14 @@ export const fetchTrack = async (id: string) => {
 export const fetchGenre = async (id: string) => {
   const token = await fetchSpotifyToken()
   try {
-    const response = await fetch(`https://api.spotify.com/v1/artists/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
+    const response = await fetch(
+      `${process.env.SPOTIFY_BASE_URL}/artists/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       },
-    })
+    )
 
     if (!response.ok) {
       throw new Error(`Error fetching artists: ${response.statusText}`)

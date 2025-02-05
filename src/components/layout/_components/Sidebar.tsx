@@ -1,9 +1,10 @@
+import { Modal } from '@/components/common'
 import useScrollLock from '@/hooks/useScrollLock'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import { userStore } from '@/store/userSlice'
 import { supabase } from '@/utils/supabase/client'
 import clsx from 'clsx'
-import Swal from 'sweetalert2'
+import { useState } from 'react'
 import ProfileHeader from './ProfileHeader'
 import SidebarMenu from './SidebarMenu'
 
@@ -17,14 +18,13 @@ const Sidebar = ({ isOpen, toggleMenu }: SidebarProps) => {
   const { isPlayerModalOpen, setPlayerClose } = useMusicPlayerStore()
   useScrollLock(isOpen)
 
+  const [isErrorModal, setIsErrorModal] = useState<boolean>(false)
+
   const handleLogOut = async () => {
     const { error } = await supabase.auth.signOut()
     if (error) {
-      console.error(error.message)
-      Swal.fire({
-        icon: 'error',
-        text: '로그아웃중 에러가 발생했습니다. 다시시도해주세요',
-      })
+      setIsErrorModal(true)
+      return
     }
     setUser(null)
     window.location.reload()
@@ -33,31 +33,40 @@ const Sidebar = ({ isOpen, toggleMenu }: SidebarProps) => {
   }
 
   return (
-    <aside
-      className={clsx(
-        'fixed right-0 top-navBar z-sidebar h-screen w-full bg-white px-6 transition duration-300',
-        isOpen ? 'translate-x-0' : 'translate-x-full',
-      )}
-    >
-      <header className="flex h-[140px] items-center justify-center px-[13px]">
-        <ProfileHeader toggleMenu={toggleMenu} />
-      </header>
+    <>
+      <aside
+        className={clsx(
+          'fixed right-0 top-navBar z-sidebar h-screen w-full bg-white px-6 transition duration-300',
+          isOpen ? 'translate-x-0' : 'translate-x-full',
+        )}
+      >
+        <header className="flex h-[140px] items-center justify-center px-[13px]">
+          <ProfileHeader toggleMenu={toggleMenu} />
+        </header>
 
-      <nav className="mb-5">
-        <h2 className="title-1 mb-4">음악 감상</h2>
-        <SidebarMenu toggleMenu={toggleMenu} />
-      </nav>
+        <nav className="mb-5">
+          <h2 className="title-1 mb-4">음악 감상</h2>
+          <SidebarMenu toggleMenu={toggleMenu} />
+        </nav>
 
-      {user && (
-        <button
-          type="button"
-          onClick={handleLogOut}
-          className="caption-2 flex w-full justify-center text-[#636363]"
-        >
-          로그아웃
-        </button>
-      )}
-    </aside>
+        {user && (
+          <button
+            type="button"
+            onClick={handleLogOut}
+            className="caption-2 flex w-full justify-center text-[#636363]"
+          >
+            로그아웃
+          </button>
+        )}
+      </aside>
+
+      <Modal
+        isOpen={isErrorModal}
+        title="오류"
+        content="로그아웃 중 에러가 발생했습니다. 다시 시도해주세요"
+        onCancel={() => setIsErrorModal(false)}
+      />
+    </>
   )
 }
 
