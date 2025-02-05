@@ -3,4 +3,5 @@ export type CommunitySong = {
   title: string
   artist: string
   album_cover: string | null
+  album_name: string | null
 }

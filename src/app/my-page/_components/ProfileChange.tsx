@@ -1,3 +1,5 @@
+'use client'
+
 import { updateProfile } from '@/api/my-page/actions'
 import defaultProfileImg from '@/assets/images/defaultProfileImg.png'
 import { PrimaryButton } from '@/components/common'

@@ -1,5 +1,4 @@
 import { getPlaylists, getPopularPlaylists } from '@/api/community/actions'
-
 import defaultProfileImg from '@/assets/images/defaultProfileImg.png'
 import { createServerClient } from '@supabase/ssr'
 import clsx from 'clsx'

@@ -1,3 +1,5 @@
+'use client'
+
 import close from '@/assets/images/close.svg'
 import { useAddPlaylist, useUpdatePlaylist } from '@/hooks/usePlaylists'
 import useScrollLock from '@/hooks/useScrollLock'

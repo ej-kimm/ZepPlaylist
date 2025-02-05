@@ -9,12 +9,15 @@ export const fetchNewReleases = async () => {
   const token = await fetchSpotifyToken()
 
   try {
-    const res = await fetch('https://api.spotify.com/v1/browse/new-releases', {
-      method: 'GET',
-      headers: {
-        Authorization: 'Bearer ' + token,
+    const res = await fetch(
+      `${process.env.SPOTIFY_BASE_URL}/browse/new-releases`,
+      {
+        method: 'GET',
+        headers: {
+          Authorization: 'Bearer ' + token,
+        },
       },
-    })
+    )
     if (!res.ok) {
       console.error(`API error: ${res.status} ${res.statusText}`)
       throw new Error(`Failed to fetch data: ${res.status} ${res.statusText}`)
@@ -31,7 +34,7 @@ export const fetchNewReleases = async () => {
 export const fetchMelonChart = async () => {
   try {
     const res = await fetch(
-      'https://m2.melon.com/m6/chart/ent/songChartList.json',
+      `${process.env.MELON_BASE_URL}/ent/songChartList.json`,
     )
 
     if (!res.ok) {
@@ -73,7 +76,7 @@ export const fetchSearchTracks = async (searchParams: string) => {
 
   try {
     const res = await fetch(
-      `https://api.spotify.com/v1/search?q=${searchParams}&type=track&limit=50`,
+      `${process.env.SPOTIFY_BASE_URL}/search?q=${searchParams}&type=track&limit=50`,
       {
         method: 'GET',
         headers: {
@@ -99,7 +102,7 @@ export const fetchSearchArtist = async (searchParams: string) => {
 
   try {
     const res = await fetch(
-      `https://api.spotify.com/v1/search?q=${searchParams}&type=artist&limit=1`,
+      `${process.env.SPOTIFY_BASE_URL}/search?q=${searchParams}&type=artist&limit=1`,
       {
         method: 'GET',
         headers: {
@@ -124,12 +127,15 @@ export const fetchAlbums = async (albumId: string) => {
   const token = await fetchSpotifyToken()
 
   try {
-    const res = await fetch(`https://api.spotify.com/v1/albums/${albumId}`, {
-      method: 'GET',
-      headers: {
-        Authorization: 'Bearer ' + token,
+    const res = await fetch(
+      `${process.env.SPOTIFY_BASE_URL}/albums/${albumId}`,
+      {
+        method: 'GET',
+        headers: {
+          Authorization: 'Bearer ' + token,
+        },
       },
-    })
+    )
     if (!res.ok) {
       console.error(`API error: ${res.status} ${res.statusText}`)
       throw new Error(`Failed to fetch data: ${res.status} ${res.statusText}`)

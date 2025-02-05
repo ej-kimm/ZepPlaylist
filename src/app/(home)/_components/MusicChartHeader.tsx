@@ -59,12 +59,12 @@ const MusicChartHeader = ({
 
   return (
     <>
-      <div className={clsx('flex w-full flex-col gap-6', 'desktop: mt-10')}>
+      <div className={clsx('flex w-full flex-col gap-6', 'desktop:mt-10')}>
         <p className={clsx('title-1', 'desktop:title-3')}>TOP 100</p>
         <div
           className={clsx(
             'flex items-center gap-3.5 self-stretch',
-            'desktop: flex gap-[65px]',
+            'desktop:flex desktop:gap-[65px]',
           )}
         >
           <Link
