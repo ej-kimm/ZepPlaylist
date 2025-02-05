@@ -44,17 +44,20 @@ const Top20List: React.FC<Top20ListProps> = ({
               onClick={() => setIsKoreaChart(true)}
               className={clsx(
                 'title-2 cursor-pointer',
-                isKoreaChart ? 'text-black' : 'text-opacity-30',
+                'desktop:title-3 desktop:px-[10px] desktop:py-2',
+                isKoreaChart
+                  ? 'text-black'
+                  : 'text-opacity-30 desktop:text-opacity-30',
                 isKoreaChart && 'desktop:text-secondary',
-                'desktop:px-[10px]',
               )}
             >
               국내 TOP 100
             </h1>
             <p
               className={clsx(
-                isKoreaChart &&
-                  'desktop:border-b-[1px] desktop:border-secondary',
+                'hidden',
+                'desktop:block',
+                isKoreaChart && 'border-b-[1px] border-secondary',
               )}
             ></p>
           </div>
@@ -64,17 +67,22 @@ const Top20List: React.FC<Top20ListProps> = ({
               onClick={() => setIsKoreaChart(false)}
               className={clsx(
                 'title-2 cursor-pointer',
-                !isKoreaChart ? 'text-black' : 'text-gray-300',
+                'desktop:title-3 desktop:px-[10px] desktop:py-2',
+                !isKoreaChart
+                  ? 'text-black'
+                  : 'text-opacity-30 desktop:text-opacity-30',
                 !isKoreaChart && 'desktop:text-secondary',
-                'desktop:px-[10px]',
               )}
             >
               빌보드 TOP 100
             </h1>
             <p
               className={clsx(
-                !isKoreaChart &&
-                  'desktop:border-b-[1px] desktop:border-secondary',
+                'hidden',
+                'desktop:block',
+                !isKoreaChart
+                  ? 'border-b-[1px] border-secondary'
+                  : 'border-transparent',
               )}
             ></p>
           </div>

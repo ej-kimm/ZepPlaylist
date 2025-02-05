@@ -3,6 +3,7 @@
 import imPlay from '@/assets/images/imPlay.svg'
 import likeTrue from '@/assets/images/likeTrue.svg'
 import whiteHeart from '@/assets/images/whiteHeart.svg'
+import clsx from 'clsx'
 import type { StaticImageData } from 'next/image'
 import Image from 'next/image'
 
@@ -27,11 +28,10 @@ const PopularPlaylistUI = ({
   return (
     <div className="flex flex-col items-start">
       <div
-        className="relative flex-shrink-0 cursor-pointer overflow-hidden rounded-lg"
-        style={{
-          width: '140px',
-          height: '100px',
-        }}
+        className={clsx(
+          'relative h-[100px] w-[140px] flex-shrink-0 cursor-pointer overflow-hidden rounded-lg',
+          'desktop:h-[131px] desktop:w-[184px]',
+        )}
         onClick={onPlay}
       >
         <div
@@ -46,13 +46,10 @@ const PopularPlaylistUI = ({
         ></div>
 
         <div
-          className="absolute"
-          style={{
-            width: '92px',
-            height: '92px',
-            top: '4px',
-            left: '20px',
-          }}
+          className={clsx(
+            'absolute left-1/2 top-1/2 h-[92px] w-[92px] -translate-x-1/2 -translate-y-1/2 transform',
+            'desktop:h-[120px] desktop:w-[120px]',
+          )}
         >
           <Image
             src={albumCover}
@@ -64,13 +61,10 @@ const PopularPlaylistUI = ({
         </div>
 
         <button
-          className="absolute z-20 flex items-center justify-center"
-          style={{
-            width: '14px',
-            height: '14px',
-            top: '8px',
-            right: '8px',
-          }}
+          className={clsx(
+            'absolute right-2 top-2 z-20 flex h-[14px] w-[14px] items-center justify-center',
+            'desktop:right-[9px] desktop:top-[11px]',
+          )}
           onClick={(e) => {
             e.stopPropagation()
             onLikeToggle()
@@ -102,9 +96,21 @@ const PopularPlaylistUI = ({
       </div>
 
       <div className="mt-2 w-full">
-        <h3 className="caption-1 font-bold">{playlistName}</h3>
+        <h3
+          className={clsx(
+            'caption-1 font-bold',
+            'desktop:caption-3 desktop:font-semibold',
+          )}
+        >
+          {playlistName}
+        </h3>
         <div className="mt-1 flex items-center">
-          <span className="caption-2">
+          <span
+            className={clsx(
+              'caption-2',
+              'desktop:caption-1 desktop:text-opacity-60',
+            )}
+          >
             {nickName && nickName.trim() !== '' ? nickName : 'Anonymous'}
           </span>
         </div>

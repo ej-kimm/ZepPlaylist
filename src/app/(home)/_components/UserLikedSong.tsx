@@ -4,6 +4,7 @@ import likeTrue from '@/assets/images/likeTrue.svg'
 import { userStore } from '@/store/userSlice'
 import type { UserLikedSongDetails } from '@/types/LikedSongs'
 import { supabase } from '@/utils/supabase/client'
+import clsx from 'clsx'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import LikeSongItem from './LikeSongItem'
@@ -55,14 +56,21 @@ const UserLikedSong = () => {
 
   return (
     <div className="w-full">
-      <h2 className="title-2 mb-4">내가 좋아요 한 곡</h2>
+      <h2 className={clsx('title-2 mb-4', 'desktop:title-3 desktop:mb-10')}>
+        내가 좋아요 한 곡
+      </h2>
       {matchedMusicInfo.length === 0 ? (
         <div className="flex">
           좋아하는 곡을 담아 주세요...
           <Image src={likeTrue} alt="Like Button" width={16} height={16} />
         </div>
       ) : (
-        <ul className="scroll-invisible flex space-x-4 overflow-x-auto">
+        <ul
+          className={clsx(
+            'scroll-invisible flex space-x-4 overflow-x-auto',
+            'desktop:space-x-8',
+          )}
+        >
           {matchedMusicInfo.map((item) => (
             <LikeSongItem item={item} key={item.id} />
           ))}

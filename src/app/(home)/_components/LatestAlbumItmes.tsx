@@ -1,5 +1,7 @@
 'use client'
 
+import useIsDesktop from '@/hooks/useIsDesktop'
+import clsx from 'clsx'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Autoplay } from 'swiper/modules'
@@ -10,10 +12,12 @@ type LatestAlbumProps = {
 }
 
 function LatestAlbumItmes({ latestAlbumList }: LatestAlbumProps) {
+  const isDesktop = useIsDesktop()
+
   return (
     <ul className="flex">
       <Swiper
-        spaceBetween={12}
+        spaceBetween={isDesktop ? 26 : 12}
         slidesPerView="auto"
         autoplay={{ delay: 10000 }}
         loop={false}
@@ -31,24 +35,37 @@ function LatestAlbumItmes({ latestAlbumList }: LatestAlbumProps) {
           <SwiperSlide key={label} style={{ width: 'auto' }}>
             <Link href={`/latest-album/${album.id}`}>
               <li key={album.id} className="flex-none">
-                <div className="flex w-[100px] flex-col gap-1 text-left">
+                <div
+                  className={clsx(
+                    'flex w-[96px] flex-col gap-1 text-left',
+                    'desktop:w-[160px] desktop:gap-0',
+                  )}
+                >
                   <Image
                     src={album.images[0].url}
                     width={96}
                     height={96}
                     alt={album.name}
                     priority
-                    className="h-auto w-full rounded-lg shadow-md"
-                    style={{
-                      height: '96px',
-                      width: '96px',
-                      objectFit: 'cover',
-                    }}
+                    className={clsx(
+                      'h-[96px] w-[96px] rounded-lg object-cover shadow-md desktop:h-[160px] desktop:w-[160px]',
+                      'desktop:mb-2 desktop:rounded-3xl',
+                    )}
                   />
-                  <h3 className="caption-1 truncate font-medium">
+                  <h3
+                    className={clsx(
+                      'caption-1 truncate font-medium',
+                      'desktop:body-1 desktop:mb-1 desktop:px-2',
+                    )}
+                  >
                     {album.name}
                   </h3>
-                  <p className="caption-2 truncate text-opacity-60">
+                  <p
+                    className={clsx(
+                      'caption-2 truncate text-opacity-60',
+                      'desktop:caption-1 desktop:px-2 desktop:text-opacity-60',
+                    )}
+                  >
                     {album.artists[0].name}
                   </p>
                 </div>
