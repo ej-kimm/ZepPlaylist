@@ -96,7 +96,7 @@ export default function CommunityDetailUI({
   const toggleCommentVisibility = () => {
     setIsCommentVisible((prev) => !prev)
   }
-  console.log(selectedSong)
+
   return (
     <div
       className={clsx(
@@ -412,7 +412,7 @@ export default function CommunityDetailUI({
           <div className="flex items-center gap-2 p-2">
             <input
               type="text"
-              className="md:min-w-[120px] h-9 min-w-[50px] flex-1 rounded-lg border border-gray-200 bg-white px-4 text-sm focus:outline-none"
+              className="h-9 min-w-[50px] flex-1 rounded-lg border border-gray-200 bg-white px-4 text-sm focus:outline-none md:min-w-[120px]"
               placeholder="댓글을 입력해주세요!"
               value={content}
               onChange={(e) => setContent(e.target.value)}

@@ -117,7 +117,7 @@ export default function CommentSection({
         nickname
       )
     `,
-      ) // 사용자 정보 포함
+      )
       .single()
 
     if (error) {
