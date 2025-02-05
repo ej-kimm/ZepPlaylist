@@ -14,6 +14,8 @@ import ProfileChange from './ProfileChange'
 const ProfileEdit = () => {
   const [isOpenProfileEdit, setIsOpenProfileEdit] = useState<boolean>(false) // 프로필 변경 바텀시트
   const [isOpenPassword, setIsOpenPassword] = useState<boolean>(false) // 비밀번호 변경 바텀시트
+  const [modalOpen, setModalOpen] = useState(false)
+  const [modalValue, setModalValue] = useState('')
   const isDesktop = useIsDesktop(720)
   const handleProfileEditBottomSheet = () => {
     setIsOpenProfileEdit((prev) => !prev)
@@ -21,7 +23,9 @@ const ProfileEdit = () => {
   const handlePasswordBottomSheet = () => {
     setIsOpenPassword((prev) => !prev)
   }
-
+  const handleModal = () => {
+    setModalOpen((prev) => !prev)
+  }
   return (
     <div>
       <button
@@ -46,13 +50,18 @@ const ProfileEdit = () => {
             title="프로필 수정"
             type="none"
             className="desktop:w-[532px]"
-            onCancel={handleProfileEditBottomSheet}
+            onCancel={() => {
+              handleProfileEditBottomSheet()
+            }}
             onConfirm={handlePasswordBottomSheet}
           >
             <ProfileChange
               handleClose={() => {
-                setIsOpenPassword(false)
                 handleProfileEditBottomSheet()
+              }}
+              onSubmit={() => {
+                setModalValue('프로필 수정이 완료되었습니다!')
+                setModalOpen(true)
               }}
               handleOpenPasswordSheet={handlePasswordBottomSheet}
             />
@@ -62,28 +71,54 @@ const ProfileEdit = () => {
             title="비밀번호 변경"
             type="none"
             className="desktop:w-[532px]"
-            onCancel={handlePasswordBottomSheet}
+            onCancel={() => {
+              handlePasswordBottomSheet()
+            }}
           >
             <PasswordChange
-              handleClosePasswordSheet={handlePasswordBottomSheet}
+              handleClosePasswordSheet={() => {
+                handlePasswordBottomSheet()
+              }}
+              onClick={() => {
+                setModalOpen(true)
+                setModalValue('비밀번호 변경이 완료됐습니다!')
+              }}
             />
           </Modal>
         </>
       ) : (
-        // 모달안에 폼 넣고
-        // 모달 프로필 / 패스워드 모달인지 state 관리로 모달 삼항연산자 써서 바꿔주기
         <>
           <ProfileEditBottomSheet
             isOpen={isOpenProfileEdit}
-            handleClose={handleProfileEditBottomSheet}
+            handleClose={() => {
+              handleProfileEditBottomSheet()
+            }}
+            onSubmit={() => {
+              setModalOpen(true)
+              setModalValue('프로필 수정이 완료되었습니다!')
+            }}
             handleOpenPasswordSheet={handlePasswordBottomSheet}
           />
           <PasswordEditBottomSheet
             isOpen={isOpenPassword}
-            handleClose={handlePasswordBottomSheet}
+            handleClose={() => {
+              handlePasswordBottomSheet()
+            }}
+            onClick={() => {
+              setModalValue('비밀번호 변경이 완료되었습니다!')
+              setModalOpen(true)
+            }}
           />
         </>
       )}
+      <Modal
+        isOpen={modalOpen}
+        title="확인"
+        content={modalValue}
+        type="single"
+        onCancel={handleModal}
+        onConfirm={handleModal}
+      ></Modal>
     </div>
   )
 }

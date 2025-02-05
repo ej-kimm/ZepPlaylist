@@ -4,11 +4,13 @@ import BottomSheet from './BottomSheet'
 type PasswordEditBottomSheetProps = {
   isOpen: boolean
   handleClose: () => void
+  onClick: () => void
 }
 
 const PasswordEditBottomSheet = ({
   isOpen,
   handleClose,
+  onClick,
 }: PasswordEditBottomSheetProps) => {
   return (
     <BottomSheet
@@ -17,7 +19,10 @@ const PasswordEditBottomSheet = ({
       height="auto"
       maxWidth="100%"
     >
-      <PasswordChange handleClosePasswordSheet={handleClose} />
+      <PasswordChange
+        handleClosePasswordSheet={handleClose}
+        onClick={onClick}
+      />
     </BottomSheet>
   )
 }

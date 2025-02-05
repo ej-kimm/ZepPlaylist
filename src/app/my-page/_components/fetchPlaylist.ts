@@ -22,7 +22,7 @@ export const fetchPlayList = async ({ pageParam = 0 }: Param) => {
   const nextCursor = totalPage === 10 ? pageParam + 1 : undefined
   const prevCursor = pageParam > 0 ? pageParam - 1 : undefined
   return {
-    playlists,
+    data: playlists,
     nextCursor,
     prevCursor,
   }
