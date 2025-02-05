@@ -1,7 +1,6 @@
-import { fetchPlayList } from '@/app/my-page/_components/fetchPlaylist'
-import { fetchUserPlayList } from '@/app/my-page/_components/fetchUserPlayList'
+import { fetchPlaylistsWithCovers } from '@/api/my-page/actions'
 import { useInfiniteQuery } from '@tanstack/react-query'
-export const usePlaylistQuery = (playlistType: 'default' | 'user') => {
+export const usePlaylistQuery = () => {
   const {
     data: playlists,
     fetchNextPage,
@@ -11,10 +10,7 @@ export const usePlaylistQuery = (playlistType: 'default' | 'user') => {
     isLoading,
   } = useInfiniteQuery({
     queryKey: ['playlist'],
-    queryFn: ({ pageParam = 0 }) =>
-      playlistType === 'default'
-        ? fetchPlayList({ pageParam })
-        : fetchUserPlayList({ pageParam }),
+    queryFn: ({ pageParam = 0 }) => fetchPlaylistsWithCovers({ pageParam }),
     getNextPageParam: (lastPage) => lastPage?.nextCursor || undefined,
     getPreviousPageParam: (firstPage) => firstPage?.prevCursor || undefined,
     initialPageParam: 0,

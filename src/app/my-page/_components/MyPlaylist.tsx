@@ -1,12 +1,11 @@
 'use client'
-import { fetchPlaylistsWithCovers } from '@/api/playlist/actions'
-import ddd from '@/assets/images/ddd.png'
 import { PlaylistUI } from '@/components/common'
 import PlaylistDesktopUI from '@/components/common/PlaylistDesktop'
 import { usePlaylistQuery } from '@/hooks/usePlaylistQuery'
-import { useToggleLikeMutation } from '@/hooks/useToggleLikeMutation'
+import { useToggleLike } from '@/hooks/useToggle'
 import { userStore } from '@/store/userSlice'
-import { useQuery } from '@tanstack/react-query'
+import { supabase } from '@/utils/supabase/client'
+import { useQueries } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 import { useInView } from 'react-intersection-observer'
 import MyPageSkeleton from './MyPageSkeleton'
@@ -20,22 +19,26 @@ const MyPlayList = () => {
     isFetchingNextPage,
     error,
     isLoading,
-  } = usePlaylistQuery('user')
-  console.log('first', playlists)
-  const { data: playlists2 } = useQuery({
-    queryKey: ['playlists', user?.id],
-    queryFn: () => {
-      if (!user?.id) {
-        return Promise.reject('유저정보 확인 불가')
-      }
-      return fetchPlaylistsWithCovers()
-    },
-    enabled: !!user?.id,
-    staleTime: 0,
-  })
-  console.log('playlists2', playlists2)
+  } = usePlaylistQuery()
 
-  const toggleLike = useToggleLikeMutation()
+  const playlistLikes = useQueries({
+    queries:
+      playlists?.pages
+        .flatMap((page) => page.data)
+        .map((p) => ({
+          queryKey: ['playlist_like', p.id],
+          queryFn: async () => {
+            const { data, error } = await supabase
+              .from('playlist_like')
+              .select('user_id')
+              .eq('playlist_id', p.id)
+
+            if (error) throw new Error(error.message)
+            return data || []
+          },
+        })) || [],
+  })
+  const toggle = useToggleLike()
   const { ref } = useInView({
     threshold: 1,
     onChange: (inView) => {
@@ -58,11 +61,12 @@ const MyPlayList = () => {
             key={pageIndex}
             className="gap-x-6 gap-y-10 desktop:mx-auto desktop:grid desktop:h-full desktop:w-full desktop:grid-cols-5 desktop:place-items-center"
           >
-            {page?.playlists.map((p) => {
+            {page?.data.map((p, index) => {
               const isLiked = p.playlist_like.some(
                 (like) => like.user_id === p.user_id,
               )
-              const likeCount = p.playlist_like.length
+              const likes = playlistLikes[index]?.data || []
+              const likeCount = likes?.length || 0
               return (
                 <div key={p.id}>
                   <div className="block desktop:hidden">
@@ -79,16 +83,13 @@ const MyPlayList = () => {
                       }}
                       likeCount={likeCount}
                       onLikeToggle={() => {
-                        toggleLike.mutate({
-                          playlist_id: p.id,
-                          user_id: user.id,
-                        })
+                        toggle.mutate({ playlist_id: p.id, user_id: user.id })
                       }}
                     />
                   </div>
                   <div className="mb-10 mt-10 hidden desktop:block">
                     <PlaylistDesktopUI
-                      album_cover={ddd}
+                      album_cover={p.latest_song_cover}
                       onClick={() => {
                         router.replace(`/community/${p.id}`)
                       }}
@@ -96,10 +97,7 @@ const MyPlayList = () => {
                       description={p.description || '설명창'}
                       isLiked={isLiked}
                       onLikeToggle={() => {
-                        toggleLike.mutate({
-                          playlist_id: p.id,
-                          user_id: user.id,
-                        })
+                        toggle.mutate({ playlist_id: p.id, user_id: user.id })
                       }}
                     />
                   </div>
