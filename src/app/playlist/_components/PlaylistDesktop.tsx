@@ -25,7 +25,7 @@ export default function PlaylistDesktop({
       <h2 className="title-3 mb-24 mt-24 font-pretendard">
         내가 만든 플레이리스트
       </h2>
-      <div className="flex grid-cols-5 gap-6">
+      <div className="mx-auto grid grid-cols-5 justify-center gap-6">
         <div
           className="relative flex h-[192px] w-[192px] cursor-pointer items-center justify-center overflow-hidden rounded-[21.94px] bg-gray-300 lg:h-[212px] lg:w-[212px] xl:h-[232px] xl:w-[232px] 2xl:h-[252px] 2xl:w-[252px]"
           onClick={() => openModal('add')}

@@ -11,7 +11,7 @@ import Modal from './Modal'
 
 interface Add {
   modalType: 'add'
-  selectedPlaylistId: never
+  selectedPlaylistId?: never
   isOpen: boolean
   onClose: () => void
 }
@@ -79,7 +79,6 @@ export default function PlaylistModal({
         is_public: playlist.isPublic,
         keyword: playlist.selectedKeywords.join(','),
         user_id: user?.id || '',
-        is_liked: false,
       })
     } else if (modalType === 'edit' && selectedPlaylistId) {
       updatePlaylistMutation.mutate({

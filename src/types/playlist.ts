@@ -5,7 +5,7 @@ export type PlaylistRow = {
   is_public: boolean
   keyword: string
   user_id: string
-  is_liked: boolean
+  is_liked?: boolean
   latest_song_cover?: string | null
 }
 
