@@ -2,9 +2,6 @@ import { fetchBillboardChart, fetchKoreanChart } from '@/api/home/actions'
 import type { Charts } from '@/types/billboradCharts'
 import Top20List from './Top20List'
 
-// 1시간 간격의 ISR
-export const revalidate = 3600
-
 const Charts = async () => {
   const [koreanChart, billboardChart] = await Promise.all([
     fetchKoreanChart(),

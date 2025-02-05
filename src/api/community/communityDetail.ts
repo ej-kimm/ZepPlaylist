@@ -33,7 +33,8 @@ export const getCommunitySongs = async (
         title,
         artist,
         album_cover,
-        play_time
+        play_time,
+        album_name
       )
     `,
     )
@@ -68,7 +69,7 @@ export const getCommunityComments = async (
     `,
     )
     .eq('playlist_id', playlistId)
-    .order('created_at', { ascending: true })
+    .order('created_at', { ascending: false })
 
   if (error) {
     console.error('Error fetching comments:', error.message)
