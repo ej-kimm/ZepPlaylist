@@ -45,7 +45,7 @@ type Parameter = {
 export const toggleLike = async ({ playlist_id, user_id }: Parameter) => {
   const { data: likeCount, error } = await supabase
     .from('playlist_like')
-    .select('*')
+    .select('user_id')
     .eq('playlist_id', playlist_id)
     .eq('user_id', user_id)
     .single()
@@ -138,12 +138,108 @@ export const playlistLikedCount = async ({
   const supabase = createClient()
   const { data, error } = await supabase
     .from('playlist_like')
-    .select('*')
+    .select('user_id')
     .eq('playlist_id', playlist_id)
 
-  if (error) {
-    console.error(error.message)
-    return false
+  if (error) throw new Error(error.message)
+  return data
+}
+
+export async function fetchLatestAlbumCover(
+  playlistId: string,
+): Promise<string | null> {
+  const supabase = createClient()
+
+  try {
+    const { data, error } = await supabase
+      .from('playlist_music')
+      .select(
+        `
+        music:music_id(
+          album_cover
+        )
+      `,
+      )
+      .eq('playlist_id', playlistId)
+      .order('created_at', { ascending: false })
+      .limit(1)
+
+    if (error) throw error
+
+    return data?.[0]?.music?.album_cover || null
+  } catch (error) {
+    console.error('앨범 커버 가져오기 오류:', error)
+    return null
   }
-  return data.length
+}
+
+export async function getUser() {
+  const supabase = createClient()
+
+  const { data, error } = await supabase.auth.getUser()
+
+  if (error || !data?.user) {
+    console.warn('Supabase 세션이 존재하지 않음. 로그인 필요.')
+    return null
+  }
+
+  return data.user
+}
+
+export async function fetchPlaylists(pageParam = 0, limit = 10) {
+  const user = await getUser()
+
+  if (!user?.id) {
+    return { data: [], totalCount: 0 }
+  }
+
+  const supabase = createClient()
+  try {
+    const { data, error, count } = await supabase
+      .from('playlists')
+      .select(`*, playlist_like(user_id)`, { count: 'exact' })
+      .eq('user_id', user.id)
+      .order('created_at', { ascending: false })
+      .range(pageParam * limit, (pageParam + 1) * limit - 1)
+
+    if (error) throw error
+
+    return { data: data || [], totalCount: count || 0 }
+  } catch (error) {
+    console.error('플레이리스트 가져오기 오류:', error)
+    throw new Error('플레이리스트 데이터를 가져오는 중 문제가 발생했습니다.')
+  }
+}
+
+export async function fetchPlaylistsWithCovers({
+  pageParam = 0,
+}: {
+  pageParam: number
+}) {
+  const limit = 10
+  const { data: playlists, totalCount } = await fetchPlaylists(pageParam, limit)
+
+  if (!playlists || playlists.length === 0) {
+    return {
+      data: [],
+      nextCursor: undefined,
+      prevCursor: undefined,
+    }
+  }
+
+  const playlistsWithCovers = await Promise.all(
+    playlists.map(async (playlist) => {
+      const latestSongCover = await fetchLatestAlbumCover(playlist.id)
+      return {
+        ...playlist,
+        latest_song_cover: latestSongCover || '/default-cover.jpg',
+      }
+    }),
+  )
+
+  const nextCursor =
+    (pageParam + 1) * limit < totalCount ? pageParam + 1 : undefined
+  const prevCursor = pageParam > 0 ? pageParam - 1 : undefined
+
+  return { data: playlistsWithCovers, nextCursor, prevCursor }
 }
