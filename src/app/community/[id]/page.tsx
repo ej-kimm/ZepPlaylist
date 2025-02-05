@@ -11,8 +11,6 @@ const CommunityDetailPage = async ({
 }): Promise<JSX.Element> => {
   const cookies = headers().get('cookie') || ''
   const userId = headers().get('user-id') || ''
-
-  // 데이터를 불러오는 부분
   const communityDetailPromise = getCommunityDetail(params.id, cookies, userId)
 
   return (
@@ -27,7 +25,6 @@ const CommunityDetailPage = async ({
   )
 }
 
-// CommentSection을 감싸는 컴포넌트
 const CommentSectionWrapper = async ({
   communityDetailPromise,
   params,
