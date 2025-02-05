@@ -4,7 +4,7 @@ import { Modal, PlaylistUI } from '@/components/common'
 import usePlaylistLike from '@/hooks/usePlaylistLike'
 import type { StaticImageData } from 'next/image'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export type PlaylistCardProps = {
   playlist: {
@@ -27,6 +27,11 @@ const PlaylistCard = ({ playlist, userId }: PlaylistCardProps) => {
   })
 
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
+  const [likeCount, setLikeCount] = useState(playlist.likeCount)
+
+  useEffect(() => {
+    setLikeCount(playlist.likeCount)
+  }, [playlist.likeCount])
 
   const handleLikeToggle = () => {
     if (!userId) {
@@ -35,6 +40,7 @@ const PlaylistCard = ({ playlist, userId }: PlaylistCardProps) => {
     }
 
     if (!isPending) {
+      setLikeCount((prev) => (isLiked ? prev - 1 : prev + 1))
       toggleLike()
     }
   }
@@ -53,7 +59,7 @@ const PlaylistCard = ({ playlist, userId }: PlaylistCardProps) => {
         profileImg={playlist.profile_img}
         playlistName={playlist.name}
         nickName={playlist.nickName}
-        likeCount={playlist.likeCount + (isLiked ? 1 : 0)}
+        likeCount={likeCount}
         isLiked={isLiked}
         onLikeToggle={handleLikeToggle}
         onClick={handleDivClick}
@@ -65,6 +71,7 @@ const PlaylistCard = ({ playlist, userId }: PlaylistCardProps) => {
         type="horizontal"
         onConfirm={handleConfirmLogin}
         onCancel={() => setIsLoginModalOpen(false)}
+        className="desktop:w-[434px]"
       />
     </>
   )
