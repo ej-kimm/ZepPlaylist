@@ -472,6 +472,7 @@ export default function CommunityDetailUI({
         type="horizontal"
         onConfirm={confirmDeleteComment}
         onCancel={() => setIsDeleteModalOpen(false)}
+        className="desktop:w-[434px]"
       />
 
       <Modal
@@ -481,6 +482,7 @@ export default function CommunityDetailUI({
         type="vertical"
         onConfirm={handleConfirmLogin}
         onCancel={() => setIsLoginModalOpen(false)}
+        className="desktop:w-[434px]"
       />
 
       {selectedSong && (

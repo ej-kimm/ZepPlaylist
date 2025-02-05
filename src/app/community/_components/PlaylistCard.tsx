@@ -32,6 +32,7 @@ const PlaylistCard = ({ playlist, userId }: PlaylistCardProps) => {
   useEffect(() => {
     setLikeCount(playlist.likeCount)
   }, [playlist.likeCount])
+  console.log("에러 콘솔",playlist)
 
   const handleLikeToggle = () => {
     if (!userId) {
@@ -71,6 +72,7 @@ const PlaylistCard = ({ playlist, userId }: PlaylistCardProps) => {
         type="horizontal"
         onConfirm={handleConfirmLogin}
         onCancel={() => setIsLoginModalOpen(false)}
+        className="desktop:w-[434px]"
       />
     </>
   )

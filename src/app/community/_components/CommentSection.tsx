@@ -191,6 +191,7 @@ export default function CommentSection({
         type="horizontal"
         onConfirm={handleConfirmLogin}
         onCancel={() => setIsLoginModalOpen(false)}
+        className="desktop:w-[434px]"
       />
     </>
   )
