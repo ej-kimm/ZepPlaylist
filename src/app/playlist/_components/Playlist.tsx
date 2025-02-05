@@ -10,7 +10,7 @@ import {
   useLatestLikedSongCover,
   useUpdatePlaylist,
 } from '@/hooks/usePlaylists'
-import { useToggleLikeMutation } from '@/hooks/useToggleLikeMutation'
+import { useToggleLike } from '@/hooks/useToggle'
 import { userStore } from '@/store/userSlice'
 import { PlaylistRow, type PlaylistInsert } from '@/types/playlist'
 import { useRouter } from 'next/navigation'
@@ -49,11 +49,12 @@ export default function Playlist({ initialPlaylists }: PlaylistComponentProps) {
 
   const addPlaylistMutation = useAddPlaylist(() => closeModal())
   const updatePlaylistMutation = useUpdatePlaylist(() => closeModal())
-  const toggleLikeMutation = useToggleLikeMutation()
+  // const toggleLikeMutation = useToggleLikeMutation()
 
-  const handleLikeToggle = (playlistId: string) => {
+  const toggle = useToggleLike()
+  const handleToggle = (playlistId: string) => {
     if (user?.id) {
-      toggleLikeMutation.mutate({ playlist_id: playlistId, user_id: user.id })
+      toggle.mutate({ playlist_id: playlistId, user_id: user.id })
     }
   }
 
@@ -105,7 +106,7 @@ export default function Playlist({ initialPlaylists }: PlaylistComponentProps) {
             handlePlaylistClick={(id) => router.push(`/playlist/${id}`)}
             handleLikesClick={() => router.push('/playlist/likes')}
             openModal={openModal}
-            handleLikeToggle={handleLikeToggle}
+            handleLikeToggle={handleToggle}
             handleDeletePlaylist={handleDeleteConfirmation}
             handleEditPlaylist={(playlist) =>
               updatePlaylistMutation.mutate({

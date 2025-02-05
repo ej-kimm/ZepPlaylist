@@ -70,19 +70,21 @@ export default function PlaylistDesktop({
           </div>
         </div>
 
-        {playlists.map((playlist) => (
-          <PlaylistDesktopUI
-            key={playlist.id}
-            album_cover={playlist.latest_song_cover || undefined}
-            title={playlist.name}
-            description={playlist.description || '설명 없음'}
-            isLiked={playlist.is_liked}
-            onLikeToggle={() => handleLikeToggle(playlist.id)}
-            onClick={() => handlePlaylistClick(playlist.id)}
-            onEdit={() => handleEditPlaylist(playlist)}
-            onDelete={() => handleDeletePlaylist(playlist.id)}
-          />
-        ))}
+        {playlists.map((playlist) => {
+          return (
+            <PlaylistDesktopUI
+              key={playlist.id}
+              album_cover={playlist.latest_song_cover || undefined}
+              title={playlist.name}
+              description={playlist.description || '설명 없음'}
+              isLiked={playlist.is_liked}
+              onLikeToggle={() => handleLikeToggle(playlist.id)}
+              onClick={() => handlePlaylistClick(playlist.id)}
+              onEdit={() => handleEditPlaylist(playlist)}
+              onDelete={() => handleDeletePlaylist(playlist.id)}
+            />
+          )
+        })}
       </div>
     </div>
   )

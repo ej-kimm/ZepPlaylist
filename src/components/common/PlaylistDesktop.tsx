@@ -27,6 +27,7 @@ const PlaylistDesktopUI = ({
   onEdit,
   onDelete,
 }: PlaylistDesktopUIProps) => {
+  console.log(isLiked)
   const [isClicked, setIsClicked] = useState(isLiked)
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
@@ -46,7 +47,7 @@ const PlaylistDesktopUI = ({
       document.removeEventListener('mousedown', handleClickOutside)
     }
   }, [])
-
+  console.log(isLiked)
   return (
     <div
       className={`relative h-[192px] w-[192px] overflow-hidden rounded-[21.94px] lg:h-[212px] lg:w-[212px] xl:h-[232px] xl:w-[232px] 2xl:h-[252px] 2xl:w-[252px] ${
