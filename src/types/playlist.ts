@@ -9,7 +9,10 @@ export type PlaylistRow = {
   latest_song_cover?: string | null
 }
 
-export type PlaylistInsert = Omit<PlaylistRow, 'id' | 'latest_song_cover'>
+export type PlaylistInsert = Omit<
+  PlaylistRow,
+  'id' | 'latest_song_cover' | 'is_liked | created_at'
+>
 
 export type PlaylistUpdate = Partial<PlaylistInsert>
 

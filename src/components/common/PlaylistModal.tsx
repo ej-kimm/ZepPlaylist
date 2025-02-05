@@ -7,14 +7,21 @@ import { useState } from 'react'
 import KeywordCarousel from './KeywordCarousel'
 import Modal from './Modal'
 
-type PlaylistModalProps = {
-  modalType: 'add' | 'edit' | null
+interface Add {
+  modalType: 'add'
+  selectedPlaylistId: never
   isOpen: boolean
   onClose: () => void
-} & ( // edit일 때만 selectedPlaylistId 필수
-  | { modalType: 'add' | null; selectedPlaylistId?: undefined }
-  | { modalType: 'edit'; selectedPlaylistId: string }
-)
+}
+
+interface Edit {
+  modalType: 'edit'
+  selectedPlaylistId: string
+  isOpen: boolean
+  onClose: () => void
+}
+
+type PlaylistModalProps = Add | Edit
 
 type Playlist = {
   title: string
@@ -70,6 +77,7 @@ export default function PlaylistModal({
         is_public: playlist.isPublic,
         keyword: playlist.selectedKeywords.join(','),
         user_id: user?.id || '',
+        is_liked: false,
       })
     } else if (modalType === 'edit' && selectedPlaylistId) {
       updatePlaylistMutation.mutate({
