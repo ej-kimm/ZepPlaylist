@@ -38,7 +38,6 @@ const PlaylistUI = ({
       className={`mt-4 flex cursor-pointer items-center justify-between rounded-lg bg-white p-4 shadow${className}`}
       onClick={onClick}
     >
-      {/* 프로필 이미지 */}
       <div
         className="flex-shrink-0 overflow-hidden rounded-full"
         style={{
@@ -55,13 +54,11 @@ const PlaylistUI = ({
         />
       </div>
 
-      {/* 제목과 닉네임 */}
       <div className="ml-4 flex-1">
         <h3 className="text-md font-bold">{playlistName}</h3>
         <p className="caption-2">{nickName}</p>
       </div>
 
-      {/* 좋아요 버튼과 개수 */}
       <div className="flex flex-col items-center">
         <button
           className="text-xl"

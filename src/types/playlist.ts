@@ -5,23 +5,16 @@ export type PlaylistRow = {
   is_public: boolean
   keyword: string
   user_id: string
+  is_liked?: boolean
   latest_song_cover?: string | null
 }
 
-export type PlaylistInsert = {
-  name: string
-  description?: string | null
-  is_public: boolean
-  keyword: string
-  user_id: string
-}
+export type PlaylistInsert = Omit<
+  PlaylistRow,
+  'id' | 'latest_song_cover' | 'is_liked | created_at'
+>
 
-export type PlaylistUpdate = {
-  name?: string
-  description?: string | null
-  is_public?: boolean
-  keyword?: string
-}
+export type PlaylistUpdate = Partial<PlaylistInsert>
 
 export type MusicData = {
   id: string

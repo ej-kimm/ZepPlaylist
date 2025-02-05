@@ -4,7 +4,9 @@ import { removeLikedSong } from '@/api/like-music/actions'
 import { Modal } from '@/components/common'
 import useIsDesktop from '@/hooks/useIsDesktop'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
+import { userStore } from '@/store/userSlice'
 import { LikedSong } from '@/types/song'
+import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import LikedSongsDetailDesktop from './LikedSongDetailDesktop'
 import LikedSongsDetailUI from './LikedSongDetailUI'
@@ -29,7 +31,15 @@ export default function LikedSongsPage({
     onConfirm: () => {},
     onCancel: () => setModalProps((prev) => ({ ...prev, isOpen: false })),
   })
+  const { user, isLogin } = userStore()
+  const router = useRouter()
   const isDesktop = useIsDesktop()
+
+  useEffect(() => {
+    if (!isLogin || !user?.id) {
+      router.replace('/login')
+    }
+  }, [user, router, isLogin])
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
