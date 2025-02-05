@@ -8,8 +8,9 @@ import defaultProfileImg from '@/assets/images/defaultProfileImg.png'
 import likeFalse from '@/assets/images/likeFalse.svg'
 import likeTrue from '@/assets/images/likeTrue.svg'
 import moreButton from '@/assets/images/moreButton.svg'
-import { Modal } from '@/components/common'
+import { Modal, MusicSaveModal } from '@/components/common'
 import MusicSaveBottomSheet from '@/components/common/MusicSaveBottomSheet'
+import useIsDesktop from '@/hooks/useIsDesktop'
 import type { SpotifyTrack } from '@/types/billboradCharts'
 import type { Comment } from '@/types/comment'
 import type { CommunitySong } from '@/types/communitySong'
@@ -61,6 +62,7 @@ export default function CommunityDetailUI({
   )
   const [isCommentVisible, setIsCommentVisible] = useState(true)
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
+  const isDesktop = useIsDesktop(720)
 
   const router = useRouter()
 
@@ -184,7 +186,7 @@ export default function CommunityDetailUI({
                 <li
                   key={song.spotify_id}
                   className={clsx(
-                    'flex items-center justify-between py-4',
+                    'flex items-center justify-between py-4 cursor-pointer',
                     'desktop:hidden', // PC에서는 모바일 버전 숨김
                   )}
                   onClick={() => handlePlayFromIndex(index)}
@@ -231,7 +233,7 @@ export default function CommunityDetailUI({
                 <li
                   key={`pc-${song.spotify_id}`}
                   className={clsx(
-                    'hidden items-center justify-between py-4',
+                    'hidden items-center justify-between py-4 cursor-pointer',
                     'desktop:flex', // PC에서만 표시
                   )}
                   onClick={() => handlePlayFromIndex(index)}
@@ -482,13 +484,24 @@ export default function CommunityDetailUI({
       />
 
       {selectedSong && (
-        <MusicSaveBottomSheet
-          isOpen={isBottomSheetOpen}
-          handleClose={() => setIsBottomSheetOpen(false)}
-          musicName={selectedSong.title}
-          artistName={selectedSong.artist}
-          musicData={selectedSong}
-        />
+        <>
+          {isDesktop ? (
+            <MusicSaveModal
+              isOpen={isBottomSheetOpen}
+              handleClose={() => setIsBottomSheetOpen(false)}
+              musicName={selectedSong.title}
+              artistName={selectedSong.artist}
+            />
+          ) : (
+            <MusicSaveBottomSheet
+              isOpen={isBottomSheetOpen}
+              handleClose={() => setIsBottomSheetOpen(false)}
+              musicName={selectedSong.title}
+              artistName={selectedSong.artist}
+              musicData={selectedSong}
+            />
+          )}
+        </>
       )}
     </div>
   )
