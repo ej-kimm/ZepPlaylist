@@ -240,7 +240,7 @@ export default function CommunityDetailUI({
                   </div>
 
                   {/* 텍스트 정보 (가로 배치) */}
-                  <div className="ml-6 flex flex-1 items-center justify-between">
+                  <div className="flex flex-1 items-center justify-between text-center">
                     <p className="body-2 flex-1">{song.title}</p>
                     <p className="caption-1 flex-1">{song.artist}</p>
                     <p className="caption-1 flex-1">{song.album_name}</p>
