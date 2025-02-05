@@ -10,6 +10,7 @@ import likeTrue from '@/assets/images/likeTrue.svg'
 import moreButton from '@/assets/images/moreButton.svg'
 import { Modal } from '@/components/common'
 import MusicSaveBottomSheet from '@/components/common/MusicSaveBottomSheet'
+import type { SpotifyTrack } from '@/types/billboradCharts'
 import type { Comment } from '@/types/comment'
 import type { CommunitySong } from '@/types/communitySong'
 import clsx from 'clsx'
@@ -52,7 +53,8 @@ export default function CommunityDetailUI({
   onLikeToggle,
 }: CommunityDetailUIProps) {
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false)
-  const [selectedSong, setSelectedSong] = useState<CommunitySong | null>(null)
+  const [selectedSong, setSelectedSong] = useState<SpotifyTrack>()
+  console.log('CommunityDetailUI', selectedSong)
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const [selectedCommentId, setSelectedCommentId] = useState<string | null>(
     null,
@@ -85,7 +87,13 @@ export default function CommunityDetailUI({
   }
 
   const handleMoreButtonClick = (song: CommunitySong) => {
-    setSelectedSong(song)
+    const newSong = {
+      id: song.spotify_id,
+      artist: song.artist,
+      title: song.title,
+      albumCover: song.album_cover!,
+    }
+    setSelectedSong(newSong)
     setIsBottomSheetOpen(true)
   }
 
@@ -479,6 +487,7 @@ export default function CommunityDetailUI({
           handleClose={() => setIsBottomSheetOpen(false)}
           musicName={selectedSong.title}
           artistName={selectedSong.artist}
+          musicData={selectedSong}
         />
       )}
     </div>

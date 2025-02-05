@@ -10,6 +10,7 @@ const config: Config = {
     extend: {
       screens: {
         desktop: '720px',
+        'desktop-xl': '1200px',
       },
       colors: {
         primary: '#B15EFF',

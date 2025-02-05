@@ -33,7 +33,7 @@ export default function TableList<
             className="flex w-full items-center justify-between px-[24px] py-[4px]"
           >
             <div className="flex w-[30%] items-center gap-[21px]">
-              <div className="h-[52px] w-[52px] overflow-hidden rounded-lg bg-[#D9D9D9]">
+              <div className="h-[52px] w-[52px] flex-shrink-0 overflow-hidden rounded-lg bg-[#D9D9D9]">
                 {item.album_cover && (
                   <Image
                     src={item.album_cover}

@@ -3,8 +3,6 @@ import type { Charts } from '@/types/billboradCharts'
 import MusicChartHeader from '../_components/MusicChartHeader'
 import Top100ChartList from '../_components/Top100ChartList'
 
-export const revalidate = 3600
-
 const billboardTop100 = async () => {
   const billboardTop100Chart = await fetchBillboardChart()
 

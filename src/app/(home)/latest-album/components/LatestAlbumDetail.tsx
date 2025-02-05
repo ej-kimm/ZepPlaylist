@@ -19,8 +19,9 @@ const LatestAlbumDetail = ({ albumData }: LatestAlbumProps) => {
 
   const { upsertMusic } = usePlaylistMusicUpsert()
 
-  const [selectedSong, setSelectedSong] =
-    useState<SpotifyApi.TrackObjectSimplified>()
+  const [selectedSong, setSelectedSong] = useState<SpotifyTrack>()
+
+  console.log('LatestAlbum', selectedSong)
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState<boolean>(false)
 
   const albumTrackData = albumData.tracks.items
@@ -57,7 +58,7 @@ const LatestAlbumDetail = ({ albumData }: LatestAlbumProps) => {
     play()
   }
 
-  const handleMoreButtonClick = (song: SpotifyApi.TrackObjectSimplified) => {
+  const handleMoreButtonClick = (song: SpotifyTrack) => {
     setSelectedSong(song)
     setIsBottomSheetOpen(true)
   }
@@ -157,7 +158,14 @@ const LatestAlbumDetail = ({ albumData }: LatestAlbumProps) => {
               type="button"
               onClick={(e) => {
                 e.stopPropagation()
-                handleMoreButtonClick(item)
+                handleMoreButtonClick({
+                  id: item.id,
+                  title: item.name,
+                  artist: item.artists[0].name,
+                  playTime: item.duration_ms,
+                  albumName: albumData.name,
+                  albumCover: albumData.images[0].url,
+                })
               }}
             >
               {' '}
@@ -173,10 +181,11 @@ const LatestAlbumDetail = ({ albumData }: LatestAlbumProps) => {
       </ul>
       {selectedSong && (
         <MusicSaveBottomSheet
-          musicName={selectedSong.name}
-          artistName={selectedSong.artists[0].name}
+          musicName={selectedSong.title}
+          artistName={selectedSong.artist}
           isOpen={isBottomSheetOpen}
           handleClose={() => setIsBottomSheetOpen(false)}
+          musicData={selectedSong}
         />
       )}
     </div>
