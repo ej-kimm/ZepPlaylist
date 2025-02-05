@@ -11,7 +11,7 @@ const getAccessToken = async (): Promise<string> => {
     throw new Error('Missing required environment variables.')
   }
   try {
-    const response = await fetch('https://api.genius.com/oauth/token', {
+    const response = await fetch(`${process.env.GENIUS_BASE_URL}/oauth/token`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -55,11 +55,14 @@ const getSongId = async ({
   const query = `${artist} ${title}`
 
   try {
-    const response = await fetch(`https://api.genius.com/search?q=${query}`, {
-      headers: {
-        Authorization: `Bearer ${authToken}`,
+    const response = await fetch(
+      `${process.env.GENIUS_BASE_URL}/search?q=${query}`,
+      {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
       },
-    })
+    )
 
     if (!response.ok) {
       console.error(`Failed to fetch song ID. HTTP Status: ${response.status}`)
@@ -88,11 +91,14 @@ const getLyricsUrl = async (
   authToken: string,
 ): Promise<string> => {
   try {
-    const response = await fetch(`https://api.genius.com/songs/${songId}`, {
-      headers: {
-        Authorization: `Bearer ${authToken}`,
+    const response = await fetch(
+      `${process.env.GENIUS_BASE_URL}/songs/${songId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
       },
-    })
+    )
 
     if (!response.ok) {
       console.error(`Failed to fetch song details`)

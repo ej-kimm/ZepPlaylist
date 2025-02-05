@@ -9,7 +9,9 @@ export const getSongLyrics = async ({
   artist: Tables<'music'>['artist']
   title: Tables<'music'>['title']
 }): Promise<string | null> => {
-  const response = await fetch(`https://api.lyrics.ovh/v1/${artist}/${title}`)
+  const response = await fetch(
+    `${process.env.LYRICS_BASE_URL}/v1/${artist}/${title}`,
+  )
   const data = await response.json()
 
   return data.lyrics

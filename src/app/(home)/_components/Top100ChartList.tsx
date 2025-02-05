@@ -43,11 +43,11 @@ const Top100ChartList = ({ top100Chart }: Top100ChartListProps) => {
       <ul className="flex w-full flex-col gap-2 space-y-2 pt-1">
         {top100Chart.map((chart, index) => (
           <li
-            className="flex flex-row items-center gap-2 transition-shadow"
+            className="flex items-center gap-2 transition-shadow"
             key={chart.spotify_id}
           >
             <div
-              className="items-centerspace-x-2 flex w-full cursor-pointer gap-2 transition-colors"
+              className="items-centerspace-x-2 flex w-full cursor-pointer items-center gap-2 transition-colors"
               onClick={() =>
                 handlePlayBtn({
                   id: chart.spotify_id,

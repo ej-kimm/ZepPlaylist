@@ -12,9 +12,11 @@ const usePlaylistLike = ({ user_id, playlist_id }: UsePlaylistLikeProps) => {
   const { data: isLiked, isLoading: isPending } = useQuery({
     queryKey: ['playlist_like', user_id, playlist_id],
     queryFn: () => fetchPlaylistLike({ user_id, playlist_id }),
+    enabled: !!user_id,
+    retry: false, 
     initialData: false,
   })
- // retry false로 추가하면 된다.
+
   const updateLike = useMutation({
     mutationFn: () => updatePlaylistLike({ user_id, playlist_id }),
     onMutate: async () => {
