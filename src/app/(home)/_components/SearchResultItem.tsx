@@ -3,6 +3,7 @@
 import communityWebCircle from '@/assets/images/communityWebCircle.svg'
 import moreButton from '@/assets/images/moreButton.svg'
 import { MusicSaveBottomSheet, MusicSaveModal } from '@/components/common'
+import ScrollTopButton from '@/components/common/ScrollTopButton'
 import TableList from '@/components/common/Tableilst'
 import useIsDesktop from '@/hooks/useIsDesktop'
 import { usePlaylistMusicUpsert } from '@/hooks/usePlaylistMusicUpsert'
@@ -73,6 +74,7 @@ const SearchResultItem = ({
         {!isDesktop && <h2 className="title-2 mt-3">곡</h2>}
         {isDesktop ? (
           <>
+            <ScrollTopButton />
             <TableList
               items={searchResultList.map((item) => ({
                 spotify_id: item.id,

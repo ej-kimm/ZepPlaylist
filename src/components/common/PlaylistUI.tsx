@@ -2,13 +2,11 @@
 
 import likeFalse from '@/assets/images/likeFalse.svg'
 import likeTrue from '@/assets/images/likeTrue.svg'
+import useIsDesktop from '@/hooks/useIsDesktop'
+import clsx from 'clsx'
 import type { StaticImageData } from 'next/image'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
-import clsx from 'clsx'
-import useIsDesktop from '@/hooks/useIsDesktop'
-import ScrollTopButton from './ScrollTopButton'
-
 
 type PlaylistUIProps = {
   profileImg: string | StaticImageData
@@ -42,15 +40,14 @@ const PlaylistUI = ({
     <div
       className={clsx(
         'mt-4 flex cursor-pointer items-center justify-between bg-white p-4',
-        className
+        className,
       )}
       onClick={onClick}
     >
-      <ScrollTopButton />
       <div
         className={clsx(
           'flex-shrink-0 overflow-hidden rounded-full',
-          isDesktop ? 'w-14 h-14' : 'w-9 h-9'
+          isDesktop ? 'h-14 w-14' : 'h-9 w-9',
         )}
       >
         <Image
