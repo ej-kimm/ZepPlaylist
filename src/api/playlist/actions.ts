@@ -2,29 +2,24 @@
 
 import { PlaylistInsert, PlaylistRow, PlaylistUpdate } from '@/types/playlist'
 import { createClient } from '@/utils/supabase/server'
+import { redirect } from 'next/navigation'
 
-// 유저 정보 가져오기
 export async function getUser() {
   const supabase = createClient()
 
   const { data, error } = await supabase.auth.getUser()
-
+  console.log('data', data)
   if (error || !data?.user) {
-    console.warn('Supabase 세션이 존재하지 않음. 로그인 필요.')
-    return null
+    console.log('로그인을 해주세요!')
+    redirect('/login')
   }
-
   return data.user
 }
 
 // 플리 가져오기
 export async function fetchPlaylists(): Promise<PlaylistRow[] | null> {
-  const user = await getUser()
-
-  if (!user?.id) {
-    return null
-  }
   const supabase = createClient()
+  const user = await getUser()
   try {
     const { data, error } = await supabase
       .from('playlists')
@@ -93,10 +88,6 @@ export async function addPlaylist(
 ): Promise<{ success: boolean }> {
   const user = await getUser()
 
-  if (!user?.id) {
-    throw new Error('로그인된 사용자 ID가 필요합니다.')
-  }
-
   const supabase = createClient()
 
   try {
@@ -120,9 +111,6 @@ export async function updatePlaylist(
   updatedData: PlaylistUpdate,
 ): Promise<{ success: boolean }> {
   const user = await getUser()
-  if (!user?.id) {
-    throw new Error('로그인된 사용자 ID가 필요합니다.')
-  }
 
   const supabase = createClient()
 
@@ -201,10 +189,6 @@ export async function deletePlaylist(
   playlistId: string,
 ): Promise<{ success: boolean }> {
   const user = await getUser()
-
-  if (!user?.id) {
-    throw new Error('로그인된 사용자 ID를 확인할 수 없습니다.')
-  }
 
   const supabase = createClient()
 

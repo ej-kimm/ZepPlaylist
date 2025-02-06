@@ -13,7 +13,7 @@ import {
 import { userStore } from '@/store/userSlice'
 import { PlaylistRow, type PlaylistInsert } from '@/types/playlist'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import PlaylistDesktop from './PlaylistDesktop'
 import PlaylistSkeleton from './PlaylistSkeleton'
 import PlaylistList from './PlaylistUI'
@@ -24,12 +24,6 @@ export default function Playlist({ initialPlaylists }: PlaylistComponentProps) {
   const { user, isLogin } = userStore()
   const router = useRouter()
   const isDesktop = useIsDesktop()
-
-  useEffect(() => {
-    if (!isLogin || !user?.id) {
-      router.replace('/login')
-    }
-  }, [user, router, isLogin])
 
   const { data: playlists, isLoading } = useFetchPlaylists(initialPlaylists)
   const { data: latestLikedSongCover } = useLatestLikedSongCover()

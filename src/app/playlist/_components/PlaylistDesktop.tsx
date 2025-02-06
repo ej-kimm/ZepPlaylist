@@ -23,9 +23,9 @@ export default function PlaylistDesktop({
   openModal,
   handleDeletePlaylist,
   handleEditPlaylist,
-  handleLikeToggle,
 }: PlaylistDesktopProps) {
   const toggle = useToggleLike()
+
   return (
     <div className="mx-auto max-w-full">
       <h2 className="title-3 mb-24 mt-24 font-pretendard">

@@ -1,27 +1,23 @@
 'use server'
 
 import { createClient } from '@/utils/supabase/server'
+import { redirect } from 'next/navigation'
 
 export async function getUser() {
   const supabase = createClient()
-  const { data, error } = await supabase.auth.getSession()
+  const { data, error } = await supabase.auth.getUser()
 
-  if (error || !data?.session?.user) {
+  if (error || !data?.user) {
     console.error(' 사용자 정보 가져오기 오류:', error)
-    return null
+    redirect('/login')
   }
 
-  return data.session.user
+  return data.user
 }
 
 export async function fetchLikedSongs() {
   const supabase = createClient()
   const user = await getUser()
-
-  if (!user?.id) {
-    console.warn('빈배열로...반환해도 되나?')
-    return []
-  }
 
   try {
     const { data, error } = await supabase
@@ -62,10 +58,6 @@ export async function fetchLikedSongs() {
 export async function removeLikedSong(likeId: string) {
   const supabase = createClient()
   const user = await getUser()
-
-  if (!user?.id) {
-    throw new Error('로그인된 사용자 정보를 확인할 수 없습니다.')
-  }
 
   try {
     const { error } = await supabase
