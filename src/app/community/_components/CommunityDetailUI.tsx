@@ -21,6 +21,7 @@ import { useState } from 'react'
 import { TbTrash } from 'react-icons/tb'
 
 type CommunityDetailUIProps = {
+  likeCount: number
   nickname: string
   profileImage: string | null
   description: string | null
@@ -251,8 +252,8 @@ export default function CommunityDetailUI({
 
                   {/* 텍스트 정보 (가로 배치) */}
                   <div className="flex flex-1 items-center justify-between text-center">
-                    <p className="body-2 flex-1 truncate">{song.title}</p>
-                    <p className="caption-1 flex-1 truncate">{song.artist}</p>
+                    <p className="body-2 flex-1 truncate w-0">{song.title}</p>
+                    <p className="caption-1 flex-1 truncate w-0">{song.artist}</p>
                     <p className="caption-1 flex-1 truncate w-0">{song.album_name}</p>
                   </div>
 

@@ -24,7 +24,7 @@ const ClientPopularPlaylistUI: React.FC<ClientPopularPlaylistUIProps> = ({
 }) => {
   const router = useRouter()
 
-  const { isLiked, toggleLike, isPending } = usePlaylistLike({
+  const { isLiked, toggleLike, isPending, likeCount } = usePlaylistLike({
     user_id: userId,
     playlist_id: playlist.id,
   })
@@ -41,6 +41,7 @@ const ClientPopularPlaylistUI: React.FC<ClientPopularPlaylistUIProps> = ({
 
   return (
     <PopularPlaylistUI
+    likeCount={likeCount}
       albumCover={playlist.albumCover}
       isLiked={isLiked}
       onLikeToggle={handleLikeToggle}

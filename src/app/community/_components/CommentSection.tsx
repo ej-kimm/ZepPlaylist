@@ -37,7 +37,7 @@ export default function CommentSection({
 
   const { isPlayerOpen, setTrackIds, setPlayerOpen, play } =
     useMusicPlayerStore()
-  const { toggleLike, isLiked } = usePlaylistLike({
+  const { toggleLike, isLiked, likeCount } = usePlaylistLike({
     user_id: currentUserId || '',
     playlist_id: playlistId,
   })
@@ -135,6 +135,7 @@ export default function CommentSection({
   return (
     <>
       <CommunityDetailUI
+        likeCount={likeCount}
         nickname={nickname}
         profileImage={profileImage}
         description={description}
