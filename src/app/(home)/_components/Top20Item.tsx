@@ -1,7 +1,9 @@
 import playing from '@/assets/images/play.svg'
+import useIsDesktop from '@/hooks/useIsDesktop'
 import { usePlaylistMusicUpsert } from '@/hooks/usePlaylistMusicUpsert'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import type { Charts, SpotifyTrack } from '@/types/billboradCharts'
+import clsx from 'clsx'
 import Image from 'next/image'
 
 type Top20ItemProps = {
@@ -12,14 +14,15 @@ const Top20Item: React.FC<Top20ItemProps> = ({ chartList }) => {
   const { isPlayerOpen, setTrackIds, setPlayerOpen, play } =
     useMusicPlayerStore()
   const { upsertMusic } = usePlaylistMusicUpsert()
+  const isDesktop = useIsDesktop()
 
   const handlePlayBtn = async (musicData: SpotifyTrack) => {
-    console.log('handlePlayBtn', musicData)
     await upsertMusic(musicData!)
     if (!isPlayerOpen) setPlayerOpen() // 페이지 방문 후, 첫 곡 재생이면 플레이어바 보여줌
     setTrackIds(musicData.id)
     play()
   }
+
   return (
     <ul className="scroll-invisible grid auto-cols-auto grid-flow-col grid-rows-4 gap-2 overflow-x-auto">
       {chartList.map((chart, index) => (
@@ -35,32 +38,52 @@ const Top20Item: React.FC<Top20ItemProps> = ({ chartList }) => {
               albumName: chart.album_name,
             })
           }
-          className="flex h-16 w-64 flex-shrink-0 items-center space-x-3 rounded-lg py-2 pr-2 shadow-[inset_0_4px_4px_rgba(255,255,255,0.25),0_4px_10px_rgba(0,0,0,0.04)] transition-colors"
+          className={clsx(
+            'flex h-[60px] w-[315px] flex-shrink-0 cursor-pointer items-center space-x-3 rounded-lg p-2 shadow-[inset_0_4px_4px_rgba(255,255,255,0.25),0_4px_10px_rgba(0,0,0,0.04)] transition-colors',
+            'desktop:h-[69px] desktop:w-[357px] desktop:px-3 desktop:py-2',
+          )}
         >
-          <div className="relative flex-shrink-0">
+          <div className={clsx('relative flex-shrink-0', 'desktop:mr-4')}>
             <Image
               src={chart.album_cover}
               alt={chart.title}
-              width={44}
-              height={44}
+              width={isDesktop ? 53 : 44}
+              height={isDesktop ? 53 : 44}
               className="rounded-lg object-cover"
               priority
             />
           </div>
 
-          <p className="truncate text-base">{index + 1}</p>
-          <div className="min-w-0 flex-1 overflow-hidden">
-            <h3 className="truncate text-base font-medium text-gray-900">
+          <p
+            className={clsx(
+              'body-1 truncate',
+              'desktop:body-1 desktop:text-[19px]',
+            )}
+          >
+            {index + 1}
+          </p>
+          <div
+            className={clsx('min-w-0 flex-1 overflow-hidden', 'desktop:pl-3')}
+          >
+            <h3
+              className={clsx('body-2 mb-[2px] truncate', 'desktop:caption-3')}
+            >
               {chart.title}
             </h3>
-            <p className="truncate text-xs text-gray-500">{chart.artist}</p>
+            <p
+              className={clsx(
+                'caption-2 truncate text-opacity-60',
+                'desktop:caption-1 desktop:text-opacity-60',
+              )}
+            >
+              {chart.artist}
+            </p>
           </div>
           <button type="button">
             <Image
-              // src={isPlaying ? pause : playing}
               src={playing}
-              width={25}
-              height={25}
+              width={isDesktop ? 29 : 24}
+              height={isDesktop ? 29 : 24}
               alt={'play'}
             />
           </button>
