@@ -27,7 +27,7 @@ const HistoryListUI = ({
           <PlaylistItem
             key={song.spotify_id}
             showDropdown={dropdownOpen}
-            toggleDropdown={toggleDropdown}
+            toggleDropdown={() => toggleDropdown(song.spotify_id)}
             handlePlaylistClick={() => handlePlayFromIndex(index)}
             handleDeleteSong={() => handleDeleteSong(song.spotify_id)}
             playlist={{
