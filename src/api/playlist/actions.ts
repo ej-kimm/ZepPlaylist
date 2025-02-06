@@ -26,13 +26,16 @@ export async function fetchPlaylists(): Promise<PlaylistRow[] | null> {
     }
     const { data, error } = await supabase
       .from('playlists')
-      .select('*, playlist_like!left(user_id)')
+      .select('*, playlist_like!left(user_id), playlist_music(count)')
       .eq('user_id', user.id)
       .order('created_at', { ascending: false })
 
     if (error) throw error
 
-    return data
+    return data.map((playlist) => ({
+      ...playlist,
+      song_count: playlist.playlist_music?.[0]?.count ?? 0,
+    }))
   } catch (error) {
     console.error('플레이리스트 가져오기 오류:', error)
     return null
