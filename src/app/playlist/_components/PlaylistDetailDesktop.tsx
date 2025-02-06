@@ -119,14 +119,14 @@ export default function PlaylistDetailDesktop({
         renderAction={(song) => (
           <button
             onClick={() => handleDeleteSong(song.spotify_id)}
-            className="flex h-[36px] w-[36px] items-center justify-center rounded-full border border-primary bg-white"
+            className="flex h-[36px] w-[36px] items-center justify-center rounded-full bg-primary bg-opacity-10"
           >
             <Image
               src={Bean}
               alt="삭제"
-              width={16}
-              height={16}
-              className="h-4 w-4 text-primary"
+              width={20}
+              height={20}
+              className="h-5 w-5 text-primary"
             />
           </button>
         )}
