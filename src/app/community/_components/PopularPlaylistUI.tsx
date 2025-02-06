@@ -54,9 +54,12 @@ const PopularPlaylistUI = ({
           <Image
             src={albumCover}
             alt="Album Cover"
-            width={50}
-            height={50}
-            className="h-[92px] w-[92px] rounded-lg object-cover"
+            width={100}
+            height={100}
+            className={clsx(
+              'h-[92px] w-[92px] rounded-lg object-cover',
+              'desktop:h-[120px] desktop:w-[120px]',
+            )}
           />
         </div>
 
