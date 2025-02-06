@@ -49,7 +49,7 @@ const PlaylistDesktopUI = ({
 
   return (
     <div
-      className={`relative h-[192px] w-[192px] overflow-hidden rounded-[21.94px] lg:h-[212px] lg:w-[212px] xl:h-[232px] xl:w-[232px] 2xl:h-[252px] 2xl:w-[252px] ${
+      className={`relative h-[192px] w-[192px] cursor-pointer overflow-hidden rounded-[21.94px] lg:h-[212px] lg:w-[212px] xl:h-[232px] xl:w-[232px] 2xl:h-[252px] 2xl:w-[252px] ${
         album_cover ? '' : 'bg-gray-300'
       }`}
       onClick={onClick}

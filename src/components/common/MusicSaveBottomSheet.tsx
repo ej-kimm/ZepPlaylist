@@ -124,7 +124,7 @@ const MusicSaveBottomSheet = ({
                 {playlists.map((playlist) => (
                   <li
                     key={playlist.id}
-                    className="flex items-center gap-2"
+                    className="flex cursor-pointer items-center gap-2"
                     onClick={() => addMusiscInPlayList(playlist.id, musicData)}
                   >
                     {playlist.latest_song_cover ? (
