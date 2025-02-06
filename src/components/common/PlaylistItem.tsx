@@ -1,5 +1,6 @@
+import lock from '@/assets/images/lock.svg'
 import { PlaylistRow } from '@/types/playlist'
-import { FaLock } from 'react-icons/fa'
+import Image from 'next/image'
 import { FiMoreHorizontal, FiMoreVertical } from 'react-icons/fi'
 
 type PlaylistItemProps = {
@@ -46,8 +47,14 @@ export default function PlaylistItem({
           }}
         >
           {!isDetailPage && !playlist.is_public && (
-            <div className="absolute right-1 top-1 flex h-4 w-4 items-center justify-center rounded-full bg-black bg-opacity-50">
-              <FaLock className="text-xs text-white" />
+            <div className="absolute right-1 top-1 flex h-4 w-4 items-center justify-center rounded-full bg-black bg-opacity-40">
+              <Image
+                src={lock}
+                width={12}
+                height={12}
+                alt="lock"
+                className="relative flex h-3 w-3 items-center justify-center"
+              />
             </div>
           )}
         </div>
