@@ -12,8 +12,9 @@ import {
 } from '@/hooks/usePlaylists'
 import { userStore } from '@/store/userSlice'
 import { PlaylistRow, type PlaylistInsert } from '@/types/playlist'
+import { supabase } from '@/utils/supabase/client'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import PlaylistDesktop from './PlaylistDesktop'
 import PlaylistSkeleton from './PlaylistSkeleton'
 import PlaylistList from './PlaylistUI'
@@ -43,6 +44,16 @@ export default function Playlist({ initialPlaylists }: PlaylistComponentProps) {
   const addPlaylistMutation = useAddPlaylist(() => closeModal())
   const updatePlaylistMutation = useUpdatePlaylist(() => closeModal())
 
+  useEffect(() => {
+    const checkUser = async () => {
+      const { data } = await supabase.auth.getUser()
+      if (!data.user?.id) {
+        router.push('/login')
+      }
+    }
+    checkUser()
+  }, [])
+
   const openModal = (type: 'add' | 'edit', playlist?: PlaylistRow) => {
     setModalType(type)
     setSelectedPlaylist(playlist || null)
@@ -68,8 +79,6 @@ export default function Playlist({ initialPlaylists }: PlaylistComponentProps) {
     setIsPublic(false)
     setSelectedKeywords([])
   }
-  console.log('12121222222')
-
   const toggleKeyword = (keyword: string) => {
     setSelectedKeywords((prev) =>
       prev.includes(keyword)
@@ -91,24 +100,16 @@ export default function Playlist({ initialPlaylists }: PlaylistComponentProps) {
             latestLikedSongCover={latestLikedSongCover || ''}
             handlePlaylistClick={(id) => router.push(`/playlist/${id}`)}
             handleLikesClick={() => router.push('/playlist/likes')}
-            openModal={openModal}
+            openModal={() => openModal('add')}
             handleLikeToggle={() => {}}
             handleDeletePlaylist={handleDeleteConfirmation}
-            handleEditPlaylist={(playlist) =>
-              updatePlaylistMutation.mutate({
-                id: playlist.id,
-                updatedData: {
-                  name: playlist.name,
-                  description: playlist.description,
-                },
-              })
-            }
+            handleEditPlaylist={(playlist) => openModal('edit', playlist)}
           />
         ) : (
           <PlaylistList
             playlists={playlists || []}
             latestLikedSongCover={latestLikedSongCover || ''}
-            openModal={openModal}
+            openModal={() => openModal('add')}
             handlePlaylistClick={(id) => router.push(`/playlist/${id}`)}
             handleLikesClick={() => router.push('/playlist/likes')}
             showDropdown={showDropdown}
@@ -122,14 +123,18 @@ export default function Playlist({ initialPlaylists }: PlaylistComponentProps) {
 
       <Modal {...modalProps} />
 
-      {isDesktop && modalType !== null && (
-        <PlaylistModal
-          modalType="add"
-          isOpen={true}
-          onClose={closeModal}
-          selectedPlaylistId={undefined}
-        />
-      )}
+      {isDesktop &&
+        modalType !== null &&
+        (modalType === 'edit' && selectedPlaylist ? (
+          <PlaylistModal
+            modalType="edit"
+            isOpen={true}
+            onClose={closeModal}
+            selectedPlaylistId={selectedPlaylist.id}
+          />
+        ) : modalType === 'add' ? (
+          <PlaylistModal modalType="add" isOpen={true} onClose={closeModal} />
+        ) : null)}
 
       {!isDesktop && modalType !== null && (
         <PlaylistBottomSheet

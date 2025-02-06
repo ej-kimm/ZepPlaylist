@@ -4,7 +4,7 @@ import { Modal, PlaylistUI } from '@/components/common'
 import usePlaylistLike from '@/hooks/usePlaylistLike'
 import type { StaticImageData } from 'next/image'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 export type PlaylistCardProps = {
   playlist: {
@@ -21,17 +21,12 @@ export type PlaylistCardProps = {
 const PlaylistCard = ({ playlist, userId }: PlaylistCardProps) => {
   const router = useRouter()
 
-  const { toggleLike, isLiked, isPending } = usePlaylistLike({
+  const { toggleLike, isLiked, isPending, likeCount } = usePlaylistLike({
     user_id: userId || '',
     playlist_id: playlist.id,
   })
 
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
-  const [likeCount, setLikeCount] = useState(playlist.likeCount)
-
-  useEffect(() => {
-    setLikeCount(playlist.likeCount)
-  }, [playlist.likeCount])
 
   const handleLikeToggle = () => {
     if (!userId) {
@@ -40,7 +35,6 @@ const PlaylistCard = ({ playlist, userId }: PlaylistCardProps) => {
     }
 
     if (!isPending) {
-      setLikeCount((prev) => (isLiked ? prev - 1 : prev + 1))
       toggleLike()
     }
   }

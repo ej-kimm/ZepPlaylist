@@ -8,6 +8,7 @@ import type { Charts, SpotifyTrack } from '@/types/billboradCharts'
 import { useState } from 'react'
 import Top100ChartListDesktop from './Top100ChartListDesktop'
 import Top100ChartListUI from './Top100ChartListUI'
+import ScrollTopButton from '@/components/common/ScrollTopButton'
 
 type Top100ChartListProps = {
   top100Chart: Charts[]
@@ -37,6 +38,7 @@ const Top100ChartList = ({ top100Chart }: Top100ChartListProps) => {
     <>
       {isDesktop ? (
         <>
+        <ScrollTopButton />
           <Top100ChartListDesktop
             top100Chart={top100Chart}
             handlePlayBtn={handlePlayBtn}

@@ -8,7 +8,8 @@ import { Modal } from '@/components/common'
 import useIsDesktop from '@/hooks/useIsDesktop'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import { PlaylistDetails } from '@/types/song'
-import { useCallback, useEffect, useState } from 'react'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useState } from 'react'
 import PlaylistDetailDesktop from './PlaylistDetailDesktop'
 import PlaylistDetailSkeleton from './PlaylistDetailSkeleton'
 import PlaylistDetailUI from './PlaylistDetailUI'
@@ -18,10 +19,20 @@ export default function PlaylistDetailsComponent({
 }: {
   params: { id: string }
 }) {
-  const [playlistDetails, setPlaylistDetails] =
-    useState<PlaylistDetails | null>(null)
   const { isPlayerOpen, setTrackIds, setPlayerOpen, play } =
     useMusicPlayerStore()
+  const isDesktop = useIsDesktop()
+  const queryClient = useQueryClient()
+
+  const {
+    data: playlistDetails,
+    isLoading,
+    error,
+  } = useQuery<PlaylistDetails | null>({
+    queryKey: ['playlistDetails', params.id],
+    queryFn: () => fetchPlaylistDetails(params.id),
+    staleTime: 1000 * 60 * 5,
+  })
 
   const [dropdownOpen, setDropdownOpen] = useState<string | null>(null)
   const [modalProps, setModalProps] = useState({
@@ -32,44 +43,60 @@ export default function PlaylistDetailsComponent({
     onConfirm: () => {},
     onCancel: () => setModalProps((prev) => ({ ...prev, isOpen: false })),
   })
-  // const { user, isLogin } = userStore()
-  // const router = useRouter()
-  const isDesktop = useIsDesktop()
-
-  // useEffect(() => {
-  //   if (!isLogin || !user?.id) {
-  //     router.replace('/login')
-  //   }
-  // }, [user, router, isLogin])
 
   const toggleDropdown = (songId: string) => {
     setDropdownOpen((prev) => (prev === songId ? null : songId))
   }
 
-  const loadPlaylistDetails = useCallback(async () => {
-    try {
-      const data = await fetchPlaylistDetails(params.id)
-      if (data) {
-        const sortedSongs = [...data.songs].sort(
-          (a, b) =>
-            new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
-        )
-        setPlaylistDetails({ ...data, songs: sortedSongs })
-      }
-    } catch (error) {
-      console.error(
-        '플레이리스트 데이터를 가져오는 중 오류가 발생했습니다.',
-        error,
-      )
-    }
-  }, [params.id])
+  const deleteMutation = useMutation({
+    mutationFn: (songId: string) => deleteSongFromPlaylist(params.id, songId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['playlistDetails', params.id],
+      })
+      setDropdownOpen(null)
+      setModalProps({
+        isOpen: true,
+        title: '삭제 완료',
+        content: '곡이 성공적으로 삭제되었습니다.',
+        type: 'single',
+        onConfirm: () => setModalProps((prev) => ({ ...prev, isOpen: false })),
+        onCancel: () => {},
+      })
+    },
+    onError: () => {
+      setModalProps({
+        isOpen: true,
+        title: '삭제 실패',
+        content: '곡 삭제에 실패했습니다. 다시 시도해주세요.',
+        type: 'single',
+        onConfirm: () => setModalProps((prev) => ({ ...prev, isOpen: false })),
+        onCancel: () => {},
+      })
+    },
+  })
 
-  useEffect(() => {
-    loadPlaylistDetails()
-  }, [loadPlaylistDetails])
+  const handleDeleteConfirmation = (songId: string) => {
+    setModalProps({
+      isOpen: true,
+      title: '곡 삭제',
+      content: '정말 이 곡을 삭제하시겠습니까?',
+      type: 'vertical',
+      onConfirm: () => deleteMutation.mutate(songId),
+      onCancel: () => setModalProps((prev) => ({ ...prev, isOpen: false })),
+    })
+  }
 
-  if (!playlistDetails) {
+  if (isLoading) {
     return <PlaylistDetailSkeleton />
+  }
+
+  if (error || !playlistDetails) {
+    return (
+      <div className="text-center text-red-500">
+        데이터를 불러오는 중 오류가 발생했습니다.
+      </div>
+    )
   }
 
   const handlePlayAll = () => {
@@ -94,59 +121,6 @@ export default function PlaylistDetailsComponent({
       .map((song) => song.spotify_id)
     setTrackIds(trackIdsFromIndex)
     play()
-  }
-
-  const handleDeleteConfirmation = (songId: string) => {
-    setModalProps({
-      isOpen: true,
-      title: '곡 삭제',
-      content: '정말 이 곡을 삭제하시겠습니까?',
-      type: 'vertical',
-      onConfirm: () => {
-        handleDeleteSong(songId)
-        setModalProps((prev) => ({ ...prev, isOpen: false }))
-      },
-      onCancel: () => setModalProps((prev) => ({ ...prev, isOpen: false })),
-    })
-  }
-
-  const handleDeleteSong = async (songId: string) => {
-    try {
-      const success = await deleteSongFromPlaylist(params.id, songId)
-      if (success) {
-        await loadPlaylistDetails()
-        setDropdownOpen(null)
-        setModalProps({
-          isOpen: true,
-          title: '삭제 완료',
-          content: '곡이 성공적으로 삭제되었습니다.',
-          type: 'single',
-          onConfirm: () =>
-            setModalProps((prev) => ({ ...prev, isOpen: false })),
-          onCancel: () => {},
-        })
-      } else {
-        setModalProps({
-          isOpen: true,
-          title: '삭제 실패',
-          content: '곡 삭제에 실패했습니다. 다시 시도해주세요.',
-          type: 'single',
-          onConfirm: () =>
-            setModalProps((prev) => ({ ...prev, isOpen: false })),
-          onCancel: () => {},
-        })
-      }
-    } catch (error) {
-      console.error('곡 삭제 중 오류가 발생했습니다.', error)
-      setModalProps({
-        isOpen: true,
-        title: '오류 발생',
-        content: '곡 삭제 중 문제가 발생했습니다.',
-        type: 'single',
-        onConfirm: () => setModalProps((prev) => ({ ...prev, isOpen: false })),
-        onCancel: () => {},
-      })
-    }
   }
 
   return (

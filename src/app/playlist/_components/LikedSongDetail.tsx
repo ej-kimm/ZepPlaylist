@@ -1,10 +1,11 @@
 'use client'
 
-import { removeLikedSong } from '@/api/like-music/actions'
+import { fetchLikedSongs, removeLikedSong } from '@/api/like-music/actions'
 import { Modal } from '@/components/common'
 import useIsDesktop from '@/hooks/useIsDesktop'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import { LikedSong } from '@/types/song'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useEffect, useRef, useState } from 'react'
 import LikedSongsDetailDesktop from './LikedSongDetailDesktop'
 import LikedSongDetailSkeleton from './LikedSongDetailSkeleton'
@@ -19,9 +20,8 @@ export default function LikedSongsPage({
 }: LikedSongsPageProps) {
   const { isPlayerOpen, setTrackIds, setPlayerOpen, play } =
     useMusicPlayerStore()
-  const [likedSongs, setLikedSongs] = useState<LikedSong[]>(initialLikedSongs)
+  const queryClient = useQueryClient()
   const [showDropdown, setShowDropdown] = useState<string | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
   const dropdownRef = useRef<HTMLDivElement | null>(null)
   const [modalProps, setModalProps] = useState({
     isOpen: false,
@@ -29,7 +29,11 @@ export default function LikedSongsPage({
     content: '',
     type: 'single' as 'single' | 'vertical' | 'horizontal',
     onConfirm: () => {},
-    onCancel: () => setModalProps((prev) => ({ ...prev, isOpen: false })),
+    onCancel: () =>
+      setModalProps((prev) => ({
+        ...prev,
+        isOpen: false,
+      })),
   })
 
   const isDesktop = useIsDesktop()
@@ -49,12 +53,18 @@ export default function LikedSongsPage({
     }
   }, [])
 
-  useEffect(() => {
-    if (initialLikedSongs.length > 0) {
-      setLikedSongs(initialLikedSongs)
-    }
-    setTimeout(() => setIsLoading(false), 1000)
-  }, [initialLikedSongs])
+  const { data: likedSongs = [], isLoading } = useQuery<LikedSong[]>({
+    queryKey: ['likedSongs'],
+    queryFn: () => fetchLikedSongs(),
+    initialData: initialLikedSongs,
+  })
+
+  const deleteMutation = useMutation({
+    mutationFn: (likeId: string) => removeLikedSong(likeId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['likedSongs'] })
+    },
+  })
 
   if (isLoading) {
     return <LikedSongDetailSkeleton />
@@ -68,8 +78,7 @@ export default function LikedSongsPage({
       type: 'vertical',
       onConfirm: async () => {
         try {
-          await removeLikedSong(likeId)
-          setLikedSongs((prev) => prev.filter((song) => song.id !== likeId))
+          await deleteMutation.mutateAsync(likeId)
           setModalProps({
             isOpen: true,
             title: '완료',
@@ -92,7 +101,11 @@ export default function LikedSongsPage({
           })
         }
       },
-      onCancel: () => setModalProps((prev) => ({ ...prev, isOpen: false })),
+      onCancel: () =>
+        setModalProps((prev) => ({
+          ...prev,
+          isOpen: false,
+        })),
     })
   }
 
@@ -104,7 +117,7 @@ export default function LikedSongsPage({
     play()
   }
 
-  // 특정 곡부터
+  // 특정 곡부터 재생
   const handlePlayFromSong = (startIndex: number) => {
     const selectedTrackIds = likedSongs
       .slice(startIndex)
@@ -114,6 +127,7 @@ export default function LikedSongsPage({
     play()
   }
 
+  // 셔플 재생
   const handleShufflePlay = () => {
     if (!isPlayerOpen) setPlayerOpen()
     const shuffledTracks = [
