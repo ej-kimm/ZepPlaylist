@@ -5,13 +5,16 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 type useSongLikeProps = {
   user_id: Tables<'song_like'>['user_id']
+  spotify_id?: Tables<'song_like'>['music_id']
 }
 
-const useSongLike = ({ user_id }: useSongLikeProps) => {
+const useSongLike = ({ user_id, spotify_id }: useSongLikeProps) => {
   const queryClient = useQueryClient()
-  const currentTrackId = useMusicPlayerStore(
+  const playedTrackId = useMusicPlayerStore(
     (state) => state.trackIds[state.currentTrackIndex],
   )
+
+  const currentTrackId = spotify_id ?? playedTrackId
 
   const { data: songLike } = useQuery({
     queryKey: ['song_like', user_id, currentTrackId],

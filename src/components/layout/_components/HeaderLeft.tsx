@@ -33,10 +33,10 @@ const HeaderLeft = ({ isHamburgerOpen, toggleMenu }: HeaderLeftProps) => {
     } else {
       router.back()
     }
-    console.log(pathname)
-    if (pathname === '/search') {
-      router.push('/')
-    }
+    // console.log(pathname)
+    // if (pathname === '/search') {
+    //   router.push('/')
+    // }
   }
 
   return (

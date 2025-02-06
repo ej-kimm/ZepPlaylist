@@ -182,6 +182,7 @@ const MusicPlayer = () => {
           handleClose={() => handleUserAction('save')}
           musicName={musicDetail?.title || ''}
           artistName={musicDetail?.artist || ''}
+          musicData={selectedSong!}
         />
       ) : (
         <MusicSaveBottomSheet
