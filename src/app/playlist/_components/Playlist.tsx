@@ -68,8 +68,6 @@ export default function Playlist({ initialPlaylists }: PlaylistComponentProps) {
     setIsPublic(false)
     setSelectedKeywords([])
   }
-  console.log('12121222222')
-
   const toggleKeyword = (keyword: string) => {
     setSelectedKeywords((prev) =>
       prev.includes(keyword)

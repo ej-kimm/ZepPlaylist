@@ -51,13 +51,14 @@ const MyPlayList = () => {
       }
     },
   })
-  if (!isLoading) {
+  if (isLoading) {
     if (isDesktop) return <DesktopSkeleton />
     else
       return Array.from({
         length: 8,
       }).map((_, index) => <MyPageSkeleton key={index} />)
   }
+
   if (error) return <p>에러가 발생하였습니다!</p>
   if (!user) return
   return (
