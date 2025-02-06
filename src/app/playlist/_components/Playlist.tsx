@@ -1,6 +1,8 @@
 'use client'
 
 import { Modal, PlaylistBottomSheet } from '@/components/common'
+import PlaylistModal from '@/components/common/PlaylistModal'
+import useIsDesktop from '@/hooks/useIsDesktop'
 import {
   useAddPlaylist,
   useDeletePlaylist,
@@ -8,10 +10,13 @@ import {
   useLatestLikedSongCover,
   useUpdatePlaylist,
 } from '@/hooks/usePlaylists'
+import { useToggleLike } from '@/hooks/useToggle'
 import { userStore } from '@/store/userSlice'
-import { PlaylistRow } from '@/types/playlist'
+import { PlaylistRow, type PlaylistInsert } from '@/types/playlist'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import PlaylistDesktop from './PlaylistDesktop'
+import PlaylistSkeleton from './PlaylistSkeleton'
 import PlaylistList from './PlaylistUI'
 
 type PlaylistComponentProps = { initialPlaylists: PlaylistRow[] }
@@ -19,6 +24,7 @@ type PlaylistComponentProps = { initialPlaylists: PlaylistRow[] }
 export default function Playlist({ initialPlaylists }: PlaylistComponentProps) {
   const { user, isLogin } = userStore()
   const router = useRouter()
+  const isDesktop = useIsDesktop()
 
   useEffect(() => {
     if (!isLogin || !user?.id) {
@@ -34,6 +40,7 @@ export default function Playlist({ initialPlaylists }: PlaylistComponentProps) {
   const [selectedPlaylist, setSelectedPlaylist] = useState<PlaylistRow | null>(
     null,
   )
+
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
   const [isPublic, setIsPublic] = useState(false)
@@ -42,27 +49,35 @@ export default function Playlist({ initialPlaylists }: PlaylistComponentProps) {
 
   const addPlaylistMutation = useAddPlaylist(() => closeModal())
   const updatePlaylistMutation = useUpdatePlaylist(() => closeModal())
+  // const toggleLikeMutation = useToggleLikeMutation()
+
+  const toggle = useToggleLike()
+  const handleToggle = (playlistId: string) => {
+    if (user?.id) {
+      toggle.mutate({ playlist_id: playlistId, user_id: user.id })
+    }
+  }
 
   const openModal = (type: 'add' | 'edit', playlist?: PlaylistRow) => {
     setModalType(type)
+    setSelectedPlaylist(playlist || null)
     if (type === 'edit' && playlist) {
-      setSelectedPlaylist(playlist)
       setName(playlist.name)
       setDescription(playlist.description || '')
       setIsPublic(playlist.is_public)
       setSelectedKeywords(playlist.keyword ? playlist.keyword.split(',') : [])
-    } else {
-      resetModalState()
+    } else if (type === 'add') {
+      resetFormState()
     }
   }
 
   const closeModal = () => {
     setModalType(null)
-    resetModalState()
+    resetFormState()
+    setSelectedPlaylist(null)
   }
 
-  const resetModalState = () => {
-    setSelectedPlaylist(null)
+  const resetFormState = () => {
     setName('')
     setDescription('')
     setIsPublic(false)
@@ -77,61 +92,95 @@ export default function Playlist({ initialPlaylists }: PlaylistComponentProps) {
     )
   }
 
+  if (isLoading) {
+    return <PlaylistSkeleton />
+  }
+
   return (
-    <div className="mx-auto h-full max-w-[375px] bg-white">
-      {isLoading ? (
-        <p className="mt-6 text-center text-gray-500">데이터 로딩 중...</p>
-      ) : isLogin ? (
-        <PlaylistList
-          playlists={playlists || []}
-          latestLikedSongCover={latestLikedSongCover || ''}
-          openModal={openModal}
-          handlePlaylistClick={(id) => router.push(`/playlist/${id}`)}
-          handleLikesClick={() => router.push('/playlist/likes')}
-          showDropdown={showDropdown}
-          setShowDropdown={setShowDropdown}
-          handleDeletePlaylist={handleDeleteConfirmation}
-        />
+    <div className="mx-auto h-full w-full bg-white">
+      {isLogin ? (
+        isDesktop ? (
+          <PlaylistDesktop
+            playlists={playlists || []}
+            latestLikedSongCover={latestLikedSongCover || ''}
+            handlePlaylistClick={(id) => router.push(`/playlist/${id}`)}
+            handleLikesClick={() => router.push('/playlist/likes')}
+            openModal={openModal}
+            handleLikeToggle={handleToggle}
+            handleDeletePlaylist={handleDeleteConfirmation}
+            handleEditPlaylist={(playlist) =>
+              updatePlaylistMutation.mutate({
+                id: playlist.id,
+                updatedData: {
+                  name: playlist.name,
+                  description: playlist.description,
+                },
+              })
+            }
+          />
+        ) : (
+          <PlaylistList
+            playlists={playlists || []}
+            latestLikedSongCover={latestLikedSongCover || ''}
+            openModal={openModal}
+            handlePlaylistClick={(id) => router.push(`/playlist/${id}`)}
+            handleLikesClick={() => router.push('/playlist/likes')}
+            showDropdown={showDropdown}
+            setShowDropdown={setShowDropdown}
+            handleDeletePlaylist={handleDeleteConfirmation}
+          />
+        )
       ) : (
         <p className="mt-6 text-center text-gray-500">로그인이 필요합니다.</p>
       )}
 
       <Modal {...modalProps} />
 
-      <PlaylistBottomSheet
-        isOpen={!!modalType}
-        onClose={closeModal}
-        modalType={modalType}
-        name={name}
-        description={description}
-        isPublic={isPublic}
-        selectedKeywords={selectedKeywords}
-        setName={setName}
-        setDescription={setDescription}
-        setIsPublic={setIsPublic}
-        toggleKeyword={toggleKeyword}
-        handleSubmit={() => {
-          if (modalType === 'add') {
-            addPlaylistMutation.mutate({
-              name,
-              description,
-              is_public: isPublic,
-              keyword: selectedKeywords.join(','),
-              user_id: user?.id || '',
-            })
-          } else if (modalType === 'edit' && selectedPlaylist) {
-            updatePlaylistMutation.mutate({
-              id: selectedPlaylist.id,
-              updatedData: {
+      {isDesktop && modalType !== null && (
+        <PlaylistModal
+          modalType="add"
+          isOpen={true}
+          onClose={closeModal}
+          selectedPlaylistId={undefined}
+        />
+      )}
+
+      {!isDesktop && modalType !== null && (
+        <PlaylistBottomSheet
+          isOpen={true}
+          onClose={closeModal}
+          modalType={modalType}
+          name={name}
+          description={description}
+          isPublic={isPublic}
+          selectedKeywords={selectedKeywords}
+          setName={setName}
+          setDescription={setDescription}
+          setIsPublic={setIsPublic}
+          toggleKeyword={toggleKeyword}
+          handleSubmit={() => {
+            if (modalType === 'add') {
+              addPlaylistMutation.mutate({
                 name,
                 description,
                 is_public: isPublic,
                 keyword: selectedKeywords.join(','),
-              },
-            })
-          }
-        }}
-      />
+                user_id: user?.id || '',
+              } as PlaylistInsert)
+            } else if (modalType === 'edit' && selectedPlaylist) {
+              updatePlaylistMutation.mutate({
+                id: selectedPlaylist.id,
+                updatedData: {
+                  name,
+                  description,
+                  is_public: isPublic,
+                  keyword: selectedKeywords.join(','),
+                },
+              })
+            }
+          }}
+        />
+      )}
     </div>
   )
 }

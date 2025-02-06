@@ -10,6 +10,7 @@ const Service = ({ isChecked, handleCheckboxChange }: Props) => {
       <h1>
         <b className="title-2 mt-[10px] text-[#4A4A4A]">제 1조(목적)</b>
       </h1>
+      <br />
       <p className="caption-2 text-[#7D7D7D]">
         이 약관은 Zepplaylist가 제공하는 제반 서비스의 이용과 관련하여 회사와
         회원과의 권리, 의무 및, 책임사항, 기타 필요한 사항을 규정함을 목적으로
@@ -68,5 +69,5 @@ const Service = ({ isChecked, handleCheckboxChange }: Props) => {
     </div>
   )
 }
- 
+
 export default Service

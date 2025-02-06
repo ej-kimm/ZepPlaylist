@@ -61,6 +61,7 @@ const PlaylistUI = ({
           className="object-contain"
         />
       </div>
+
       <div className="ml-4 flex-1">
         <h3 className={clsx(isDesktop ? 'text-[20px]' : 'text-md')}>
           {playlistName}
