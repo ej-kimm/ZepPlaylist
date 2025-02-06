@@ -1,8 +1,10 @@
 'use client'
 
+import likeTrue from '@/assets/images/likeTrue.svg'
 import useSongLike from '@/hooks/useSongLike'
 import { userStore } from '@/store/userSlice'
 import clsx from 'clsx'
+import Image from 'next/image'
 import LikeSongItem from './LikeSongItem'
 
 const UserLikedSong = () => {
@@ -10,10 +12,6 @@ const UserLikedSong = () => {
   const user_id = user!.id
 
   const { userLikedSong } = useSongLike({ user_id })
-  console.log(
-    'songLike',
-    userLikedSong?.map((item) => item.music),
-  )
 
   const userLikedSongData = userLikedSong?.map((item) => item.music)
 
@@ -27,7 +25,7 @@ const UserLikedSong = () => {
       {userLikedSongData?.length === 0 ? (
         <div className="flex">
           좋아하는 곡을 담아 주세요...
-          {/* <Image src={likeTrue} alt="Like Button" width={16} height={16} /> */}
+          <Image src={likeTrue} alt="Like Button" width={16} height={16} />
         </div>
       ) : (
         <ul
