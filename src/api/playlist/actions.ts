@@ -2,28 +2,31 @@
 
 import { PlaylistInsert, PlaylistRow, PlaylistUpdate } from '@/types/playlist'
 import { createClient } from '@/utils/supabase/server'
-import { redirect } from 'next/navigation'
 
+// 유저 정보 가져오기
 export async function getUser() {
   const supabase = createClient()
 
   const { data, error } = await supabase.auth.getUser()
-  console.log('data', data)
+
   if (error || !data?.user) {
-    console.log('로그인을 해주세요!')
-    redirect('/login')
+    return null
   }
+
   return data.user
 }
 
 // 플리 가져오기
 export async function fetchPlaylists(): Promise<PlaylistRow[] | null> {
-  const supabase = createClient()
   const user = await getUser()
+  const supabase = createClient()
   try {
+    if (!user?.id) {
+      throw new Error('로그인된 사용자 ID를 확인할 수 없습니다.')
+    }
     const { data, error } = await supabase
       .from('playlists')
-      .select('*,playlist_like!inner(user_id)')
+      .select('*, playlist_like!left(user_id)')
       .eq('user_id', user.id)
       .order('created_at', { ascending: false })
 
@@ -32,7 +35,7 @@ export async function fetchPlaylists(): Promise<PlaylistRow[] | null> {
     return data
   } catch (error) {
     console.error('플레이리스트 가져오기 오류:', error)
-    throw new Error('플레이리스트 데이터를 가져오는 중 문제가 발생했습니다.')
+    return null
   }
 }
 
@@ -88,6 +91,10 @@ export async function addPlaylist(
 ): Promise<{ success: boolean }> {
   const user = await getUser()
 
+  if (!user?.id) {
+    throw new Error('로그인된 사용자 ID가 필요합니다.')
+  }
+
   const supabase = createClient()
 
   try {
@@ -115,6 +122,10 @@ export async function updatePlaylist(
   const supabase = createClient()
 
   try {
+    if (!user?.id) {
+      throw new Error('로그인된 사용자 ID를 확인할 수 없습니다.')
+    }
+
     const { error } = await supabase
       .from('playlists')
       .update(updatedData)
@@ -193,6 +204,10 @@ export async function deletePlaylist(
   const supabase = createClient()
 
   try {
+    if (!user?.id) {
+      throw new Error('로그인된 사용자 ID를 확인할 수 없습니다.')
+    }
+
     const { error } = await supabase
       .from('playlists')
       .delete()
