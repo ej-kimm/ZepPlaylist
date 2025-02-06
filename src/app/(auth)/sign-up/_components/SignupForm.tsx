@@ -1,10 +1,13 @@
 'use client'
+import checkBoxDefault from '@/assets/images/checkBoxDefault.svg'
+import checkBoxSelected from '@/assets/images/checkBoxSelected.svg'
 import { InputBox, Modal, PrimaryButton } from '@/components/common'
 import BottomSheet from '@/components/common/BottomSheet'
 import useIsDesktop from '@/hooks/useIsDesktop'
 import { supabase } from '@/utils/supabase/client'
 import { zodResolver } from '@hookform/resolvers/zod'
 import clsx from 'clsx'
+import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -142,14 +145,23 @@ const SignupForm = () => {
           'caption-2 mt-6 w-full rounded-lg border-white bg-[#f4f4f4] text-[16px]',
         )}
       />
-      <div className="mt-4 flex items-center justify-center">
-        <input
-          type="checkbox"
-          className="mr-2 h-5 w-5 cursor-auto rounded border-gray-300 accent-primary"
-          checked={isChecked}
-          readOnly
-          onClick={handleOpenModal}
-        />
+      <div className="mt-4 flex items-center justify-center gap-2">
+        <label>
+          <Image
+            src={isChecked ? checkBoxSelected : checkBoxDefault}
+            width={16}
+            height={16}
+            alt="체크박스"
+            className="h-4 w-4"
+          />
+          <input
+            type="checkbox"
+            className="mr-2 hidden h-5 w-5 cursor-auto rounded border-gray-300 accent-primary"
+            checked={isChecked}
+            readOnly
+            onClick={handleOpenModal}
+          />
+        </label>
         <span onClick={handleOpenModal} className="caption-1 cursor-auto">
           서비스 정책 이용약관
         </span>
