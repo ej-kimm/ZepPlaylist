@@ -34,7 +34,7 @@ const Top100ChartListDesktop = ({
               key={item.spotify_id}
               className="flex w-full items-center justify-between px-[24px] py-[4px]"
             >
-              <p className="title-2">{index + 1}</p>
+              <div className="title-2 min-w-[40px]">{index + 1}</div>
               <div className="flex w-[30%] items-center gap-[21px]">
                 <div className="h-[52px] w-[52px] flex-shrink-0 overflow-hidden rounded-lg bg-[#D9D9D9]">
                   {item.album_cover && (

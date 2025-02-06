@@ -1,9 +1,13 @@
 'use client'
 
+import leftArrow from '@/assets/images/leftArrow.svg'
+import rightArrow from '@/assets/images/rightArrow.svg'
 import useIsDesktop from '@/hooks/useIsDesktop'
 import clsx from 'clsx'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useCallback, useRef } from 'react'
+import type { Swiper as SwiperType } from 'swiper'
 import { Autoplay } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
 
@@ -14,8 +18,30 @@ type LatestAlbumProps = {
 function LatestAlbumItmes({ latestAlbumList }: LatestAlbumProps) {
   const isDesktop = useIsDesktop()
 
+  const swiperRef = useRef<SwiperType | null>(null)
+
+  const handlePrev = useCallback(() => {
+    swiperRef.current?.slidePrev()
+  }, [])
+
+  const handleNext = useCallback(() => {
+    swiperRef.current?.slideNext()
+  }, [])
+
   return (
-    <ul className="flex">
+    <ul className="flex gap-3">
+      {isDesktop && (
+        <button type="button" className="" onClick={handlePrev}>
+          <Image
+            src={leftArrow}
+            width={24}
+            height={24}
+            alt={'leftArrow'}
+            className={clsx('flex h-[70px] w-[70px]')}
+          />
+        </button>
+      )}
+
       <Swiper
         spaceBetween={isDesktop ? 26 : 12}
         slidesPerView="auto"
@@ -29,6 +55,9 @@ function LatestAlbumItmes({ latestAlbumList }: LatestAlbumProps) {
         //   540: { slidesPerView: 3, spaceBetween: 15 },
         //   620: { slidesPerView: 3.5, spaceBetween: 24 },
         // }}
+        onSwiper={(swiper) => {
+          swiperRef.current = swiper
+        }}
         className="flex items-center"
       >
         {latestAlbumList.map((album, label) => (
@@ -74,6 +103,17 @@ function LatestAlbumItmes({ latestAlbumList }: LatestAlbumProps) {
           </SwiperSlide>
         ))}
       </Swiper>
+      {isDesktop && (
+        <button type="button" className="" onClick={handleNext}>
+          <Image
+            src={rightArrow}
+            width={24}
+            height={24}
+            alt={'rightArrow'}
+            className={clsx('flex h-[70px] w-[70px]')}
+          />
+        </button>
+      )}
     </ul>
   )
 }

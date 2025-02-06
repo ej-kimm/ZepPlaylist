@@ -21,11 +21,11 @@ const Top100ChartListUI = ({
       <ul className="flex w-full flex-col gap-2 space-y-2 pt-1">
         {top100Chart.map((chart, index) => (
           <li
-            className="flex flex-row items-center gap-2 transition-shadow"
+            className="flex flex-row items-center transition-shadow"
             key={chart.spotify_id}
           >
             <div
-              className="items-centerspace-x-2 flex w-full cursor-pointer gap-2 transition-colors"
+              className="flex w-full cursor-pointer items-center gap-2 transition-colors"
               onClick={() =>
                 handlePlayBtn({
                   id: chart.spotify_id,
@@ -37,7 +37,7 @@ const Top100ChartListUI = ({
                 })
               }
             >
-              <p className="title-2 flex w-8 items-center">{index + 1}</p>
+              <p className="title-2 min-w-[24px]">{index + 1}</p>
               <div className="relative flex-shrink-0">
                 <Image
                   src={chart.album_cover}
@@ -49,7 +49,7 @@ const Top100ChartListUI = ({
                 />
               </div>
 
-              <div className="min-w-0 flex-1">
+              <div className="min-w-0 flex-row">
                 <h3 className="truncate text-sm font-medium text-gray-900">
                   {chart.title}
                 </h3>
