@@ -28,13 +28,13 @@ export async function fetchPlaylists(): Promise<PlaylistRow[] | null> {
   try {
     const { data, error } = await supabase
       .from('playlists')
-      .select('*')
+      .select('*,playlist_like!inner(user_id)')
       .eq('user_id', user.id)
       .order('created_at', { ascending: false })
 
     if (error) throw error
 
-    return data || []
+    return data
   } catch (error) {
     console.error('플레이리스트 가져오기 오류:', error)
     throw new Error('플레이리스트 데이터를 가져오는 중 문제가 발생했습니다.')

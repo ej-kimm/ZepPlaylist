@@ -12,6 +12,7 @@ import { PlaylistDetails } from '@/types/song'
 import { useRouter } from 'next/navigation'
 import { useCallback, useEffect, useState } from 'react'
 import PlaylistDetailDesktop from './PlaylistDetailDesktop'
+import PlaylistDetailSkeleton from './PlaylistDetailSkeleton'
 import PlaylistDetailUI from './PlaylistDetailUI'
 
 export default function PlaylistDetailsComponent({
@@ -148,6 +149,10 @@ export default function PlaylistDetailsComponent({
         onCancel: () => {},
       })
     }
+  }
+
+  if (!playlistDetails) {
+    return <PlaylistDetailSkeleton />
   }
 
   return (
