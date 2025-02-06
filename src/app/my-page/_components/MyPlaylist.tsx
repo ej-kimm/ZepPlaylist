@@ -1,6 +1,7 @@
 'use client'
 import { PlaylistUI } from '@/components/common'
 import PlaylistDesktopUI from '@/components/common/PlaylistDesktop'
+import useIsDesktop from '@/hooks/useIsDesktop'
 import { usePlaylistQuery } from '@/hooks/usePlaylistQuery'
 import { useDeletePlaylist } from '@/hooks/usePlaylists'
 import { useToggleLike } from '@/hooks/useToggle'
@@ -9,6 +10,7 @@ import { supabase } from '@/utils/supabase/client'
 import { useQueries } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 import { useInView } from 'react-intersection-observer'
+import DesktopSkeleton from './DesktopSkeleton'
 import MyPageSkeleton from './MyPageSkeleton'
 const MyPlayList = () => {
   const { user } = userStore()
@@ -22,7 +24,7 @@ const MyPlayList = () => {
     isLoading,
   } = usePlaylistQuery()
   const { handleDeleteConfirmation } = useDeletePlaylist()
-
+  const isDesktop = useIsDesktop()
   const playlistLikes = useQueries({
     queries:
       playlists?.pages
@@ -49,10 +51,13 @@ const MyPlayList = () => {
       }
     },
   })
-  if (isLoading)
-    return Array.from({
-      length: 6,
-    }).map((_, index) => <MyPageSkeleton key={index} />)
+  if (!isLoading) {
+    if (isDesktop) return <DesktopSkeleton />
+    else
+      return Array.from({
+        length: 8,
+      }).map((_, index) => <MyPageSkeleton key={index} />)
+  }
   if (error) return <p>에러가 발생하였습니다!</p>
   if (!user) return
   return (

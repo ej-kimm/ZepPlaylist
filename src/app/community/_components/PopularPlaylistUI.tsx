@@ -54,9 +54,9 @@ const PopularPlaylistUI = ({
           <Image
             src={albumCover}
             alt="Album Cover"
-            layout="fill"
-            objectFit="contain"
-            className="rounded-lg"
+            width={50}
+            height={50}
+            className="h-[92px] w-[92px] rounded-lg object-cover"
           />
         </div>
 

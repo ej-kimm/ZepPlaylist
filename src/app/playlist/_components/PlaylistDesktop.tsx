@@ -25,7 +25,6 @@ export default function PlaylistDesktop({
   handleEditPlaylist,
 }: PlaylistDesktopProps) {
   const toggle = useToggleLike()
-
   return (
     <div className="mx-auto max-w-full">
       <h2 className="title-3 mb-24 mt-24 font-pretendard">

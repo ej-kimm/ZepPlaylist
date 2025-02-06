@@ -86,6 +86,7 @@ const LatestAlbumDetail = ({ albumData }: LatestAlbumProps) => {
               handleClose={() => setIsBottomSheetOpen(false)}
               musicName={selectedSong!.title}
               artistName={selectedSong!.artist}
+              musicData={selectedSong}
             />
           )}
         </>

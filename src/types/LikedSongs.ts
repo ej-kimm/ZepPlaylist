@@ -6,13 +6,12 @@ export type LikedSong = {
 }
 
 export type UserLikedSongDetails = {
-  album_cover?: string
-  artist?: string
+  album_cover: string
+  album_name: string | null
+  artist: string
   created_at: string
-  play_time?: number
-  spotify_id?: string
-  title?: string
-  user_id: string
-  id: string
-  music_id: string
+  lyrics: string | null
+  play_time: number
+  spotify_id: string
+  title: string
 }

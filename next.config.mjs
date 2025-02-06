@@ -1,8 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // compiler: {
-  //   removeConsole: true,
-  // },
+  compiler: {
+    removeConsole: true,
+  },
   reactStrictMode: false,
   images: {
     domains: ['hvpvszjjvqaoimyjinuo.supabase.co'],
