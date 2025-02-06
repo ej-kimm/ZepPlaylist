@@ -30,7 +30,7 @@ const ScrollTopButton = () => {
   return (
     <button
       onClick={scrollToTop}
-      className="bg-primary-default text-bg-01 hover:bg-primary-dark fixed bottom-10 left-1/2 -translate-x-1/2 z-40 flex h-16 w-16 items-center justify-center"
+      className="bg-primary-default text-bg-01 hover:bg-primary-dark fixed bottom-20 left-1/2 -translate-x-1/2 z-40 flex h-16 w-16 items-center justify-center"
       aria-label="최상단으로 이동"
     >
       <Image src={upButton} alt="Submit Comment" width={40} height={40} />
