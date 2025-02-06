@@ -1,9 +1,22 @@
 import type { SpotifyTrack } from '@/types/billboradCharts'
 import { supabase } from '@/utils/supabase/client'
-import { useCallback } from 'react'
-import Swal from 'sweetalert2'
+import { useCallback, useState } from 'react'
 
 export const usePlaylistMusicUpsert = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [modalTitle, setModalTitle] = useState('')
+  const [modalContent, setModalContent] = useState('')
+
+  const openModal = (title: string, content: string) => {
+    setModalTitle(title)
+    setModalContent(content)
+    setIsModalOpen(true)
+  }
+
+  const closeModal = () => {
+    setIsModalOpen(false)
+  }
+
   const upsertMusic = useCallback(async (musicData: SpotifyTrack) => {
     if (!musicData) {
       console.log('No data returned from onFetchMusicData')
@@ -25,7 +38,6 @@ export const usePlaylistMusicUpsert = () => {
       const { data: insertedMusic, error: insertError } = await supabase
         .from('music')
         .insert({
-          // 이거 왜구래요????????????
           spotify_id: musicData.id,
           title: musicData.title,
           artist: musicData.artist,
@@ -77,11 +89,7 @@ export const usePlaylistMusicUpsert = () => {
       }
 
       if (existingPlayList && existingPlayList.length > 0) {
-        Swal.fire(
-          '취소',
-          '해당 곡은 이미 플레이리스트에 저장된 곡입니다.',
-          'warning',
-        )
+        openModal('취소', '해당 곡은 이미 플레이리스트에 저장된 곡입니다.') // ✅ 모달 사용
         return { success: true, musicId }
       }
 
@@ -97,11 +105,15 @@ export const usePlaylistMusicUpsert = () => {
         return null
       }
 
-      Swal.fire('완료', '해당 곡이 플레이리스트에 저장되었습니다.', 'success')
+      openModal('완료', '해당 곡이 플레이리스트에 저장되었습니다.') // ✅ 모달 사용
       return { success: true, musicId }
     },
     [],
   )
 
-  return { upsertMusic, addMusicToPlaylistTable }
+  return {
+    upsertMusic,
+    addMusicToPlaylistTable,
+    modal: { isModalOpen, modalTitle, modalContent, closeModal },
+  }
 }
