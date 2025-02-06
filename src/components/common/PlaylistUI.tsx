@@ -7,7 +7,7 @@ import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import clsx from 'clsx'
 import useIsDesktop from '@/hooks/useIsDesktop'
-import ScrollTopButton from '@/app/community/_components/ScrollTopButton'
+import ScrollTopButton from './ScrollTopButton'
 
 
 type PlaylistUIProps = {
