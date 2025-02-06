@@ -70,8 +70,8 @@ export default function PlaylistDesktop({
           }}
           onClick={handleLikesClick}
         >
-          <div className="absolute bottom-0 left-0 z-20 h-[40%] w-full bg-gradient-to-b from-transparent via-black/[0.63] to-black/[0.7]"></div>
-          <div className="absolute bottom-0 z-30 flex w-full items-start justify-between p-4">
+          <div className="absolute bottom-0 left-0 h-[40%] w-full bg-gradient-to-b from-transparent via-black/[0.63] to-black/[0.7]"></div>
+          <div className="absolute bottom-0 flex w-full items-start justify-between p-4">
             <p className="text-lg text-[#FFFFFF]">좋아요 표시한 곡</p>
           </div>
         </div>

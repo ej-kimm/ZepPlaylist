@@ -54,16 +54,16 @@ const PlaylistDesktopUI = ({
       }`}
       onClick={onClick}
     >
-      <div className="absolute bottom-0 left-0 z-20 h-[40%] w-full bg-gradient-to-b from-transparent via-black/[0.63] to-black/[0.7]"></div>
+      <div className="absolute bottom-0 left-0 h-[40%] w-full bg-gradient-to-b from-transparent via-black/[0.63] to-black/[0.7]"></div>
       {album_cover ? (
         <Image fill alt="" src={album_cover} className="absolute inset-0" />
       ) : (
         <div className="absolute inset-0 bg-gray-300"></div>
       )}
 
-      <div className="absolute bottom-0 left-0 z-20 h-[40%] w-full bg-gradient-to-b from-transparent via-black/[0.63] to-black/[0.7]"></div>
+      <div className="absolute bottom-0 left-0 h-[40%] w-full bg-gradient-to-b from-transparent via-black/[0.63] to-black/[0.7]"></div>
 
-      <div className="absolute right-3 top-3 z-40">
+      <div className="absolute right-3 top-3">
         <button
           onClick={(e) => {
             e.stopPropagation()
@@ -102,7 +102,7 @@ const PlaylistDesktopUI = ({
         )}
       </div>
 
-      <div className="absolute bottom-0 z-30 flex w-full items-start justify-between p-2">
+      <div className="absolute bottom-0 flex w-full items-start justify-between p-2">
         <div>
           <h1 className="text-[#FFFFFF]">{title}</h1>
           <p className="text-[#FFFFFF] opacity-60">{description}</p>
