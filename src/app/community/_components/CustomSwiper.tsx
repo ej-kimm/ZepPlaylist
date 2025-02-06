@@ -1,5 +1,6 @@
 'use client'
 
+import clsx from 'clsx'
 import React from 'react'
 import 'swiper/css'
 import { Autoplay } from 'swiper/modules'
@@ -7,9 +8,13 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 
 type CustomSwiperProps = {
   items: { id: string; content: React.ReactNode }[]
+  maxSlides?: number
 }
 
-const CustomSwiper: React.FC<CustomSwiperProps> = ({ items }) => {
+const CustomSwiper: React.FC<CustomSwiperProps> = ({
+  items,
+  maxSlides = 8,
+}) => {
   return (
     <Swiper
       modules={[Autoplay]}
@@ -28,7 +33,7 @@ const CustomSwiper: React.FC<CustomSwiperProps> = ({ items }) => {
         620: { slidesPerView: 3.5, spaceBetween: 1 },
         660: { slidesPerView: 4, spaceBetween: 1 },
         720: { slidesPerView: 5, spaceBetween: 1 },
-        1200: { slidesPerView: 8},
+        1200: { slidesPerView: maxSlides },
       }}
     >
       {items.map((item) => (
@@ -36,7 +41,7 @@ const CustomSwiper: React.FC<CustomSwiperProps> = ({ items }) => {
           key={item.id}
           style={{ display: 'flex', justifyContent: 'center' }}
         >
-          <div style={{ width: '92%', height: '100%' }}>{item.content}</div>
+          <div className={clsx('h-full w-[92%]')}>{item.content}</div>
         </SwiperSlide>
       ))}
     </Swiper>

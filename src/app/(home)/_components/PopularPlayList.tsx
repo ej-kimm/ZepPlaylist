@@ -28,7 +28,14 @@ const PopularPlayList = async () => {
   return (
     <div className="flex flex-wrap gap-4">
       <div className="flex w-full justify-between">
-        <h1 className="title-2 flex justify-start">인기 있는 플레이리스트</h1>
+        <h1
+          className={clsx(
+            'title-2 flex justify-start',
+            'desktop:title-3 desktop:mb-10',
+          )}
+        >
+          인기 플레이리스트
+        </h1>
         <Link
           href={'/community'}
           className={clsx('desktop: caption-4 flex h-5 justify-end gap-1')}
@@ -57,6 +64,7 @@ const PopularPlayList = async () => {
             />
           ),
         }))}
+        maxSlides={6}
       />
     </div>
   )

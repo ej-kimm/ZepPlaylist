@@ -67,6 +67,7 @@ const Lyrics = ({ lyrics, isFullLyrics, onClickLyrics }: LyricsProps) => {
         )}
         dangerouslySetInnerHTML={{
           __html: displayLyrics
+            .replace(/^[\s\S]*?\[Korean:\]\n?/, '') // "[Korean:]"이 있으면 그 전 부분을 삭제
             .replace(/(\n){3,}/g, '\n') // 연속된 \n이 2번 이상 나오면 1번으로 줄이기
             .replace(/\n/g, '<br />'), // 각 \n을 <br />로 바꾸기
         }}

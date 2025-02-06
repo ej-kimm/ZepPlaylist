@@ -91,7 +91,7 @@ export default function CommentSection({
       return
     }
 
-    setComments((prev) => [...prev, data as unknown as Comment])
+    setComments((prev) => [data as unknown as Comment, ...prev])
     setContent('')
   }
 
