@@ -31,7 +31,8 @@ const MusicSaveModal = ({
 }: MusicSaveModalProps) => {
   const { user } = userStore()
   const { playlists, isPending } = usePlaylistOperations()
-  const { upsertMusic, addMusicToPlaylistTable } = usePlaylistMusicUpsert()
+  const { upsertMusic, addMusicToPlaylistTable, modal } =
+    usePlaylistMusicUpsert()
   const { closePlayerModal } = useMusicPlayerStore()
   const { songLike, updateLike } = useSongLike({
     user_id: user?.id!,
@@ -59,6 +60,7 @@ const MusicSaveModal = ({
   }
 
   const handleCloseAllModals = () => {
+    modal.closeModal()
     closePlayerModal()
     handleClose()
   }
@@ -69,28 +71,30 @@ const MusicSaveModal = ({
   }
 
   return (
-    <Modal
-      isOpen={isOpen}
-      onCancel={handleClose}
-      title={musicName}
-      content={artistName}
-      type="none"
-      className="desktop:w-[532px]"
-    >
-      <div className="border-t border-black border-opacity-60">
-        <h2 className="body-2 py-3">플레이리스트 담기</h2>
+    <>
+      <Modal
+        isOpen={isOpen}
+        onCancel={handleClose}
+        title={musicName}
+        content={artistName}
+        type="none"
+        className="desktop:w-[532px]"
+      >
+        <div className="border-t border-black border-opacity-60">
+          <h2 className="body-2 py-3">플레이리스트 담기</h2>
 
-        <div
-          className="absolute right-10 top-10 cursor-pointer"
-          onClick={handleLikeClick}
-        >
-          <Image
-            src={songLike ? likeTrue : likeFalse}
-            width={24}
-            height={24}
-            className="h-6 w-6"
-            alt="heart"
-          />
+          <div
+            className="absolute right-10 top-10 cursor-pointer"
+            onClick={handleLikeClick}
+          >
+            <Image
+              src={songLike ? likeTrue : likeFalse}
+              width={24}
+              height={24}
+              className="h-6 w-6"
+              alt="heart"
+            />
+          </div>
         </div>
 
         <div className="h-full bg-white px-4 py-[26px]">
@@ -138,8 +142,18 @@ const MusicSaveModal = ({
             </ul>
           )}
         </div>
-      </div>
-    </Modal>
+      </Modal>
+
+      <Modal
+        isOpen={modal.isModalOpen}
+        title={modal.modalTitle}
+        content={modal.modalContent}
+        type="single"
+        onCancel={handleCloseAllModals}
+        onConfirm={handleCloseAllModals}
+        className="desktop:w-[434px]"
+      />
+    </>
   )
 }
 
