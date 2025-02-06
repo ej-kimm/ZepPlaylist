@@ -83,7 +83,7 @@ const LatestAlbumDetailUI = ({
         {albumTrackData.map((item) => (
           <li key={item.id} className="flex flex-row items-center">
             <div
-              className="w-[100%] rounded-lg py-2 transition-colors"
+              className="w-[100%] cursor-pointer rounded-lg py-2 transition-colors"
               onClick={() =>
                 handlePlayBtn({
                   id: item.id,
