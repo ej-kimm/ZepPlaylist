@@ -9,7 +9,7 @@ import LikeSongItem from './LikeSongItem'
 
 const UserLikedSong = () => {
   const { user } = userStore()
-  const user_id = user!.id
+  const user_id = user?.id || ''
 
   const { userLikedSong } = useSongLike({ user_id })
 
