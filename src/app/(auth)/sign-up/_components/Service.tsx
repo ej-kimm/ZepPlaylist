@@ -1,3 +1,7 @@
+import checkBoxDefault from '@/assets/images/checkBoxDefault.svg'
+import checkBoxSelected from '@/assets/images/checkBoxSelected.svg'
+import Image from 'next/image'
+
 type Props = {
   isChecked: boolean
   handleCheckboxChange: () => void
@@ -57,13 +61,22 @@ const Service = ({ isChecked, handleCheckboxChange }: Props) => {
         인지한 경우 이를 즉시 통지하고 안내에 따라야합니다 <br />
       </p>
       <br />
-      <div className="flex items-center justify-center">
-        <input
-          type="checkbox"
-          className="mr-2 h-5 w-5 cursor-auto rounded border-gray-300 accent-primary"
-          onChange={handleCheckboxChange}
-          checked={isChecked}
-        />
+      <div className="flex items-center justify-center gap-2">
+        <label>
+          <Image
+            src={isChecked ? checkBoxSelected : checkBoxDefault}
+            width={16}
+            height={16}
+            alt="체크박스"
+            className="h-4 w-4"
+          />
+          <input
+            type="checkbox"
+            className="mr-2 hidden h-5 w-5 cursor-auto rounded border-gray-300 accent-primary"
+            onChange={handleCheckboxChange}
+            checked={isChecked}
+          />
+        </label>
         <span className="caption-1">서비스 정책 이용약관 동의</span>
       </div>
     </div>

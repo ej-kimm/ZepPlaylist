@@ -7,6 +7,8 @@ import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import clsx from 'clsx'
 import useIsDesktop from '@/hooks/useIsDesktop'
+import ScrollTopButton from './ScrollTopButton'
+
 
 type PlaylistUIProps = {
   profileImg: string | StaticImageData
@@ -44,6 +46,7 @@ const PlaylistUI = ({
       )}
       onClick={onClick}
     >
+      <ScrollTopButton />
       <div
         className={clsx(
           'flex-shrink-0 overflow-hidden rounded-full',

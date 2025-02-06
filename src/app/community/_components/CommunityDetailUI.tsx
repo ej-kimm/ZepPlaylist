@@ -197,9 +197,9 @@ export default function CommunityDetailUI({
                       <Image
                         src={song.album_cover || '이미지가 없습니다.'}
                         alt={`${song.title} 앨범 커버`}
-                        layout="fill"
-                        objectFit="cover"
-                        className="rounded"
+                        width={48}
+                        height={48}
+                        className="w-[48px] h-[48px] rounded"
                       />
                     </div>
                     <div className="ml-4">
@@ -243,9 +243,9 @@ export default function CommunityDetailUI({
                     <Image
                       src={song.album_cover || '이미지가 없습니다.'}
                       alt={`${song.title} 앨범 커버`}
-                      layout="fill"
-                      objectFit="cover"
-                      className="rounded"
+                      width={48}
+                      height={48}
+                      className="w-[54px] h-[54px] rounded"
                     />
                   </div>
 
@@ -253,9 +253,7 @@ export default function CommunityDetailUI({
                   <div className="flex flex-1 items-center justify-between text-center">
                     <p className="body-2 flex-1 truncate">{song.title}</p>
                     <p className="caption-1 flex-1 truncate">{song.artist}</p>
-                    <p className="caption-1 flex-1 truncate">
-                      {song.album_name}
-                    </p>
+                    <p className="caption-1 flex-1 truncate w-0">{song.album_name}</p>
                   </div>
 
                   {/* 커뮤니티 웹 서클 아이콘 */}
@@ -495,6 +493,7 @@ export default function CommunityDetailUI({
               handleClose={() => setIsBottomSheetOpen(false)}
               musicName={selectedSong.title}
               artistName={selectedSong.artist}
+              musicData={selectedSong}
             />
           ) : (
             <MusicSaveBottomSheet

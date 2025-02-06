@@ -121,6 +121,7 @@ const SearchResultItem = ({
                 handleClose={() => setIsBottomSheetOpen(false)}
                 musicName={selectedSong!.title}
                 artistName={selectedSong!.artist}
+                musicData={selectedSong}
               />
             )}
           </>
