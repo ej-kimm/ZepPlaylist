@@ -1,11 +1,11 @@
 'use client'
 
-import heart from '@/assets/images/heart.svg'
 import playButton from '@/assets/images/playButton.svg'
 import TableList from '@/components/common/Tableilst'
 import { LikedSong } from '@/types/song'
 import Image from 'next/image'
 import { FaRandom } from 'react-icons/fa'
+import { FiHeart } from 'react-icons/fi'
 
 type LikedSongsDetailDesktopProps = {
   likedSongs: LikedSong[]
@@ -69,15 +69,9 @@ export default function LikedSongsDetailDesktop({
         renderAction={(song) => (
           <button
             onClick={() => handleDelete(song.spotify_id)}
-            className="flex h-[36px] w-[36px] items-center justify-center rounded-full border border-primary bg-white"
+            className="flex h-[36px] w-[36px] items-center justify-center rounded-full bg-primary bg-opacity-10"
           >
-            <Image
-              src={heart}
-              alt="좋아요"
-              width={16}
-              height={16}
-              className="h-4 w-4 text-primary"
-            />
+            <FiHeart fontSize={20} color="#b15eff" />
           </button>
         )}
       />

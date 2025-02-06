@@ -14,8 +14,8 @@ export default async function Home() {
       </Suspense>
       <div
         className={clsx(
-          'flex-col gap-5',
-          'flex desktop:mb-[85px] desktop:mt-[80px] desktop:max-w-[1200px] desktop:gap-[120px]',
+          'mb-[34px] mt-5 flex flex-col gap-5',
+          'desktop:mb-[85px] desktop:mt-[80px] desktop:gap-[120px]',
         )}
       >
         <LatestAlbums />

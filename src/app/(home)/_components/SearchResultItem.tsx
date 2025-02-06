@@ -51,7 +51,9 @@ const SearchResultItem = ({
 
   return (
     <div className="mx-auto flex flex-col gap-5">
-      <h1 className="title-1 mb-3 pt-5">{searchParams} 검색 결과</h1>
+      <h1 className="title-1 mb-3 pt-5">
+        &quot;{searchParams}&quot;으로 검색된 곡
+      </h1>
       <div>
         <h2 className="title-2 flex pb-6 font-bold">가수</h2>
         <div className="flex flex-col gap-2">
@@ -68,7 +70,7 @@ const SearchResultItem = ({
       </div>
 
       <div>
-        <h2 className="title-2 mt-3">곡</h2>
+        {!isDesktop && <h2 className="title-2 mt-3">곡</h2>}
         {isDesktop ? (
           <>
             <TableList
