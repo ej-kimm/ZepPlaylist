@@ -85,7 +85,7 @@ export function SearchBar() {
           className={clsx(
             'relative',
             'desktop:mr-0',
-            isHomePage && 'desktop:mb-6',
+            isHomePage && 'mr-6 desktop:mb-6',
           )}
         >
           <form onSubmit={handleSubmit(onSubmit)}>
