@@ -1,6 +1,6 @@
 import type { BillboardCharts, BillboardSong } from '@/types/billboradCharts'
 
-export const fetchBillboardChart = async (): Promise<BillboardSong[]> => {
+export const getBillboardChart = async (): Promise<BillboardSong[]> => {
   try {
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     const { getChart } = await require('billboard-top-100')

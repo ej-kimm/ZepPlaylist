@@ -1,6 +1,6 @@
 // app/api/billboard-chart/route.ts
 
-import { fetchBillboardChart } from '@/utils/chart/fetchBillboardChart'
+import { getBillboardChart } from '@/utils/chart/fetchBillboardChart'
 import { getSpotifyTrackData } from '@/utils/chart/getSpotifyTrackId'
 import { getSpotifyToken } from '@/utils/spotifyToken/getToken'
 import { supabase } from '@/utils/supabase/client'
@@ -10,7 +10,7 @@ export async function GET() {
   try {
     const token = await getSpotifyToken()
 
-    const billboardChart = await fetchBillboardChart()
+    const billboardChart = await getBillboardChart()
 
     const cleanedBillboardChart = billboardChart.map((item) => {
       return {
@@ -31,33 +31,53 @@ export async function GET() {
       (item) => item !== undefined,
     )
 
-    const { data: insertBillboardChart, error: insertBillboardChartError } =
-      await supabase
-        .from('billboard_chart')
-        .upsert(
-          validMusicData.map((item) => ({
-            spotify_id: item.id,
-            title: item.title,
-            artist: item.artist,
-            album_cover: item.albumCover,
-            album_name: item.albumName,
-            play_time: item.playTime,
-            created_at: new Date().toISOString(),
-          })),
-          {
-            onConflict: 'spotify_id', // 중복 감지 기준 컬럼
-            ignoreDuplicates: false, // true: 건너뛰기, false: 업데이트
-          },
-        )
-        .select('*')
+    const { data: deleteBillboardChart, error: ErrorDeleteBillboardChart } =
+      await supabase.from('billboard_chart').delete().neq('spotify_id', '')
 
-    if (insertBillboardChartError) {
-      console.error('Error inserting data:', insertBillboardChartError)
-    } else {
-      console.log('Data inserted successfully:', insertBillboardChart)
+    if (
+      deleteBillboardChart &&
+      ErrorDeleteBillboardChart?.code !== 'PGRST116'
+    ) {
+      console.error('Error Delete BillboardChart:', ErrorDeleteBillboardChart)
+      return NextResponse.json(
+        { error: 'Error deleting Billboard chart data' },
+        { status: 500 },
+      )
+    }
+    if (!deleteBillboardChart) {
+      const { data: insertBillboardChart, error: insertBillboardChartError } =
+        await supabase
+          .from('billboard_chart')
+          .upsert(
+            validMusicData.map((item) => ({
+              spotify_id: item.id,
+              title: item.title,
+              artist: item.artist,
+              album_cover: item.albumCover,
+              album_name: item.albumName,
+              play_time: item.playTime,
+              created_at: new Date().toISOString(),
+            })),
+          )
+          .select('*')
+
+      if (insertBillboardChart) {
+        console.error('Error inserting data:', insertBillboardChartError)
+        return NextResponse.json(
+          { error: 'Error inserting data' },
+          { status: 500 },
+        )
+      } else {
+        console.log('Data inserted successfully:', insertBillboardChart)
+        return NextResponse.json(
+          { data: insertBillboardChart },
+          { status: 200 },
+        )
+      }
     }
 
-    return NextResponse.json({ data: insertBillboardChart }, { status: 200 })
+    // insertBillboardChart 존재하는 경우의 처리
+    return NextResponse.json({ message: 'No data to insert' }, { status: 200 })
   } catch (error) {
     console.error('An error occurred:', error)
     return NextResponse.json(
