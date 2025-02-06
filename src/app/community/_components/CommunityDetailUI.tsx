@@ -115,7 +115,7 @@ export default function CommunityDetailUI({
       )}
     >
       {/* 노래 목록 섹션 (60%) */}
-      <div className={clsx('flex-1', 'desktop:max-w-[60%]')}>
+      <div className={clsx('flex-1', 'desktop:mr-6 desktop:max-w-[60%]')}>
         {/* 상단 정보 (모바일) */}
         <div className="desktop:hidden">
           <div className="flex w-full items-center justify-between">
@@ -148,7 +148,7 @@ export default function CommunityDetailUI({
         </div>
 
         {/* 상단 정보 (PC) */}
-        <div className="hidden desktop:block">
+        <div className="hidden desktop:mr-6 desktop:block">
           <div className="flex w-full items-center justify-between">
             <h1 className="headline-1 mt-12">{playlistName}</h1>
             <button onClick={onLikeToggle} className="mt-12 h-8 w-8">
@@ -179,8 +179,8 @@ export default function CommunityDetailUI({
         </div>
 
         {/* 노래 목록 */}
-        <div className="flex flex-col">
-          <ul className="mb-12">
+        <div className={clsx('flex flex-col', 'desktop:mr-6')}>
+          <ul className={clsx(isDesktop ? '' : 'mb-12')}>
             {songs.length > 0 ? (
               songs.map((song, index) => (
                 <li
@@ -251,9 +251,11 @@ export default function CommunityDetailUI({
 
                   {/* 텍스트 정보 (가로 배치) */}
                   <div className="flex flex-1 items-center justify-between text-center">
-                    <p className="body-2 flex-1">{song.title}</p>
-                    <p className="caption-1 flex-1">{song.artist}</p>
-                    <p className="caption-1 flex-1">{song.album_name}</p>
+                    <p className="body-2 flex-1 truncate">{song.title}</p>
+                    <p className="caption-1 flex-1 truncate">{song.artist}</p>
+                    <p className="caption-1 flex-1 truncate">
+                      {song.album_name}
+                    </p>
                   </div>
 
                   {/* 커뮤니티 웹 서클 아이콘 */}
@@ -281,7 +283,7 @@ export default function CommunityDetailUI({
       <div
         className={clsx(
           'hidden desktop:block desktop:max-w-[40%] desktop:flex-1',
-          'desktop:sticky desktop:top-4 desktop:h-[calc(100vh-140px)]',
+          'desktop:fixed desktop:right-0 desktop:top-0 desktop:h-[calc(100vh-66px)] desktop:min-w-[40%]',
           'relative', // 추가
         )}
       >
@@ -290,9 +292,9 @@ export default function CommunityDetailUI({
           className="absolute inset-0 z-0 bg-gradient-to-t from-black/70 via-gray-800/30 to-white/10 p-4 shadow-lg backdrop-blur-[6px]"
           aria-hidden="true"
         />
-        <div className="relative z-10 flex h-full flex-col gap-4 bg-transparent">
+        <div className="display: relative z-10 flex h-full flex-col gap-4 bg-transparent">
           {/* 댓글 목록 */}
-          <div className="flex-1 overflow-y-auto [&>*]:bg-transparent">
+          <div className="flex flex-1 flex-col-reverse overflow-y-auto [&>*]:bg-transparent">
             <ul className="space-y-4 bg-transparent pl-4">
               {comments.map((comment) => (
                 <li key={comment.id} className="flex items-start gap-4 py-2">

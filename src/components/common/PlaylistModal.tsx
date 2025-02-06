@@ -64,10 +64,12 @@ export default function PlaylistModal({
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
-    const { name, value } = e.target
+    const { name, value, type } = e.target
+
     setPlaylist((prevState) => ({
       ...prevState,
-      [name]: value,
+      [name]:
+        type === 'checkbox' ? (e.target as HTMLInputElement).checked : value,
     }))
   }
 

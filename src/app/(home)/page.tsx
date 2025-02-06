@@ -14,14 +14,14 @@ export default async function Home() {
       </Suspense>
       <div
         className={clsx(
-          'flex-col gap-5',
-          'desktop:gap-[120px] desktop:mt-[80px] desktop:mb-[85px] desktop:max-w-[1200px] flex',
+          'mb-[34px] mt-5 flex flex-col gap-5',
+          'desktop:mb-[85px] desktop:mt-[80px] desktop:gap-[120px]',
         )}
       >
         <LatestAlbums />
         <Charts />
-        <UserLikedSong />
         <PopularPlayList />
+        <UserLikedSong />
       </div>
     </>
   )

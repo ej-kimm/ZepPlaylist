@@ -91,7 +91,7 @@ export default function PlaylistDetailUI({
             handlePlaylistClick={() => handlePlayFromIndex(index)}
             handleDeleteSong={handleDeleteSong}
             showDropdown={showDropdown}
-            toggleDropdown={toggleDropdown}
+            toggleDropdown={() => toggleDropdown(song.spotify_id)}
           />
         ))}
       </ul>
