@@ -7,6 +7,7 @@ type PlayerState = {
   isPlayerOpen: boolean
   isPlaying: boolean
   isPlayerModalOpen: boolean
+  showErrorMessage: boolean
   setPlayerOpen: () => void
   setPlayerClose: () => void
   setTrackIds: (
@@ -19,6 +20,7 @@ type PlayerState = {
   togglePlay: () => void
   togglePlayerModal: () => void
   closePlayerModal: () => void
+  setShowErrorMessage: (showErrorMessage: boolean) => void
 }
 
 export const useMusicPlayerStore = create<PlayerState>()((set) => ({
@@ -27,6 +29,7 @@ export const useMusicPlayerStore = create<PlayerState>()((set) => ({
   isPlayerOpen: false, // 첫 페이지 방문시 노래 재생중인지 판단 여부
   isPlaying: false, // 현재 재생중인지 여부
   isPlayerModalOpen: false,
+  showErrorMessage: false,
   setPlayerOpen: () => set(() => ({ isPlayerOpen: true })),
   setPlayerClose: () => set(() => ({ isPlayerOpen: false })),
   setTrackIds: (
@@ -63,4 +66,5 @@ export const useMusicPlayerStore = create<PlayerState>()((set) => ({
   togglePlayerModal: () =>
     set((state) => ({ isPlayerModalOpen: !state.isPlayerModalOpen })),
   closePlayerModal: () => set(() => ({ isPlayerModalOpen: false })),
+  setShowErrorMessage: (showErrorMessage) => set(() => ({ showErrorMessage })),
 }))

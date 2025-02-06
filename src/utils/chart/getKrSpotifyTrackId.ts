@@ -1,7 +1,7 @@
 export const getKrSpotifyTrackId = async (token: string, musicName: string) => {
   try {
     const res = await fetch(
-      `https://api.spotify.com/v1/search?q=${musicName}&type=track&limit=10`,
+      `${process.env.NEXT_PUBLIC_SPOTIFY_BASE_URL}/search?q=${musicName}&type=track&limit=10`,
       {
         method: 'GET',
         headers: {

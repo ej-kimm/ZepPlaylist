@@ -47,7 +47,7 @@ export default function TableList<
 
               <div
                 className="cursor-pointer truncate text-left"
-                onClick={() => handleItemClick(index)}
+                // onClick={() => handleItemClick(index)}
               >
                 <h3 className="caption-1">{item.title}</h3>
               </div>
@@ -60,7 +60,7 @@ export default function TableList<
             </p>
 
             {/*각각 다른 아이콘 사용 가능!*/}
-            {renderAction(item)}
+            {/* {renderAction(item)} */}
           </li>
         ))}
       </ul>

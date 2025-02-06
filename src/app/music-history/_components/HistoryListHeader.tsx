@@ -16,6 +16,7 @@ const HistoryListHeader = ({
 }: HistoryListHeaderProps) => {
   const { isPlayerOpen, setTrackIds, setPlayerOpen, play } =
     useMusicPlayerStore()
+  const isDisabled = historyTracks.length < 1
 
   const handlePlayAll = () => {
     if (!isPlayerOpen) setPlayerOpen()
@@ -47,25 +48,52 @@ const HistoryListHeader = ({
           <button
             onClick={handlePlayAll}
             className="flex gap-1 desktop:items-center"
+            disabled={isDisabled}
           >
-            <Image src={playButton} width={16} height={16} alt="전체 재생" />
-            <span className="caption-1">전체 재생</span>
+            <Image
+              src={playButton}
+              width={16}
+              height={16}
+              alt="전체 재생"
+              className={clsx(isDisabled && 'opacity-60')}
+            />
+            <span className={clsx('caption-1', isDisabled && 'text-[#636363]')}>
+              전체 재생
+            </span>
           </button>
 
           <button
             onClick={handleShufflePlay}
             className="flex gap-1 desktop:items-center"
+            disabled={isDisabled}
           >
-            <FaRandom fontSize={16} />
-            <span className="caption-1">랜덤 재생</span>
+            <FaRandom
+              fontSize={16}
+              className={clsx(isDisabled && 'text-[#636363]')}
+            />
+            <span className={clsx('caption-1', isDisabled && 'text-[#636363]')}>
+              랜덤 재생
+            </span>
           </button>
         </div>
 
         <div className={clsx('flex items-center gap-5', 'desktop:gap-10')}>
-          <p className={clsx('caption-2', 'desktop:caption-1')}>
+          <p
+            className={clsx(
+              'caption-2',
+              'desktop:caption-1',
+              isDisabled && 'text-[#636363] desktop:text-[#636363]',
+            )}
+          >
             곡 수: {historyTracks.length}개
           </p>
-          <p className={clsx('caption-2', 'desktop:caption-1')}>
+          <p
+            className={clsx(
+              'caption-2',
+              'desktop:caption-1',
+              isDisabled && 'text-[#636363] desktop:text-[#636363]',
+            )}
+          >
             재생시간: {totalTime}분
           </p>
         </div>

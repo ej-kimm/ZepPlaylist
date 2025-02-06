@@ -57,7 +57,7 @@ export default function LikedSongsDetailUI({
               id: song.id,
               name: song.music.title || '제목 없음',
               description: song.music.artist || '아티스트 정보 없음',
-              latest_song_cover: song.music.album_cover || '/default-cover.jpg',
+              latest_song_cover: song.music.album_cover || null,
               is_public: true,
             }}
             showDropdown={showDropdown}

@@ -7,7 +7,9 @@ import {
 import { Modal } from '@/components/common'
 import useIsDesktop from '@/hooks/useIsDesktop'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
+import { userStore } from '@/store/userSlice'
 import { PlaylistDetails } from '@/types/song'
+import { useRouter } from 'next/navigation'
 import { useCallback, useEffect, useState } from 'react'
 import PlaylistDetailDesktop from './PlaylistDetailDesktop'
 import PlaylistDetailUI from './PlaylistDetailUI'
@@ -31,7 +33,15 @@ export default function PlaylistDetailsComponent({
     onConfirm: () => {},
     onCancel: () => setModalProps((prev) => ({ ...prev, isOpen: false })),
   })
+  const { user, isLogin } = userStore()
+  const router = useRouter()
   const isDesktop = useIsDesktop()
+
+  useEffect(() => {
+    if (!isLogin || !user?.id) {
+      router.replace('/login')
+    }
+  }, [user, router, isLogin])
 
   const toggleDropdown = (songId: string) => {
     setDropdownOpen((prev) => (prev === songId ? null : songId))

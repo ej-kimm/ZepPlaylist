@@ -16,6 +16,7 @@ const SignupForm = () => {
   const router = useRouter()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isChecked, setIsChecked] = useState(false)
+  const [modalOpen, setModalOpen] = useState(false)
   const isDesktop = useIsDesktop(720)
   const handleOpenModal = () => {
     setIsModalOpen(true)
@@ -27,6 +28,10 @@ const SignupForm = () => {
   }
   const handleCloseModal = () => {
     setIsModalOpen(false)
+  }
+  const handleModal = () => {
+    setModalOpen((prev) => !prev)
+    router.replace('/login')
   }
   const validator = z
     .object({
@@ -82,8 +87,7 @@ const SignupForm = () => {
     if (signOutError) {
       console.error(signOutError.message)
     }
-    Swal.fire('완료', '회원가입 완료!', 'success')
-    router.replace('/login')
+    setModalOpen(true)
   }
 
   return (
@@ -150,7 +154,11 @@ const SignupForm = () => {
           서비스 정책 이용약관
         </span>
       </div>
-      <PrimaryButton type="submit" className={clsx('mt-4 h-[39px]')}>
+      <PrimaryButton
+        type="submit"
+        disabled={!isChecked}
+        className={clsx('mt-4 h-[39px]', !isChecked && 'opacity-60')}
+      >
         회원가입
       </PrimaryButton>
       <>
@@ -184,6 +192,13 @@ const SignupForm = () => {
             />
           </BottomSheet>
         )}
+        <Modal
+          isOpen={modalOpen}
+          title="완료"
+          content="회원가입 완료!"
+          onCancel={handleModal}
+          onConfirm={handleModal}
+        />
       </>
     </form>
   )

@@ -1,10 +1,10 @@
 'use client'
 
+import Modal from '@/components/common/Modal'
 import clsx from 'clsx'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import Swal from 'sweetalert2'
 import { useDebouncedCallback } from 'use-debounce'
 import SearchKeywordCarousel from './SearchKeywordCarousel'
 
@@ -18,17 +18,25 @@ export function SearchBar() {
   const pathname = usePathname()
   const isHomePage = pathname === '/'
   const { register, handleSubmit, setValue } = useForm<FormValues>()
-
   const [selectedKeywords, setSelectedKeywords] = useState<string[]>([])
+  const [modalState, setModalState] = useState<{
+    isOpen: boolean
+    message: string
+  }>({
+    isOpen: false,
+    message: '',
+  })
 
   const performSearch = useDebouncedCallback((searchTerm: string) => {
     const params = new URLSearchParams(searchParams.toString())
 
     if (searchTerm.trim() === '') {
-      console.log('Empty search term')
-      Swal.fire('검색', '검색어를 입력해주세요 !! ', 'warning')
+      setModalState({ isOpen: true, message: '검색어를 입력해주세요!' })
     } else if (searchTerm.trim().length < 2) {
-      Swal.fire('검색', '검색어는 2글자 이상이어야 합니다.', 'warning')
+      setModalState({
+        isOpen: true,
+        message: '검색어는 2글자 이상이어야 합니다.',
+      })
     } else {
       params.set('q', searchTerm.trim())
       router.push(`/search?${params.toString()}`)
@@ -75,7 +83,7 @@ export function SearchBar() {
       >
         <div
           className={clsx(
-            'relative mr-6',
+            'relative',
             'desktop:mr-0',
             isHomePage && 'desktop:mb-6',
           )}
@@ -116,6 +124,15 @@ export function SearchBar() {
           />
         </div>
       </div>
+      <Modal
+        isOpen={modalState.isOpen}
+        title="검색"
+        className="desktop:w-[434px]"
+        content={modalState.message}
+        type="single"
+        onConfirm={() => setModalState({ isOpen: false, message: '' })}
+        onCancel={() => setModalState({ isOpen: false, message: '' })}
+      />
     </div>
   )
 }

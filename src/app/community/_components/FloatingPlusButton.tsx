@@ -1,24 +1,26 @@
 'use client'
 
 import plusButton from '@/assets/images/plusButton.svg'
-import { PlaylistBottomSheet } from '@/components/common'
+import { PlaylistBottomSheet, PlaylistModal } from '@/components/common'
+import useIsDesktop from '@/hooks/useIsDesktop'
 import clsx from 'clsx'
-
 import Image from 'next/image'
 import { useState } from 'react'
 
 const FloatingPlusButton = () => {
-  const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false)
-  const [modalType, setModalType] = useState<'add' | 'edit' | null>(null)
+  const [isOpen, setIsOpen] = useState(false)
+  const [modalType] = useState<'add'>('add')
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
   const [isPublic, setIsPublic] = useState(true)
   const [selectedKeywords, setSelectedKeywords] = useState<string[]>([])
 
+  const isDesktop = useIsDesktop(720)
+
   const toggleKeyword = (keyword: string) => {
-    setSelectedKeywords(prev =>
+    setSelectedKeywords((prev) =>
       prev.includes(keyword)
-        ? prev.filter(k => k !== keyword)
+        ? prev.filter((k) => k !== keyword)
         : [...prev, keyword]
     )
   }
@@ -28,37 +30,47 @@ const FloatingPlusButton = () => {
       name,
       description,
       isPublic,
-      selectedKeywords
+      selectedKeywords,
     })
-    setIsBottomSheetOpen(false)
+    setIsOpen(false)
   }
 
   return (
     <>
       <button
         onClick={() => {
-          setModalType('add')
-          setIsBottomSheetOpen(true)
+          setIsOpen(true)
         }}
-        className={clsx("fixed bottom-20 right-4 z-50 h-14 w-14 rounded-full bg-primary p-3 transition-all hover:scale-110", "desktop:right-9")}
+        className={clsx(
+          'fixed bottom-20 right-5 z-40 h-14 w-14 rounded-full bg-primary p-3 transition-all hover:scale-110',
+          'desktop:right-5',
+        )}
       >
         <Image src={plusButton} alt="Add Playlist" width={32} height={32} />
       </button>
 
-      <PlaylistBottomSheet
-        isOpen={isBottomSheetOpen}
-        onClose={() => setIsBottomSheetOpen(false)}
-        modalType={modalType}
-        name={name}
-        description={description}
-        isPublic={isPublic}
-        selectedKeywords={selectedKeywords}
-        setName={setName}
-        setDescription={setDescription}
-        setIsPublic={setIsPublic}
-        toggleKeyword={toggleKeyword}
-        handleSubmit={handleSubmit}
-      />
+      {isDesktop ? (
+        <PlaylistModal
+          isOpen={isOpen}
+          onClose={() => setIsOpen(false)}
+          modalType={modalType}
+        />
+      ) : (
+        <PlaylistBottomSheet
+          isOpen={isOpen}
+          onClose={() => setIsOpen(false)}
+          modalType={modalType}
+          name={name}
+          description={description}
+          isPublic={isPublic}
+          selectedKeywords={selectedKeywords}
+          setName={setName}
+          setDescription={setDescription}
+          setIsPublic={setIsPublic}
+          toggleKeyword={toggleKeyword}
+          handleSubmit={handleSubmit}
+        />
+      )}
     </>
   )
 }

@@ -45,50 +45,16 @@ export default function CommentSection({
   const router = useRouter()
 
   useEffect(() => {
-    const fetchUser = async () => {
-      const { data: userSession } = await supabase.auth.getSession()
-      if (userSession?.session?.user) {
-        setCurrentUserId(userSession.session.user.id)
+    const fetchCurrentUser = async () => {
+      const { data } = await supabase.auth.getUser()
+      if (data.user) {
+        setCurrentUserId(data.user.id)
       }
     }
+    fetchCurrentUser()
+  }, [])
 
-    const fetchCommentsWithProfiles = async () => {
-      const { data, error } = await supabase
-        .from('comments')
-        .select(
-          `
-          id,
-          created_at,
-          user_id,
-          content,
-          users (
-            profile_image,
-            nickname
-          )
-        `,
-        )
-        .eq('playlist_id', playlistId)
-
-      if (error) {
-        console.error(
-          'Error fetching comments with user profiles:',
-          error.message,
-        )
-        return
-      }
-
-      const commentsWithProfiles = data.map((comment: Comment) => ({
-        ...comment,
-        profileImage: comment.users?.profile_image || null,
-        nickname: comment.users?.nickname || 'Anonymous', // 닉네임 추가
-      }))
-
-      setComments(commentsWithProfiles)
-    }
-
-    fetchUser()
-    fetchCommentsWithProfiles()
-
+  useEffect(() => {
     if (songs.length > 0) {
       setTrackIds(songs.map((song) => song.spotify_id))
       setPlayerOpen()
@@ -117,7 +83,7 @@ export default function CommentSection({
         nickname
       )
     `,
-      ) // 사용자 정보 포함
+      )
       .single()
 
     if (error) {
@@ -125,7 +91,7 @@ export default function CommentSection({
       return
     }
 
-    setComments((prev) => [...prev, data as unknown as Comment])
+    setComments((prev) => [data as unknown as Comment, ...prev])
     setContent('')
   }
 
@@ -191,6 +157,7 @@ export default function CommentSection({
         type="horizontal"
         onConfirm={handleConfirmLogin}
         onCancel={() => setIsLoginModalOpen(false)}
+        className="desktop:w-[434px]"
       />
     </>
   )

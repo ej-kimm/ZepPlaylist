@@ -3,12 +3,14 @@
 import ChevronDownXL from '@/assets/images/Chevron_Down_XL.svg'
 import ChevronUpXL from '@/assets/images/Chevron_Up_XL.svg'
 import commentSubmitButton from '@/assets/images/commentSubmit.svg'
+import CommunityWebCircle from '@/assets/images/communityWebCircle.svg'
 import defaultProfileImg from '@/assets/images/defaultProfileImg.png'
 import likeFalse from '@/assets/images/likeFalse.svg'
 import likeTrue from '@/assets/images/likeTrue.svg'
 import moreButton from '@/assets/images/moreButton.svg'
-import { Modal } from '@/components/common'
+import { Modal, MusicSaveModal } from '@/components/common'
 import MusicSaveBottomSheet from '@/components/common/MusicSaveBottomSheet'
+import useIsDesktop from '@/hooks/useIsDesktop'
 import type { SpotifyTrack } from '@/types/billboradCharts'
 import type { Comment } from '@/types/comment'
 import type { CommunitySong } from '@/types/communitySong'
@@ -60,6 +62,7 @@ export default function CommunityDetailUI({
   )
   const [isCommentVisible, setIsCommentVisible] = useState(true)
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
+  const isDesktop = useIsDesktop(720)
 
   const router = useRouter()
 
@@ -108,13 +111,13 @@ export default function CommunityDetailUI({
     <div
       className={clsx(
         'flex flex-col',
-        'desktop:flex-row desktop:items-start desktop:gap-8',
+        'desktop:flex-row desktop:items-start desktop:gap-20',
       )}
     >
       {/* 노래 목록 섹션 (60%) */}
       <div className={clsx('flex-1', 'desktop:max-w-[60%]')}>
-        {/* 상단 정보 */}
-        <div>
+        {/* 상단 정보 (모바일) */}
+        <div className="desktop:hidden">
           <div className="flex w-full items-center justify-between">
             <h1 className="title-1 mb-2 mt-2">{playlistName}</h1>
             <button onClick={onLikeToggle} className="mb-2 mt-2 h-6 w-6">
@@ -137,23 +140,58 @@ export default function CommunityDetailUI({
                 alt="프로필 이미지"
                 width={24}
                 height={24}
-                className="object-contain"
+                className="h-full w-full object-cover"
               />
             </div>
             <span className="caption-2">{nickname}</span>
           </div>
         </div>
 
+        {/* 상단 정보 (PC) */}
+        <div className="hidden desktop:block">
+          <div className="flex w-full items-center justify-between">
+            <h1 className="headline-1 mt-12">{playlistName}</h1>
+            <button onClick={onLikeToggle} className="mt-12 h-8 w-8">
+              <Image
+                src={isLiked ? likeTrue : likeFalse}
+                alt="Like Button"
+                width={24}
+                height={24}
+              />
+            </button>
+          </div>
+          <p className="caption-3 mt-3">{description || '설명이 없습니다.'}</p>
+          <div className="flex items-center gap-3">
+            <div
+              className="mb-10 mt-3 flex-shrink-0 overflow-hidden rounded-full"
+              style={{ width: '36px', height: '36px' }} // PC에서 프로필 이미지 크기 증가
+            >
+              <Image
+                src={profileImage || defaultProfileImg}
+                alt="프로필 이미지"
+                width={36}
+                height={36}
+                className="h-full w-full object-cover"
+              />
+            </div>
+            <span className="caption-1 mb-10 mt-3">{nickname}</span>
+          </div>
+        </div>
+
         {/* 노래 목록 */}
         <div className="flex flex-col">
-          <ul className="mb-12 mt-4">
+          <ul className={clsx(isDesktop ? "" : "mb-12")}>
             {songs.length > 0 ? (
               songs.map((song, index) => (
                 <li
                   key={song.spotify_id}
-                  className="flex items-center justify-between py-4"
+                  className={clsx(
+                    'flex cursor-pointer items-center justify-between py-4',
+                    'desktop:hidden', // PC에서는 모바일 버전 숨김
+                  )}
                   onClick={() => handlePlayFromIndex(index)}
                 >
+                  {/* 모바일 버전 (기존 코드 유지) */}
                   <div className="flex items-center">
                     <div className="relative h-12 w-12">
                       <Image
@@ -188,6 +226,53 @@ export default function CommunityDetailUI({
             ) : (
               <p className="text-gray-500">노래 정보가 없습니다.</p>
             )}
+
+            {/* PC 버전 추가 */}
+            {songs.length > 0 &&
+              songs.map((song, index) => (
+                <li
+                  key={`pc-${song.spotify_id}`}
+                  className={clsx(
+                    'hidden cursor-pointer items-center justify-between py-4',
+                    'desktop:flex', // PC에서만 표시
+                  )}
+                  onClick={() => handlePlayFromIndex(index)}
+                >
+                  {/* 앨범 커버 */}
+                  <div className="relative h-[54px] w-[54px] flex-shrink-0">
+                    <Image
+                      src={song.album_cover || '이미지가 없습니다.'}
+                      alt={`${song.title} 앨범 커버`}
+                      layout="fill"
+                      objectFit="cover"
+                      className="rounded"
+                    />
+                  </div>
+
+                  {/* 텍스트 정보 (가로 배치) */}
+                  <div className="flex flex-1 items-center justify-between text-center">
+                    <p className="body-2 flex-1 truncate">{song.title}</p>
+                    <p className="caption-1 flex-1 truncate">{song.artist}</p>
+                    <p className="caption-1 flex-1 truncate">{song.album_name}</p>
+                  </div>
+
+                  {/* 커뮤니티 웹 서클 아이콘 */}
+                  <button
+                    className="h-9 w-9 flex-shrink-0"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      handleMoreButtonClick(song)
+                    }}
+                  >
+                    <Image
+                      src={CommunityWebCircle}
+                      alt="More Options"
+                      width={36}
+                      height={36}
+                    />
+                  </button>
+                </li>
+              ))}
           </ul>
         </div>
       </div>
@@ -196,13 +281,19 @@ export default function CommunityDetailUI({
       <div
         className={clsx(
           'hidden desktop:block desktop:max-w-[40%] desktop:flex-1',
-          'desktop:sticky desktop:top-4 desktop:h-[calc(100vh-160px)]',
+          'desktop:sticky desktop:h-[calc(100vh-140px)] desktop:fixed desktop:right-0 desktop:top-0',
+          'relative', // 추가
         )}
       >
-        <div className="flex h-full flex-col gap-4">
+        {/* 블러 배경 레이어 */}
+        <div
+          className="absolute inset-0 z-0 bg-gradient-to-t from-black/70 via-gray-800/30 to-white/10 p-4 shadow-lg backdrop-blur-[6px]"
+          aria-hidden="true"
+        />
+        <div className="relative z-10 flex h-full flex-col gap-4 bg-transparent display:">
           {/* 댓글 목록 */}
-          <div className="flex-1 overflow-y-auto">
-            <ul className="space-y-4">
+          <div className="flex-1 overflow-y-auto [&>*]:bg-transparent flex flex-col-reverse">
+            <ul className="space-y-4 bg-transparent pl-4">
               {comments.map((comment) => (
                 <li key={comment.id} className="flex items-start gap-4 py-2">
                   <div className="h-8 w-8 shrink-0 overflow-hidden rounded-full">
@@ -211,21 +302,21 @@ export default function CommunityDetailUI({
                       alt="프로필"
                       width={32}
                       height={32}
-                      className="object-cover"
+                      className="h-full w-full object-cover"
                     />
                   </div>
                   <div className="flex-1">
                     <div className="flex items-baseline gap-2">
-                      <span className="text-sm font-medium">
+                      <span className="mt-1 text-sm font-medium">
                         {comment.users?.nickname}:
                       </span>
                       <p className="flex-1 text-sm">{comment.content}</p>
                       {currentUserId === comment.user_id && (
                         <button
                           onClick={() => openDeleteModal(comment.id)}
-                          className="text-gray-400 hover:text-red-500"
+                          className="hover:text-bold mr-4 text-gray-600"
                         >
-                          <TbTrash size={16} />
+                          <TbTrash size={18} />
                         </button>
                       )}
                     </div>
@@ -236,11 +327,11 @@ export default function CommunityDetailUI({
           </div>
 
           {/* 웹 댓글 입력창 */}
-          <div className="sticky bottom-0 border-t bg-white pt-4">
-            <div className="flex items-center gap-2">
+          <div className="sticky bottom-0 border-t border-white/20 bg-white/10 backdrop-blur-[6px]">
+            <div className="flex items-center px-4 py-4">
               <input
                 type="text"
-                className="flex-1 rounded-lg border border-gray-200 px-4 py-2 text-sm focus:outline-none"
+                className="flex-1 rounded-lg border border-white/20 bg-white px-4 py-2 text-sm text-black focus:outline-none"
                 placeholder="댓글을 입력해주세요!"
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
@@ -250,18 +341,19 @@ export default function CommunityDetailUI({
                   }
                 }}
               />
-              <button
-                onClick={handleAddCommentWithRedirect}
-                className="ml-2 flex h-8 w-8 flex-shrink-0 items-center justify-center"
-                disabled={!content.trim().length}
-              >
-                <Image
-                  src={commentSubmitButton}
-                  alt="Submit Comment"
-                  width={36}
-                  height={36}
-                />
-              </button>
+              {content.trim().length > 0 && (
+                <button
+                  onClick={handleAddCommentWithRedirect}
+                  className="ml-2 flex h-8 w-8 flex-shrink-0 items-center justify-center"
+                >
+                  <Image
+                    src={commentSubmitButton}
+                    alt="Submit Comment"
+                    width={36}
+                    height={36}
+                  />
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -330,7 +422,7 @@ export default function CommunityDetailUI({
           <div className="flex items-center gap-2 p-2">
             <input
               type="text"
-              className="md:min-w-[120px] h-9 min-w-[50px] flex-1 rounded-lg border border-gray-200 bg-white px-4 text-sm focus:outline-none"
+              className="h-9 min-w-[50px] flex-1 rounded-lg border border-gray-200 bg-white px-4 text-sm focus:outline-none md:min-w-[120px]"
               placeholder="댓글을 입력해주세요!"
               value={content}
               onChange={(e) => setContent(e.target.value)}
@@ -380,6 +472,7 @@ export default function CommunityDetailUI({
         type="horizontal"
         onConfirm={confirmDeleteComment}
         onCancel={() => setIsDeleteModalOpen(false)}
+        className="desktop:w-[434px]"
       />
 
       <Modal
@@ -389,16 +482,28 @@ export default function CommunityDetailUI({
         type="vertical"
         onConfirm={handleConfirmLogin}
         onCancel={() => setIsLoginModalOpen(false)}
+        className="desktop:w-[434px]"
       />
 
       {selectedSong && (
-        <MusicSaveBottomSheet
-          isOpen={isBottomSheetOpen}
-          handleClose={() => setIsBottomSheetOpen(false)}
-          musicName={selectedSong.title}
-          artistName={selectedSong.artist}
-          musicData={selectedSong}
-        />
+        <>
+          {isDesktop ? (
+            <MusicSaveModal
+              isOpen={isBottomSheetOpen}
+              handleClose={() => setIsBottomSheetOpen(false)}
+              musicName={selectedSong.title}
+              artistName={selectedSong.artist}
+            />
+          ) : (
+            <MusicSaveBottomSheet
+              isOpen={isBottomSheetOpen}
+              handleClose={() => setIsBottomSheetOpen(false)}
+              musicName={selectedSong.title}
+              artistName={selectedSong.artist}
+              musicData={selectedSong}
+            />
+          )}
+        </>
       )}
     </div>
   )

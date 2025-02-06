@@ -8,6 +8,9 @@ import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import type { SpotifyTrack } from '@/types/billboradCharts'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
+import useIsDesktop from '@/hooks/useIsDesktop'
+import TableList from '@/components/common/Tableilst'
+import communityWebCircle from '@/assets/images/communityWebCircle.svg'
 
 type SearchResultProps = {
   searchParams: string
@@ -15,17 +18,13 @@ type SearchResultProps = {
   searchResultArtists: SpotifyApi.ArtistObjectFull[]
 }
 
-// type SearchHistoryItem = {
-//   query: string
-//   expirationDate: number
-// }
-
 const SearchResultItem = ({
   searchParams,
   searchResultList,
   searchResultArtists,
 }: SearchResultProps) => {
   const { saveSearchHistory } = useSearchHistory()
+  const isDesktop = useIsDesktop(720)
 
   useEffect(() => {
     saveSearchHistory(searchParams)
@@ -37,12 +36,10 @@ const SearchResultItem = ({
 
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState<boolean>(false)
   const [selectedSong, setSelectedSong] = useState<SpotifyTrack>()
-  console.log('selectedSong', selectedSong)
 
   const handlePlayBtn = async (newMusicData: SpotifyTrack) => {
-    console.log()
     await upsertMusic(newMusicData)
-    if (!isPlayerOpen) setPlayerOpen() // 페이지 방문 후, 첫 곡 재생이면 플레이어바 보여줌
+    if (!isPlayerOpen) setPlayerOpen()
     setTrackIds(newMusicData.id)
     play()
   }
@@ -53,26 +50,64 @@ const SearchResultItem = ({
   }
 
   return (
-    <>
-      <div className="mx-auto flex max-w-3xl flex-col gap-5">
-        <h1 className="title-1 mb-3 pt-5">{searchParams} 검색 결과</h1>
-
-        <div>
-          <h2 className="title-2 flex pb-6 font-bold">가수</h2>
-          <div className="flex flex-col gap-2">
-            <Image
-              src={searchResultArtists[0].images[0].url}
-              alt={searchResultArtists[0].name}
-              width={80}
-              height={80}
-              className="rounded-full"
-              priority
-            />
-            <p className="caption-1">{searchResultArtists[0].name}</p>
-          </div>
+    <div className="mx-auto flex flex-col gap-5">
+      <h1 className="title-1 mb-3 pt-5">{searchParams} 검색 결과</h1>
+      <div>
+        <h2 className="title-2 flex pb-6 font-bold">가수</h2>
+        <div className="flex flex-col gap-2">
+          <Image
+            src={searchResultArtists[0].images[0].url}
+            alt={searchResultArtists[0].name}
+            width={80}
+            height={80}
+            className="rounded-full"
+            priority
+          />
+          <p className="caption-1 ml-2">{searchResultArtists[0].name}</p>
         </div>
-        <div>
-          <h2 className="title-2 mt-3">곡</h2>
+      </div>
+
+      <div>
+        <h2 className="title-2 mt-3">곡</h2>
+        {isDesktop ? (
+          <TableList
+            items={searchResultList.map((item) => ({
+              spotify_id: item.id,
+              title: item.name,
+              artist: item.artists[0].name,
+              album_cover: item.album.images[0].url,
+              album_name: item.album.name,
+            }))}
+            handleItemClick={(index) =>
+              handlePlayBtn({
+                id: searchResultList[index].id,
+                title: searchResultList[index].name,
+                artist: searchResultList[index].artists[0].name,
+                playTime: searchResultList[index].duration_ms,
+                albumCover: searchResultList[index].album.images[0].url,
+                albumName: searchResultList[index].album.name,
+              })
+            }
+            renderAction={(item) => (
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  handleMoreButtonClick({
+                    id: item.spotify_id,
+                    title: item.title,
+                    artist: item.artist,
+                    playTime: 0,
+                    albumCover: item.album_cover || '',
+                    albumName: item.album_name || '',
+                  })
+                }}
+              >
+                <Image src={communityWebCircle} alt="More Options" width={36} height={36} />
+              </button>
+            )}
+          />
+        ) : (
           <ul>
             {searchResultList.map((item) => (
               <li
@@ -115,9 +150,7 @@ const SearchResultItem = ({
                   }
                 >
                   <h3 className="button-2 truncate">{item.name}</h3>
-                  <p className="caption-2 truncate opacity-60">
-                    {item.artists[0].name}
-                  </p>
+                  <p className="caption-2 truncate opacity-60">{item.artists[0].name}</p>
                 </div>
                 <button
                   type="button"
@@ -133,28 +166,24 @@ const SearchResultItem = ({
                     })
                   }}
                 >
-                  <Image
-                    src={moreButton}
-                    alt="More Options"
-                    width={24}
-                    height={24}
-                  />
+                  <Image src={moreButton} alt="More Options" width={24} height={24} />
                 </button>
               </li>
             ))}
           </ul>
-        </div>
-        {selectedSong && (
-          <MusicSaveBottomSheet
-            isOpen={isBottomSheetOpen}
-            handleClose={() => setIsBottomSheetOpen(false)}
-            musicName={selectedSong!.title}
-            artistName={selectedSong!.artist}
-            musicData={selectedSong}
-          />
         )}
       </div>
-    </>
+
+      {selectedSong && (
+        <MusicSaveBottomSheet
+          isOpen={isBottomSheetOpen}
+          handleClose={() => setIsBottomSheetOpen(false)}
+          musicName={selectedSong!.title}
+          artistName={selectedSong!.artist}
+          musicData={selectedSong}
+        />
+      )}
+    </div>
   )
 }
 

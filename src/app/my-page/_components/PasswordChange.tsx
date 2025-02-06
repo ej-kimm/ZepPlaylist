@@ -22,10 +22,12 @@ const passwordChangeSchema = z
 type PasswordChangeForm = z.infer<typeof passwordChangeSchema>
 type PasswordChangeProps = {
   handleClosePasswordSheet: () => void
+  onClick: () => void
 }
 
 export const PasswordChange = ({
   handleClosePasswordSheet,
+  onClick,
 }: PasswordChangeProps) => {
   const {
     register,
@@ -39,7 +41,6 @@ export const PasswordChange = ({
     const { error: passwordChangeError } = await supabase.auth.updateUser({
       password: newPassword,
     })
-    handleClosePasswordSheet()
 
     if (passwordChangeError) {
       console.error(passwordChangeError.message)
@@ -48,7 +49,8 @@ export const PasswordChange = ({
         text: '비밀번호 변경중 오류가 발생했습니다 다시시도해주세요!',
       })
     } else {
-      Swal.fire('완료', '비밀번호가 변경되었습니다.', 'success')
+      handleClosePasswordSheet()
+      onClick()
     }
   }
 

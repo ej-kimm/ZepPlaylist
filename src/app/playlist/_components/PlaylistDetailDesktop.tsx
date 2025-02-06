@@ -32,9 +32,7 @@ export default function PlaylistDetailDesktop({
     songs,
   } = playlistDetails
 
-  const latestCovers = songs
-    .slice(0, 4)
-    .map((song) => song.album_cover || '/default-cover.jpg')
+  const latestCovers = songs.slice(0, 4).map((song) => song.album_cover || null)
 
   return (
     <div className="mx-auto w-full bg-white px-[24px]">
@@ -43,29 +41,33 @@ export default function PlaylistDetailDesktop({
       <section className="flex w-full items-start gap-6">
         <div className="flex flex-shrink-0 items-start">
           {latestCovers.length <= 3 ? (
-            <div className="h-[212px] w-[212px] overflow-hidden rounded-lg bg-[#D9D9D9]">
-              <Image
-                src={latestCovers[0]}
-                alt="대표 앨범 커버"
-                width={212}
-                height={212}
-                className="rounded-lg object-cover"
-              />
+            <div className="flex h-[212px] w-[212px] items-center justify-center overflow-hidden rounded-lg bg-[#D9D9D9]">
+              {latestCovers[0] ? (
+                <Image
+                  src={latestCovers[0]}
+                  alt="대표 앨범 커버"
+                  width={212}
+                  height={212}
+                  className="rounded-lg object-cover"
+                />
+              ) : null}
             </div>
           ) : (
             <div className="flex w-[212px] flex-wrap items-start gap-[8px]">
               {latestCovers.map((cover, index) => (
                 <div
                   key={index}
-                  className="h-[102px] w-[102px] overflow-hidden rounded-lg bg-[#D9D9D9]"
+                  className="flex h-[102px] w-[102px] items-center justify-center overflow-hidden rounded-lg bg-[#D9D9D9]"
                 >
-                  <Image
-                    src={cover}
-                    alt={`앨범 커버 ${index + 1}`}
-                    width={102}
-                    height={102}
-                    className="rounded-lg object-cover"
-                  />
+                  {cover ? (
+                    <Image
+                      src={cover}
+                      alt={`앨범 커버 ${index + 1}`}
+                      width={102}
+                      height={102}
+                      className="rounded-lg object-cover"
+                    />
+                  ) : null}
                 </div>
               ))}
             </div>
