@@ -38,6 +38,7 @@ const Navbar = () => {
 
   const handleLogIn = () => {
     if (isPlayerModalOpen) setPlayerClose()
+    handleLinkClick()
     router.push('/login')
   }
 
@@ -48,6 +49,7 @@ const Navbar = () => {
       return
     }
     setUser(null)
+    handleLinkClick()
     window.location.reload()
     if (isPlayerModalOpen) setPlayerClose()
   }
@@ -72,6 +74,7 @@ const Navbar = () => {
             <Link
               key={index}
               href={link.to}
+              onClick={handleLinkClick}
               className={clsx(
                 'button-2 relative whitespace-nowrap px-[10px] py-2 text-[#636363] transition-colors',
                 isCommunityActive || isPlaylistActive || pathname === link.to
