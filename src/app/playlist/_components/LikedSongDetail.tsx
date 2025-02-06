@@ -4,11 +4,10 @@ import { removeLikedSong } from '@/api/like-music/actions'
 import { Modal } from '@/components/common'
 import useIsDesktop from '@/hooks/useIsDesktop'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
-import { userStore } from '@/store/userSlice'
 import { LikedSong } from '@/types/song'
-import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import LikedSongsDetailDesktop from './LikedSongDetailDesktop'
+import LikedSongDetailSkeleton from './LikedSongDetailSkeleton'
 import LikedSongsDetailUI from './LikedSongDetailUI'
 
 type LikedSongsPageProps = {
@@ -22,6 +21,7 @@ export default function LikedSongsPage({
     useMusicPlayerStore()
   const [likedSongs, setLikedSongs] = useState<LikedSong[]>(initialLikedSongs)
   const [showDropdown, setShowDropdown] = useState<string | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
   const dropdownRef = useRef<HTMLDivElement | null>(null)
   const [modalProps, setModalProps] = useState({
     isOpen: false,
@@ -31,15 +31,8 @@ export default function LikedSongsPage({
     onConfirm: () => {},
     onCancel: () => setModalProps((prev) => ({ ...prev, isOpen: false })),
   })
-  const { user, isLogin } = userStore()
-  const router = useRouter()
-  const isDesktop = useIsDesktop()
 
-  useEffect(() => {
-    if (!isLogin || !user?.id) {
-      router.replace('/login')
-    }
-  }, [user, router, isLogin])
+  const isDesktop = useIsDesktop()
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -55,6 +48,17 @@ export default function LikedSongsPage({
       document.removeEventListener('mousedown', handleClickOutside)
     }
   }, [])
+
+  useEffect(() => {
+    if (initialLikedSongs.length > 0) {
+      setLikedSongs(initialLikedSongs)
+    }
+    setTimeout(() => setIsLoading(false), 1000)
+  }, [initialLikedSongs])
+
+  if (isLoading) {
+    return <LikedSongDetailSkeleton />
+  }
 
   const handleDelete = (likeId: string) => {
     setModalProps({

@@ -9,11 +9,26 @@ function formatPlayTime(seconds: number): string {
   return `${minutes}분`
 }
 
+// export async function getUser() {
+//   const supabase = createClient()
+
+//   const {
+//     data: { user },
+//   } = await supabase.auth.getUser()
+
+//   if (!user) {
+//     redirect('/')
+//   }
+
+//   return user
+// }
+
 export async function fetchPlaylistDetails(
   playlistId: string,
 ): Promise<PlaylistDetails | null> {
   try {
     const supabase = createClient()
+    // await getUser()
 
     // 플레이리스트 기본 정보 가져오기
     const { data: playlist, error: playlistError } = await supabase
@@ -32,16 +47,16 @@ export async function fetchPlaylistDetails(
       .from('playlist_music')
       .select(
         `
-    music:music_id (
-      spotify_id,
-      title,
-      artist,
-      play_time,
-      album_cover,
-      album_name
-    ),
-    created_at
-  `,
+      music:music_id (
+        spotify_id,
+        title,
+        artist,
+        play_time,
+        album_cover,
+        album_name
+        ),
+        created_at
+        `,
       )
       .eq('playlist_id', playlistId)
 

@@ -1,6 +1,7 @@
 'use client'
 
 import PlaylistDesktopUI from '@/components/common/PlaylistDesktop'
+import { useToggleLike } from '@/hooks/useToggle'
 import { PlaylistRow } from '@/types/playlist'
 
 type PlaylistDesktopProps = {
@@ -9,7 +10,7 @@ type PlaylistDesktopProps = {
   handlePlaylistClick: (playlistId: string) => void
   handleLikesClick: () => void
   openModal: (type: 'add' | 'edit', playlist?: PlaylistRow) => void
-  handleLikeToggle: (playlistId: string) => void
+  handleLikeToggle: () => void
   handleEditPlaylist: (playlist: PlaylistRow) => void
   handleDeletePlaylist: (playlistId: string) => void
 }
@@ -22,8 +23,9 @@ export default function PlaylistDesktop({
   openModal,
   handleDeletePlaylist,
   handleEditPlaylist,
-  handleLikeToggle,
 }: PlaylistDesktopProps) {
+  const toggle = useToggleLike()
+
   return (
     <div className="mx-auto max-w-full">
       <h2 className="title-3 mb-24 mt-24 font-pretendard">
@@ -78,7 +80,12 @@ export default function PlaylistDesktop({
               title={playlist.name}
               description={playlist.description || '설명 없음'}
               isLiked={playlist.is_liked}
-              onLikeToggle={() => handleLikeToggle(playlist.id)}
+              onLikeToggle={() =>
+                toggle.mutate({
+                  playlist_id: playlist.id,
+                  user_id: playlist.user_id,
+                })
+              }
               onClick={() => handlePlaylistClick(playlist.id)}
               onEdit={() => handleEditPlaylist(playlist)}
               onDelete={() => handleDeletePlaylist(playlist.id)}
