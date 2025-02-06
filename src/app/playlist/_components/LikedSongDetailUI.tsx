@@ -61,7 +61,7 @@ export default function LikedSongsDetailUI({
               is_public: true,
             }}
             showDropdown={showDropdown}
-            toggleDropdown={toggleDropdown}
+            toggleDropdown={() => toggleDropdown(song.id)}
             handlePlaylistClick={() => handlePlayFromSong(index)}
             handleDeleteSong={handleDelete}
             isDetailPage={true}
