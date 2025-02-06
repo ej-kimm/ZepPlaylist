@@ -1,3 +1,4 @@
+import { fetchSongLikesAndMusic } from '@/api/home/actions'
 import { isSongLiked, updateSongLike } from '@/api/music-play/actions'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import { Tables } from '@/types/supabase'
@@ -20,6 +21,12 @@ const useSongLike = ({ user_id, spotify_id }: useSongLikeProps) => {
     queryKey: ['song_like', user_id, currentTrackId],
     queryFn: () => isSongLiked({ user_id, music_id: currentTrackId }),
     enabled: !!user_id && !!currentTrackId,
+  })
+
+  const { data: userLikedSong } = useQuery({
+    queryKey: ['userLikedSong', user_id],
+    queryFn: () => fetchSongLikesAndMusic({ user_id }),
+    enabled: !!user_id,
   })
 
   const updateLike = useMutation({
@@ -49,10 +56,13 @@ const useSongLike = ({ user_id, spotify_id }: useSongLikeProps) => {
       queryClient.invalidateQueries({
         queryKey: ['song_like', user_id, currentTrackId],
       })
+      queryClient.invalidateQueries({
+        queryKey: ['userLikedSong', user_id],
+      })
     },
   })
 
-  return { songLike, updateLike }
+  return { songLike, updateLike, userLikedSong }
 }
 
 export default useSongLike

@@ -1,8 +1,10 @@
-'use sever'
+'use server'
 
 import type { BillboardCharts } from '@/types/billboradCharts'
 import type { melonCharts } from '@/types/melonCharts'
+import type { Tables } from '@/types/supabase'
 import { supabase } from '@/utils/supabase/client'
+import { createClient } from '@/utils/supabase/server'
 import { fetchSpotifyToken } from '../spotifyToken'
 
 export const fetchNewReleases = async () => {
@@ -171,4 +173,19 @@ export const fetchBillboardChart = async () => {
   }
 
   return billboardChart
+}
+
+export const fetchSongLikesAndMusic = async ({
+  user_id,
+}: {
+  user_id: Tables<'song_like'>['user_id']
+}) => {
+  const supabase = createClient()
+  const { data, error } = await supabase
+    .from('song_like')
+    .select(`*,music(*)`)
+    .eq('user_id', user_id)
+
+  if (error) throw new Error(error.message)
+  return data
 }
