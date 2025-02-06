@@ -20,8 +20,8 @@ export default async function Home() {
       >
         <LatestAlbums />
         <Charts />
-        <UserLikedSong />
         <PopularPlayList />
+        <UserLikedSong />
       </div>
     </>
   )
