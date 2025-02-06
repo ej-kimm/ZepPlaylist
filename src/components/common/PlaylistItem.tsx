@@ -1,12 +1,13 @@
 import lock from '@/assets/images/lock.svg'
 import { PlaylistRow } from '@/types/playlist'
 import Image from 'next/image'
+import { useEffect, useRef } from 'react'
 import { FiMoreHorizontal, FiMoreVertical } from 'react-icons/fi'
 
 type PlaylistItemProps = {
   playlist: Pick<PlaylistRow, 'id'> & Partial<PlaylistRow>
   showDropdown: string | null
-  toggleDropdown: (id: string) => void
+  toggleDropdown: (id: string | null) => void
   handlePlaylistClick?: (playlistId: string) => void
   handleDeletePlaylist?: (playlistId: string) => void
   handleDeleteSong?: (songId: string) => void
@@ -24,6 +25,27 @@ export default function PlaylistItem({
   openModal,
   isDetailPage = false,
 }: PlaylistItemProps) {
+  const dropdownRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        toggleDropdown(null)
+      }
+    }
+
+    if (showDropdown === playlist.id) {
+      document.addEventListener('mousedown', handleClickOutside)
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [showDropdown, playlist.id, toggleDropdown])
+
   return (
     <li
       key={playlist.id}
@@ -66,11 +88,11 @@ export default function PlaylistItem({
         </div>
       </div>
 
-      <div className="relative">
+      <div className="relative" ref={dropdownRef}>
         <button
           onClick={(e) => {
             e.stopPropagation()
-            toggleDropdown(playlist.id ?? '')
+            toggleDropdown(showDropdown === playlist.id ? null : playlist.id)
           }}
           className="text-xl text-gray-500"
         >
