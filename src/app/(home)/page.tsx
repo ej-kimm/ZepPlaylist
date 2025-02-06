@@ -15,13 +15,13 @@ export default async function Home() {
       <div
         className={clsx(
           'flex-col gap-5',
-          'desktop:gap-[120px] desktop:mt-[80px] desktop:mb-[85px] desktop:max-w-[1200px] flex',
+          'flex desktop:mb-[85px] desktop:mt-[80px] desktop:max-w-[1200px] desktop:gap-[120px]',
         )}
       >
         <LatestAlbums />
         <Charts />
-        <UserLikedSong />
         <PopularPlayList />
+        <UserLikedSong />
       </div>
     </>
   )
