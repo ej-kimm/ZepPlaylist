@@ -10,7 +10,7 @@ interface SongItemProps {
   key?: string
 }
 
-const LikeSongItem: React.FC<SongItemProps> = ({ item }) => {
+const LikeSongItem = ({ item }: SongItemProps) => {
   const { isPlayerOpen, setTrackIds, setPlayerOpen, play } =
     useMusicPlayerStore()
   const isDesktop = useIsDesktop()
@@ -25,6 +25,7 @@ const LikeSongItem: React.FC<SongItemProps> = ({ item }) => {
     <li
       className="flex-none cursor-pointer"
       onClick={() => handlePlayBtn(item.spotify_id!)}
+      key={item.spotify_id}
     >
       <div
         className={clsx(
