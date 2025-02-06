@@ -4,6 +4,7 @@ import { useSpotifySearch } from '@/hooks/useGetSpotifyMusicId'
 import { usePlaylistMusicUpsert } from '@/hooks/usePlaylistMusicUpsert'
 import usePlaylistOperations from '@/hooks/usePlaylistOperations'
 import useScrollLock from '@/hooks/useScrollLock'
+import useSongLike from '@/hooks/useSongLike'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import { userStore } from '@/store/userSlice'
 import Image from 'next/image'
@@ -29,6 +30,7 @@ const MusicSaveModal = ({
   const { upsertMusic, addMusicToPlaylistTable } = usePlaylistMusicUpsert()
   const { closePlayerModal } = useMusicPlayerStore()
   const { searchSpotifyId } = useSpotifySearch()
+  const { updateLike } = useSongLike({ user_id: user?.id! })
   useScrollLock(isOpen)
 
   // 특정 플레이리스트 목록을 동작하는 함수

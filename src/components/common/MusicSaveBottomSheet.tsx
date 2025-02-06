@@ -1,7 +1,10 @@
 'use client'
+import likeFalse from '@/assets/images/heart.svg'
+import likeTrue from '@/assets/images/likeTrue.svg'
 import { usePlaylistMusicUpsert } from '@/hooks/usePlaylistMusicUpsert'
 import usePlaylistOperations from '@/hooks/usePlaylistOperations'
 import useScrollLock from '@/hooks/useScrollLock'
+import useSongLike from '@/hooks/useSongLike'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import { userStore } from '@/store/userSlice'
 import type { SpotifyTrack } from '@/types/billboradCharts'
@@ -29,7 +32,10 @@ const MusicSaveBottomSheet = ({
   const { playlists, isPending } = usePlaylistOperations()
   const { upsertMusic, addMusicToPlaylistTable } = usePlaylistMusicUpsert()
   const { closePlayerModal } = useMusicPlayerStore()
-  // const { searchSpotifyId } = useSpotifySearch()
+  const { songLike, updateLike } = useSongLike({
+    user_id: user?.id!,
+    spotify_id: musicData?.id,
+  })
   useScrollLock(isOpen)
 
   // 특정 플레이리스트 목록을 동작하는 함수
@@ -38,8 +44,6 @@ const MusicSaveBottomSheet = ({
     musicData: SpotifyTrack,
   ) => {
     try {
-      // const musicData = await searchSpotifyId(musicName, artistName)
-      // console.log('bottomSet', musicData)
       // spubase music 테이블에 곡 담아주는 함수 호출
       const musicId = await upsertMusic(musicData!)
 
@@ -58,6 +62,11 @@ const MusicSaveBottomSheet = ({
     handleClose()
   }
 
+  const handleLikeClick = async () => {
+    await upsertMusic(musicData!)
+    updateLike.mutate({ user_id: user?.id! })
+  }
+
   return (
     <BottomSheet
       height="auto"
@@ -68,6 +77,19 @@ const MusicSaveBottomSheet = ({
       <header className="flex h-[88px] flex-col justify-center border-b border-opacity-60 px-4">
         <h3 className="title-2 mb-2 truncate font-medium">{musicName}</h3>
         <p className="body-2 truncate opacity-40">{artistName}</p>
+
+        <div
+          className="absolute right-10 top-10 cursor-pointer"
+          onClick={handleLikeClick}
+        >
+          <Image
+            src={songLike ? likeTrue : likeFalse}
+            width={24}
+            height={24}
+            className="h-6 w-6"
+            alt="heart"
+          />
+        </div>
       </header>
 
       <div className="flex flex-col">
