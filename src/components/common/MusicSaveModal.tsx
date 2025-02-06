@@ -30,12 +30,13 @@ const MusicSaveModal = ({
   musicData,
 }: MusicSaveModalProps) => {
   const { user } = userStore()
+  const user_id = user?.id || ''
   const { playlists, isPending } = usePlaylistOperations()
   const { upsertMusic, addMusicToPlaylistTable, modal } =
     usePlaylistMusicUpsert()
   const { closePlayerModal } = useMusicPlayerStore()
   const { songLike, updateLike } = useSongLike({
-    user_id: user?.id!,
+    user_id,
     spotify_id: musicData?.id,
   })
   useScrollLock(isOpen)
@@ -66,8 +67,8 @@ const MusicSaveModal = ({
   }
 
   const handleLikeClick = async () => {
-    await upsertMusic(musicData!)
-    updateLike.mutate({ user_id: user?.id! })
+    await upsertMusic(musicData)
+    updateLike.mutate({ user_id })
   }
 
   return (
