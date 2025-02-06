@@ -1,6 +1,6 @@
 'use client'
 
-import { MusicSaveBottomSheet } from '@/components/common'
+import { MusicSaveBottomSheet, MusicSaveModal } from '@/components/common'
 import useIsDesktop from '@/hooks/useIsDesktop'
 import { usePlaylistMusicUpsert } from '@/hooks/usePlaylistMusicUpsert'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
@@ -70,13 +70,25 @@ const LatestAlbumDetail = ({ albumData }: LatestAlbumProps) => {
   return (
     <>
       {isDesktop ? (
-        <LatestAlbumDetailDesktop
-          albumData={albumData}
-          albumTrackData={albumTrackData}
-          handlePlayAll={handlePlayAll}
-          formatTime={formatTime}
-          totalPlayTimeMilliseconds={totalPlayTimeMilliseconds}
-        />
+        <>
+          <LatestAlbumDetailDesktop
+            albumData={albumData}
+            albumTrackData={albumTrackData}
+            handlePlayAll={handlePlayAll}
+            formatTime={formatTime}
+            totalPlayTimeMilliseconds={totalPlayTimeMilliseconds}
+            handlePlayBtn={handlePlayBtn}
+            handleMoreButtonClick={handleMoreButtonClick}
+          />
+          {selectedSong && (
+            <MusicSaveModal
+              isOpen={isBottomSheetOpen}
+              handleClose={() => setIsBottomSheetOpen(false)}
+              musicName={selectedSong!.title}
+              artistName={selectedSong!.artist}
+            />
+          )}
+        </>
       ) : (
         <>
           <LatestAlbumDetailUI

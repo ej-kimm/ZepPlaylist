@@ -1,16 +1,16 @@
 'use client'
 
+import communityWebCircle from '@/assets/images/communityWebCircle.svg'
 import moreButton from '@/assets/images/moreButton.svg'
-import { MusicSaveBottomSheet } from '@/components/common'
+import { MusicSaveBottomSheet, MusicSaveModal } from '@/components/common'
+import TableList from '@/components/common/Tableilst'
+import useIsDesktop from '@/hooks/useIsDesktop'
 import { usePlaylistMusicUpsert } from '@/hooks/usePlaylistMusicUpsert'
 import { useSearchHistory } from '@/hooks/useSearchHistoryItem'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import type { SpotifyTrack } from '@/types/billboradCharts'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
-import useIsDesktop from '@/hooks/useIsDesktop'
-import TableList from '@/components/common/Tableilst'
-import communityWebCircle from '@/assets/images/communityWebCircle.svg'
 
 type SearchResultProps = {
   searchParams: string
@@ -70,43 +70,58 @@ const SearchResultItem = ({
       <div>
         <h2 className="title-2 mt-3">곡</h2>
         {isDesktop ? (
-          <TableList
-            items={searchResultList.map((item) => ({
-              spotify_id: item.id,
-              title: item.name,
-              artist: item.artists[0].name,
-              album_cover: item.album.images[0].url,
-              album_name: item.album.name,
-            }))}
-            handleItemClick={(index) =>
-              handlePlayBtn({
-                id: searchResultList[index].id,
-                title: searchResultList[index].name,
-                artist: searchResultList[index].artists[0].name,
-                playTime: searchResultList[index].duration_ms,
-                albumCover: searchResultList[index].album.images[0].url,
-                albumName: searchResultList[index].album.name,
-              })
-            }
-            renderAction={(item) => (
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation()
-                  handleMoreButtonClick({
-                    id: item.spotify_id,
-                    title: item.title,
-                    artist: item.artist,
-                    playTime: 0,
-                    albumCover: item.album_cover || '',
-                    albumName: item.album_name || '',
-                  })
-                }}
-              >
-                <Image src={communityWebCircle} alt="More Options" width={36} height={36} />
-              </button>
+          <>
+            <TableList
+              items={searchResultList.map((item) => ({
+                spotify_id: item.id,
+                title: item.name,
+                artist: item.artists[0].name,
+                album_cover: item.album.images[0].url,
+                album_name: item.album.name,
+              }))}
+              handleItemClick={(index) =>
+                handlePlayBtn({
+                  id: searchResultList[index].id,
+                  title: searchResultList[index].name,
+                  artist: searchResultList[index].artists[0].name,
+                  playTime: searchResultList[index].duration_ms,
+                  albumCover: searchResultList[index].album.images[0].url,
+                  albumName: searchResultList[index].album.name,
+                })
+              }
+              renderAction={(item) => (
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    handleMoreButtonClick({
+                      id: item.spotify_id,
+                      title: item.title,
+                      artist: item.artist,
+                      playTime: 0,
+                      albumCover: item.album_cover || '',
+                      albumName: item.album_name || '',
+                    })
+                  }}
+                >
+                  <Image
+                    src={communityWebCircle}
+                    alt="More Options"
+                    width={36}
+                    height={36}
+                  />
+                </button>
+              )}
+            />
+            {selectedSong && (
+              <MusicSaveModal
+                isOpen={isBottomSheetOpen}
+                handleClose={() => setIsBottomSheetOpen(false)}
+                musicName={selectedSong!.title}
+                artistName={selectedSong!.artist}
+              />
             )}
-          />
+          </>
         ) : (
           <ul>
             {searchResultList.map((item) => (
@@ -150,7 +165,9 @@ const SearchResultItem = ({
                   }
                 >
                   <h3 className="button-2 truncate">{item.name}</h3>
-                  <p className="caption-2 truncate opacity-60">{item.artists[0].name}</p>
+                  <p className="caption-2 truncate opacity-60">
+                    {item.artists[0].name}
+                  </p>
                 </div>
                 <button
                   type="button"
@@ -166,23 +183,27 @@ const SearchResultItem = ({
                     })
                   }}
                 >
-                  <Image src={moreButton} alt="More Options" width={24} height={24} />
+                  <Image
+                    src={moreButton}
+                    alt="More Options"
+                    width={24}
+                    height={24}
+                  />
                 </button>
               </li>
             ))}
+            {selectedSong && (
+              <MusicSaveBottomSheet
+                isOpen={isBottomSheetOpen}
+                handleClose={() => setIsBottomSheetOpen(false)}
+                musicName={selectedSong!.title}
+                artistName={selectedSong!.artist}
+                musicData={selectedSong}
+              />
+            )}
           </ul>
         )}
       </div>
-
-      {selectedSong && (
-        <MusicSaveBottomSheet
-          isOpen={isBottomSheetOpen}
-          handleClose={() => setIsBottomSheetOpen(false)}
-          musicName={selectedSong!.title}
-          artistName={selectedSong!.artist}
-          musicData={selectedSong}
-        />
-      )}
     </div>
   )
 }
