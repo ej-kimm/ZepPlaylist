@@ -40,6 +40,9 @@ export const useToggleLike = () => {
       queryClient.invalidateQueries({
         queryKey: ['playlist_like', newLike.playlist_id],
       })
+      queryClient.invalidateQueries({
+        queryKey: ['playlists'],
+      })
     },
   })
 }

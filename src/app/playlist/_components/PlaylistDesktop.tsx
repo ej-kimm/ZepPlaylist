@@ -2,6 +2,7 @@
 
 import PlaylistDesktopUI from '@/components/common/PlaylistDesktop'
 import { useToggleLike } from '@/hooks/useToggle'
+import { userStore } from '@/store/userSlice'
 import { PlaylistRow } from '@/types/playlist'
 
 type PlaylistDesktopProps = {
@@ -25,6 +26,13 @@ export default function PlaylistDesktop({
   handleEditPlaylist,
 }: PlaylistDesktopProps) {
   const toggle = useToggleLike()
+<<<<<<< Updated upstream
+=======
+  const { user } = userStore()
+
+  if (!user) return
+
+>>>>>>> Stashed changes
   return (
     <div className="mx-auto max-w-full">
       <h2 className="title-3 mb-24 mt-24 font-pretendard">
@@ -72,13 +80,16 @@ export default function PlaylistDesktop({
         </div>
 
         {playlists.map((playlist) => {
+          const isLiked = playlist.playlist_like!.some(
+            (like) => like.user_id === playlist.user_id,
+          )
           return (
             <PlaylistDesktopUI
               key={playlist.id}
               album_cover={playlist.latest_song_cover || undefined}
               title={playlist.name}
               description={playlist.description || '설명 없음'}
-              isLiked={playlist.is_liked}
+              isLiked={isLiked}
               onLikeToggle={() =>
                 toggle.mutate({
                   playlist_id: playlist.id,
