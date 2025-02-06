@@ -54,7 +54,7 @@ export default function PlaylistItem({
         <div className="flex w-full flex-col justify-center">
           <p className="button-2 mb-1">{playlist.name || '제목 없음'}</p>
           <p className="caption-2 text-opacity-60">
-            곡 {playlist?.playlist_music?.length || '아티스트 정보 없음'}개
+            곡 {playlist?.description || '아티스트 정보 없음'}개
             {/* 여기부분 랭스스 */}
           </p>
         </div>

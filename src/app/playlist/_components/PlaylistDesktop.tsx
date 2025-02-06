@@ -77,7 +77,7 @@ export default function PlaylistDesktop({
               key={playlist.id}
               album_cover={playlist.latest_song_cover || undefined}
               title={playlist.name}
-              description={playlist.playlist_music?.length || '설명 없음'}
+              description={playlist.description || '설명 없음'}
               isLiked={playlist.is_liked}
               onLikeToggle={() => handleLikeToggle(playlist.id)}
               onClick={() => handlePlaylistClick(playlist.id)}
