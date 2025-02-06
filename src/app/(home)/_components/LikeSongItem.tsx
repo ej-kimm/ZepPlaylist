@@ -1,5 +1,4 @@
 import playing from '@/assets/images/imPlay.svg'
-import likeTrue from '@/assets/images/likeTrue.svg'
 import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import type { UserLikedSongDetails } from '@/types/LikedSongs'
 import Image from 'next/image'
@@ -10,8 +9,6 @@ interface SongItemProps {
 }
 
 const LikeSongItem: React.FC<SongItemProps> = ({ item }) => {
-  // const [isClicked, setIsClicked] = useState(isLiked)
-
   const { isPlayerOpen, setTrackIds, setPlayerOpen, play } =
     useMusicPlayerStore()
 
@@ -34,18 +31,6 @@ const LikeSongItem: React.FC<SongItemProps> = ({ item }) => {
             className="h-auto w-full rounded-2xl shadow-md"
           />
           <div className="absolute bottom-0 left-0 z-20 h-[40%] w-full rounded-b-2xl bg-gradient-to-b from-transparent via-black/[0.63] to-black/[0.7]">
-            <Image
-              className="cursor-pointer"
-              src={likeTrue}
-              alt="좋아요 상태"
-              width={16}
-              height={16}
-              onClick={(e) => {
-                e.stopPropagation()
-                // setIsClicked(!isClicked)
-                // onLikeToggle()
-              }}
-            />
             <div className="absolute bottom-1 left-3 mb-1 w-[calc(100%-40px)] transform">
               <h3 className="mt-2 truncate text-xs text-white">{item.title}</h3>
               <p className="truncate text-xs text-white">{item.artist}</p>
