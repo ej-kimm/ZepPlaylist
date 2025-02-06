@@ -1,4 +1,8 @@
-import { fetchPlaylistLike, updatePlaylistLike } from '@/api/community/actions'
+import {
+  fetchLikeCount,
+  fetchPlaylistLike,
+  updatePlaylistLike,
+} from '@/api/community/actions'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 type UsePlaylistLikeProps = {
@@ -13,32 +17,45 @@ const usePlaylistLike = ({ user_id, playlist_id }: UsePlaylistLikeProps) => {
     queryKey: ['playlist_like', user_id, playlist_id],
     queryFn: () => fetchPlaylistLike({ user_id, playlist_id }),
     enabled: !!user_id,
-    retry: false, 
+    retry: false,
     initialData: false,
+  })
+
+  const { data: likeCount = 0 } = useQuery({
+    queryKey: ['playlist_like_count', playlist_id],
+    queryFn: () => fetchLikeCount({ playlist_id }), 
+    enabled: !!playlist_id,
   })
 
   const updateLike = useMutation({
     mutationFn: () => updatePlaylistLike({ user_id, playlist_id }),
     onMutate: async () => {
-      const queryKey = ['playlist_like', user_id, playlist_id]
+      const likeStateKey = ['playlist_like', user_id, playlist_id]
+      const countKey = ['playlist_like_count', playlist_id]
 
-      await queryClient.cancelQueries({ queryKey })
+      await queryClient.cancelQueries({ queryKey: likeStateKey })
+      await queryClient.cancelQueries({ queryKey: countKey })
 
-      const previousState = queryClient.getQueryData<boolean>(queryKey)
+      const previousLikeState =
+        queryClient.getQueryData<boolean>(likeStateKey) ?? false
+      const previousLikeCount = queryClient.getQueryData<number>(countKey) ?? 0
 
-      queryClient.setQueryData(queryKey, (prev: boolean | undefined) => !prev)
+      const newLikeState = !previousLikeState
+      const newLikeCount = newLikeState
+        ? previousLikeCount + 1
+        : previousLikeCount - 1
 
-      return { previousState }
-    },
-    onError: (_error, _variables, context) => {
-      queryClient.setQueryData(
-        ['playlist_like', user_id, playlist_id],
-        context?.previousState,
-      )
+      queryClient.setQueryData(likeStateKey, newLikeState)
+      queryClient.setQueryData(countKey, newLikeCount)
+
+      return { previousLikeState, previousLikeCount }
     },
     onSettled: () => {
       queryClient.invalidateQueries({
         queryKey: ['playlist_like', user_id, playlist_id],
+      })
+      queryClient.invalidateQueries({
+        queryKey: ['playlist_like_count', playlist_id],
       })
     },
   })
@@ -47,6 +64,7 @@ const usePlaylistLike = ({ user_id, playlist_id }: UsePlaylistLikeProps) => {
     toggleLike: updateLike.mutate,
     isLiked,
     isPending,
+    likeCount,
   }
 }
 

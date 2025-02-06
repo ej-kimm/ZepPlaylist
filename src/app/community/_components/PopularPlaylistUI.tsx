@@ -15,6 +15,7 @@ export type PopularPlaylistUIProps = {
   playlistName: string
   profileImg: string | StaticImageData
   nickName: string
+  likeCount: number
 }
 
 const PopularPlaylistUI = ({

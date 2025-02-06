@@ -21,6 +21,7 @@ import { useState } from 'react'
 import { TbTrash } from 'react-icons/tb'
 
 type CommunityDetailUIProps = {
+  likeCount: number
   nickname: string
   profileImage: string | null
   description: string | null

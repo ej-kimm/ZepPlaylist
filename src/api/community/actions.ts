@@ -220,3 +220,16 @@ export async function fetchPlaylistLikeCount(playlist_id: string) {
     throw new Error('Unexpected error occurred while fetching like count.')
   }
 }
+
+export async function fetchLikeCount({ playlist_id }: { playlist_id: string }) {
+  const { error, count } = await supabase
+    .from('playlist_like')
+    .select('id', { count: 'exact', head: true })
+    .eq('playlist_id', playlist_id)
+
+  if (error) {
+    console.error('Error fetching like count:', error)
+    throw new Error(error.message)
+  }
+  return count ?? 0
+}
