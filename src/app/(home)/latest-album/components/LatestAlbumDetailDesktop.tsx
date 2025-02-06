@@ -89,7 +89,7 @@ function LatestAlbumDetailDesktop({
         renderAction={(item) => (
           <button
             type="button"
-            className="flex h-[36px] w-[36px] items-center justify-center rounded-full border-secondary-opacity bg-secondary-opacity"
+            className="flex h-[36px] w-[36px] cursor-pointer items-center justify-center rounded-full border-secondary-opacity bg-secondary-opacity"
             onClick={(e) => {
               e.stopPropagation()
               handleMoreButtonClick({
