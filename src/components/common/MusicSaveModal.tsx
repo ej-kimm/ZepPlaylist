@@ -26,7 +26,8 @@ const MusicSaveModal = ({
 }: MusicSaveModalProps) => {
   const { user } = userStore()
   const { playlists, isPending } = usePlaylistOperations()
-  const { upsertMusic, addMusicToPlaylistTable } = usePlaylistMusicUpsert()
+  const { upsertMusic, addMusicToPlaylistTable, modal } =
+    usePlaylistMusicUpsert()
   const { closePlayerModal } = useMusicPlayerStore()
   const { searchSpotifyId } = useSpotifySearch()
   useScrollLock(isOpen)
@@ -49,69 +50,81 @@ const MusicSaveModal = ({
   }
 
   const handleCloseAllModals = () => {
+    modal.closeModal()
     closePlayerModal()
     handleClose()
   }
 
   return (
-    <Modal
-      isOpen={isOpen}
-      onCancel={handleClose}
-      title={musicName}
-      content={artistName}
-      type="none"
-      className="desktop:w-[532px]"
-    >
-      <div className="border-t border-black border-opacity-60">
-        <h2 className="body-2 py-3">플레이리스트 담기</h2>
+    <>
+      <Modal
+        isOpen={isOpen}
+        onCancel={handleClose}
+        title={musicName}
+        content={artistName}
+        type="none"
+        className="desktop:w-[532px]"
+      >
+        <div className="border-t border-black border-opacity-60">
+          <h2 className="body-2 py-3">플레이리스트 담기</h2>
 
-        <div className="h-full bg-white px-4 py-[26px]">
-          <Link href="/playlist" onClick={handleCloseAllModals}>
-            <div className="mb-[23px] flex items-center gap-2">
-              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[#C4C4C4]">
-                <span className="font-pretendard text-lg text-white">+</span>
+          <div className="h-full bg-white px-4 py-[26px]">
+            <Link href="/playlist" onClick={handleCloseAllModals}>
+              <div className="mb-[23px] flex items-center gap-2">
+                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[#C4C4C4]">
+                  <span className="font-pretendard text-lg text-white">+</span>
+                </div>
+                <p className="caption-1">새 플레이리스트 만들기</p>
               </div>
-              <p className="caption-1">새 플레이리스트 만들기</p>
-            </div>
-          </Link>
+            </Link>
 
-          {!user && isPending ? (
-            <div className="flex items-center gap-[23px]">
-              <Skeleton
-                width="48px"
-                height="48px"
-                borderRadius="8px"
-                className="flex-shrink-0"
-              />
-              <Skeleton height="16px" className="flex-grow" />
-            </div>
-          ) : (
-            <ul className="scroll-invisible h-full max-h-[280px] cursor-pointer space-y-[23px] overflow-y-scroll bg-white">
-              {playlists.map((playlist) => (
-                <li
-                  key={playlist.id}
-                  className="flex items-center gap-2"
-                  onClick={() => addMusiscInPlayList(playlist.id)}
-                >
-                  {playlist.latest_song_cover ? (
-                    <Image
-                      src={playlist.latest_song_cover}
-                      width={48}
-                      height={48}
-                      alt="앨범 커버"
-                      className="rounded-lg object-cover"
-                    />
-                  ) : (
-                    <div className="h-12 w-12 rounded-lg bg-[#C4C4C4]" />
-                  )}
-                  <p className="caption-1">{playlist.name}</p>
-                </li>
-              ))}
-            </ul>
-          )}
+            {!user && isPending ? (
+              <div className="flex items-center gap-[23px]">
+                <Skeleton
+                  width="48px"
+                  height="48px"
+                  borderRadius="8px"
+                  className="flex-shrink-0"
+                />
+                <Skeleton height="16px" className="flex-grow" />
+              </div>
+            ) : (
+              <ul className="scroll-invisible h-full max-h-[280px] cursor-pointer space-y-[23px] overflow-y-scroll bg-white">
+                {playlists.map((playlist) => (
+                  <li
+                    key={playlist.id}
+                    className="flex items-center gap-2"
+                    onClick={() => addMusiscInPlayList(playlist.id)}
+                  >
+                    {playlist.latest_song_cover ? (
+                      <Image
+                        src={playlist.latest_song_cover}
+                        width={48}
+                        height={48}
+                        alt="앨범 커버"
+                        className="rounded-lg object-cover"
+                      />
+                    ) : (
+                      <div className="h-12 w-12 rounded-lg bg-[#C4C4C4]" />
+                    )}
+                    <p className="caption-1">{playlist.name}</p>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
         </div>
-      </div>
-    </Modal>
+      </Modal>
+      <Modal
+        isOpen={modal.isModalOpen}
+        title={modal.modalTitle}
+        content={modal.modalContent}
+        type="single"
+        onCancel={handleCloseAllModals}
+        onConfirm={handleCloseAllModals}
+        className="desktop:w-[434px]"
+      />
+    </>
   )
 }
 

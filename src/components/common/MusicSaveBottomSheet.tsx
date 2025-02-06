@@ -8,6 +8,7 @@ import type { SpotifyTrack } from '@/types/billboradCharts'
 import Image from 'next/image'
 import Link from 'next/link'
 import BottomSheet from './BottomSheet'
+import Modal from './Modal'
 import Skeleton from './Skeleton'
 
 type MusicSaveBottomSheetProps = {
@@ -27,9 +28,9 @@ const MusicSaveBottomSheet = ({
 }: MusicSaveBottomSheetProps) => {
   const { user } = userStore()
   const { playlists, isPending } = usePlaylistOperations()
-  const { upsertMusic, addMusicToPlaylistTable } = usePlaylistMusicUpsert()
+  const { upsertMusic, addMusicToPlaylistTable, modal } =
+    usePlaylistMusicUpsert()
   const { closePlayerModal } = useMusicPlayerStore()
-  // const { searchSpotifyId } = useSpotifySearch()
   useScrollLock(isOpen)
 
   // 특정 플레이리스트 목록을 동작하는 함수
@@ -38,12 +39,8 @@ const MusicSaveBottomSheet = ({
     musicData: SpotifyTrack,
   ) => {
     try {
-      // const musicData = await searchSpotifyId(musicName, artistName)
-      // console.log('bottomSet', musicData)
-      // spubase music 테이블에 곡 담아주는 함수 호출
       const musicId = await upsertMusic(musicData!)
 
-      // spubase playlist_music 테이블에 곡 담아주는 함수 호출
       await addMusicToPlaylistTable(musicId as string, playlistId)
 
       handleClose()
@@ -54,72 +51,85 @@ const MusicSaveBottomSheet = ({
   }
 
   const handleCloseAllModals = () => {
+    modal.closeModal()
     closePlayerModal()
     handleClose()
   }
 
   return (
-    <BottomSheet
-      height="auto"
-      maxWidth="100%"
-      isOpen={isOpen}
-      onClose={handleClose}
-    >
-      <header className="flex h-[88px] flex-col justify-center border-b border-opacity-60 px-4">
-        <h3 className="title-2 mb-2 truncate font-medium">{musicName}</h3>
-        <p className="body-2 truncate opacity-40">{artistName}</p>
-      </header>
+    <>
+      <Modal
+        isOpen={modal.isModalOpen}
+        title={modal.modalTitle}
+        content={modal.modalContent}
+        type="single"
+        onCancel={handleCloseAllModals}
+        onConfirm={handleCloseAllModals}
+        className="desktop:w-[434px]"
+      />
 
-      <div className="flex flex-col">
-        <h1 className="my-3 text-base">플레이리스트 담기</h1>
+      <BottomSheet
+        height="auto"
+        maxWidth="100%"
+        isOpen={isOpen}
+        onClose={handleClose}
+      >
+        <header className="flex h-[88px] flex-col justify-center border-b border-opacity-60 px-4">
+          <h3 className="title-2 mb-2 truncate font-medium">{musicName}</h3>
+          <p className="body-2 truncate opacity-40">{artistName}</p>
+        </header>
 
-        <div className="h-full bg-white px-4">
-          <Link href="/playlist" onClick={handleCloseAllModals}>
-            <div className="mb-2 flex items-center gap-2">
-              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[#C4C4C4]">
-                <span className="font-pretendard text-lg text-white">+</span>
+        <div className="flex flex-col">
+          <h1 className="my-3 text-base">플레이리스트 담기</h1>
+
+          <div className="h-full bg-white px-4">
+            <Link href="/playlist" onClick={handleCloseAllModals}>
+              <div className="mb-2 flex items-center gap-2">
+                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[#C4C4C4]">
+                  <span className="font-pretendard text-lg text-white">+</span>
+                </div>
+                <p className="caption-1">새 플레이리스트 만들기</p>
               </div>
-              <p className="caption-1">새 플레이리스트 만들기</p>
-            </div>
-          </Link>
+            </Link>
 
-          {!user && isPending ? (
-            <div className="flex items-center gap-2">
-              <Skeleton
-                width="48px"
-                height="48px"
-                borderRadius="8px"
-                className="flex-shrink-0"
-              />
-              <Skeleton height="16px" className="flex-grow" />
-            </div>
-          ) : (
-            <ul className="scroll-invisible h-full max-h-[calc(50vh-204px)] space-y-2 overflow-y-scroll bg-white">
-              {playlists.map((playlist) => (
-                <li
-                  key={playlist.id}
-                  className="flex items-center gap-2"
-                  onClick={() => addMusiscInPlayList(playlist.id, musicData)}
-                >
-                  {playlist.latest_song_cover ? (
-                    <Image
-                      src={playlist.latest_song_cover}
-                      width={48}
-                      height={48}
-                      alt="앨범 커버"
-                      className="rounded-lg object-cover"
-                    />
-                  ) : (
-                    <div className="h-12 w-12 rounded-lg bg-[#C4C4C4]" />
-                  )}
-                  <p className="caption-1">{playlist.name}</p>
-                </li>
-              ))}
-            </ul>
-          )}
+            {!user && isPending ? (
+              <div className="flex items-center gap-2">
+                <Skeleton
+                  width="48px"
+                  height="48px"
+                  borderRadius="8px"
+                  className="flex-shrink-0"
+                />
+                <Skeleton height="16px" className="flex-grow" />
+              </div>
+            ) : (
+              <ul className="scroll-invisible h-full max-h-[calc(50vh-204px)] space-y-2 overflow-y-scroll bg-white">
+                {playlists.map((playlist) => (
+                  <li
+                    key={playlist.id}
+                    className="flex items-center gap-2"
+                    onClick={() => addMusiscInPlayList(playlist.id, musicData)}
+                  >
+                    {playlist.latest_song_cover ? (
+                      <Image
+                        src={playlist.latest_song_cover}
+                        width={48}
+                        height={48}
+                        alt="앨범 커버"
+                        className="rounded-lg object-cover"
+                      />
+                    ) : (
+                      <div className="h-12 w-12 rounded-lg bg-[#C4C4C4]" />
+                    )}
+                    <p className="caption-1">{playlist.name}</p>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
         </div>
-      </div>
-    </BottomSheet>
+      </BottomSheet>
+    </>
   )
 }
 
