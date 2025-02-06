@@ -6,14 +6,8 @@
 
 <!-- ## 📖 목차
 
-1. [프로젝트 소개](#프로젝트-소개)
 2. [팀원 및 팀소개](#팀원-및-팀소개)
-3. [주요기능](#주요기능)
 4. [적용 기술 및 기술적 의사결정](#적용-기술-및-기술적-의사결정)
-5. [개발기간](#개발기간)
-6. [기술스택](#기술스택)
-7. [ERD](#ERD)
-8. [프로젝트 파일 구조](#프로젝트-파일-구조)
 9. [트러블 슈팅](#트러블-슈팅) -->
 
 ## 👋 프로젝트 소개
@@ -22,13 +16,17 @@
 
 음악을 검색하고 감상하며 플레이리스트를 만들어 볼 수 있는 애플리케이션을 만들어 보면 어떨까 라는 의도에서 만들기 시작했습니다. 플레이리스트를 공유하고 다른 사람들과 소통해보세요!
 
+## 🎉 지금 바로 사용해보기
+
+👉<a href="https://zep-playlist.vercel.app/" target="_blank"> ZepPlaylist💜</a>👈
+
 ## 👪 팀원
 
 | <img src="https://cdn-static.zep.us/static/assets/baked-avartar-images/10-320-4-368.png" width="50" height="50"/> | <img src="https://cdn-static.zep.us/static/assets/baked-avartar-images/7-128-1-368.png" width="50" height="50"/> | <img src="https://cdn-static.zep.us/static/assets/baked-avartar-images/7-308-39-368.png" width="50" height="50"/> | <img src="https://cdn-static.zep.us/static/assets/baked-avartar-images/7-104-3-368.png" width="50" height="50"/> | <img src="https://cdn-static.zep.us/static/assets/baked-avartar-images/7-128-20-344.png" width="50" height="50"/> | <img src="https://cdn-static.zep.us/static/assets/baked-avartar-images/10-512-4-368.png" width="50" height="50"/> |
 | :---------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------: |
 |                        **팀장**<br/>주호빈<br/>[@Hobin-joo](https://github.com/Hobin-joo)                         |                          **팀원**<br/>김은지<br/>[@ej-kimm](https://github.com/ej-kimm)                          |                           **팀원**<br/>김지은<br/>[@zzieni](https://github.com/zzieni)                            |                           **팀원**<br/>박준석<br/>[@bj9322](https://github.com/bj9322)                           |                          **팀원**<br/>권현준<br/>[@KHY3260](https://github.com/KHY3260)                           |                     **팀원**<br/>김윤아<br/>[@KimYoona0527](https://github.com/KimYoona0527)                      |
 
-## 📅🕒 개발 기간
+## 📅 개발 기간
 
 2024.12.31 ~ 2025.02.06
 
@@ -77,10 +75,8 @@
 
 **👍🏻 React Query**
 
-- 장점: 복잡한 로직을 단순화하여 추후 유지보수가 용이함.무한 스크롤 지원 및 타입 안정성 제공
+- 장점: 복잡한 로직을 단순화하여 추후 유지보수가 용이함. 무한 스크롤 지원 및 타입 안정성 제공
 - 이유: 리덕스보다 보일러플레이트가 적고, 데이터 패칭과 관련된 기능을 쉽게 구현할 수 있기 때문에 선택됨
-
-<!-- - TypeScript 지원 타입 안정성을 제공하여 개발 과정에서 발생할 수 있는 오류를 사전에 방지?? -->
 
 **👍🏻 Tailwind css**
 
@@ -182,163 +178,72 @@
 
 - 커뮤니티 페이지에서도 노래 담기와 플레이리스트를 생성할 수 있습니다
 
-<!-- ## 적용 기술 및 기술적 의사결정
+## 트러블슈팅
 
-![Tech](https://github.com/user-attachments/assets/757c5f15-0350-41bb-9719-ac0efd40d304)
+## 🔗 ERD
 
-### 소셜 로그인
+<a href="https://github.com/user-attachments/assets/3fa8cb39-d7a9-4969-aa4b-deec6fb80c9a" target="_blank">
+  <img src="https://github.com/user-attachments/assets/3fa8cb39-d7a9-4969-aa4b-deec6fb80c9a" alt="ERD" width="1000">
+</a>
 
-Google OAuth를 활용하여 사용자에게 간단하고 안전한 로그인 기능을 제공합니다.
-이메일 기반 회원가입 및 로그인 외에도 Google 계정을 통해 빠르게 인증할 수 있습니다. Supabase의 보안 정책을 적용해 데이터는 안전하게 처리됩니다.
-
-### Tanstack & Zustand 상태 관리
-
-React 상태 관리를 위해 Tanstack Query와 Zustand를 도입했습니다.
-Tanstack Query로 서버 데이터의 효율적인 캐싱과 데이터 패칭을 처리하며,
-Zustand를 통해 전역 상태를 간결하게 관리하여 코드의 가독성과 유지보수성을 높였습니다.
-
-### 카카오맵 API 아웃소싱
-
-카카오맵 API를 활용해 스터디 공간 검색 및 지도 기반 탐색 기능을 구현했습니다.
-현재 위치 기반 추천과 장소 검색 필터를 통해 사용자가 쉽게 공간을 찾을 수 있습니다.
-지도 API와 연동된 상세 정보를 제공하여 사용자 경험을 향상시켰습니다.
-
-### Supabase DB 관리
-
-Supabase를 데이터베이스 및 인증 관리로 사용해 프로젝트의 백엔드를 간소화했습니다.
-유저 정보 저장, 북마크 CRUD, 소셜 로그인 등 주요 데이터 관리에 활용됩니다.
-Supabase의 강력한 보안 정책으로 데이터를 안전하게 보호하고 효율적으로 관리합니다. -->
-
-## ERD
-
-![ERD](https://github.com/user-attachments/assets/744a471e-78a3-4bb5-9bdf-7d28875d4108)
-
-## 파일 구조
+## 📁 파일 구조
 
 ```
-📦src
- ┣ 📂api
+📂 ZEPPLAYLIST/
+ ┣ 📂api                    # API 요청 관련 로직
  ┃ ┣ 📂community
- ┃ ┃ ┣ 📜actions.ts
- ┃ ┃ ┗ 📜communityDetail.ts
  ┃ ┣ 📂home
- ┃ ┃ ┗ 📜actions.ts
  ┃ ┣ 📂like-music
- ┃ ┃ ┗ 📜actions.ts
  ┃ ┣ 📂music-play
- ┃ ┃ ┣ 📜actions.ts
- ┃ ┃ ┣ 📜genius-api.ts
- ┃ ┃ ┣ 📜lyrics-api.ts
- ┃ ┃ ┗ 📜spotify-api.ts
  ┃ ┣ 📂my-page
- ┃ ┃ ┗ 📜actions.ts
  ┃ ┣ 📂playlist
- ┃ ┃ ┗ 📜actions.ts
  ┃ ┣ 📂playlist-detail
- ┃ ┃ ┗ 📜actions.ts
  ┃ ┣ 📂searchSpotifySong
- ┃ ┗ 📜spotifyToken.ts
- ┣ 📂app
- ┃ ┣ 📂(auth)
+ ┣ 📂app                    # Next.js 'pages' 디렉토리
+ ┃ ┣ 📂(auth)               # 인증 관련 페이지들 (로그인, 회원가입)
  ┃ ┃ ┣ 📂login
  ┃ ┃ ┃ ┣ 📂_components
- ┃ ┃ ┃ ┃ ┣ 📜LoginForm.tsx
- ┃ ┃ ┃ ┃ ┣ 📜SocialButton.tsx
- ┃ ┃ ┃ ┃ ┣ 📜SocialButtonItem.tsx
- ┃ ┃ ┃ ┃ ┗ 📜SocialForm.tsx
- ┃ ┃ ┃ ┗ 📜page.tsx
  ┃ ┃ ┗ 📂sign-up
  ┃ ┃ ┃ ┣ 📂_components
- ┃ ┃ ┃ ┃ ┣ 📜Service.tsx
- ┃ ┃ ┃ ┃ ┗ 📜SignupForm.tsx
- ┃ ┃ ┃ ┗ 📜page.tsx
- ┃ ┣ 📂(home)
+ ┃ ┣ 📂(home)               # 메인/홈 페이지 관련 코드(빌보드 탑 100, 국내 탑100, 노래 검색)
  ┃ ┃ ┣ 📂_components
- ┃ ┃ ┃ ┣ 📜Charts.tsx
- ┃ ┃ ┃ ┣ 📜LatestAlbumItmes.tsx
- ┃ ┃ ┃ ┣ 📜LatestAlbums.tsx
- ┃ ┃ ┃ ┣ 📜LikeSongItem.tsx
- ┃ ┃ ┃ ┣ 📜MusicChartHeader.tsx
- ┃ ┃ ┃ ┣ 📜PopularPlayList.tsx
- ┃ ┃ ┃ ┣ 📜SearchBar.tsx
- ┃ ┃ ┃ ┣ 📜SearchHistoryPlaylist.tsx
- ┃ ┃ ┃ ┣ 📜SearchKeywordCarousel.tsx
- ┃ ┃ ┃ ┣ 📜SearchResult.tsx
- ┃ ┃ ┃ ┣ 📜SearchResultItem.tsx
- ┃ ┃ ┃ ┣ 📜Top100ChartDesktopHeader.tsx
- ┃ ┃ ┃ ┣ 📜Top100ChartList.tsx
- ┃ ┃ ┃ ┣ 📜Top100ChartListDesktop.tsx
- ┃ ┃ ┃ ┣ 📜Top100ChartListUI.tsx
- ┃ ┃ ┃ ┣ 📜Top20Item.tsx
- ┃ ┃ ┃ ┣ 📜Top20List.tsx
- ┃ ┃ ┃ ┗ 📜UserLikedSong.tsx
  ┃ ┃ ┣ 📂billboardTopChart
- ┃ ┃ ┃ ┗ 📜page.tsx
  ┃ ┃ ┣ 📂koreaTopChart
- ┃ ┃ ┃ ┗ 📜page.tsx
  ┃ ┃ ┣ 📂latest-album
  ┃ ┃ ┃ ┣ 📂[id]
- ┃ ┃ ┃ ┃ ┗ 📜page.tsx
- ┃ ┃ ┃ ┗ 📂components
- ┃ ┃ ┃ ┃ ┣ 📜LatestAlbumDetail.tsx
- ┃ ┃ ┃ ┃ ┣ 📜LatestAlbumDetailDesktop.tsx
- ┃ ┃ ┃ ┃ ┗ 📜LatestAlbumDetailUI.tsx
+ ┃ ┃ ┃ ┗ 📂_components
  ┃ ┃ ┣ 📂search
- ┃ ┃ ┃ ┗ 📜page.tsx
- ┃ ┃ ┣ 📜.DS_Store
- ┃ ┃ ┗ 📜page.tsx
- ┃ ┣ 📂api
+ ┃ ┣ 📂api                  # api 라우트 (Next.js API 라우트 구조)
  ┃ ┃ ┣ 📂auth
- ┃ ┃ ┃ ┗ 📜route.ts
  ┃ ┃ ┣ 📂billboardChart
- ┃ ┃ ┃ ┗ 📜route.ts
  ┃ ┃ ┗ 📂koreanChart
- ┃ ┃ ┃ ┗ 📜route.ts
- ┃ ┣ 📂community
+ ┃ ┣ 📂community            # 커뮤니티 관련 페이지
  ┃ ┃ ┣ 📂[id]
- ┃ ┃ ┃ ┣ 📜loding.tsx
- ┃ ┃ ┃ ┗ 📜page.tsx
  ┃ ┃ ┣ 📂_components
- ┃ ┃ ┃ ┣ 📜ClientPopularPlaylistUI.tsx
- ┃ ┃ ┃ ┣ 📜CommentSection.tsx
- ┃ ┃ ┃ ┣ 📜CommunityDetailSkeleton.tsx
- ┃ ┃ ┃ ┣ 📜CommunityDetailUI.tsx
- ┃ ┃ ┃ ┣ 📜CustomSwiper.tsx
- ┃ ┃ ┃ ┣ 📜FloatingPlusButton.tsx
- ┃ ┃ ┃ ┣ 📜KeywordCarouselWrapper.tsx
- ┃ ┃ ┃ ┣ 📜PlaylistCard.tsx
- ┃ ┃ ┃ ┣ 📜PlaylistSection.tsx
- ┃ ┃ ┃ ┗ 📜PopularPlaylistUI.tsx
- ┃ ┃ ┗ 📜page.tsx
- ┃ ┣ 📂music-history
+ ┃ ┣ 📂music-history        # 현재 재생 목록 관련 컴포넌트
  ┃ ┃ ┣ 📂_components
- ┃ ┃ ┗ 📜page.tsx
- ┃ ┣ 📂my-page
+ ┃ ┣ 📂my-page              # 마이 페이지 관련 코드
  ┃ ┃ ┣ 📂_components
- ┃ ┃ ┗ 📜page.tsx
- ┃ ┣ 📂playlist
+ ┃ ┣ 📂playlist             # 플레이리스트 관련 페이지와 컴포넌트
  ┃ ┃ ┣ 📂[id]
- ┃ ┃ ┃ ┗ 📜page.tsx
  ┃ ┃ ┣ 📂_components
  ┃ ┃ ┣ 📂likes
- ┃ ┃ ┃ ┗ 📜page.tsx
- ┃ ┃ ┗ 📜page.tsx
- ┃ ┗ 📜layout.tsx
- ┣ 📂assets
+ ┃ ┗ 📜layout.tsx           # 레이아웃 컴포넌트
+ ┣ 📂assets                 # 이미지, 폰트, SVG 등 정적 파일
  ┃ ┣ 📂fonts
  ┃ ┗ 📂images
- ┣ 📂components
+ ┣ 📂components             # 재사용 가능한 컴포넌트 및 뮤직플레이 (하단 재생바)
  ┃ ┣ 📂animation
  ┃ ┣ 📂common
  ┃ ┣ 📂layout
  ┃ ┣ 📂music-play
  ┃ ┗ 📂providers
- ┣ 📂constants
- ┣ 📂hooks
- ┣ 📂store
- ┣ 📂styles
+ ┣ 📂constants              # 상수 관련 코드
+ ┣ 📂hooks                  # 커스텀 훅
+ ┣ 📂store                  # 상태 관리 관련 코드 (Zustand)
+ ┣ 📂styles                 # 전역 스타일 파일
  ┃ ┗ 📜globals.css
- ┣ 📂types
- ┣ 📂utils
- ┗ 📜middleware.ts
+ ┣ 📂types                  # TypeScript 타입 지정 파일
+ ┣ 📂utils                  # 유틸리티 함수 모음
+ ┗ 📜middleware.ts          # 미들웨어 관련 코드
 ```
