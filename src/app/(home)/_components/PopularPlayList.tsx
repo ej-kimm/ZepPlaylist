@@ -64,6 +64,7 @@ const PopularPlayList = async () => {
             />
           ),
         }))}
+        maxSlides={6}
       />
     </div>
   )
