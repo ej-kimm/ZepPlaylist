@@ -49,11 +49,10 @@ const SocialButton = () => {
 
   const handleSignIn = (provider: 'kakao' | 'spotify' | 'google') => {
     const redirect = {
-      kakao: 'http://localhost:3000/api/auth',
-      spotify: 'http://localhost:3000/api/auth',
-      google: 'http://localhost:3000/api/auth',
+      kakao: 'https://zep-playlist.vercel.app/api/auth',
+      spotify: 'https://zep-playlist.vercel.app/api/auth',
+      google: 'https://zep-playlist.vercel.app/api/auth',
     }
-    //잊지말고 배포했을때 리다이렉트 주소 바꿔주기.
     signInMutation.mutate({
       provider,
       redirectTo: redirect[provider],
