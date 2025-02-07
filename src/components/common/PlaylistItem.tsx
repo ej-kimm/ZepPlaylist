@@ -82,9 +82,13 @@ export default function PlaylistItem({
         </div>
         <div className="flex w-full flex-col justify-center">
           <p className="button-2 mb-1">{playlist.name || '제목 없음'}</p>
-          <p className="caption-2 text-opacity-60">
-            곡{playlist?.song_count ?? 0}개
-          </p>
+          {isDetailPage ? (
+            <p className="caption-2 text-opacity-60">{playlist.description}</p>
+          ) : (
+            <p className="caption-2 text-opacity-60">
+              곡 {playlist?.song_count ?? 0}개
+            </p>
+          )}
         </div>
       </div>
 
