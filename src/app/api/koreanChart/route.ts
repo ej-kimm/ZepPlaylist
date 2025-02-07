@@ -11,14 +11,29 @@ export async function GET(): Promise<Response> {
     const token = await getSpotifyToken()
     const cleanedMelonChart = await fetchAndCleanMelonChart()
 
-    const resolvedMusicData = await Promise.all(
-      cleanedMelonChart!.map(
-        async (item) =>
-          await getSpotifyTrackData(token, item.songName, item.artistName),
-      ),
+    const resolvedMusicData_1 = await Promise.all(
+      cleanedMelonChart!
+        .slice(0, 50)
+        .map(
+          async (item) =>
+            await getSpotifyTrackData(token, item.songName, item.artistName),
+        ),
     )
 
-    const validMusicData = resolvedMusicData.filter(
+    const resolvedMusicData_2 = await Promise.all(
+      cleanedMelonChart!
+        .slice(50, 100)
+        .map(
+          async (item) =>
+            await getSpotifyTrackData(token, item.songName, item.artistName),
+        ),
+    )
+    const finalResolvedMusicData = [
+      ...resolvedMusicData_1,
+      ...resolvedMusicData_2,
+    ]
+
+    const validMusicData = finalResolvedMusicData.filter(
       (item) => item !== undefined,
     )
 

@@ -5,7 +5,7 @@ export const getSpotifyToken = async () => {
     client_secret: process.env.SPOTIFY_CLIENT_SECRET as string,
   })
 
-  const res = await fetch('https://accounts.spotify.com/api/token', {
+  const res = await fetch(`${process.env.SPOTIFY_TOKEN_BASE_URL}/api/token`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',

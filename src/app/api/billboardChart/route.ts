@@ -20,14 +20,29 @@ export async function GET() {
       }
     })
 
-    const resolvedMusicData = await Promise.all(
-      cleanedBillboardChart!.map(
-        async (item) =>
-          await getSpotifyTrackData(token, item.songName, item.artistName),
-      ),
+    const resolvedMusicData_1 = await Promise.all(
+      cleanedBillboardChart!
+        .slice(0, 50)
+        .map(
+          async (item) =>
+            await getSpotifyTrackData(token, item.songName, item.artistName),
+        ),
     )
 
-    const validMusicData = resolvedMusicData.filter(
+    const resolvedMusicData_2 = await Promise.all(
+      cleanedBillboardChart!
+        .slice(50, 100)
+        .map(
+          async (item) =>
+            await getSpotifyTrackData(token, item.songName, item.artistName),
+        ),
+    )
+    const finalResolvedMusicData = [
+      ...resolvedMusicData_1,
+      ...resolvedMusicData_2,
+    ]
+
+    const validMusicData = finalResolvedMusicData.filter(
       (item) => item !== undefined,
     )
 
@@ -44,6 +59,7 @@ export async function GET() {
         { status: 500 },
       )
     }
+
     if (!deleteBillboardChart) {
       const { data: insertBillboardChart, error: insertBillboardChartError } =
         await supabase
@@ -61,7 +77,7 @@ export async function GET() {
           )
           .select('*')
 
-      if (insertBillboardChart) {
+      if (insertBillboardChartError) {
         console.error('Error inserting data:', insertBillboardChartError)
         return NextResponse.json(
           { error: 'Error inserting data' },
