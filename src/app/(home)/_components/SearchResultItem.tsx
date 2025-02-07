@@ -57,7 +57,7 @@ const SearchResultItem = ({
       </h1>
       <div>
         <h2 className="title-2 flex pb-6 font-bold">가수</h2>
-        <div className="flex flex-col gap-2">
+        <div className="inline-flex flex-col gap-2">
           <Image
             src={searchResultArtists[0].images[0].url}
             alt={searchResultArtists[0].name}
@@ -66,7 +66,9 @@ const SearchResultItem = ({
             className="rounded-full"
             priority
           />
-          <p className="caption-1 ml-2">{searchResultArtists[0].name}</p>
+          <span className="caption-1 text-center">
+            {searchResultArtists[0].name}
+          </span>
         </div>
       </div>
 
