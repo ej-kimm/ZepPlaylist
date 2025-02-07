@@ -29,7 +29,6 @@ const CommunityPage = async (): Promise<JSX.Element> => {
           'desktop: headline-1 desktop:mb-10 desktop:mt-20',
         )}
       >
-        
         인기 있는 플레이리스트
       </h1>
       <CustomSwiper
