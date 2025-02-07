@@ -77,7 +77,7 @@ export default function Playlist({ initialPlaylists }: PlaylistComponentProps) {
     const checkUser = async () => {
       const { data } = await supabase.auth.getUser()
       if (!data.user?.id) {
-        router.push('/login')
+        router.replace('/login')
       }
     }
     checkUser()
