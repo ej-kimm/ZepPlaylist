@@ -8,116 +8,52 @@ const supabase = createClient<Database>(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
 )
 
-type PlaylistRow = Database['public']['Tables']['playlists']['Row']
-type MusicRow = Database['public']['Tables']['music']['Row']
-
-type GroupedPlaylist = {
-  id: string
-  created_at: string
-  user_id: string
-  name: string
-  description: string | null
-  is_public: boolean
-  keyword: string
-  playlist_music: MusicRow[]
-  likeCount: number
-  likedByUser: boolean
-  profile_image: string | null
-  nickname: string | null
-}
-
 export async function getPlaylists(userId: string, keywords: string[] = []) {
   try {
-    let playlistQuery = supabase
-      .from('playlist_music')
+    let query = supabase
+      .from('playlists')
       .select(
         `
-        playlist_id,
-        music:music_id (
-          album_cover
-        ),
-        playlists (
-          *,
-          playlist_like (
-            user_id
+        *,
+        playlist_music!inner(
+          music:music_id(
+            album_cover
           )
+        ),
+        playlist_like!left(
+          user_id
+        ),
+        users!inner(
+          profile_image,
+          nickname
         )
       `,
       )
-      .eq('playlists.is_public', true)
+      .eq('is_public', true)
       .order('created_at', { ascending: false })
 
     if (keywords.length > 0) {
-      const keywordConditions = keywords
-        .map((keyword) => `playlists.keyword.ilike.%${keyword}%`)
-        .join(',')
-      playlistQuery = playlistQuery.or(keywordConditions)
+      query = query.or(keywords.map((k) => `keyword.ilike.%${k}%`).join(','))
     }
 
-    const { data: playlistMusic, error: playlistError } = await playlistQuery
+    const { data, error } = await query
 
-    if (playlistError) {
-      console.error('Error fetching playlists:', playlistError)
-      throw new Error(playlistError.message)
-    }
+    if (error) throw error
 
-    const userIds = Array.from(
-      new Set(
-        playlistMusic?.map((item) => item.playlists?.user_id).filter(Boolean),
-      ),
-    )
-
-    const { data: users, error: userError } = await supabase
-      .from('users')
-      .select('id, profile_image, nickname')
-      .in('id', userIds)
-
-    if (userError) {
-      console.error('Error fetching users:', userError)
-      throw new Error(userError.message)
-    }
-
-    const groupedPlaylists = playlistMusic?.reduce<
-      Record<string, GroupedPlaylist>
-    >((acc, item) => {
-      const playlistId = item.playlist_id
-
-      if (!playlistId) {
-        console.error('Missing playlist_id:', item)
-        return acc
-      }
-
-      if (!item.playlists?.is_public) {
-        console.error('Non-public playlist included:', item)
-        return acc
-      }
-
-      if (!acc[playlistId]) {
-        const user = users?.find((u) => u.id === item.playlists?.user_id)
-        acc[playlistId] = {
-          ...(item.playlists as PlaylistRow),
-          playlist_music: [],
-          likeCount: item.playlists?.playlist_like.length || 0,
-          likedByUser:
-            item.playlists?.playlist_like.some(
-              (like: { user_id: string }) => like.user_id === userId,
-            ) || false,
-          profile_image: user?.profile_image || null,
-          nickname: user?.nickname || 'Anonymous',
-        }
-      }
-
-      acc[playlistId].playlist_music.push(item.music as MusicRow)
-      return acc
-    }, {})
-
-    return Object.values(groupedPlaylists).map((playlist) => ({
+    return data.map((playlist) => ({
       ...playlist,
-      album_cover: playlist.playlist_music[0]?.album_cover || null,
+      playlist_music: playlist.playlist_music.map((pm) => pm.music),
+      likeCount: playlist.playlist_like.length,
+      likedByUser: playlist.playlist_like.some(
+        (like) => like.user_id === userId,
+      ),
+      profile_image: playlist.users.profile_image,
+      nickname: playlist.users.nickname || 'Anonymous',
+      album_cover: playlist.playlist_music[0]?.music?.album_cover || null,
     }))
   } catch (error) {
-    console.error('Unexpected error fetching playlists:', error)
-    throw new Error('Unexpected error occurred while fetching playlists.')
+    console.error('Error fetching playlists:', error)
+    throw new Error('Failed to fetch playlists')
   }
 }
 

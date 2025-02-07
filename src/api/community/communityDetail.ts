@@ -18,11 +18,9 @@ const createServerSupabaseClient = (cookies: string) => {
 }
 
 export const getCommunitySongs = async (
+  supabase: ReturnType<typeof createServerSupabaseClient>,
   playlistId: string,
-  cookies: string,
 ) => {
-  const supabase = createServerSupabaseClient(cookies)
-
   const { data, error } = await supabase
     .from('playlist_music')
     .select(
@@ -49,11 +47,9 @@ export const getCommunitySongs = async (
 }
 
 export const getCommunityComments = async (
+  supabase: ReturnType<typeof createServerSupabaseClient>,
   playlistId: string,
-  cookies: string,
 ) => {
-  const supabase = createServerSupabaseClient(cookies)
-
   const { data, error } = await supabase
     .from('comments')
     .select(
@@ -124,8 +120,10 @@ export const getCommunityDetail = async (
     nickname: 'Anonymous',
   }
 
-  const songs = await getCommunitySongs(playlistId, cookies)
-  const comments = await getCommunityComments(playlistId, cookies)
+  const [songs, comments] = await Promise.all([
+    getCommunitySongs(supabase, playlistId),
+    getCommunityComments(supabase, playlistId),
+  ])
 
   return {
     songs,

@@ -1,8 +1,11 @@
+// PopularPlaylistUI.tsx
 'use client'
 
 import imPlay from '@/assets/images/imPlay.svg'
 import likeTrue from '@/assets/images/likeTrue.svg'
 import whiteHeart from '@/assets/images/whiteHeart.svg'
+import { Skeleton } from '@/components/common'
+import useIsDesktop from '@/hooks/useIsDesktop'
 import clsx from 'clsx'
 import type { StaticImageData } from 'next/image'
 import Image from 'next/image'
@@ -16,6 +19,7 @@ export type PopularPlaylistUIProps = {
   profileImg: string | StaticImageData
   nickName: string
   likeCount: number
+  isLoading?: boolean
 }
 
 const PopularPlaylistUI = ({
@@ -25,7 +29,25 @@ const PopularPlaylistUI = ({
   onPlay,
   playlistName,
   nickName,
+  isLoading = false,
 }: PopularPlaylistUIProps) => {
+  const isDesktop = useIsDesktop(720)
+
+  if (isLoading) {
+    return (
+      <div className="flex flex-col items-start">
+        <Skeleton
+          width={isDesktop ? 184 : 140}
+          height={isDesktop ? 131 : 100}
+          borderRadius="8px"
+          className="mb-2"
+        />
+        <Skeleton height={isDesktop ? 24 : 20} width="80%" className="mb-1" />
+        <Skeleton height={isDesktop ? 20 : 16} width="60%" />
+      </div>
+    )
+  }
+
   return (
     <div className="flex flex-col items-start">
       <div

@@ -7,8 +7,9 @@ import clsx from 'clsx'
 import type { StaticImageData } from 'next/image'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
+import Skeleton from './Skeleton'
 
-type PlaylistUIProps = {
+export type PlaylistUIProps = {
   profileImg: string | StaticImageData
   playlistName: string
   nickName: string
@@ -17,6 +18,7 @@ type PlaylistUIProps = {
   onLikeToggle: () => void
   onClick?: () => void
   className?: string
+  isLoading?: boolean
 }
 
 const PlaylistUI = ({
@@ -28,6 +30,7 @@ const PlaylistUI = ({
   onLikeToggle,
   onClick,
   className,
+  isLoading = false,
 }: PlaylistUIProps) => {
   const [isClicked, setIsClicked] = useState(isLiked)
   const isDesktop = useIsDesktop(720)
@@ -35,6 +38,35 @@ const PlaylistUI = ({
   useEffect(() => {
     setIsClicked(isLiked ?? false)
   }, [isLiked])
+
+  if (isLoading) {
+    return (
+      <div
+        className={clsx(
+          'mt-4 flex items-center justify-between bg-white p-4',
+          className,
+        )}
+      >
+        <Skeleton
+          width={isDesktop ? 56 : 36}
+          height={isDesktop ? 56 : 36}
+          borderRadius="50%"
+        />
+        <div className="ml-4 flex-1">
+          <Skeleton height={isDesktop ? 24 : 18} width="60%" className="mb-2" />
+          <Skeleton height={isDesktop ? 20 : 16} width="40%" />
+        </div>
+        <div className="flex flex-col items-center">
+          <Skeleton
+            width={isDesktop ? 24 : 16}
+            height={isDesktop ? 24 : 16}
+            borderRadius="50%"
+          />
+          <Skeleton height={isDesktop ? 16 : 14} width="30%" className="mt-1" />
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div

@@ -7,10 +7,9 @@ import { useEffect, useState } from 'react'
 const ScrollTopButton = () => {
   const [isVisible, setIsVisible] = useState(false)
 
-  // 스크롤 상태를 확인하여 버튼 표시 여부 결정
   useEffect(() => {
     const handleScroll = () => {
-      setIsVisible(window.scrollY > 200) // 200px 이상 스크롤 시 버튼 표시
+      setIsVisible(window.scrollY > 200)
     }
 
     window.addEventListener('scroll', handleScroll)
@@ -19,18 +18,17 @@ const ScrollTopButton = () => {
     }
   }, [])
 
-  // 최상단으로 이동
   const scrollToTop = (event: React.MouseEvent) => {
-    event.stopPropagation();
+    event.stopPropagation()
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
-  if (!isVisible) return null // 버튼이 보이지 않을 때 렌더링 안 함
+  if (!isVisible) return null
 
   return (
     <button
       onClick={scrollToTop}
-      className="bg-primary-default text-bg-01 hover:bg-primary-dark fixed bottom-20 left-1/2 -translate-x-1/2 z-40 flex h-16 w-16 items-center justify-center"
+      className="bg-primary-default text-bg-01 hover:bg-primary-dark fixed bottom-20 left-1/2 z-40 flex h-16 w-16 -translate-x-1/2 items-center justify-center"
       aria-label="최상단으로 이동"
     >
       <Image src={upButton} alt="Submit Comment" width={40} height={40} />

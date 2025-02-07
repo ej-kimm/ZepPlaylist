@@ -21,7 +21,7 @@ const FloatingPlusButton = () => {
     setSelectedKeywords((prev) =>
       prev.includes(keyword)
         ? prev.filter((k) => k !== keyword)
-        : [...prev, keyword]
+        : [...prev, keyword],
     )
   }
 
