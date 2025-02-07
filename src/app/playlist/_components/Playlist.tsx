@@ -138,7 +138,7 @@ export default function Playlist({ initialPlaylists }: PlaylistComponentProps) {
           <PlaylistList
             playlists={playlists || []}
             latestLikedSongCover={latestLikedSongCover || ''}
-            openModal={() => openModal('add')}
+            openModal={openModal}
             handlePlaylistClick={(id) => router.push(`/playlist/${id}`)}
             handleLikesClick={() => router.push('/playlist/likes')}
             showDropdown={showDropdown}
@@ -170,6 +170,12 @@ export default function Playlist({ initialPlaylists }: PlaylistComponentProps) {
             isOpen={true}
             onClose={closeModal}
             selectedPlaylistId={selectedPlaylist.id}
+            selectedPlaylist={{
+              name: selectedPlaylist.name,
+              description: selectedPlaylist.description || '',
+              is_public: selectedPlaylist.is_public,
+              keyword: selectedPlaylist.keyword || '',
+            }}
           />
         ) : modalType === 'add' ? (
           <PlaylistModal modalType="add" isOpen={true} onClose={closeModal} />
@@ -198,7 +204,7 @@ export default function Playlist({ initialPlaylists }: PlaylistComponentProps) {
                 user_id: user?.id || '',
               } as PlaylistInsert)
             } else if (modalType === 'edit' && selectedPlaylist) {
-              updatePlaylistMutation.mutateAsync({
+              updatePlaylistMutation.mutate({
                 id: selectedPlaylist.id,
                 updatedData: {
                   name,

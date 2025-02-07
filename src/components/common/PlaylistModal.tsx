@@ -5,13 +5,14 @@ import { useAddPlaylist, useUpdatePlaylist } from '@/hooks/usePlaylists'
 import useScrollLock from '@/hooks/useScrollLock'
 import { userStore } from '@/store/userSlice'
 import Image from 'next/image'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import KeywordCarousel from './KeywordCarousel'
 import Modal from './Modal'
 
 interface Add {
   modalType: 'add'
   selectedPlaylistId?: never
+  selectedPlaylist?: never
   isOpen: boolean
   onClose: () => void
 }
@@ -19,6 +20,12 @@ interface Add {
 interface Edit {
   modalType: 'edit'
   selectedPlaylistId: string
+  selectedPlaylist: {
+    name: string
+    description: string
+    is_public: boolean
+    keyword: string
+  }
   isOpen: boolean
   onClose: () => void
 }
@@ -35,6 +42,7 @@ type Playlist = {
 export default function PlaylistModal({
   modalType,
   selectedPlaylistId,
+  selectedPlaylist,
   isOpen,
   onClose,
 }: PlaylistModalProps) {
@@ -44,10 +52,24 @@ export default function PlaylistModal({
     isPublic: false,
     selectedKeywords: [],
   })
+
   const { user } = userStore()
   const addPlaylistMutation = useAddPlaylist(() => onClose())
   const updatePlaylistMutation = useUpdatePlaylist(() => onClose())
   useScrollLock(isOpen)
+
+  useEffect(() => {
+    if (modalType === 'edit' && selectedPlaylist) {
+      setPlaylist({
+        title: selectedPlaylist.name,
+        description: selectedPlaylist.description,
+        isPublic: selectedPlaylist.is_public,
+        selectedKeywords: selectedPlaylist.keyword
+          ? selectedPlaylist.keyword.split(',')
+          : [],
+      })
+    }
+  }, [modalType, selectedPlaylist])
 
   const toggleKeyword = (keyword: string) => {
     setPlaylist((prevState) => {
