@@ -179,7 +179,7 @@ const MusicPlayer = () => {
       {isDesktop ? (
         <MusicSaveModal
           isOpen={isSaved}
-          handleClose={() => handleUserAction('save')}
+          handleClose={() => setIsSaved(false)}
           musicName={musicDetail?.title || ''}
           artistName={musicDetail?.artist || ''}
           musicData={selectedSong!}
@@ -187,7 +187,7 @@ const MusicPlayer = () => {
       ) : (
         <MusicSaveBottomSheet
           isOpen={isSaved}
-          handleClose={() => handleUserAction('save')}
+          handleClose={() => setIsSaved(false)}
           musicName={musicDetail?.title || ''}
           artistName={musicDetail?.artist || ''}
           musicData={selectedSong!}

@@ -5,7 +5,6 @@ import { usePlaylistMusicUpsert } from '@/hooks/usePlaylistMusicUpsert'
 import usePlaylistOperations from '@/hooks/usePlaylistOperations'
 import useScrollLock from '@/hooks/useScrollLock'
 import useSongLike from '@/hooks/useSongLike'
-import { useMusicPlayerStore } from '@/store/useMusicPlayerStore'
 import { userStore } from '@/store/userSlice'
 import type { SpotifyTrack } from '@/types/billboradCharts'
 import Image from 'next/image'
@@ -34,7 +33,6 @@ const MusicSaveBottomSheet = ({
   const { playlists, isPending } = usePlaylistOperations()
   const { upsertMusic, addMusicToPlaylistTable, modal } =
     usePlaylistMusicUpsert()
-  const { closePlayerModal } = useMusicPlayerStore()
   const { songLike, updateLike } = useSongLike({
     user_id,
     spotify_id: musicData?.id,
@@ -61,7 +59,6 @@ const MusicSaveBottomSheet = ({
 
   const handleCloseAllModals = () => {
     modal.closeModal()
-    closePlayerModal()
     handleClose()
   }
 
@@ -124,7 +121,7 @@ const MusicSaveBottomSheet = ({
                 {playlists.map((playlist) => (
                   <li
                     key={playlist.id}
-                    className="flex items-center gap-2"
+                    className="flex cursor-pointer items-center gap-2"
                     onClick={() => addMusiscInPlayList(playlist.id, musicData)}
                   >
                     {playlist.latest_song_cover ? (
