@@ -54,10 +54,11 @@ export default function Playlist({ initialPlaylists }: PlaylistComponentProps) {
       isOpen: true,
       title: '완료',
       content: '플레이리스트가 추가되었습니다!',
-      onConfirm: () =>
-        setSuccessModalProps((prev) => ({ ...prev, isOpen: false })),
+      onConfirm: () => {
+        setSuccessModalProps((prev) => ({ ...prev, isOpen: false }))
+        closeModal()
+      },
     })
-    closeModal()
   })
 
   const updatePlaylistMutation = useUpdatePlaylist(() => {
@@ -65,10 +66,11 @@ export default function Playlist({ initialPlaylists }: PlaylistComponentProps) {
       isOpen: true,
       title: '완료',
       content: '플레이리스트가 수정되었습니다!',
-      onConfirm: () =>
-        setSuccessModalProps((prev) => ({ ...prev, isOpen: false })),
+      onConfirm: () => {
+        setSuccessModalProps((prev) => ({ ...prev, isOpen: false }))
+        closeModal()
+      },
     })
-    closeModal()
   })
 
   useEffect(() => {
@@ -196,7 +198,7 @@ export default function Playlist({ initialPlaylists }: PlaylistComponentProps) {
                 user_id: user?.id || '',
               } as PlaylistInsert)
             } else if (modalType === 'edit' && selectedPlaylist) {
-              updatePlaylistMutation.mutate({
+              updatePlaylistMutation.mutateAsync({
                 id: selectedPlaylist.id,
                 updatedData: {
                   name,
