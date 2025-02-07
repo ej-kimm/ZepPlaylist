@@ -41,8 +41,35 @@ export default function Playlist({ initialPlaylists }: PlaylistComponentProps) {
   const [selectedKeywords, setSelectedKeywords] = useState<string[]>([])
   const [showDropdown, setShowDropdown] = useState<string | null>(null)
 
-  const addPlaylistMutation = useAddPlaylist(() => closeModal())
-  const updatePlaylistMutation = useUpdatePlaylist(() => closeModal())
+  const [successModalProps, setSuccessModalProps] = useState({
+    isOpen: false,
+    title: '',
+    content: '',
+    onConfirm: () =>
+      setSuccessModalProps((prev) => ({ ...prev, isOpen: false })),
+  })
+
+  const addPlaylistMutation = useAddPlaylist(() => {
+    setSuccessModalProps({
+      isOpen: true,
+      title: '완료',
+      content: '플레이리스트가 추가되었습니다!',
+      onConfirm: () =>
+        setSuccessModalProps((prev) => ({ ...prev, isOpen: false })),
+    })
+    closeModal()
+  })
+
+  const updatePlaylistMutation = useUpdatePlaylist(() => {
+    setSuccessModalProps({
+      isOpen: true,
+      title: '완료',
+      content: '플레이리스트가 수정되었습니다!',
+      onConfirm: () =>
+        setSuccessModalProps((prev) => ({ ...prev, isOpen: false })),
+    })
+    closeModal()
+  })
 
   useEffect(() => {
     const checkUser = async () => {
@@ -122,6 +149,16 @@ export default function Playlist({ initialPlaylists }: PlaylistComponentProps) {
       )}
 
       <Modal {...modalProps} />
+
+      <Modal
+        isOpen={successModalProps.isOpen}
+        title={successModalProps.title}
+        content={successModalProps.content}
+        onConfirm={successModalProps.onConfirm}
+        onCancel={() =>
+          setSuccessModalProps((prev) => ({ ...prev, isOpen: false }))
+        }
+      />
 
       {isDesktop &&
         modalType !== null &&

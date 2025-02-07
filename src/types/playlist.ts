@@ -8,6 +8,7 @@ export type PlaylistRow = {
   is_liked?: boolean
   latest_song_cover?: string | null
   playlist_like?: { user_id: string }[]
+  song_count?: number
 }
 
 export type PlaylistInsert = Omit<
