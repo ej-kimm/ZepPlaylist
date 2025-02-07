@@ -37,7 +37,7 @@ const PlayerControls = ({ className, ICON_SIZE }: PlayerControlsProps) => {
         className,
       )}
     >
-      <button type="button" onClick={playPreviousTrack}>
+      <button type="button" onClick={playPreviousTrack} disabled={isFirstTrack}>
         <Image
           src={skipBack}
           width={ICON_SIZE}
@@ -54,7 +54,7 @@ const PlayerControls = ({ className, ICON_SIZE }: PlayerControlsProps) => {
           alt={isPlaying ? 'pause' : 'play'}
         />
       </button>
-      <button type="button" onClick={playNextTrack}>
+      <button type="button" onClick={playNextTrack} disabled={isLastTrack}>
         <Image
           src={skipNext}
           width={ICON_SIZE}
