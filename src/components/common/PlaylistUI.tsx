@@ -8,6 +8,7 @@ import type { StaticImageData } from 'next/image'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import Skeleton from './Skeleton'
+import defaultProfileImg from '@/assets/images/defaultProfileImg.png'
 
 export type PlaylistUIProps = {
   profileImg: string | StaticImageData
@@ -83,7 +84,7 @@ const PlaylistUI = ({
         )}
       >
         <Image
-          src={profileImg}
+          src={profileImg! || defaultProfileImg}
           alt="Profile Image"
           width={isDesktop ? 56 : 36}
           height={isDesktop ? 56 : 36}
