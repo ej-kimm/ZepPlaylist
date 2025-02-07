@@ -1,6 +1,7 @@
 'use server'
 
 import { createClient } from '@/utils/supabase/server'
+import { redirect } from 'next/navigation'
 
 export async function getUser() {
   const supabase = createClient()
@@ -8,7 +9,7 @@ export async function getUser() {
 
   if (error || !data?.session?.user) {
     console.error(' 사용자 정보 가져오기 오류:', error)
-    return null
+    redirect('/login')
   }
 
   return data.session.user
