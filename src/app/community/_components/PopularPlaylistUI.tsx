@@ -4,12 +4,11 @@
 import imPlay from '@/assets/images/imPlay.svg'
 import likeTrue from '@/assets/images/likeTrue.svg'
 import whiteHeart from '@/assets/images/whiteHeart.svg'
+import { Skeleton } from '@/components/common'
+import useIsDesktop from '@/hooks/useIsDesktop'
 import clsx from 'clsx'
 import type { StaticImageData } from 'next/image'
 import Image from 'next/image'
-import useIsDesktop from '@/hooks/useIsDesktop'
-import { Skeleton } from '@/components/common'
-
 
 export type PopularPlaylistUIProps = {
   albumCover: string
@@ -54,7 +53,7 @@ const PopularPlaylistUI = ({
       <div
         className={clsx(
           'relative h-[100px] w-[140px] flex-shrink-0 cursor-pointer overflow-hidden rounded-lg',
-          'desktop:h-[131px] desktop:w-[184px]'
+          'desktop:h-[131px] desktop:w-[184px]',
         )}
         onClick={onPlay}
       >
@@ -72,7 +71,7 @@ const PopularPlaylistUI = ({
         <div
           className={clsx(
             'absolute left-1/2 top-1/2 h-[92px] w-[92px] -translate-x-1/2 -translate-y-1/2 transform',
-            'desktop:h-[120px] desktop:w-[120px]'
+            'desktop:h-[120px] desktop:w-[120px]',
           )}
         >
           <Image
@@ -82,7 +81,7 @@ const PopularPlaylistUI = ({
             height={100}
             className={clsx(
               'h-[92px] w-[92px] rounded-lg object-cover',
-              'desktop:h-[120px] desktop:w-[120px]'
+              'desktop:h-[120px] desktop:w-[120px]',
             )}
           />
         </div>
@@ -90,7 +89,7 @@ const PopularPlaylistUI = ({
         <button
           className={clsx(
             'absolute right-2 top-2 z-20 flex h-[14px] w-[14px] items-center justify-center',
-            'desktop:right-[9px] desktop:top-[11px]'
+            'desktop:right-[9px] desktop:top-[11px]',
           )}
           onClick={(e) => {
             e.stopPropagation()
@@ -126,7 +125,7 @@ const PopularPlaylistUI = ({
         <h3
           className={clsx(
             'caption-1 font-bold',
-            'desktop:caption-3 desktop:font-semibold'
+            'desktop:caption-3 desktop:font-semibold',
           )}
         >
           {playlistName}
@@ -135,7 +134,7 @@ const PopularPlaylistUI = ({
           <span
             className={clsx(
               'caption-2',
-              'desktop:caption-1 desktop:text-opacity-60'
+              'desktop:caption-1 desktop:text-opacity-60',
             )}
           >
             {nickName && nickName.trim() !== '' ? nickName : 'Anonymous'}

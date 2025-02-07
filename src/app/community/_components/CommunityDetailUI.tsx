@@ -200,7 +200,7 @@ export default function CommunityDetailUI({
                         alt={`${song.title} 앨범 커버`}
                         width={48}
                         height={48}
-                        className="w-[48px] h-[48px] rounded"
+                        className="h-[48px] w-[48px] rounded"
                       />
                     </div>
                     <div className="ml-4">
@@ -246,15 +246,19 @@ export default function CommunityDetailUI({
                       alt={`${song.title} 앨범 커버`}
                       width={48}
                       height={48}
-                      className="w-[54px] h-[54px] rounded"
+                      className="h-[54px] w-[54px] rounded"
                     />
                   </div>
 
                   {/* 텍스트 정보 (가로 배치) */}
                   <div className="flex flex-1 items-center justify-between text-center">
-                    <p className="body-2 flex-1 truncate w-0">{song.title}</p>
-                    <p className="caption-1 flex-1 truncate w-0">{song.artist}</p>
-                    <p className="caption-1 flex-1 truncate w-0">{song.album_name}</p>
+                    <p className="body-2 w-0 flex-1 truncate">{song.title}</p>
+                    <p className="caption-1 w-0 flex-1 truncate">
+                      {song.artist}
+                    </p>
+                    <p className="caption-1 w-0 flex-1 truncate">
+                      {song.album_name}
+                    </p>
                   </div>
 
                   {/* 커뮤니티 웹 서클 아이콘 */}

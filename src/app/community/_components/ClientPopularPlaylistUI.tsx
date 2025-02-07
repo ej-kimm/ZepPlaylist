@@ -41,7 +41,7 @@ const ClientPopularPlaylistUI: React.FC<ClientPopularPlaylistUIProps> = ({
 
   return (
     <PopularPlaylistUI
-    likeCount={likeCount}
+      likeCount={likeCount}
       albumCover={playlist.albumCover}
       isLiked={isLiked}
       onLikeToggle={handleLikeToggle}
