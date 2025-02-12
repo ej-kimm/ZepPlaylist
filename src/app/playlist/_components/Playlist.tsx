@@ -12,9 +12,8 @@ import {
 } from '@/hooks/usePlaylists'
 import { userStore } from '@/store/userSlice'
 import { PlaylistRow, type PlaylistInsert } from '@/types/playlist'
-import { supabase } from '@/utils/supabase/client'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import PlaylistDesktop from './PlaylistDesktop'
 import PlaylistSkeleton from './PlaylistSkeleton'
 import PlaylistList from './PlaylistUI'
@@ -73,15 +72,15 @@ export default function Playlist({ initialPlaylists }: PlaylistComponentProps) {
     })
   })
 
-  useEffect(() => {
-    const checkUser = async () => {
-      const { data } = await supabase.auth.getUser()
-      if (!data.user?.id) {
-        router.replace('/login')
-      }
-    }
-    checkUser()
-  }, [])
+  // useEffect(() => {
+  //   const checkUser = async () => {
+  //     const { data } = await supabase.auth.getUser()
+  //     if (!data.user?.id) {
+  //       router.replace('/login')
+  //     }
+  //   }
+  //   checkUser()
+  // }, [])
 
   const openModal = (type: 'add' | 'edit', playlist?: PlaylistRow) => {
     setModalType(type)
