@@ -9,20 +9,6 @@ function formatPlayTime(seconds: number): string {
   return `${minutes}분`
 }
 
-// export async function getUser() {
-//   const supabase = createClient()
-
-//   const {
-//     data: { user },
-//   } = await supabase.auth.getUser()
-
-//   if (!user) {
-//     redirect('/')
-//   }
-
-//   return user
-// }
-
 export async function fetchPlaylistDetails(
   playlistId: string,
 ): Promise<PlaylistDetails | null> {
