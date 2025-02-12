@@ -73,15 +73,15 @@ export default function Playlist({ initialPlaylists }: PlaylistComponentProps) {
     })
   })
 
-  useEffect(() => {
-    const checkUser = async () => {
-      const { data } = await supabase.auth.getUser()
-      if (!data.user?.id) {
-        router.replace('/login')
-      }
-    }
-    checkUser()
-  }, [])
+  // useEffect(() => {
+  //   const checkUser = async () => {
+  //     const { data } = await supabase.auth.getUser()
+  //     if (!data.user?.id) {
+  //       router.replace('/login')
+  //     }
+  //   }
+  //   checkUser()
+  // }, [])
 
   const openModal = (type: 'add' | 'edit', playlist?: PlaylistRow) => {
     setModalType(type)
